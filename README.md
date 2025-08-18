@@ -2,7 +2,7 @@
 
 <img width="" src="icon.png"  width=160 height=160  align="center">
 
-# SealVR
+# VRClip
 
 ### Video/Audio Downloader for Android and Quest
 

@@ -83,29 +83,6 @@ English
 
 
 
-## ⬇️ Download
-
-For most devices, it is recommended to install the **arm64-v8a** version of the apks
-
-- Download the latest stable version from [GitHub releases](https://github.com/JunkFood02/Seal/releases/latest)
-  - Install the [pre-release](https://github.com/JunkFood02/Seal/releases/) versions to help us test out new features & changes
-
-- Stable releases are also available on [F-Droid](https://f-droid.org/packages/com.junkfood.seal/)
-
-<!-- [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="70">](https://f-droid.org/packages/com.junkfood.seal/) -->
-
-## 💬 Contact
-
-Join our [Telegram Channel](https://t.me/seal_app) or [Matrix Space](https://matrix.to/#/#seal-space:matrix.org) for discussion, announcements, and releases!
-
-## 💖 Sponsors
-
-<p><!-- sponsors --><a href="https://github.com/4kaimar"><img src="https:&#x2F;&#x2F;github.com&#x2F;4kaimar.png" width="60px" alt="User avatar: " /></a><a href="https://github.com/Cook-I-T"><img src="https:&#x2F;&#x2F;github.com&#x2F;Cook-I-T.png" width="60px" alt="User avatar: Cook I.T!" /></a><a href="https://github.com/reallyrealcolby"><img src="https:&#x2F;&#x2F;github.com&#x2F;reallyrealcolby.png" width="60px" alt="User avatar: " /></a><!-- sponsors --></p>
-
-
-Seal will be always free and open source for everyone. If you like it, please consider [sponsoring me](https://github.com/sponsors/JunkFood02)!
 
 ## 🤝 Contributing
 

@@ -17,14 +17,18 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Subscriptions
 import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material.icons.rounded.BugReport
@@ -42,6 +46,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -92,10 +97,12 @@ fun NavigationDrawer(
                 gesturesEnabled = gesturesEnabled,
                 drawerState = drawerState,
                 drawerContent = {
-                    ModalDrawerSheet(
-                        drawerState = drawerState,
-                        modifier = modifier.width(360.dp).glassEffect(shape = MaterialTheme.shapes.large),
-                        drawerContainerColor = Color.Transparent
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(320.dp)
+                            .padding(16.dp)
+                            .glassEffect(shape = MaterialTheme.shapes.extraLarge)
                     ) {
                         NavigationDrawerSheetContent(
                             modifier = Modifier,
@@ -179,46 +186,50 @@ fun NavigationDrawerSheetContent(
                 .systemBarsPadding()
     ) {
         Spacer(Modifier.height(72.dp))
-        ProvideTextStyle(MaterialTheme.typography.labelLarge) {
+        ProvideTextStyle(MaterialTheme.typography.titleSmall) {
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.download_queue)) },
-                icon = { Icon(Icons.Filled.Download, null) },
+                icon = { Icon(if (currentRoute == Route.HOME) Icons.Filled.Download else Icons.Outlined.Download, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
                         .invokeOnCompletion { onNavigateToRoute(Route.HOME) }
                 },
                 selected = currentRoute == Route.HOME,
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.downloads_history)) },
-                icon = { Icon(Icons.Outlined.Subscriptions, null) },
+                icon = { Icon(if (currentRoute == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List else Icons.AutoMirrored.Outlined.List, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
                         .invokeOnCompletion { onNavigateToRoute(Route.DOWNLOADS) }
                 },
                 selected = currentRoute == Route.DOWNLOADS,
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.custom_command)) },
-                icon = { Icon(Icons.Outlined.Terminal, null) },
+                icon = { Icon(if (currentRoute == Route.TASK_LIST) Icons.Filled.Terminal else Icons.Outlined.Terminal, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
                         .invokeOnCompletion { onNavigateToRoute(Route.TASK_LIST) }
                 },
                 selected = currentRoute == Route.TASK_LIST,
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.settings)) },
-                icon = { Icon(Icons.Outlined.Settings, null) },
+                icon = { Icon(if (currentRoute == Route.SETTINGS_PAGE) Icons.Filled.Settings else Icons.Outlined.Settings, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
                         .invokeOnCompletion { onNavigateToRoute(Route.SETTINGS) }
                 },
                 selected = currentRoute == Route.SETTINGS_PAGE,
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
             )
 
             if (showQuickSettings) {
@@ -238,7 +249,7 @@ fun NavigationDrawerSheetContent(
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.general_settings)) },
-                    icon = { Icon(Icons.Rounded.SettingsApplications, null) },
+                    icon = { Icon(if (currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES) Icons.Filled.Settings else Icons.Outlined.Settings, null) },
                     onClick = {
                         scope
                             .launch { onDismissRequest() }
@@ -247,17 +258,19 @@ fun NavigationDrawerSheetContent(
                             }
                     },
                     selected = currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES,
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.download_directory)) },
-                    icon = { Icon(Icons.Rounded.Folder, null) },
+                    icon = { Icon(if (currentRoute == Route.DOWNLOAD_DIRECTORY) Icons.Filled.Folder else Icons.Outlined.Folder, null) },
                     onClick = {
                         scope
                             .launch { onDismissRequest() }
                             .invokeOnCompletion { onNavigateToRoute(Route.DOWNLOAD_DIRECTORY) }
                     },
                     selected = currentRoute == Route.DOWNLOAD_DIRECTORY,
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
 
                 NavigationDrawerItem(
@@ -269,6 +282,7 @@ fun NavigationDrawerSheetContent(
                             .invokeOnCompletion { onNavigateToRoute(Route.COOKIE_PROFILE) }
                     },
                     selected = currentRoute == Route.COOKIE_PROFILE,
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
 
                 NavigationDrawerItem(
@@ -280,17 +294,19 @@ fun NavigationDrawerSheetContent(
                             .invokeOnCompletion { onNavigateToRoute(Route.TROUBLESHOOTING) }
                     },
                     selected = currentRoute == Route.TROUBLESHOOTING,
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.about)) },
-                    icon = { Icon(Icons.Rounded.Info, null) },
+                    icon = { Icon(if (currentRoute == Route.ABOUT) Icons.Filled.Info else Icons.Outlined.Info, null) },
                     onClick = {
                         scope
                             .launch { onDismissRequest() }
                             .invokeOnCompletion { onNavigateToRoute(Route.ABOUT) }
                     },
                     selected = currentRoute == Route.ABOUT,
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
         }
@@ -335,9 +351,9 @@ fun NavigationRailContent(
     onNavigateToRoute: (String) -> Unit,
 ) {
     Column(
-        modifier = modifier.selectableGroup(),
+        modifier = modifier.padding(12.dp).glassEffect(shape = MaterialTheme.shapes.extraLarge).selectableGroup().padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         val scope = rememberCoroutineScope()
         NavigationRailItemVariant(
@@ -356,8 +372,8 @@ fun NavigationRailContent(
         NavigationRailItemVariant(
             icon = {
                 Icon(
-                    if (currentTopDestination == Route.DOWNLOADS) Icons.Filled.Subscriptions
-                    else Icons.Outlined.Subscriptions,
+                    if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
+                    else Icons.AutoMirrored.Outlined.List,
                     stringResource(R.string.downloads_history),
                 )
             },

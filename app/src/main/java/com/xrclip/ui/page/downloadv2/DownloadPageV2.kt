@@ -107,6 +107,7 @@ import com.xrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
 import com.xrclip.ui.common.LocalWindowWidthState
+import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.component.XRClipModalBottomSheet
 import com.xrclip.ui.component.SelectionGroupDefaults
 import com.xrclip.ui.component.SelectionGroupItem
@@ -560,12 +561,7 @@ private fun HeaderCompact(modifier: Modifier = Modifier, onMenuOpen: () -> Unit)
             modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .graphicsLayer {
-                    clip = true
-                    shape = RoundedCornerShape(16.dp)
-                }
-                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.4f))
-                .blur(if (Build.VERSION.SDK_INT >= 31) 12.dp else 0.dp),
+                .glassEffect(shape = MaterialTheme.shapes.large),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onMenuOpen, modifier = Modifier.padding(start = 8.dp)) {
@@ -595,12 +591,7 @@ private fun HeaderExpanded(modifier: Modifier = Modifier) {
             modifier
                 .fillMaxWidth()
                 .height(72.dp)
-                .graphicsLayer {
-                    clip = true
-                    shape = RoundedCornerShape(24.dp)
-                }
-                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.4f))
-                .blur(if (Build.VERSION.SDK_INT >= 31) 12.dp else 0.dp),
+                .glassEffect(shape = MaterialTheme.shapes.extraLarge),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width(16.dp))
@@ -622,20 +613,24 @@ fun FABs(modifier: Modifier = Modifier, downloadCallback: () -> Unit = {}) {
     Column(modifier = modifier.padding(6.dp), horizontalAlignment = Alignment.End) {
         FloatingActionButton(
             onClick = downloadCallback,
+            shape = MaterialTheme.shapes.extraLarge,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
             content = {
                 if (expanded) {
                     Row(
-                        modifier = Modifier.widthIn(min = 80.dp).padding(horizontal = 16.dp),
+                        modifier = Modifier.widthIn(min = 100.dp).padding(horizontal = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(Icons.Outlined.FileDownload, contentDescription = null)
                         Spacer(Modifier.width(12.dp))
-                        Text(stringResource(R.string.download))
+                        Text(stringResource(R.string.download), style = MaterialTheme.typography.titleMedium)
                     }
                 } else {
                     Icon(
                         Icons.Outlined.FileDownload,
                         contentDescription = stringResource(R.string.download),
+                        modifier = Modifier.size(28.dp)
                     )
                 }
             },

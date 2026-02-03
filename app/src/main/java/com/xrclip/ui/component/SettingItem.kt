@@ -22,17 +22,23 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SettingTitle(text: String) {
     Text(
-        modifier = Modifier.padding(top = 32.dp).padding(horizontal = 20.dp, vertical = 16.dp),
+        modifier = Modifier.padding(top = 24.dp).padding(horizontal = 20.dp, vertical = 8.dp),
         text = text,
-        style = MaterialTheme.typography.displaySmall,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.primary,
     )
 }
 
 @Composable
 fun SettingItem(title: String, description: String, icon: ImageVector?, onClick: () -> Unit) {
-    Surface(modifier = Modifier.clickable { onClick() }) {
+    Surface(
+        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+        onClick = onClick,
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.5f),
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 20.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             icon?.let {
@@ -49,18 +55,20 @@ fun SettingItem(title: String, description: String, icon: ImageVector?, onClick:
                 Text(
                     text = title,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = description,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.bodyMedium,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                if (description.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = description,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        style = MaterialTheme.typography.bodySmall,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
     }

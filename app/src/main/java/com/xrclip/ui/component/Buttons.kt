@@ -91,13 +91,14 @@ fun FilledTonalButtonWithIcon(
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
 ) {
     FilledTonalButton(
-        modifier = modifier,
+        modifier = modifier.height(52.dp),
         onClick = onClick,
-        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+        contentPadding = PaddingValues(horizontal = 24.dp),
         colors = colors,
+        shape = MaterialTheme.shapes.large,
     ) {
-        Icon(modifier = Modifier.size(18.dp), imageVector = icon, contentDescription = null)
-        Text(modifier = Modifier.padding(start = 8.dp), text = text)
+        Icon(modifier = Modifier.size(20.dp), imageVector = icon, contentDescription = null)
+        Text(modifier = Modifier.padding(start = 10.dp), text = text, style = MaterialTheme.typography.titleSmall)
     }
 }
 
@@ -110,13 +111,14 @@ fun FilledButtonWithIcon(
     onClick: () -> Unit,
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier.height(52.dp),
         onClick = onClick,
-        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+        contentPadding = PaddingValues(horizontal = 24.dp),
         enabled = enabled,
+        shape = MaterialTheme.shapes.large,
     ) {
-        Icon(modifier = Modifier.size(18.dp), imageVector = icon, contentDescription = null)
-        Text(modifier = Modifier.padding(start = 6.dp), text = text)
+        Icon(modifier = Modifier.size(20.dp), imageVector = icon, contentDescription = null)
+        Text(modifier = Modifier.padding(start = 10.dp), text = text, style = MaterialTheme.typography.titleSmall)
     }
 }
 

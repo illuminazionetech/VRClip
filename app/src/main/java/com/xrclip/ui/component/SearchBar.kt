@@ -21,11 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.xrclip.R
+import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.theme.XRClipTheme
 
 @Composable
@@ -38,9 +40,8 @@ fun XRClipSearchBar(
     val view = LocalView.current
 
     Surface(
-        modifier = modifier.widthIn(360.dp, 720.dp),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceContainer,
+        modifier = modifier.widthIn(360.dp, 720.dp).glassEffect(shape = MaterialTheme.shapes.large),
+        color = Color.Transparent,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(16.dp))

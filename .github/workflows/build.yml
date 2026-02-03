@@ -1,0 +1,66 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Build with Gradle
+        run: ./gradlew assembleRelease assembleDebug
+
+      - name: Upload Generic Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: XRClip-Generic-Release
+          path: app/build/outputs/apk/generic/release/*.apk
+
+      - name: Upload GitHub Preview Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: XRClip-GithubPreview-Release
+          path: app/build/outputs/apk/githubPreview/release/*.apk
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: XRClip-Debug
+          path: app/build/outputs/apk/generic/debug/*.apk
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/outputs/apk/generic/release/*.apk
+            app/build/outputs/apk/githubPreview/release/*.apk
+            app/build/outputs/apk/generic/debug/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

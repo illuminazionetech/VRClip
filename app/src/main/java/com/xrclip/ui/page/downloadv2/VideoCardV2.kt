@@ -72,6 +72,7 @@ import com.xrclip.download.Task.RestartableAction
 import com.xrclip.ui.common.AsyncImageImpl
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
+import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.common.motion.materialSharedAxisY
 import com.xrclip.ui.component.GreenTonalPalettes
 import com.xrclip.ui.theme.XRClipTheme
@@ -236,9 +237,10 @@ fun VideoCardV2(
             if (LocalDarkTheme.current.isDarkTheme()) surfaceContainer else surfaceContainerLowest
         }
 
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
+    Surface(
+        modifier = modifier.fillMaxWidth().glassEffect(shape = MaterialTheme.shapes.medium),
+        color = Color.Transparent,
+        shape = MaterialTheme.shapes.medium,
     ) {
         Column {
             Box(Modifier.fillMaxWidth()) {

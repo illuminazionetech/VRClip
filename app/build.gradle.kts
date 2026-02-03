@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId = "com.xrclip"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 200_000_150
         check(versionCode == currentVersionCode)
@@ -136,12 +136,6 @@ android {
 
     lint { disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity")) }
 
-    applicationVariants.all {
-        outputs.all {
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
-                "XRClip-${defaultConfig.versionName}-${name}.apk"
-        }
-    }
 
     kotlinOptions { freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn" }
 

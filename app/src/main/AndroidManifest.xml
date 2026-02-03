@@ -75,7 +75,11 @@
             android:name=".DownloadService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="specialUse" />
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_TYPE"
+                android:value="XRClip utilizes a foreground service to ensure uninterrupted video and audio downloads even when the application is in the background or the screen is off, providing a consistent and reliable user experience for large media files." />
+        </service>
 
         <activity
             android:name=".MainActivity"

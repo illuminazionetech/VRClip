@@ -2,11 +2,13 @@ package com.xrclip.ui.page.downloadv2
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.animateTo
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollFactory
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +29,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -67,7 +70,9 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -550,21 +555,34 @@ fun Header(modifier: Modifier = Modifier, onMenuOpen: () -> Unit = {}) {
 @Composable
 private fun HeaderCompact(modifier: Modifier = Modifier, onMenuOpen: () -> Unit) {
 
-    Row(modifier = modifier.height(64.dp), verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = onMenuOpen, modifier = Modifier) {
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(64.dp)
+                .graphicsLayer {
+                    clip = true
+                    shape = RoundedCornerShape(16.dp)
+                }
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.4f))
+                .blur(if (Build.VERSION.SDK_INT >= 31) 12.dp else 0.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconButton(onClick = onMenuOpen, modifier = Modifier.padding(start = 8.dp)) {
             Icon(
                 imageVector = Icons.Outlined.Menu,
                 contentDescription = stringResource(R.string.show_navigation_drawer),
                 modifier = Modifier,
             )
         }
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             stringResource(R.string.download_queue),
             style =
                 MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp,
                 ),
         )
     }
@@ -572,14 +590,30 @@ private fun HeaderCompact(modifier: Modifier = Modifier, onMenuOpen: () -> Unit)
 
 @Composable
 private fun HeaderExpanded(modifier: Modifier = Modifier) {
-    Row(modifier = modifier.height(64.dp), verticalAlignment = Alignment.CenterVertically) {
-        Spacer(modifier = Modifier.width(4.dp))
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(72.dp)
+                .graphicsLayer {
+                    clip = true
+                    shape = RoundedCornerShape(24.dp)
+                }
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.4f))
+                .blur(if (Build.VERSION.SDK_INT >= 31) 12.dp else 0.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(modifier = Modifier.width(16.dp))
         Text(
             stringResource(R.string.download_queue),
-            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Medium),
+            style =
+                MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp,
+                ),
         )
     }
-    Spacer(Modifier.height(4.dp))
+    Spacer(Modifier.height(8.dp))
 }
 
 @Composable

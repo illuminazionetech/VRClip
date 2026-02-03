@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         }
         enableEdgeToEdge()
 
-        context = this.baseContext
         setContent {
             KoinContext {
                 val windowSizeClass = calculateWindowSizeClass(this)

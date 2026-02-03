@@ -43,7 +43,9 @@ class NotificationActionReceiver : BroadcastReceiver(), KoinComponent {
 
             ACTION_ERROR_REPORT -> {
                 val errorReport = intent.getStringExtra(ERROR_REPORT_KEY)
-                if (!errorReport.isNullOrEmpty()) copyErrorReport(errorReport, notificationId)
+                if (!errorReport.isNullOrEmpty() && context != null) {
+                    copyErrorReport(context, errorReport, notificationId)
+                }
             }
         }
     }
@@ -61,9 +63,9 @@ class NotificationActionReceiver : BroadcastReceiver(), KoinComponent {
         }
     }
 
-    private fun copyErrorReport(error: String, notificationId: Int) {
+    private fun copyErrorReport(context: Context, error: String, notificationId: Int) {
         App.clipboard.setPrimaryClip(ClipData.newPlainText(null, error))
-        context.let { ToastUtil.makeToastSuspend(it.getString(R.string.error_copied)) }
+        ToastUtil.makeToastSuspend(context.getString(R.string.error_copied))
         NotificationUtil.cancelNotification(notificationId)
     }
 }

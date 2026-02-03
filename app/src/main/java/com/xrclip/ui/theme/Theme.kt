@@ -71,9 +71,12 @@ fun XRClipTheme(
                 )
             else {
                 // Apply a more "liquid/glass" feel to the color scheme by reducing opacity on some surfaces
-                // but ColorScheme is immutable with direct colors, so we can only suggest usage in components.
-                // However, we can tweak the surface colors if needed.
-                this
+                copy(
+                    surface = surface.copy(alpha = 0.85f),
+                    surfaceContainer = surfaceContainer.copy(alpha = 0.7f),
+                    surfaceContainerLow = surfaceContainerLow.copy(alpha = 0.6f),
+                    surfaceContainerHigh = surfaceContainerHigh.copy(alpha = 0.8f),
+                )
             }
         }
 

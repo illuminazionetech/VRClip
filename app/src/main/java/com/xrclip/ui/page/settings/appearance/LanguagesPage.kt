@@ -269,7 +269,9 @@ private fun LanguagePagePreview() {
             onNavigateToSystemLocaleSettings = { /*TODO*/ },
             selectedLocale = language,
         ) {
-            language = it
+            if (it != null) {
+                language = it
+            }
         }
     }
 }

@@ -45,9 +45,9 @@ android {
 
     defaultConfig {
         applicationId = "com.xrclip"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 35
-        versionCode = 200_000_150
+        versionCode = 40400
         check(versionCode == currentVersionCode)
 
         versionName = baseVersionName
@@ -153,6 +153,12 @@ android {
     }
     androidResources { generateLocaleConfig = true }
 
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
     namespace = "com.xrclip"
 }
 
@@ -161,6 +167,7 @@ ktfmt { kotlinLangStyle() }
 kotlin { jvmToolchain(21) }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":color"))
 
     implementation(libs.bundles.core)

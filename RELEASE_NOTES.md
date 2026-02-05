@@ -1,5 +1,11 @@
+## Release 0.0.4
+- 🚀 Updated version to 0.0.4.
+- 📱 Improved compatibility: Lowered Min SDK to Android 7.0 (API 24).
+- 🛠️ Fixed build issues and optimized performance.
+- 🎨 UI refinements for the new XRClip brand.
+
 ## Overview
-Initial beta release of VRClip featuring core VR video clipping functionality.
+Initial beta release of XRClip featuring core VR video clipping functionality.
 
 ## What's Included
 - ✨ Core VR video recording and clipping features

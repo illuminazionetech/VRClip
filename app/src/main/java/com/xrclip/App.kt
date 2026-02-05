@@ -75,10 +75,10 @@ class App : Application() {
 
         context = applicationContext
         packageInfo =
-            packageManager.run {
-                if (Build.VERSION.SDK_INT >= 33)
-                    getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
-                else getPackageInfo(packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION") packageManager.getPackageInfo(packageName, 0)
             }
         applicationScope = CoroutineScope(SupervisorJob())
         DynamicColors.applyToActivitiesIfAvailable(this)

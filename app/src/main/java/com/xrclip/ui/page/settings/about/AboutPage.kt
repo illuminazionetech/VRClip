@@ -52,7 +52,7 @@ import com.xrclip.ui.component.PreferenceItem
 import com.xrclip.ui.component.PreferenceSwitchWithDivider
 import com.xrclip.util.AUTO_UPDATE
 import com.xrclip.util.PreferenceUtil
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 
 private const val releaseURL = "https://github.com/XRClipTeam/XRClip/releases"
 private const val repoUrl = "https://github.com/XRClipTeam/XRClip"
@@ -163,13 +163,13 @@ fun AboutPage(
                         icon = Icons.Outlined.Info,
                     ) {
                         clipboardManager.setText(AnnotatedString(info))
-                        ToastUtil.makeToast(R.string.info_copied)
+                        makeToast(R.string.info_copied)
                     }
                 }
                 item {
                     PreferenceItem(title = "Package name", description = context.packageName) {
                         clipboardManager.setText(AnnotatedString(context.packageName))
-                        ToastUtil.makeToast(R.string.info_copied)
+                        makeToast(R.string.info_copied)
                     }
                 }
             }

@@ -141,7 +141,7 @@ import com.xrclip.util.PreferenceUtil.updateInt
 import com.xrclip.util.SUBTITLE
 import com.xrclip.util.TEMPLATE_ID
 import com.xrclip.util.THUMBNAIL
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 import com.xrclip.util.USE_CUSTOM_AUDIO_PRESET
 import com.xrclip.util.VIDEO_FORMAT
 import com.xrclip.util.VIDEO_QUALITY
@@ -326,7 +326,7 @@ private fun ErrorPage(modifier: Modifier = Modifier, state: Error, onActionPost:
                             App.getVersionReport() + "\nURL: ${url}\n${state.throwable.message}"
                         )
                     )
-                    ToastUtil.makeToast(R.string.error_copied)
+                    makeToast(R.string.error_copied)
                 }
             ) {
                 Text(stringResource(R.string.copy_error_report))

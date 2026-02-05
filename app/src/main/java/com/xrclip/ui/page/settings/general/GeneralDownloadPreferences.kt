@@ -99,7 +99,7 @@ import com.xrclip.util.PreferenceUtil.updateBoolean
 import com.xrclip.util.SPONSORBLOCK
 import com.xrclip.util.SUBTITLE
 import com.xrclip.util.THUMBNAIL
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 import com.xrclip.util.UpdateUtil
 import com.xrclip.util.YT_DLP_VERSION
 import com.yausername.youtubedl_android.YoutubeDL
@@ -135,7 +135,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
     val notificationPermission =
         if (Build.VERSION.SDK_INT >= 33)
             rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { status ->
-                if (!status) ToastUtil.makeToast(context.getString(R.string.permission_denied))
+                if (!status) makeToast(context.getString(R.string.permission_denied))
                 else isNotificationPermissionGranted = true
             }
         else null
@@ -209,12 +209,10 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                                     }
                                     .onFailure { th ->
                                         th.printStackTrace()
-                                        ToastUtil.makeToastSuspend(
-                                            App.context.getString(R.string.yt_dlp_update_fail)
-                                        )
+                                        makeToast(App.context.getString(R.string.yt_dlp_update_fail))
                                     }
                                     .onSuccess {
-                                        ToastUtil.makeToastSuspend(
+                                        makeToast(
                                             context.getString(R.string.yt_dlp_up_to_date) +
                                                 " (${YT_DLP_VERSION.getString()})"
                                         )

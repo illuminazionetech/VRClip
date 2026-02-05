@@ -118,7 +118,7 @@ import com.xrclip.util.NOTIFICATION
 import com.xrclip.util.PreferenceUtil
 import com.xrclip.util.PreferenceUtil.getBoolean
 import com.xrclip.util.PreferenceUtil.updateBoolean
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 import com.xrclip.util.matchUrlFromClipboard
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -154,7 +154,7 @@ fun DownloadPage(
                 isGranted: Boolean ->
                 showNotificationDialog = false
                 if (!isGranted) {
-                    ToastUtil.makeToast(R.string.permission_denied)
+                    makeToast(R.string.permission_denied)
                 }
             }
         } else null
@@ -181,7 +181,7 @@ fun DownloadPage(
             if (b) {
                 checkNetworkOrDownload()
             } else {
-                ToastUtil.makeToast(R.string.permission_denied)
+                makeToast(R.string.permission_denied)
             }
         }
 
@@ -534,7 +534,7 @@ fun DownloadPageImpl(
                                     "\nURL: ${errorState.url}\n${errorState.report}"
                             )
                         )
-                        ToastUtil.makeToast(R.string.error_copied)
+                        makeToast(R.string.error_copied)
                     }
                 }
                 content()

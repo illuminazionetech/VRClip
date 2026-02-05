@@ -51,7 +51,7 @@ import com.xrclip.ui.component.OutlinedButtonWithIcon
 import com.xrclip.ui.component.XRClipModalBottomSheetM2
 import com.xrclip.ui.theme.XRClipTheme
 import com.xrclip.util.FileUtil
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 
 @Composable
 fun VideoDetailDrawer(
@@ -169,7 +169,7 @@ fun VideoDetailDrawerImpl(
                 LongTapTextButton(
                     onClick = {
                         clipboardManager.setText(AnnotatedString(url))
-                        ToastUtil.makeToast(context.getString(R.string.link_copied))
+                        context.makeToast(R.string.link_copied)
                     },
                     onClickLabel = stringResource(id = R.string.copy_link),
                     onLongClick = onOpenLink,

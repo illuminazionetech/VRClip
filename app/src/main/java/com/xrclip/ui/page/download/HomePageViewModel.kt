@@ -18,8 +18,8 @@ import com.xrclip.util.FORMAT_SELECTION
 import com.xrclip.util.PLAYLIST
 import com.xrclip.util.PlaylistResult
 import com.xrclip.util.PreferenceUtil.getBoolean
-import com.xrclip.util.ToastUtil
 import com.xrclip.util.VideoInfo
+import com.xrclip.util.makeToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,7 +55,7 @@ class HomePageViewModel : ViewModel() {
         }
         if (!Downloader.isDownloaderAvailable()) return
         if (url.isBlank()) {
-            ToastUtil.makeToast(context.getString(R.string.url_empty))
+            makeToast(R.string.url_empty)
             return
         }
         if (PLAYLIST.getBoolean()) {

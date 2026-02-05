@@ -49,7 +49,7 @@ import com.xrclip.util.PreferenceUtil
 import com.xrclip.util.PreferenceUtil.updateBoolean
 import com.xrclip.util.PreferenceUtil.updateInt
 import com.xrclip.util.STABLE
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 import com.xrclip.util.UPDATE_CHANNEL
 import com.xrclip.util.UpdateUtil
 import kotlinx.coroutines.Dispatchers
@@ -147,17 +147,13 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                                                     release = it
                                                     showUpdateDialog = true
                                                 }
-                                                    ?: ToastUtil.makeToastSuspend(
-                                                        context.getString(R.string.app_up_to_date)
-                                                    )
+                                                    ?: makeToast(context.getString(R.string.app_up_to_date))
                                             }
                                             isLoading = false
                                         }
                                         .onFailure {
                                             it.printStackTrace()
-                                            ToastUtil.makeToastSuspend(
-                                                context.getString(R.string.app_update_failed)
-                                            )
+                                            makeToast(context.getString(R.string.app_update_failed))
                                             isLoading = false
                                         }
                                 }

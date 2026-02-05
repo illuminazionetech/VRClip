@@ -89,7 +89,7 @@ object DownloadUtil {
         downloadPreferences: DownloadPreferences = DownloadPreferences.createFromPreferences(),
     ): Result<YoutubeDLInfo> =
         YoutubeDL.runCatching {
-            ToastUtil.makeToastSuspend(context.getString(R.string.fetching_playlist_info))
+            makeToast(context.getString(R.string.fetching_playlist_info))
             val request = YoutubeDLRequest(playlistURL)
             with(request) {
                 //            addOption("--compat-options", "no-youtube-unavailable-videos")
@@ -929,7 +929,7 @@ object DownloadUtil {
             val notificationId = taskId.toNotificationId()
             val urlList = url.split(Regex("[\n ]")).filter { it.isNotBlank() }
 
-            ToastUtil.makeToastSuspend(context.getString(R.string.start_execute))
+            makeToast(context.getString(R.string.start_execute))
             val request =
                 YoutubeDLRequest(urlList).apply {
                     commandDirectory.takeIf { it.isNotEmpty() }?.let { addOption("-P", it) }

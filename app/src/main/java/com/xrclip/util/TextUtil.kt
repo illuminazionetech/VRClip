@@ -15,30 +15,35 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Deprecated("Use extension functions of Context to show a toast")
-object ToastUtil {
-    fun makeToast(text: String) {
+/**
+ * Show a toast message from any thread.
+ */
+fun makeToast(text: String) {
+    applicationScope.launch(Dispatchers.Main) {
         Toast.makeText(context.applicationContext, text, Toast.LENGTH_SHORT).show()
     }
+}
 
-    fun makeToastSuspend(text: String) {
-        applicationScope.launch(Dispatchers.Main) { makeToast(text) }
-    }
-
-    fun makeToast(stringId: Int) {
-        Toast.makeText(context.applicationContext, context.getString(stringId), Toast.LENGTH_SHORT)
-            .show()
+/**
+ * Show a toast message from any thread.
+ */
+fun makeToast(stringId: Int) {
+    applicationScope.launch(Dispatchers.Main) {
+        Toast.makeText(context.applicationContext, context.getString(stringId), Toast.LENGTH_SHORT).show()
     }
 }
 
-@MainThread
 fun Context.makeToast(stringId: Int) {
-    Toast.makeText(applicationContext, getString(stringId), Toast.LENGTH_SHORT).show()
+    val text = getString(stringId)
+    applicationScope.launch(Dispatchers.Main) {
+        Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+    }
 }
 
-@MainThread
 fun Context.makeToast(message: String) {
-    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    applicationScope.launch(Dispatchers.Main) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    }
 }
 
 private const val GIGA_BYTES = 1024f * 1024f * 1024f
@@ -82,15 +87,15 @@ fun String?.toHttpsUrl(): String =
 
 fun matchUrlFromClipboard(string: String, isMatchingMultiLink: Boolean = false): String {
     findURLsFromString(string, !isMatchingMultiLink).joinToString(separator = "\n").run {
-        if (isEmpty()) ToastUtil.makeToast(R.string.paste_fail_msg)
-        else ToastUtil.makeToast(R.string.paste_msg)
+        if (isEmpty()) makeToast(R.string.paste_fail_msg)
+        else makeToast(R.string.paste_msg)
         return this
     }
 }
 
 fun matchUrlFromSharedText(s: String): String {
     findURLsFromString(s, true).joinToString(separator = "\n").run {
-        if (isEmpty()) ToastUtil.makeToast(R.string.share_fail_msg)
+        if (isEmpty()) makeToast(R.string.share_fail_msg)
         //            else makeToast(R.string.share_success_msg)
         return this
     }

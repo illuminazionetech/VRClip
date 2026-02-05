@@ -189,9 +189,6 @@ fun NavGraphBuilder.settingsGraph(
     cookiesViewModel: CookiesViewModel,
 ) {
     navigation(startDestination = Route.SETTINGS_PAGE, route = Route.SETTINGS) {
-        animatedComposable(Route.DOWNLOAD_DIRECTORY) {
-            DownloadDirectoryPreferences(onNavigateBack)
-        }
         animatedComposable(Route.SETTINGS_PAGE) {
             SettingsPage(onNavigateBack = onNavigateBack, onNavigateTo = onNavigateTo)
         }

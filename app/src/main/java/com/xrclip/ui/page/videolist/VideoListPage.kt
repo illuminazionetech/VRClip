@@ -101,7 +101,7 @@ import com.xrclip.ui.svg.DynamicColorImageVectors
 import com.xrclip.ui.svg.drawablevectors.videoSteaming
 import com.xrclip.util.AUDIO_REGEX
 import com.xrclip.util.FileUtil
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 import com.xrclip.util.toFileSizeText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -489,9 +489,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
                                 },
                                 onClick = {
                                     FileUtil.openFile(path = videoPath) {
-                                        ToastUtil.makeToastSuspend(
-                                            App.context.getString(R.string.file_unavailable)
-                                        )
+                                        makeToast(App.context.getString(R.string.file_unavailable))
                                     }
                                 },
                                 onLongClick = {

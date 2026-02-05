@@ -3,6 +3,7 @@ package com.xrclip
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -21,7 +22,15 @@ class DownloadService : Service() {
                 PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
             }
         val notification = NotificationUtil.makeServiceNotification(pendingIntent)
-        startForeground(SERVICE_NOTIFICATION_ID, notification)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startForeground(
+                SERVICE_NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC,
+            )
+        } else {
+            startForeground(SERVICE_NOTIFICATION_ID, notification)
+        }
         return DownloadServiceBinder()
     }
 

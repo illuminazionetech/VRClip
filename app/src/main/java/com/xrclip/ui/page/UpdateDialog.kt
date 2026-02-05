@@ -25,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.xrclip.R
-import com.xrclip.util.ToastUtil
 import com.xrclip.util.UpdateUtil
+import com.xrclip.util.makeToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +59,7 @@ fun UpdateDialog(onDismissRequest: () -> Unit, release: UpdateUtil.Release) {
                     .onFailure {
                         it.printStackTrace()
                         currentDownloadStatus = UpdateUtil.DownloadStatus.NotYet
-                        ToastUtil.makeToastSuspend(context.getString(R.string.app_update_failed))
+                        makeToast(context.getString(R.string.app_update_failed))
                         return@launch
                     }
             }

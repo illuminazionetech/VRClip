@@ -18,8 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.xrclip.R
 import com.xrclip.util.PreferenceUtil
-import com.xrclip.util.ToastUtil
 import com.xrclip.util.UpdateUtil
+import com.xrclip.util.makeToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -99,9 +99,7 @@ fun AppUpdater() {
                             .onFailure {
                                 it.printStackTrace()
                                 currentDownloadStatus = UpdateUtil.DownloadStatus.NotYet
-                                ToastUtil.makeToastSuspend(
-                                    context.getString(R.string.app_update_failed)
-                                )
+                                makeToast(context.getString(R.string.app_update_failed))
                                 return@launch
                             }
                     }

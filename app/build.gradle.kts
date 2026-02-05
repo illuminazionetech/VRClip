@@ -87,6 +87,10 @@ android {
 
                 if (baseAbiCode != null) {
                     output.versionCode.set(currentVersionCode + baseAbiCode)
+                } else {
+                    // Set universal APK to have a higher version code than splits
+                    // This allows universal APKs to be installed over architecture-specific splits
+                    output.versionCode.set(currentVersionCode + 10)
                 }
             }
         }
@@ -103,6 +107,9 @@ android {
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.getByName("githubPublish")
             } else {
+                // If keystore.properties is missing, fallback to debug key.
+                // Note: Apps signed with the debug key cannot overwrite apps signed with a release key.
+                // Users must uninstall previous versions before installing a locally compiled debug-signed APK.
                 signingConfig = signingConfigs.getByName("debug")
             }
         }
@@ -143,7 +150,6 @@ android {
 
     packaging {
         resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
-        jniLibs.useLegacyPackaging = true
     }
     androidResources { generateLocaleConfig = true }
 

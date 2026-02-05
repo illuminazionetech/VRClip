@@ -8,7 +8,7 @@ import android.util.Log
 import com.xrclip.App.Companion.context
 import com.xrclip.download.DownloaderV2
 import com.xrclip.util.NotificationUtil
-import com.xrclip.util.ToastUtil
+import com.xrclip.util.makeToast
 import com.yausername.youtubedl_android.YoutubeDL
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -65,7 +65,7 @@ class NotificationActionReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun copyErrorReport(context: Context, error: String, notificationId: Int) {
         App.clipboard.setPrimaryClip(ClipData.newPlainText(null, error))
-        ToastUtil.makeToastSuspend(context.getString(R.string.error_copied))
+        makeToast(context.getString(R.string.error_copied))
         NotificationUtil.cancelNotification(notificationId)
     }
 }

@@ -26,8 +26,8 @@ import com.xrclip.R
 import com.xrclip.ui.component.ConfirmButton
 import com.xrclip.ui.component.DismissButton
 import com.xrclip.util.PlaylistResult
-import com.xrclip.util.ToastUtil
 import com.xrclip.util.isNumberInRange
+import com.xrclip.util.makeToast
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -45,7 +45,7 @@ fun PlaylistSelectionDialog(
         error =
             !from.isNumberInRange(1, playlistCount) or !to.isNumberInRange(1, playlistCount) ||
                 from.toInt() > to.toInt()
-        if (error) ToastUtil.makeToast(R.string.invalid_index_range)
+        if (error) makeToast(R.string.invalid_index_range)
         else {
             onConfirm(from.toInt()..to.toInt())
             onDismissRequest()

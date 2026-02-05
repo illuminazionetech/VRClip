@@ -1,7 +1,7 @@
 [versions]
 accompanist = "0.34.0"
 androidGradlePlugin = "8.7.2"
-androidxComposeBom = "2025.03.01"
+androidxComposeBom = "2024.09.00"
 androidxCore = "1.15.0"
 androidMaterial = "1.12.0"
 androidxAppCompat = "1.7.0"
@@ -53,8 +53,7 @@ accompanist-permissions = { group = "com.google.accompanist", name = "accompanis
 accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist" }
 
-#androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom-alpha", version.ref = "androidxComposeBom" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }

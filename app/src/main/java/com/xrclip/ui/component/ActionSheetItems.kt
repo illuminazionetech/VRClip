@@ -1,5 +1,6 @@
 package com.xrclip.ui.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -91,6 +92,7 @@ fun ActionSheetPrimaryButton(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ActionSheetItem(
     modifier: Modifier = Modifier,

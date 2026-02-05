@@ -428,14 +428,11 @@ private fun ErrorPreview() {
     XRClipModalBottomSheet(
         onDismissRequest = {},
         sheetState =
-            with(LocalDensity.current) {
-                SheetState(
-                    initialValue = SheetValue.Expanded,
-                    skipPartiallyExpanded = true,
-                    velocityThreshold = { 56.dp.toPx() },
-                    positionalThreshold = { 125.dp.toPx() },
-                )
-            },
+            SheetState(
+                skipPartiallyExpanded = true,
+                density = LocalDensity.current,
+                initialValue = SheetValue.Expanded,
+            ),
     ) {
         ErrorPage(
             state =
@@ -488,14 +485,11 @@ private fun ConfigurePagePreview() {
     XRClipTheme() {
         XRClipModalBottomSheet(
             sheetState =
-                with(LocalDensity.current) {
-                    SheetState(
-                        initialValue = SheetValue.Expanded,
-                        skipPartiallyExpanded = true,
-                        velocityThreshold = { 56.dp.toPx() },
-                        positionalThreshold = { 125.dp.toPx() },
-                    )
-                },
+                SheetState(
+                    skipPartiallyExpanded = true,
+                    density = LocalDensity.current,
+                    initialValue = SheetValue.Expanded,
+                ),
             onDismissRequest = {},
             contentPadding = PaddingValues(),
         ) {

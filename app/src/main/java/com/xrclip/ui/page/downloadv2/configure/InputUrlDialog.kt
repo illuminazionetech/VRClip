@@ -491,7 +491,7 @@ private fun SavedUrlDialogImpl(
                         LaunchedEffect(dismissState.currentValue) {
                             when (dismissState.currentValue) {
                                 SwipeToDismissBoxValue.EndToStart -> {
-                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm)
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                                     onRemoveLink(it)
                                 }
                                 else -> {}

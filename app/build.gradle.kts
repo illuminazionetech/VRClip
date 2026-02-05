@@ -18,7 +18,7 @@ val keystorePropertiesFile: File = rootProject.file("keystore.properties")
 
 val splitApks = !project.hasProperty("noSplits")
 
-val abiFilterList = (properties["ABI_FILTERS"] as String).split(';')
+val abiFilterList = (properties["ABI_FILTERS"] as? String)?.split(';') ?: emptyList()
 
 val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 3, "x86_64" to 4)
 
@@ -86,7 +86,7 @@ android {
                 val baseAbiCode = abiCodes[name]
 
                 if (baseAbiCode != null) {
-                    output.versionCode.set(baseAbiCode + (output.versionCode.get() ?: 0))
+                    output.versionCode.set(currentVersionCode + baseAbiCode)
                 }
             }
         }

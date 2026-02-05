@@ -7,7 +7,6 @@ import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.animateTo
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -369,25 +368,25 @@ fun DownloadPageImplV2(
         var headerOffset by remember { mutableFloatStateOf(spacerHeight) }
         var isGridView by rememberSaveable { mutableStateOf(true) }
 
+        val splineBasedDecay = rememberSplineBasedDecay<Float>()
+        val nestedScrollConnection = remember(spacerHeight, splineBasedDecay) {
+            TopBarNestedScrollConnection(
+                maxOffset = spacerHeight,
+                flingAnimationSpec = splineBasedDecay,
+                offset = { headerOffset },
+                onOffsetUpdate = { headerOffset = it },
+            )
+        }
+
         Column(
             modifier =
                 Modifier.fillMaxSize()
                     .then(
                         if (windowWidthSizeClass != WindowWidthSizeClass.Compact) Modifier
-                        else
-                            Modifier.nestedScroll(
-                                connection =
-                                    TopBarNestedScrollConnection(
-                                        maxOffset = spacerHeight,
-                                        flingAnimationSpec = rememberSplineBasedDecay(),
-                                        offset = { headerOffset },
-                                        onOffsetUpdate = { headerOffset = it },
-                                    )
-                            )
+                        else Modifier.nestedScroll(connection = nestedScrollConnection)
                     )
         ) {
-            CompositionLocalProvider(LocalOverscrollFactory provides null) {
-                Column(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.fillMaxWidth()) {
                     Spacer(Modifier.height(with(LocalDensity.current) { headerOffset.toDp() }))
                     Header(onMenuOpen = onMenuOpen, modifier = Modifier.padding(horizontal = 16.dp))
                     SelectionGroupRow(
@@ -507,7 +506,6 @@ fun DownloadPageImplV2(
                     }
                 }
             }
-        }
         if (filteredMap.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize()) {
                 DownloadQueuePlaceholder(

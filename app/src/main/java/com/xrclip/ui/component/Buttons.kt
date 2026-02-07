@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -96,7 +97,7 @@ fun FilledTonalButtonWithIcon(
         onClick = onClick,
         contentPadding = PaddingValues(horizontal = 24.dp),
         colors = colors,
-        shape = MaterialTheme.shapes.large,
+        shape = CircleShape,
     ) {
         Icon(modifier = Modifier.size(20.dp), imageVector = icon, contentDescription = null)
         Text(modifier = Modifier.padding(start = 10.dp), text = text, style = MaterialTheme.typography.titleSmall)
@@ -116,7 +117,7 @@ fun FilledButtonWithIcon(
         onClick = onClick,
         contentPadding = PaddingValues(horizontal = 24.dp),
         enabled = enabled,
-        shape = MaterialTheme.shapes.large,
+        shape = CircleShape,
     ) {
         Icon(modifier = Modifier.size(20.dp), imageVector = icon, contentDescription = null)
         Text(modifier = Modifier.padding(start = 10.dp), text = text, style = MaterialTheme.typography.titleSmall)

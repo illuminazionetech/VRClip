@@ -22,21 +22,8 @@ fun Modifier.glassEffect(
     shape: Shape = MaterialTheme.shapes.medium,
     color: Color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
     borderColor: Color = Color.White.copy(alpha = 0.25f),
-    blur: Boolean = true
+    blur: Boolean = false
 ): Modifier = this
-    .then(
-        if (blur) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Modifier.graphicsLayer {
-                    renderEffect = RenderEffect.createBlurEffect(
-                        20f, 20f, Shader.TileMode.MIRROR
-                    ).asComposeRenderEffect()
-                }
-            } else {
-                Modifier.blur(12.dp)
-            }
-        } else Modifier
-    )
     .background(
         Brush.verticalGradient(
             colors = listOf(

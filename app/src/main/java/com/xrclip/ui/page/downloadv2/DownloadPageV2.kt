@@ -708,6 +708,7 @@ fun SubHeader(
             append(pluralStringResource(R.plurals.audio_count, audioCount).format(audioCount))
         }
     }
+    val view = LocalView.current
 
     Row(
         modifier = modifier.padding(top = 12.dp, bottom = 12.dp),
@@ -724,14 +725,20 @@ fun SubHeader(
         Spacer(modifier = Modifier.weight(1f))
 
         FilledIconButton(
-            onClick = onToggleView,
-            modifier = Modifier.clearAndSetSemantics {}.size(32.dp),
+            onClick = {
+                onToggleView()
+                view.slightHapticFeedback()
+            },
+            modifier = Modifier.size(32.dp),
             colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
         ) {
             Icon(
                 imageVector =
                     if (isGridView) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView,
-                contentDescription = null,
+                contentDescription =
+                    stringResource(
+                        if (isGridView) R.string.switch_to_list_view else R.string.switch_to_grid_view
+                    ),
                 modifier = Modifier.size(16.dp),
             )
         }
@@ -740,12 +747,12 @@ fun SubHeader(
 
         FilledIconButton(
             onClick = onShowMenu,
-            modifier = Modifier.clearAndSetSemantics {}.size(32.dp),
+            modifier = Modifier.size(32.dp),
             colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
         ) {
             Icon(
                 imageVector = Icons.Outlined.MoreVert,
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.show_more_actions),
                 modifier = Modifier.size(16.dp),
             )
         }

@@ -149,7 +149,7 @@ fun MediaListItem(
             enter = fadeIn(tween(100)),
             exit = fadeOut(tween(100)),
         ) {
-            IconButton(modifier = Modifier.clearAndSetSemantics {}, onClick = onShowContextMenu) {
+            IconButton(onClick = onShowContextMenu) {
                 Icon(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Outlined.MoreVert,

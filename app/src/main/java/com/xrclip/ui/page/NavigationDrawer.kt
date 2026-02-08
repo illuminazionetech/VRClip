@@ -167,7 +167,10 @@ fun NavigationDrawer(
                                 onClick = { scope.launch { drawerState.open() } },
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                             ) {
-                                Icon(Icons.Outlined.Menu, null)
+                                Icon(
+                                    imageVector = Icons.Outlined.Menu,
+                                    contentDescription = stringResource(R.string.show_navigation_drawer)
+                                )
                             }
                             Spacer(Modifier.weight(1f))
                             NavigationRailContent(

@@ -103,10 +103,10 @@ fun XRClipModalBottomSheetM2(
         modifier = modifier,
         sheetShape =
             RoundedCornerShape(
-                topStart = 28.0.dp,
-                topEnd = 28.0.dp,
-                bottomEnd = 0.0.dp,
-                bottomStart = 0.0.dp,
+                topStart = 32.dp,
+                topEnd = 32.dp,
+                bottomEnd = 0.dp,
+                bottomStart = 0.dp,
             ),
         sheetState = sheetState,
         sheetBackgroundColor = MaterialTheme.colorScheme.surfaceContainer,

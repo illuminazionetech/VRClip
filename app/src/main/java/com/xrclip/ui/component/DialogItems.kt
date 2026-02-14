@@ -66,7 +66,7 @@ fun DialogSingleChoiceItem(
         horizontalArrangement = Arrangement.Start,
     ) {
         RadioButton(
-            modifier = Modifier.minimumInteractiveComponentSize().clearAndSetSemantics {},
+            modifier = Modifier.minimumInteractiveComponentSize(),
             selected = selected,
             onClick = null,
             interactionSource = interactionSource,
@@ -130,7 +130,7 @@ fun DialogSingleChoiceItemVariant(
         Column(modifier = Modifier.weight(1f).padding(vertical = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp).clearAndSetSemantics {},
+                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
                     selected = selected,
                     onClick = null,
                 )
@@ -163,7 +163,7 @@ fun CheckBoxItem(
     ) {
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Checkbox(
-                modifier = Modifier.clearAndSetSemantics {},
+                modifier = Modifier,
                 checked = checked,
                 onCheckedChange = onValueChange,
             )
@@ -201,7 +201,7 @@ fun DialogSwitchItem(
             Switch(
                 checked = value,
                 onCheckedChange = onValueChange,
-                modifier = Modifier.clearAndSetSemantics {},
+                modifier = Modifier,
                 thumbContent = thumbContent,
             )
         }

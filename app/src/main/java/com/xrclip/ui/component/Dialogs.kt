@@ -226,12 +226,12 @@ private fun ButtonVariantPreview() {
 }
 
 val TopButtonShape =
-    RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp, bottomStart = 4.dp, bottomEnd = 4.dp)
+    RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp, bottomStart = 2.dp, bottomEnd = 2.dp)
 
-val MiddleButtonShape = RoundedCornerShape(4.dp)
+val MiddleButtonShape = RoundedCornerShape(2.dp)
 
 val BottomButtonShape =
-    RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomStart = 12.dp, bottomEnd = 12.dp)
+    RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 12.dp, bottomEnd = 12.dp)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

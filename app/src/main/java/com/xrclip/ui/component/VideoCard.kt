@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -58,9 +59,9 @@ fun VideoCard(
     isPreview: Boolean = false,
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth().glassEffect(shape = MaterialTheme.shapes.small),
+        modifier = modifier.fillMaxWidth().glassEffect(shape = MaterialTheme.shapes.medium, blur = true),
         onClick = onClick,
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.medium,
         color = Color.Transparent
     ) {
         Column {
@@ -146,11 +147,11 @@ fun VideoCard(
                     animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
                     label = "",
                 )
-            if (progress < 0f) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            if (progress < 0f) LinearProgressIndicator(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp).clip(CircleShape))
             else
                 LinearProgressIndicator(
                     progress = { progressAnimationValue / 100f },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp).clip(CircleShape),
                     drawStopIndicator = {},
                 )
         }

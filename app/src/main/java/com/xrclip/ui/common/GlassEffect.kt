@@ -44,3 +44,14 @@ fun Modifier.glassEffect(
         shape
     )
     .clip(shape)
+    .let {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && blur) {
+            it.graphicsLayer {
+                renderEffect = RenderEffect.createBlurEffect(
+                    25f, 25f, Shader.TileMode.MIRROR
+                ).asComposeRenderEffect()
+            }
+        } else {
+            it
+        }
+    }

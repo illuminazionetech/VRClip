@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (isQuestDevice() && !PreferenceUtil.containsKey(com.xrclip.util.VR_MODE)) {
+            PreferenceUtil.updateValue(com.xrclip.util.VR_MODE, true)
+        }
+
         if (Build.VERSION.SDK_INT < 33) {
             runBlocking { setLanguage(PreferenceUtil.getLocaleFromPreference()) }
         }
@@ -79,6 +83,12 @@ class MainActivity : AppCompatActivity() {
                 null
             }
         }
+    }
+
+    private fun isQuestDevice(): Boolean {
+        return Build.MANUFACTURER.contains("Oculus", ignoreCase = true) ||
+            Build.MANUFACTURER.contains("Meta", ignoreCase = true) ||
+            Build.MODEL.contains("Quest", ignoreCase = true)
     }
 
     companion object {

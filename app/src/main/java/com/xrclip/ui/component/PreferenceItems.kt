@@ -248,7 +248,7 @@ fun PreferenceSingleChoiceItem(
             RadioButton(
                 selected = selected,
                 onClick = onClick,
-                modifier = Modifier.padding().clearAndSetSemantics {},
+                modifier = Modifier.padding(),
             )
         }
     }
@@ -764,7 +764,7 @@ fun TemplateItem(
         ) {
             AnimatedVisibility(visible = isMultiSelectEnabled) {
                 Checkbox(
-                    modifier = Modifier.clearAndSetSemantics {},
+                modifier = Modifier,
                     checked = checked,
                     onCheckedChange = onCheckedChange,
                 )

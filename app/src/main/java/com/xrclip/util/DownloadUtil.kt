@@ -485,8 +485,9 @@ object DownloadUtil {
                 }
                 if (videoClips.isEmpty()) addOption("--embed-chapters")
                 if (vrMode) {
-                    // VR Optimization: Prefer high resolution and compatible formats
-                    addOption("-S", "res:2160,vcodec:vp9.2,vcodec:h265")
+                    // VR Optimization: Prefer high resolution (4K+) and modern codecs
+                    addOption("-S", "res:4320,res:2160,vcodec:av01,vcodec:vp9.2,vcodec:h265")
+                    addOption("--prefer-free-formats")
                 }
             }
         }

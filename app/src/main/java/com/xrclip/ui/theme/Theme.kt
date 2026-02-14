@@ -71,13 +71,14 @@ fun XRClipTheme(
                 )
             else {
                 // Apply a more "liquid/glass" feel to the color scheme by reducing opacity on some surfaces
+                // Alphas refined for better contrast and legibility
                 copy(
-                    surface = surface.copy(alpha = 0.85f),
-                    surfaceContainer = surfaceContainer.copy(alpha = 0.80f),
-                    surfaceContainerLow = surfaceContainerLow.copy(alpha = 0.70f),
-                    surfaceContainerHigh = surfaceContainerHigh.copy(alpha = 0.85f),
+                    surface = surface.copy(alpha = 0.88f),
+                    surfaceContainer = surfaceContainer.copy(alpha = 0.82f),
+                    surfaceContainerLow = surfaceContainerLow.copy(alpha = 0.72f),
+                    surfaceContainerHigh = surfaceContainerHigh.copy(alpha = 0.88f),
                     surfaceContainerHighest = surfaceContainerHighest.copy(alpha = 0.95f),
-                    surfaceVariant = surfaceVariant.copy(alpha = 0.85f),
+                    surfaceVariant = surfaceVariant.copy(alpha = 0.88f),
                 )
             }
         }

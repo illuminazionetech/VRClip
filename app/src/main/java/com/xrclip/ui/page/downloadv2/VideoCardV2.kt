@@ -238,7 +238,7 @@ fun VideoCardV2(
         }
 
     Surface(
-        modifier = modifier.fillMaxWidth().glassEffect(shape = MaterialTheme.shapes.large),
+        modifier = modifier.fillMaxWidth().glassEffect(shape = MaterialTheme.shapes.large, blur = true),
         color = Color.Transparent,
         shape = MaterialTheme.shapes.large,
     ) {

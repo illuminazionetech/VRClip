@@ -92,7 +92,7 @@ object SelectionGroupDefaults {
     fun shape(selected: Boolean): Shape {
         val animatedRoundedCorner by
             animateDpAsState(
-                if (selected) 28.dp else 12.dp,
+                if (selected) 32.dp else 12.dp,
                 label = "itemShape",
                 animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
             )

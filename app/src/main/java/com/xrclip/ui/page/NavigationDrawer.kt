@@ -138,8 +138,9 @@ fun NavigationDrawer(
                 drawerContent = {
                     ModalDrawerSheet(
                         drawerState = drawerState,
-                        modifier = modifier.width(360.dp),
-                        drawerContainerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.95f)
+                        modifier = modifier.width(360.dp).padding(16.dp).glassEffect(shape = MaterialTheme.shapes.extraLarge),
+                        drawerContainerColor = Color.Transparent,
+                        drawerTonalElevation = 0.dp
                     ) {
                         NavigationDrawerSheetContent(
                             modifier = Modifier,
@@ -372,7 +373,7 @@ fun NavigationRailContent(
     onNavigateToRoute: (String) -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(12.dp).glassEffect(shape = MaterialTheme.shapes.extraLarge).selectableGroup().padding(vertical = 12.dp),
+        modifier = modifier.padding(12.dp).glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true).selectableGroup().padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

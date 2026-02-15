@@ -105,30 +105,19 @@ fun XRClipTheme(
         }
     }
 
-    val baseColorScheme = if (darkTheme) AppleDarkColorScheme else AppleLightColorScheme
-
-    val colorScheme = baseColorScheme.run {
-        if (isHighContrastModeEnabled && darkTheme)
-            copy(
-                surface = Color.Black,
-                background = Color.Black,
-                surfaceContainerLowest = Color.Black,
-                surfaceContainerLow = surfaceContainerLowest,
-                surfaceContainer = surfaceContainerLow,
-                surfaceContainerHigh = surfaceContainerLow,
-                surfaceContainerHighest = surfaceContainer,
-            )
-        else {
-            // Apple-style translucent surfaces
-            copy(
-                surface = surface.copy(alpha = 0.92f),
-                surfaceContainer = surfaceContainer.copy(alpha = 0.88f),
-                surfaceContainerLow = surfaceContainerLow.copy(alpha = 0.82f),
-                surfaceContainerHigh = surfaceContainerHigh.copy(alpha = 0.92f),
-                surfaceContainerHighest = surfaceContainerHighest.copy(alpha = 0.98f),
-                surfaceVariant = surfaceVariant.copy(alpha = 0.92f),
-            )
-        }
+    val colorScheme = if (darkTheme) {
+        AppleDarkColorScheme.copy(
+            surface = Color.Black,
+            background = Color.Black,
+            surfaceContainerLowest = Color.Black,
+            surfaceContainerLow = Color.Black,
+            surfaceContainer = Color.Black,
+            surfaceContainerHigh = Color(0xFF1C1C1E),
+            surfaceContainerHighest = Color(0xFF2C2C2E),
+            surfaceVariant = Color(0xFF1C1C1E),
+        )
+    } else {
+        AppleLightColorScheme
     }
 
     val textStyle =

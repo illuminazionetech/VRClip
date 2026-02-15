@@ -13,9 +13,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowRight
-import androidx.compose.material.icons.outlined.ContentCut
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.automirrored.rounded.ArrowRight
+import androidx.compose.material.icons.rounded.ContentCut
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -149,7 +149,7 @@ fun VideoSelectionSlider(
             Spacer(modifier = Modifier.weight(1f))
             TextButtonWithIcon(
                 onClick = onDiscard,
-                icon = Icons.Outlined.Delete,
+                icon = Icons.Rounded.Delete,
                 text = stringResource(id = R.string.discard),
                 contentColor = MaterialTheme.colorScheme.error,
             )
@@ -223,7 +223,7 @@ fun VideoClipDialog(
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(stringResource(id = R.string.clip_video)) },
-        icon = { Icon(Icons.Outlined.ContentCut, null) },
+        icon = { Icon(Icons.Rounded.ContentCut, null) },
         confirmButton = { ConfirmButton { onDone() } },
         dismissButton = { DismissButton { onDismissRequest() } },
         text = {
@@ -272,7 +272,7 @@ fun VideoClipDialog(
                         }
                     }
                     Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.ArrowRight,
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
                         contentDescription = null,
                     )
                     Row(

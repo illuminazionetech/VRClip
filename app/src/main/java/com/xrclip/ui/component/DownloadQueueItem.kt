@@ -14,14 +14,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.UnfoldMore
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Error
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material.icons.rounded.UnfoldMore
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
@@ -200,7 +200,7 @@ fun CustomCommandTaskItem(
                     TaskStatus.FINISHED -> {
                         Icon(
                             modifier = Modifier.padding(8.dp).size(24.dp),
-                            imageVector = Icons.Filled.CheckCircle,
+                            imageVector = Icons.Rounded.CheckCircle,
                             tint = accentColor,
                             contentDescription = stringResource(id = R.string.status_completed),
                         )
@@ -209,7 +209,7 @@ fun CustomCommandTaskItem(
                     TaskStatus.CANCELED -> {
                         Icon(
                             modifier = Modifier.padding(8.dp).size(24.dp),
-                            imageVector = Icons.Filled.Cancel,
+                            imageVector = Icons.Rounded.Cancel,
                             tint = accentColor,
                             contentDescription = stringResource(id = R.string.status_canceled),
                         )
@@ -239,7 +239,7 @@ fun CustomCommandTaskItem(
                     TaskStatus.ERROR -> {
                         Icon(
                             modifier = Modifier.padding(8.dp).size(24.dp),
-                            imageVector = Icons.Filled.Error,
+                            imageVector = Icons.Rounded.Error,
                             tint = accentColor,
                             contentDescription = stringResource(id = R.string.status_error),
                         )
@@ -272,7 +272,7 @@ fun CustomCommandTaskItem(
                         ),
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.UnfoldMore,
+                        imageVector = Icons.Rounded.UnfoldMore,
                         contentDescription = stringResource(id = R.string.show_logs),
                     )
                 }
@@ -290,14 +290,14 @@ fun CustomCommandTaskItem(
 
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                 FlatButtonChip(
-                    icon = Icons.Outlined.ContentCopy,
+                    icon = Icons.Rounded.ContentCopy,
                     label = stringResource(id = R.string.copy_log),
                 ) {
                     onCopyLog()
                 }
                 if (status == TaskStatus.ERROR)
                     FlatButtonChip(
-                        icon = Icons.Outlined.ErrorOutline,
+                        icon = Icons.Rounded.ErrorOutline,
                         label = stringResource(id = R.string.copy_error_report),
                         iconColor = MaterialTheme.colorScheme.error,
                     ) {
@@ -305,7 +305,7 @@ fun CustomCommandTaskItem(
                     }
                 if (status == TaskStatus.RUNNING)
                     FlatButtonChip(
-                        icon = Icons.Outlined.Cancel,
+                        icon = Icons.Rounded.Cancel,
                         label = stringResource(id = R.string.cancel),
                         iconColor = contentColor,
                     ) {
@@ -313,7 +313,7 @@ fun CustomCommandTaskItem(
                     }
                 if (status == TaskStatus.CANCELED || status == TaskStatus.ERROR)
                     FlatButtonChip(
-                        icon = Icons.Outlined.RestartAlt,
+                        icon = Icons.Rounded.RestartAlt,
                         label = stringResource(id = R.string.restart),
                     ) {
                         onRestart()

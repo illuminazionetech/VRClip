@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.SnippetFolder
+import androidx.compose.material.icons.rounded.SnippetFolder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,7 +44,7 @@ fun DirectoryPreferenceDialog(
         },
         dismissButton = { DismissButton { onDismissRequest() } },
         title = { Text(text = stringResource(id = R.string.subdirectory)) },
-        icon = { Icon(imageVector = Icons.Outlined.SnippetFolder, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.SnippetFolder, contentDescription = null) },
         text = {
             Column {
                 Text(

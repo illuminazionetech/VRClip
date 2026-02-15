@@ -29,12 +29,12 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Subtitles
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.Subtitles
+import androidx.compose.material.icons.rounded.Subtitles
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.Subtitles
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -403,7 +403,7 @@ private fun FormatPageImpl(
                 scrollBehavior = scrollBehavior,
                 navigationIcon = {
                     IconButton(onClick = { onNavigateBack() }) {
-                        Icon(Icons.Outlined.Close, stringResource(R.string.close))
+                        Icon(Icons.Rounded.Close, stringResource(R.string.close))
                     }
                 },
             )
@@ -429,7 +429,7 @@ private fun FormatPageImpl(
                     modifier = Modifier.padding(12.dp),
                     icon = {
                         Icon(
-                            imageVector = Icons.Outlined.FileDownload,
+                            imageVector = Icons.Rounded.FileDownload,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
                         )
@@ -517,7 +517,7 @@ private fun FormatPageImpl(
                                 Spacer(modifier = Modifier.weight(1f))
                                 TextButtonWithIcon(
                                     onClick = { isSplittingVideo = false },
-                                    icon = Icons.Outlined.Delete,
+                                    icon = Icons.Rounded.Delete,
                                     text = stringResource(id = R.string.discard),
                                     contentColor = MaterialTheme.colorScheme.error,
                                 )
@@ -800,7 +800,7 @@ private fun RenameDialog(
         },
         dismissButton = { DismissButton { onDismissRequest() } },
         title = { Text(text = stringResource(id = R.string.rename)) },
-        icon = { Icon(imageVector = Icons.Outlined.Edit, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Edit, contentDescription = null) },
         text = {
             Column {
                 OutlinedTextField(
@@ -895,7 +895,7 @@ private fun SubtitleSelectionDialog(
         confirmButton = { ConfirmButton { onConfirm(selectedSubtitles, selectedAutoCaptions) } },
         dismissButton = { DismissButton { onDismissRequest() } },
         title = { Text(text = stringResource(id = R.string.subtitle_language)) },
-        icon = { Icon(imageVector = Icons.Outlined.Subtitles, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Subtitles, contentDescription = null) },
         text = {
             Column {
                 if (autoCaptions.size + suggestedSubtitles.size > 5) {
@@ -1043,7 +1043,7 @@ fun UpdateSubtitleLanguageDialog(
                 textAlign = TextAlign.Center,
             )
         },
-        icon = { Icon(imageVector = Icons.Filled.Subtitles, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Subtitles, contentDescription = null) },
         text = {
             Column {
                 Text(text = stringResource(R.string.update_language_msg))

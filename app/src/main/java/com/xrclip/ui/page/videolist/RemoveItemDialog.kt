@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,7 +28,7 @@ fun RemoveItemDialog(
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(text = stringResource(R.string.delete_info)) },
-        icon = { Icon(Icons.Outlined.Delete, null) },
+        icon = { Icon(Icons.Rounded.Delete, null) },
         text = {
             Column {
                 Text(

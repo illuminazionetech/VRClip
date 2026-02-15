@@ -23,11 +23,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Error
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.RestartAlt
@@ -86,7 +86,8 @@ private val ActionButtonContainerColor: Color
     @Composable get() = LocalFixedColorRoles.current.onSecondaryFixed.copy(alpha = 0.68f)
 private val ActionButtonContentColor: Color
     @Composable get() = LocalFixedColorRoles.current.secondaryFixed
-private val LabelContainerColor: Color = Color.Black.copy(alpha = 0.68f)
+private val LabelContainerColor: Color
+    @Composable get() = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.88f)
 
 @Composable
 fun VideoCardV2(
@@ -143,35 +144,44 @@ fun VideoListItem(
     stateIndicator: @Composable (() -> Unit)? = null,
     onButtonClick: () -> Unit,
 ) {
-    Row(modifier = modifier.height(IntrinsicSize.Min), verticalAlignment = Alignment.Top) {
-        Box(modifier = Modifier) {
-            ListItemImage(modifier = Modifier, thumbnailModel = thumbnailModel)
-            VideoInfoLabel(
-                modifier = Modifier.align(Alignment.BottomEnd),
-                duration = duration,
-                fileSizeApprox = fileSizeApprox,
-            )
-        }
-        Box {
-            Column(modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp)) {
-                TitleText(
-                    modifier = Modifier,
-                    title = title,
-                    uploader = uploader,
-                    contentPadding = PaddingValues(),
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        shape = MaterialTheme.shapes.medium,
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp).height(IntrinsicSize.Min),
+            verticalAlignment = Alignment.Top
+        ) {
+            Box(modifier = Modifier) {
+                ListItemImage(modifier = Modifier, thumbnailModel = thumbnailModel)
+                VideoInfoLabel(
+                    modifier = Modifier.align(Alignment.BottomEnd),
+                    duration = duration,
+                    fileSizeApprox = fileSizeApprox,
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                stateIndicator?.invoke()
             }
-            IconButton(
-                onButtonClick,
-                modifier = Modifier.align(Alignment.BottomEnd).offset(x = 8.dp, y = 8.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.MoreVert,
-                    contentDescription = stringResource(R.string.show_more_actions),
-                    modifier = Modifier.size(20.dp),
-                )
+            Box {
+                Column(modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp)) {
+                    TitleText(
+                        modifier = Modifier,
+                        title = title,
+                        uploader = uploader,
+                        contentPadding = PaddingValues(),
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    stateIndicator?.invoke()
+                }
+                IconButton(
+                    onButtonClick,
+                    modifier = Modifier.align(Alignment.BottomEnd).offset(x = 8.dp, y = 8.dp),
+                ) {
+                    Icon(
+                    imageVector = Icons.Rounded.MoreVert,
+                        contentDescription = stringResource(R.string.show_more_actions),
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
             }
         }
     }
@@ -237,7 +247,21 @@ fun VideoCardV2(
         }
 
     Surface(
-        modifier = modifier.fillMaxWidth().glassEffect(shape = MaterialTheme.shapes.large, blur = true),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .glassEffect(shape = MaterialTheme.shapes.large, blur = true)
+                .then(
+                    if (LocalDarkTheme.current.isDarkTheme())
+                        Modifier.drawBehind {
+                            drawRoundRect(
+                                color = Color.White.copy(alpha = 0.12f),
+                                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.dp.toPx()),
+                                cornerRadius = androidx.compose.ui.geometry.CornerRadius(24.dp.toPx()),
+                            )
+                        }
+                    else Modifier
+                ),
         color = Color.Transparent,
         shape = MaterialTheme.shapes.large,
     ) {
@@ -256,7 +280,7 @@ fun VideoCardV2(
                 TitleText(modifier = Modifier.weight(1f), title = title, uploader = uploader)
                 IconButton(onButtonClick, modifier = Modifier.align(Alignment.CenterVertically)) {
                     Icon(
-                        imageVector = Icons.Outlined.MoreVert,
+                        imageVector = Icons.Rounded.MoreVert,
                         contentDescription = stringResource(R.string.show_more_actions),
                         modifier = Modifier.size(20.dp),
                     )
@@ -348,6 +372,7 @@ private fun TitleText(
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
@@ -430,7 +455,7 @@ fun ListItemStateText(
             when (downloadState) {
                 is Canceled -> {
                     Icon(
-                        imageVector = Icons.Outlined.Cancel,
+                        imageVector = Icons.Rounded.Cancel,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = sizeModifier,
@@ -439,7 +464,7 @@ fun ListItemStateText(
                 is Completed -> {
                     val color = if (isDarkTheme) Color(0xFF30D158) else Color(0xFF34C759)
                     Icon(
-                        imageVector = Icons.Filled.CheckCircle,
+                        imageVector = Icons.Rounded.CheckCircle,
                         contentDescription = null,
                         tint = color,
                         modifier = sizeModifier,

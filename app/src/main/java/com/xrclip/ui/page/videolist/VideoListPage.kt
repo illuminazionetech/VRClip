@@ -28,11 +28,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
-import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.automirrored.rounded.DriveFileMove
+import androidx.compose.material.icons.rounded.DeleteSweep
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Restore
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DropdownMenu
@@ -313,7 +313,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
                                     checked = viewState.isSearching,
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Outlined.Search,
+                                        imageVector = Icons.Rounded.Search,
                                         contentDescription = stringResource(R.string.search),
                                     )
                                 }
@@ -322,7 +322,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
                             Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
                                 IconButton(onClick = { expanded = true }) {
                                     Icon(
-                                        imageVector = Icons.Outlined.MoreVert,
+                                        imageVector = Icons.Rounded.MoreVert,
                                         contentDescription =
                                             stringResource(id = R.string.show_more_actions),
                                     )
@@ -336,7 +336,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
                                             leadingIcon = {
                                                 Icon(
                                                     imageVector =
-                                                        Icons.AutoMirrored.Outlined.DriveFileMove,
+                                                        Icons.AutoMirrored.Rounded.DriveFileMove,
                                                     contentDescription = null,
                                                 )
                                             },
@@ -352,7 +352,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
                                     DropdownMenuItem(
                                         leadingIcon = {
                                             Icon(
-                                                imageVector = Icons.Outlined.Restore,
+                                                imageVector = Icons.Rounded.Restore,
                                                 contentDescription = null,
                                             )
                                         },
@@ -419,7 +419,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
                         enabled = selectedItemIds.isNotEmpty(),
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.DeleteSweep,
+                            imageVector = Icons.Rounded.DeleteSweep,
                             contentDescription = stringResource(id = R.string.remove),
                         )
                     }
@@ -430,19 +430,15 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
     ) { innerPadding ->
         if (fullVideoList.isEmpty())
             Box(modifier = Modifier.fillMaxSize()) {
-                val painter =
-                    rememberVectorPainter(image = DynamicColorImageVectors.videoSteaming())
                 Column(
                     modifier = Modifier.align(Alignment.Center).widthIn(max = 360.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Image(
-                        painter = painter,
+                    Icon(
+                        imageVector = Icons.Rounded.LiveTv,
                         contentDescription = null,
-                        modifier =
-                            Modifier.padding(vertical = 20.dp)
-                                .fillMaxWidth(0.5f)
-                                .widthIn(max = 240.dp),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                        modifier = Modifier.padding(vertical = 20.dp).size(160.dp),
                     )
                     Text(
                         text = stringResource(R.string.no_downloaded_media),
@@ -555,7 +551,7 @@ fun VideoListPage(viewModel: VideoListViewModel = koinViewModel(), onNavigateBac
     if (showRemoveMultipleItemsDialog) {
         XRClipDialog(
             onDismissRequest = { showRemoveMultipleItemsDialog = false },
-            icon = { Icon(Icons.Outlined.DeleteSweep, null) },
+            icon = { Icon(Icons.Rounded.DeleteSweep, null) },
             title = { Text(stringResource(R.string.delete_info)) },
             text = {
                 Column {

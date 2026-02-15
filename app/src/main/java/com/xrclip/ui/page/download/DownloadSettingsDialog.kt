@@ -20,16 +20,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AudioFile
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.DoneAll
-import androidx.compose.material.icons.outlined.DownloadDone
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.HighQuality
-import androidx.compose.material.icons.outlined.NewLabel
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.VideoFile
+import androidx.compose.material.icons.rounded.AudioFile
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.DoneAll
+import androidx.compose.material.icons.rounded.DownloadDone
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.HighQuality
+import androidx.compose.material.icons.rounded.NewLabel
+import androidx.compose.material.icons.rounded.Sync
+import androidx.compose.material.icons.rounded.VideoFile
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -300,21 +300,21 @@ fun DownloadSettingDialog(
                         LazyRow(modifier = Modifier) {
                             item {
                                 ButtonChip(
-                                    icon = Icons.Outlined.Code,
+                                    icon = Icons.Rounded.Code,
                                     label = template.name,
                                     onClick = { showTemplateSelectionDialog = true },
                                 )
                             }
                             item {
                                 ButtonChip(
-                                    icon = Icons.Outlined.NewLabel,
+                                    icon = Icons.Rounded.NewLabel,
                                     label = stringResource(id = R.string.new_template),
                                     onClick = { showTemplateCreatorDialog = true },
                                 )
                             }
                             item {
                                 ButtonChip(
-                                    icon = Icons.Outlined.Edit,
+                                    icon = Icons.Rounded.Edit,
                                     label =
                                         stringResource(id = R.string.edit_template, template.name),
                                     onClick = { showTemplateEditorDialog = true },
@@ -336,13 +336,13 @@ fun DownloadSettingDialog(
                                         PreferenceStrings.getVideoFormatLabel(
                                             videoFormatPreference
                                         ),
-                                    icon = Icons.Outlined.VideoFile,
+                                    icon = Icons.Rounded.VideoFile,
                                     iconDescription =
                                         stringResource(id = R.string.video_format_preference),
                                 )
                                 ButtonChip(
                                     label = PreferenceStrings.getVideoResolutionDesc(),
-                                    icon = Icons.Outlined.HighQuality,
+                                    icon = Icons.Rounded.HighQuality,
                                     enabled = !formatSorting && type != null,
                                     iconDescription = stringResource(id = R.string.video_quality),
                                 ) {
@@ -353,7 +353,7 @@ fun DownloadSettingDialog(
                                 onClick = { showAudioSettingsDialog = true },
                                 enabled = !formatSorting && type != null,
                                 label = stringResource(R.string.audio_format),
-                                icon = Icons.Outlined.AudioFile,
+                                icon = Icons.Rounded.AudioFile,
                             )
                             val convertToMp3 = stringResource(id = R.string.convert_to, "mp3")
                             val convertToM4a = stringResource(id = R.string.convert_to, "m4a")
@@ -377,7 +377,7 @@ fun DownloadSettingDialog(
                                     }
                                 ButtonChip(
                                     label = convertAudioLabelText,
-                                    icon = Icons.Outlined.Sync,
+                                    icon = Icons.Rounded.Sync,
                                 ) {
                                     showAudioConversionDialog = true
                                 }
@@ -442,7 +442,7 @@ fun DownloadSettingDialog(
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Icon(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    imageVector = Icons.Outlined.DoneAll,
+                    imageVector = Icons.Rounded.DoneAll,
                     contentDescription = null,
                 )
                 Text(
@@ -466,14 +466,14 @@ fun DownloadSettingDialog(
                         OutlinedButtonWithIcon(
                             modifier = Modifier.padding(horizontal = 12.dp),
                             onClick = onDismissRequest,
-                            icon = Icons.Outlined.Cancel,
+                            icon = Icons.Rounded.Cancel,
                             text = stringResource(R.string.cancel),
                         )
                     }
                     item {
                         FilledButtonWithIcon(
                             onClick = downloadButtonCallback,
-                            icon = Icons.Outlined.DownloadDone,
+                            icon = Icons.Rounded.DownloadDone,
                             text = stringResource(R.string.start_download),
                             enabled = selectedType != null,
                         )
@@ -532,7 +532,7 @@ fun DownloadSettingDialog(
                     }
                 },
                 dismissButton = { DismissButton { onDismissRequest() } },
-                icon = { Icon(imageVector = Icons.Outlined.DoneAll, contentDescription = null) },
+                icon = { Icon(imageVector = Icons.Rounded.DoneAll, contentDescription = null) },
                 title = {
                     Text(
                         stringResource(R.string.settings_before_download),

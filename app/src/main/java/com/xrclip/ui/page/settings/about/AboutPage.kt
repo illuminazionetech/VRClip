@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.NewReleases
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material.icons.outlined.UpdateDisabled
-import androidx.compose.material.icons.outlined.VolunteerActivism
+import androidx.compose.material.icons.rounded.AutoAwesome
+import androidx.compose.material.icons.rounded.Description
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.NewReleases
+import androidx.compose.material.icons.rounded.Update
+import androidx.compose.material.icons.rounded.UpdateDisabled
+import androidx.compose.material.icons.rounded.VolunteerActivism
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -101,7 +101,7 @@ fun AboutPage(
                     PreferenceItem(
                         title = stringResource(R.string.readme),
                         description = stringResource(R.string.readme_desc),
-                        icon = Icons.Outlined.Description,
+                        icon = Icons.Rounded.Description,
                     ) {
                         openUrl(repoUrl)
                     }
@@ -110,7 +110,7 @@ fun AboutPage(
                     PreferenceItem(
                         title = stringResource(R.string.release),
                         description = stringResource(R.string.release_desc),
-                        icon = Icons.Outlined.NewReleases,
+                        icon = Icons.Rounded.NewReleases,
                     ) {
                         openUrl(releaseURL)
                     }
@@ -119,7 +119,7 @@ fun AboutPage(
                     PreferenceItem(
                         title = stringResource(id = R.string.credits),
                         description = stringResource(id = R.string.credits_desc),
-                        icon = Icons.Outlined.AutoAwesome,
+                        icon = Icons.Rounded.AutoAwesome,
                     ) {
                         onNavigateToCreditsPage()
                     }
@@ -129,8 +129,8 @@ fun AboutPage(
                         title = stringResource(R.string.auto_update),
                         description = stringResource(R.string.check_for_updates_desc),
                         icon =
-                            if (isAutoUpdateEnabled) Icons.Outlined.Update
-                            else Icons.Outlined.UpdateDisabled,
+                            if (isAutoUpdateEnabled) Icons.Rounded.Update
+                            else Icons.Rounded.UpdateDisabled,
                         isChecked = isAutoUpdateEnabled,
                         isSwitchEnabled = !App.isFDroidBuild(),
                         onClick = onNavigateToUpdatePage,
@@ -144,7 +144,7 @@ fun AboutPage(
                     PreferenceItem(
                         title = stringResource(R.string.version),
                         description = versionName,
-                        icon = Icons.Outlined.Info,
+                        icon = Icons.Rounded.Info,
                     ) {
                         clipboardManager.setText(AnnotatedString(info))
                         makeToast(R.string.info_copied)
@@ -193,7 +193,7 @@ fun AutoUpdateUnavailableDialog(onDismissRequest: () -> Unit = {}) {
         confirmButton = {
             ConfirmButton(stringResource(id = R.string.got_it)) { onDismissRequest() }
         },
-        icon = { Icon(Icons.Outlined.UpdateDisabled, null) },
+        icon = { Icon(Icons.Rounded.UpdateDisabled, null) },
         title = {
             Text(
                 text = stringResource(id = R.string.feature_unavailable),

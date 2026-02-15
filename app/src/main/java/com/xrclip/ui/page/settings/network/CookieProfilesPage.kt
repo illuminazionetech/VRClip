@@ -24,14 +24,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Cookie
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteForever
-import androidx.compose.material.icons.outlined.FileCopy
-import androidx.compose.material.icons.outlined.GeneratingTokens
-import androidx.compose.material.icons.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Cookie
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.DeleteForever
+import androidx.compose.material.icons.rounded.FileCopy
+import androidx.compose.material.icons.rounded.GeneratingTokens
+import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
@@ -165,13 +165,13 @@ fun CookieProfilePage(
                     var expanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { showHelpDialog = true }) {
                         Icon(
-                            imageVector = Icons.Outlined.HelpOutline,
+                            imageVector = Icons.Rounded.HelpOutline,
                             contentDescription = stringResource(R.string.how_does_it_work),
                         )
                     }
                     IconButton(onClick = { expanded = true }) {
                         Icon(
-                            Icons.Outlined.MoreVert,
+                            Icons.Rounded.MoreVert,
                             contentDescription = stringResource(R.string.show_more_actions),
                         )
                     }
@@ -199,7 +199,7 @@ fun CookieProfilePage(
                             onClick = ::toggleUserAgent,
                         )
                         DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Outlined.FileCopy, null) },
+                            leadingIcon = { Icon(Icons.Rounded.FileCopy, null) },
                             text = { Text(stringResource(id = R.string.export_to_file)) },
                             enabled = cookieList.isNotEmpty(),
                             onClick = {
@@ -210,7 +210,7 @@ fun CookieProfilePage(
                             },
                         )
                         DropdownMenuItem(
-                            leadingIcon = { Icon(Icons.Outlined.DeleteForever, null) },
+                            leadingIcon = { Icon(Icons.Rounded.DeleteForever, null) },
                             text = { Text(stringResource(id = R.string.clear_all_cookies)) },
                             onClick = {
                                 expanded = false
@@ -266,7 +266,7 @@ fun CookieProfilePage(
             item {
                 PreferenceItemVariant(
                     title = stringResource(id = R.string.generate_new_cookies),
-                    icon = Icons.Outlined.Add,
+                    icon = Icons.Rounded.Add,
                 ) {
                     cookiesViewModel.setEditingProfile()
                     showEditDialog = true
@@ -332,7 +332,7 @@ fun CookieGeneratorDialog(
     LaunchedEffect(Unit) { withContext(Dispatchers.IO) { CookieManager.getInstance().flush() } }
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        icon = { Icon(Icons.Outlined.Cookie, null) },
+        icon = { Icon(Icons.Rounded.Cookie, null) },
         title = { Text(stringResource(R.string.cookies)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -352,7 +352,7 @@ fun CookieGeneratorDialog(
 
                 TextButtonWithIcon(
                     onClick = { navigateToCookieGeneratorPage() },
-                    icon = Icons.Outlined.GeneratingTokens,
+                    icon = Icons.Rounded.GeneratingTokens,
                     text = stringResource(id = R.string.generate_new_cookies),
                 )
             }
@@ -387,7 +387,7 @@ fun DeleteCookieDialog(cookiesViewModel: CookiesViewModel, onDismissRequest: () 
                 onDismissRequest()
             }
         },
-        icon = { Icon(Icons.Outlined.Delete, null) },
+        icon = { Icon(Icons.Rounded.Delete, null) },
     )
 }
 
@@ -409,7 +409,7 @@ fun ClearCookiesDialog(onDismissRequest: () -> Unit = {}, onConfirm: () -> Unit)
                 onDismissRequest()
             }
         },
-        icon = { Icon(Icons.Outlined.DeleteForever, null) },
+        icon = { Icon(Icons.Rounded.DeleteForever, null) },
     )
 }
 
@@ -432,7 +432,7 @@ fun CookiesQuickSettingsDialog(
                 onConfirm()
             }
         },
-        icon = { Icon(imageVector = Icons.Outlined.Cookie, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Cookie, contentDescription = null) },
         title = {
             Text(text = stringResource(id = R.string.cookies), textAlign = TextAlign.Center)
         },

@@ -24,18 +24,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.filled.SdCardAlert
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.FolderDelete
-import androidx.compose.material.icons.outlined.FolderOpen
-import androidx.compose.material.icons.outlined.FolderSpecial
-import androidx.compose.material.icons.outlined.LibraryMusic
-import androidx.compose.material.icons.outlined.SdCard
-import androidx.compose.material.icons.outlined.SnippetFolder
-import androidx.compose.material.icons.outlined.Spellcheck
-import androidx.compose.material.icons.outlined.TabUnselected
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.SdCardAlert
+import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.material.icons.rounded.FolderDelete
+import androidx.compose.material.icons.rounded.FolderOpen
+import androidx.compose.material.icons.rounded.FolderSpecial
+import androidx.compose.material.icons.rounded.LibraryMusic
+import androidx.compose.material.icons.rounded.SdCard
+import androidx.compose.material.icons.rounded.SnippetFolder
+import androidx.compose.material.icons.rounded.Spellcheck
+import androidx.compose.material.icons.rounded.TabUnselected
+import androidx.compose.material.icons.rounded.VideoLibrary
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -260,7 +260,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                     PreferencesHintCard(
                         title = stringResource(R.string.permission_issue),
                         description = stringResource(R.string.permission_issue_desc),
-                        icon = Icons.Filled.SdCardAlert,
+                        icon = Icons.Rounded.SdCardAlert,
                     ) {
                         if (
                             Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()
@@ -281,7 +281,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                         title = stringResource(id = R.string.video_directory),
                         description = videoDirectoryText,
                         enabled = !isPrivateDirectoryEnabled && !sdcardDownload,
-                        icon = Icons.Outlined.VideoLibrary,
+                        icon = Icons.Rounded.VideoLibrary,
                     ) {
                         openDirectoryChooser(directory = Directory.VIDEO)
                     }
@@ -291,7 +291,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                         title = stringResource(id = R.string.audio_directory),
                         description = audioDirectoryText,
                         enabled = !isPrivateDirectoryEnabled && !sdcardDownload,
-                        icon = Icons.Outlined.LibraryMusic,
+                        icon = Icons.Rounded.LibraryMusic,
                     ) {
                         openDirectoryChooser(directory = Directory.AUDIO)
                     }
@@ -304,7 +304,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                         customCommandDirectory.ifEmpty {
                             stringResource(id = R.string.set_directory_desc)
                         },
-                    icon = Icons.Outlined.Folder,
+                    icon = Icons.Rounded.Folder,
                 ) {
                     showCustomCommandDirectoryDialog = true
                 }
@@ -325,7 +325,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                             openDirectoryChooser(Directory.SDCARD)
                         }
                     },
-                    icon = Icons.Outlined.SdCard,
+                    icon = Icons.Rounded.SdCard,
                     onClick = { openDirectoryChooser(Directory.SDCARD) },
                 )
             }
@@ -333,7 +333,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                 PreferenceItem(
                     title = stringResource(id = R.string.subdirectory),
                     description = stringResource(id = R.string.subdirectory_desc),
-                    icon = Icons.Outlined.SnippetFolder,
+                    icon = Icons.Rounded.SnippetFolder,
                     enabled = !isCustomCommandEnabled && !sdcardDownload,
                 ) {
                     showSubdirectoryDialog = true
@@ -344,7 +344,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                 PreferenceSwitch(
                     title = stringResource(id = R.string.private_directory),
                     description = stringResource(R.string.private_directory_desc),
-                    icon = Icons.Outlined.TabUnselected,
+                    icon = Icons.Rounded.TabUnselected,
                     enabled = !showDirectoryAlert && !sdcardDownload && !isCustomCommandEnabled,
                     isChecked = isPrivateDirectoryEnabled,
                     onClick = {
@@ -358,7 +358,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                 PreferenceItem(
                     title = stringResource(R.string.output_template),
                     description = stringResource(id = R.string.output_template_desc),
-                    icon = Icons.Outlined.FolderSpecial,
+                    icon = Icons.Rounded.FolderSpecial,
                     enabled = !isCustomCommandEnabled && !sdcardDownload,
                     onClick = { showOutputTemplateDialog = true },
                 )
@@ -367,7 +367,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                 var restrictFilenames by RESTRICT_FILENAMES.booleanState
                 PreferenceSwitch(
                     title = stringResource(id = R.string.restrict_filenames),
-                    icon = Icons.Outlined.Spellcheck,
+                    icon = Icons.Rounded.Spellcheck,
                     description = stringResource(id = R.string.restrict_filenames_desc),
                     isChecked = restrictFilenames,
                 ) {
@@ -379,7 +379,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                 PreferenceItem(
                     title = stringResource(R.string.clear_temp_files),
                     description = stringResource(R.string.clear_temp_files_desc),
-                    icon = Icons.Outlined.FolderDelete,
+                    icon = Icons.Rounded.FolderDelete,
                     onClick = { showClearTempDialog = true },
                 )
             }
@@ -389,7 +389,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
     if (showClearTempDialog) {
         AlertDialog(
             onDismissRequest = { showClearTempDialog = false },
-            icon = { Icon(Icons.Outlined.FolderDelete, null) },
+            icon = { Icon(Icons.Rounded.FolderDelete, null) },
             title = { Text(stringResource(id = R.string.clear_temp_files)) },
             dismissButton = { DismissButton { showClearTempDialog = false } },
             text = {
@@ -442,7 +442,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
     if (showCustomCommandDirectoryDialog) {
         AlertDialog(
             onDismissRequest = { showCustomCommandDirectoryDialog = false },
-            icon = { Icon(imageVector = Icons.Outlined.Folder, contentDescription = null) },
+            icon = { Icon(imageVector = Icons.Rounded.Folder, contentDescription = null) },
             title = {
                 Text(
                     text = stringResource(id = R.string.custom_command_directory),
@@ -473,13 +473,13 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                         OutlinedButtonChip(
                             modifier = Modifier.padding(end = 8.dp),
                             label = stringResource(id = R.string.folder_picker),
-                            icon = Icons.Outlined.FolderOpen,
+                            icon = Icons.Rounded.FolderOpen,
                         ) {
                             openDirectoryChooser(Directory.CUSTOM_COMMAND)
                         }
                         OutlinedButtonChip(
                             label = stringResource(R.string.yt_dlp_docs),
-                            icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                            icon = Icons.AutoMirrored.Rounded.OpenInNew,
                         ) {
                             uriHandler.openUri(ytdlpFilesystemReference)
                         }
@@ -540,7 +540,7 @@ fun OutputTemplateDialog(
         },
         dismissButton = { DismissButton { onDismissRequest() } },
         title = { Text(text = stringResource(id = R.string.output_template)) },
-        icon = { Icon(imageVector = Icons.Outlined.FolderSpecial, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.FolderSpecial, contentDescription = null) },
         text = {
             Column {
                 Text(

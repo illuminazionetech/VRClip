@@ -18,7 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -183,7 +183,7 @@ fun TemplateEditPage(onDismissRequest: () -> Unit, templateId: Int) {
                     TextButtonWithIcon(
                         modifier = Modifier,
                         onClick = { isEditingShortcuts = true },
-                        icon = Icons.Outlined.Edit,
+                        icon = Icons.Rounded.Edit,
                         text = stringResource(id = R.string.edit_shortcuts),
                         contentColor = MaterialTheme.colorScheme.tertiary,
                     )

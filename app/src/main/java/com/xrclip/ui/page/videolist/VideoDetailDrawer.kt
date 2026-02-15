@@ -18,10 +18,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -175,7 +175,7 @@ fun VideoDetailDrawerImpl(
                     onLongClick = onOpenLink,
                     onLongClickLabel = stringResource(R.string.open_url),
                 ) {
-                    Icon(Icons.Outlined.Link, stringResource(R.string.video_url))
+                    Icon(Icons.Rounded.Link, stringResource(R.string.video_url))
                     Text(
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                         text = url,
@@ -196,19 +196,19 @@ fun VideoDetailDrawerImpl(
                 OutlinedButtonWithIcon(
                     modifier = Modifier.padding(horizontal = 12.dp),
                     onClick = onDelete,
-                    icon = Icons.Outlined.Delete,
+                    icon = Icons.Rounded.Delete,
                     text = stringResource(R.string.remove),
                 )
                 if (isFileAvailable) {
                     FilledTonalButtonWithIcon(
                         onClick = onShareFile,
-                        icon = Icons.Outlined.Share,
+                        icon = Icons.Rounded.Share,
                         text = stringResource(R.string.share),
                     )
                 } else {
                     FilledTonalButtonWithIcon(
                         onClick = onReDownload,
-                        icon = Icons.Outlined.FileDownload,
+                        icon = Icons.Rounded.FileDownload,
                         text = stringResource(R.string.redownload),
                         colors =
                             ButtonDefaults.filledTonalButtonColors(

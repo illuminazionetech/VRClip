@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material.icons.rounded.Update
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -135,7 +135,7 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                                     .padding(top = 6.dp)
                                     .padding(bottom = 12.dp),
                             text = stringResource(id = R.string.check_for_updates),
-                            icon = Icons.Outlined.Update,
+                            icon = Icons.Rounded.Update,
                             isLoading = isLoading,
                         ) {
                             if (!isLoading)

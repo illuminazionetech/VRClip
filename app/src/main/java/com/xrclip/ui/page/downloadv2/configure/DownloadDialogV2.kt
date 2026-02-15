@@ -36,20 +36,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.DownloadDone
-import androidx.compose.material.icons.filled.SettingsSuggest
-import androidx.compose.material.icons.filled.VideoFile
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.DoneAll
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.ExpandMore
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.NewLabel
-import androidx.compose.material.icons.outlined.SettingsSuggest
-import androidx.compose.material.icons.outlined.VideoFile
+import androidx.compose.material.icons.rounded.DownloadDone
+import androidx.compose.material.icons.rounded.SettingsSuggest
+import androidx.compose.material.icons.rounded.VideoFile
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.DoneAll
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.NewLabel
+import androidx.compose.material.icons.rounded.SettingsSuggest
+import androidx.compose.material.icons.rounded.VideoFile
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -294,7 +294,7 @@ private fun ErrorPage(modifier: Modifier = Modifier, state: Error, onActionPost:
         }
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
-            imageVector = Icons.Outlined.ErrorOutline,
+            imageVector = Icons.Rounded.ErrorOutline,
             contentDescription = null,
             modifier = Modifier.size(40.dp),
         )
@@ -543,7 +543,7 @@ private fun ConfigurePage(
             Header(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 title = stringResource(R.string.settings_before_download),
-                icon = Icons.Outlined.DoneAll,
+                icon = Icons.Rounded.DoneAll,
             )
             DrawerSheetSubtitle(text = stringResource(id = R.string.download_type))
             DownloadTypeSelectionGroup(
@@ -594,21 +594,21 @@ private fun ConfigurePage(
                     LazyRow(modifier = Modifier) {
                         item {
                             ButtonChip(
-                                icon = Icons.Outlined.Code,
+                                icon = Icons.Rounded.Code,
                                 label = template.name,
                                 onClick = { showTemplateSelectionDialog = true },
                             )
                         }
                         item {
                             ButtonChip(
-                                icon = Icons.Outlined.NewLabel,
+                                icon = Icons.Rounded.NewLabel,
                                 label = stringResource(id = R.string.new_template),
                                 onClick = { showTemplateCreatorDialog = true },
                             )
                         }
                         item {
                             ButtonChip(
-                                icon = Icons.Outlined.Edit,
+                                icon = Icons.Rounded.Edit,
                                 label = stringResource(id = R.string.edit_template, template.name),
                                 onClick = { showTemplateEditorDialog = true },
                             )
@@ -692,7 +692,7 @@ fun ConfigurePagePlaylistVariant(
             Header(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 title = stringResource(R.string.settings_before_download),
-                icon = Icons.Outlined.DoneAll,
+                icon = Icons.Rounded.DoneAll,
             )
             DrawerSheetSubtitle(text = stringResource(id = R.string.download_type))
             DownloadTypeSelectionGroup(
@@ -840,7 +840,7 @@ fun ExpandableTitle(
                 Spacer(modifier = Modifier.weight(1f))
                 if (!expanded) {
                     Icon(
-                        imageVector = Icons.Outlined.ExpandMore,
+                        imageVector = Icons.Rounded.ExpandMore,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
                     )
@@ -1002,13 +1002,13 @@ private fun Preset(
             Crossfade(selected, animationSpec = spring(stiffness = Spring.StiffnessMedium)) {
                 if (it) {
                     Icon(
-                        imageVector = Icons.Filled.SettingsSuggest,
+                        imageVector = Icons.Rounded.SettingsSuggest,
                         null,
                         modifier = Modifier.size(20.dp),
                     )
                 } else {
                     Icon(
-                        imageVector = Icons.Outlined.SettingsSuggest,
+                        imageVector = Icons.Rounded.SettingsSuggest,
                         null,
                         modifier = Modifier.size(20.dp),
                     )
@@ -1020,7 +1020,7 @@ private fun Preset(
             Crossfade(showEditIcon, animationSpec = spring(stiffness = Spring.StiffnessMedium)) {
                 if (it) {
                     Icon(
-                        imageVector = Icons.Outlined.MoreVert,
+                        imageVector = Icons.Rounded.MoreVert,
                         contentDescription = stringResource(R.string.edit),
                         modifier = Modifier.size(20.dp),
                     )
@@ -1052,13 +1052,13 @@ private fun Custom(
             Crossfade(selected, animationSpec = spring(stiffness = Spring.StiffnessMedium)) {
                 if (it) {
                     Icon(
-                        imageVector = Icons.Filled.VideoFile,
+                        imageVector = Icons.Rounded.VideoFile,
                         null,
                         modifier = Modifier.size(20.dp),
                     )
                 } else {
                     Icon(
-                        imageVector = Icons.Outlined.VideoFile,
+                        imageVector = Icons.Rounded.VideoFile,
                         null,
                         modifier = Modifier.size(20.dp),
                     )
@@ -1083,8 +1083,8 @@ private fun ActionButton.Icon() {
         imageVector =
             when (this) {
                 FetchInfo -> Icons.AutoMirrored.Filled.ArrowForward
-                Download -> Icons.Outlined.FileDownload
-                StartTask -> Icons.Filled.DownloadDone
+                Download -> Icons.Rounded.FileDownload
+                StartTask -> Icons.Rounded.DownloadDone
             },
         contentDescription = null,
         modifier = Modifier.size(18.dp),
@@ -1136,7 +1136,7 @@ private fun ActionButtons(
             OutlinedButtonWithIcon(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 onClick = onCancel,
-                icon = Icons.Outlined.Cancel,
+                icon = Icons.Rounded.Cancel,
                 text = stringResource(R.string.cancel),
             )
         }

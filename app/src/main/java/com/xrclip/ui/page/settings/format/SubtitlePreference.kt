@@ -4,12 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ClosedCaption
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.rounded.ClosedCaption
+import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.Save
+import androidx.compose.material.icons.rounded.Subtitles
+import androidx.compose.material.icons.rounded.Sync
+import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -121,7 +121,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
                 item {
                     PreferenceItem(
                         title = stringResource(id = R.string.subtitle_language),
-                        icon = Icons.Outlined.Language,
+                        icon = Icons.Rounded.Language,
                         description = subtitleLang,
                         onClick = { showLanguageDialog = true },
                     )
@@ -131,7 +131,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
                     PreferenceItem(
                         title = stringResource(id = R.string.convert_subtitle),
                         description = subtitleFormatText,
-                        icon = Icons.Outlined.Sync,
+                        icon = Icons.Rounded.Sync,
                     ) {
                         showConversionDialog = true
                     }
@@ -140,7 +140,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
                 item {
                     PreferenceSwitch(
                         title = stringResource(id = R.string.auto_subtitle),
-                        icon = Icons.Outlined.ClosedCaption,
+                        icon = Icons.Rounded.ClosedCaption,
                         description = stringResource(id = R.string.auto_subtitle_desc),
                         isChecked = autoSubtitle,
                         onClick = {
@@ -153,7 +153,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
                 item {
                     PreferenceSwitch(
                         title = stringResource(id = R.string.auto_translated_subtitles),
-                        icon = Icons.Outlined.Translate,
+                        icon = Icons.Rounded.Translate,
                         isChecked = autoTranslatedSubtitle,
                         enabled = autoSubtitle,
                     ) {
@@ -181,7 +181,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
                                 showEmbedSubtitleDialog = true
                             }
                         },
-                        icon = Icons.Outlined.Subtitles,
+                        icon = Icons.Rounded.Subtitles,
                     )
                 }
 
@@ -197,7 +197,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
                                 keepSubtitles = !keepSubtitles
                                 KEEP_SUBTITLE_FILES.updateBoolean(keepSubtitles)
                             },
-                            icon = Icons.Outlined.Save,
+                            icon = Icons.Rounded.Save,
                         )
                     }
                 }
@@ -211,7 +211,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
     if (showEmbedSubtitleDialog) {
         AlertDialog(
             onDismissRequest = { showEmbedSubtitleDialog = false },
-            icon = { Icon(Icons.Outlined.Subtitles, null) },
+            icon = { Icon(Icons.Rounded.Subtitles, null) },
             confirmButton = {
                 ConfirmButton {
                     embedSubtitle = true
@@ -232,7 +232,7 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
     if (showAutoTranslateDialog) {
         AlertDialog(
             onDismissRequest = { showAutoTranslateDialog = false },
-            icon = { Icon(Icons.Outlined.Translate, null) },
+            icon = { Icon(Icons.Rounded.Translate, null) },
             confirmButton = {
                 ConfirmButton {
                     autoTranslatedSubtitle = true

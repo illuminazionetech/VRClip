@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NewReleases
+import androidx.compose.material.icons.rounded.NewReleases
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -80,7 +80,7 @@ fun UpdateDialogImpl(
     AlertDialog(
         onDismissRequest = {},
         title = { Text(title) },
-        icon = { Icon(Icons.Outlined.NewReleases, null) },
+        icon = { Icon(Icons.Rounded.NewReleases, null) },
         confirmButton = {
             Button(
                 onClick = {

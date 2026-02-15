@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -101,7 +101,7 @@ fun SingleChoiceItemPreview() {
                 action = {
                     Spacer(modifier = Modifier.width(8.dp))
                     VerticalDivider(modifier = Modifier.height(32.dp))
-                    IconButton(onClick = {}) { Icon(Icons.Outlined.Settings, null) }
+                    IconButton(onClick = {}) { Icon(Icons.Rounded.Settings, null) }
                 },
             ) {}
             DialogSingleChoiceItem(text = "Preview", selected = true) {}

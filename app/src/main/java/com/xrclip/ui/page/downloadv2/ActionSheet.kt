@@ -13,18 +13,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.automirrored.outlined.TextSnippet
-import androidx.compose.material.icons.outlined.AudioFile
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.VideoFile
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.automirrored.rounded.TextSnippet
+import androidx.compose.material.icons.rounded.AudioFile
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material.icons.rounded.VideoFile
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -106,7 +106,7 @@ private fun ResumeButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         modifier = modifier,
         containerColor = LocalFixedColorRoles.current.tertiaryFixed,
         contentColor = LocalFixedColorRoles.current.onTertiaryFixedVariant,
-        imageVector = Icons.Outlined.RestartAlt,
+        imageVector = Icons.Rounded.RestartAlt,
         text = stringResource(R.string.resume),
         onClick = onClick,
     )
@@ -118,7 +118,7 @@ private fun ErrorReportButton(modifier: Modifier = Modifier, onClick: () -> Unit
         modifier = modifier,
         containerColor = ErrorTonalPalettes.accent1(80.0),
         contentColor = ErrorTonalPalettes.accent1(10.0),
-        imageVector = Icons.Outlined.ErrorOutline,
+        imageVector = Icons.Rounded.ErrorOutline,
         text = stringResource(R.string.copy_error_report),
         onClick = onClick,
     )
@@ -130,7 +130,7 @@ private fun DeleteButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         modifier = modifier,
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onSurface,
-        imageVector = Icons.Outlined.Delete,
+        imageVector = Icons.Rounded.Delete,
         outlineColor = MaterialTheme.colorScheme.outlineVariant,
         text = stringResource(R.string.delete),
         onClick = onClick,
@@ -143,7 +143,7 @@ private fun CancelButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         contentColor = MaterialTheme.colorScheme.onSurface,
-        imageVector = Icons.Outlined.Cancel,
+        imageVector = Icons.Rounded.Cancel,
         text = stringResource(R.string.cancel),
         onClick = onClick,
     )
@@ -155,7 +155,7 @@ private fun DownloadLogButton(modifier: Modifier = Modifier, onClick: () -> Unit
         modifier = modifier,
         containerColor = LocalFixedColorRoles.current.secondaryFixed,
         contentColor = LocalFixedColorRoles.current.onSecondaryFixedVariant,
-        imageVector = Icons.AutoMirrored.Outlined.TextSnippet,
+        imageVector = Icons.AutoMirrored.Rounded.TextSnippet,
         text = stringResource(R.string.show_logs),
         onClick = onClick,
     )
@@ -168,7 +168,7 @@ private fun CopyURLButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onSurface,
         outlineColor = MaterialTheme.colorScheme.outlineVariant,
-        imageVector = Icons.Outlined.ContentCopy,
+        imageVector = Icons.Rounded.ContentCopy,
         text = stringResource(R.string.copy_link),
         onClick = onClick,
     )
@@ -181,7 +181,7 @@ private fun OpenVideoURLButton(modifier: Modifier = Modifier, onClick: () -> Uni
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onSurface,
         outlineColor = MaterialTheme.colorScheme.outlineVariant,
-        imageVector = Icons.AutoMirrored.Outlined.OpenInNew,
+        imageVector = Icons.AutoMirrored.Rounded.OpenInNew,
         text = stringResource(R.string.open_url),
         onClick = onClick,
     )
@@ -194,7 +194,7 @@ private fun OpenThumbnailURLButton(modifier: Modifier = Modifier, onClick: () ->
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onSurface,
         outlineColor = MaterialTheme.colorScheme.outlineVariant,
-        imageVector = Icons.Outlined.Image,
+        imageVector = Icons.Rounded.Image,
         text = stringResource(R.string.thumbnail),
         onClick = onClick,
     )
@@ -447,7 +447,7 @@ fun ActionSheetInfo(modifier: Modifier = Modifier, task: Task, viewState: ViewSt
                     )
                 },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Outlined.FileDownload, contentDescription = null)
+                    Icon(imageVector = Icons.Rounded.FileDownload, contentDescription = null)
                 },
             )
 
@@ -469,7 +469,7 @@ fun ActionSheetInfo(modifier: Modifier = Modifier, task: Task, viewState: ViewSt
                         Text(details, style = MaterialTheme.typography.bodySmall)
                     },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Outlined.VideoFile, contentDescription = null)
+                        Icon(imageVector = Icons.Rounded.VideoFile, contentDescription = null)
                     },
                 )
             }
@@ -497,7 +497,7 @@ fun ActionSheetInfo(modifier: Modifier = Modifier, task: Task, viewState: ViewSt
                         Text(details, style = MaterialTheme.typography.bodySmall)
                     },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Outlined.AudioFile, contentDescription = null)
+                        Icon(imageVector = Icons.Rounded.AudioFile, contentDescription = null)
                     },
                 )
             }
@@ -507,7 +507,7 @@ fun ActionSheetInfo(modifier: Modifier = Modifier, task: Task, viewState: ViewSt
                     Text(text = extractorKey, style = MaterialTheme.typography.titleSmall)
                     Text(text = url, style = MaterialTheme.typography.bodySmall)
                 },
-                leadingIcon = { Icon(imageVector = Icons.Outlined.Link, contentDescription = null) },
+                leadingIcon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
             )
         }
     }

@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
+import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
@@ -169,7 +169,7 @@ private fun LanguagePageImpl(
                     PreferencesHintCard(
                         title = stringResource(R.string.translate),
                         description = stringResource(R.string.translate_desc),
-                        icon = Icons.Outlined.Translate,
+                        icon = Icons.Rounded.Translate,
                     ) {
                         uriHandler.openUri(weblate)
                     }
@@ -243,7 +243,7 @@ private fun LanguagePageImpl(
                                     )
                                 }
                                 Icon(
-                                    imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                                    imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
                                     contentDescription = null,
                                     modifier = Modifier.padding(end = 16.dp).size(18.dp),
                                 )

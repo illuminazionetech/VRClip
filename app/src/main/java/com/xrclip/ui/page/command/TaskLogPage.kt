@@ -14,12 +14,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.UnfoldMore
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material.icons.rounded.UnfoldMore
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedAssistChip
@@ -71,7 +71,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                 },
                 navigationIcon = {
                     IconButton(onClick = { onNavigateBack() }) {
-                        Icon(Icons.Outlined.Close, stringResource(R.string.close))
+                        Icon(Icons.Rounded.Close, stringResource(R.string.close))
                     }
                 },
                 actions = {},
@@ -91,14 +91,14 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                 ) {
                     task.run {
                         ButtonChip(
-                            icon = Icons.Outlined.ContentCopy,
+                            icon = Icons.Rounded.ContentCopy,
                             label = stringResource(id = R.string.copy_log),
                         ) {
                             onCopyLog(clipboardManager)
                         }
                         if (state is Downloader.CustomCommandTask.State.Error)
                             ButtonChip(
-                                icon = Icons.Outlined.ErrorOutline,
+                                icon = Icons.Rounded.ErrorOutline,
                                 label = stringResource(id = R.string.copy_error_report),
                                 iconColor = MaterialTheme.colorScheme.error,
                             ) {
@@ -106,7 +106,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                             }
                         if (state is Downloader.CustomCommandTask.State.Running)
                             ButtonChip(
-                                icon = Icons.Outlined.Cancel,
+                                icon = Icons.Rounded.Cancel,
                                 label = stringResource(id = R.string.cancel),
                                 iconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             ) {
@@ -117,7 +117,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                                 state is Downloader.CustomCommandTask.State.Error
                         )
                             ButtonChip(
-                                icon = Icons.Outlined.RestartAlt,
+                                icon = Icons.Rounded.RestartAlt,
                                 label = stringResource(id = R.string.restart),
                             ) {
                                 onRestart()
@@ -129,7 +129,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                                 label = { Text(stringResource(id = R.string.expand)) },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = Icons.Outlined.UnfoldMore,
+                                        imageVector = Icons.Rounded.UnfoldMore,
                                         null,
                                         modifier =
                                             Modifier.size(AssistChipDefaults.IconSize).rotate(90f),

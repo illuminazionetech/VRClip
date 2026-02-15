@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
+import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.rounded.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
@@ -61,7 +61,7 @@ fun HelpDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(text = stringResource(id = R.string.how_does_it_work)) },
-        icon = { Icon(Icons.Outlined.HelpOutline, null) },
+        icon = { Icon(Icons.Rounded.HelpOutline, null) },
         text = { Text(text = text) },
         confirmButton = confirmButton,
         dismissButton = dismissButton,
@@ -196,7 +196,7 @@ private fun ButtonVariantPreview() {
             modifier = Modifier,
             icon = {
                 Icon(
-                    imageVector = Icons.Outlined.SignalCellularConnectedNoInternet4Bar,
+                    imageVector = Icons.Rounded.SignalCellularConnectedNoInternet4Bar,
                     contentDescription = null,
                 )
             },

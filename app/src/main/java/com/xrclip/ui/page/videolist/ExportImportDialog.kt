@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
-import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.automirrored.rounded.DriveFileMove
+import androidx.compose.material.icons.rounded.Restore
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -57,7 +57,7 @@ fun ExportDialog(
         },
         title = { Text(text = stringResource(id = R.string.export_download_history)) },
         icon = {
-            Icon(imageVector = Icons.AutoMirrored.Outlined.DriveFileMove, contentDescription = null)
+            Icon(imageVector = Icons.AutoMirrored.Rounded.DriveFileMove, contentDescription = null)
         },
         text = {
             Column {
@@ -141,7 +141,7 @@ fun ImportDialog(
             }
         },
         title = { Text(text = stringResource(id = R.string.import_download_history)) },
-        icon = { Icon(imageVector = Icons.Outlined.Restore, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Restore, contentDescription = null) },
         text = {
             Column {
                 Text(

@@ -13,9 +13,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -73,7 +73,7 @@ fun CommandTemplateDialog(
     var templateName by remember { mutableStateOf(commandTemplate.name) }
     var isError by remember { mutableStateOf(false) }
     AlertDialog(
-        icon = { Icon(if (newTemplate) Icons.Outlined.Add else Icons.Outlined.EditNote, null) },
+        icon = { Icon(if (newTemplate) Icons.Rounded.Add else Icons.Rounded.EditNote, null) },
         title = { Text(stringResource(if (newTemplate) R.string.new_template else R.string.edit)) },
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = false),
@@ -168,7 +168,7 @@ fun OptionChipsDialog(onDismissRequest: () -> Unit = {}) {
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(text = stringResource(id = R.string.edit_shortcuts)) },
-        icon = { Icon(Icons.Outlined.Edit, null) },
+        icon = { Icon(Icons.Rounded.Edit, null) },
         text = {
             Column {
                 Text(

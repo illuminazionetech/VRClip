@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PlaylistAdd
+import androidx.compose.material.icons.rounded.PlaylistAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -53,7 +53,7 @@ fun PlaylistSelectionDialog(
     }
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
-        icon = { Icon(Icons.Outlined.PlaylistAdd, null) },
+        icon = { Icon(Icons.Rounded.PlaylistAdd, null) },
         title = { Text(stringResource(R.string.download_range_selection)) },
         text = {
             Column {

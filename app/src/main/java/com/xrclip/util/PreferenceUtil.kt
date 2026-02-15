@@ -5,7 +5,6 @@ import androidx.annotation.DeprecatedSinceApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.google.android.material.color.DynamicColors
 import com.xrclip.App
 import com.xrclip.App.Companion.applicationScope
 import com.xrclip.App.Companion.context
@@ -14,9 +13,7 @@ import com.xrclip.App.Companion.isFDroidBuild
 import com.xrclip.R
 import com.xrclip.database.objects.CommandTemplate
 import com.xrclip.download.Task
-import com.xrclip.ui.theme.DEFAULT_SEED_COLOR
 import com.xrclip.util.PreferenceUtil.getInt
-import com.kyant.monet.PaletteStyle
 import com.tencent.mmkv.MMKV
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
@@ -186,20 +183,6 @@ const val TEMPLATE_SHORTCUTS = "template_shortcuts"
 const val TASK_LIST = "task_list"
 const val SAVED_LINKS = "saved_links"
 
-val paletteStyles =
-    listOf(
-        PaletteStyle.TonalSpot,
-        PaletteStyle.Spritz,
-        PaletteStyle.FruitSalad,
-        PaletteStyle.Vibrant,
-        PaletteStyle.Monochrome,
-    )
-
-const val STYLE_TONAL_SPOT = 0
-const val STYLE_SPRITZ = 1
-const val STYLE_FRUIT_SALAD = 2
-const val STYLE_VIBRANT = 3
-const val STYLE_MONOCHROME = 4
 
 private val StringPreferenceDefaults =
     mapOf(
@@ -377,9 +360,6 @@ object PreferenceUtil {
 
     data class AppSettings(
         val darkTheme: DarkThemePreference = DarkThemePreference(),
-        val isDynamicColorEnabled: Boolean = false,
-        val seedColor: Int = DEFAULT_SEED_COLOR,
-        val paletteStyleIndex: Int = 0,
     )
 
     fun getMaxDownloadRate(): String = MAX_RATE.getString()
@@ -391,11 +371,7 @@ object PreferenceUtil {
                     darkThemeValue =
                         kv.decodeInt(DARK_THEME_VALUE, DarkThemePreference.FOLLOW_SYSTEM),
                     isHighContrastModeEnabled = kv.decodeBool(HIGH_CONTRAST, false),
-                ),
-                isDynamicColorEnabled =
-                    kv.decodeBool(DYNAMIC_COLOR, DynamicColors.isDynamicColorAvailable()),
-                seedColor = kv.decodeInt(THEME_COLOR, DEFAULT_SEED_COLOR),
-                paletteStyleIndex = kv.decodeInt(PALETTE_STYLE, 0),
+                )
             )
         )
     val AppSettingsStateFlow = mutableAppSettingsStateFlow.asStateFlow()
@@ -417,25 +393,6 @@ object PreferenceUtil {
             }
             kv.encode(DARK_THEME_VALUE, darkThemeValue)
             kv.encode(HIGH_CONTRAST, isHighContrastModeEnabled)
-        }
-    }
-
-    fun modifyThemeSeedColor(colorArgb: Int, paletteStyleIndex: Int) {
-        applicationScope.launch(Dispatchers.IO) {
-            mutableAppSettingsStateFlow.update {
-                it.copy(seedColor = colorArgb, paletteStyleIndex = paletteStyleIndex)
-            }
-            kv.encode(THEME_COLOR, colorArgb)
-            kv.encode(PALETTE_STYLE, paletteStyleIndex)
-        }
-    }
-
-    fun switchDynamicColor(
-        enabled: Boolean = !mutableAppSettingsStateFlow.value.isDynamicColorEnabled
-    ) {
-        applicationScope.launch(Dispatchers.IO) {
-            mutableAppSettingsStateFlow.update { it.copy(isDynamicColorEnabled = enabled) }
-            kv.encode(DYNAMIC_COLOR, enabled)
         }
     }
 

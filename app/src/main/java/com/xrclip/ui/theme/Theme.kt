@@ -5,6 +5,8 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -16,8 +18,6 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDirection
 import com.google.android.material.color.MaterialColors
 import com.xrclip.ui.common.LocalFixedColorRoles
-import com.kyant.monet.LocalTonalPalettes
-import com.kyant.monet.dynamicColorScheme
 
 fun Color.applyOpacity(enabled: Boolean): Color {
     return if (enabled) this else this.copy(alpha = 0.62f)
@@ -32,6 +32,54 @@ fun Color.harmonizeWith(other: Color) =
 @ReadOnlyComposable
 fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
+
+private val AppleLightColorScheme = lightColorScheme(
+    primary = Color(0xFF007AFF),
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFFE5F1FF),
+    onPrimaryContainer = Color(0xFF007AFF),
+    secondary = Color(0xFF5856D6),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFFEBEBFF),
+    onSecondaryContainer = Color(0xFF5856D6),
+    background = Color(0xFFF2F2F7),
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Color.Black,
+    surfaceVariant = Color(0xFFE5E5EA),
+    onSurfaceVariant = Color(0xFF3C3C43),
+    outline = Color(0xFFC7C7CC),
+    outlineVariant = Color(0xFFD1D1D6),
+    surfaceContainerLowest = Color.White,
+    surfaceContainerLow = Color(0xFFF2F2F7),
+    surfaceContainer = Color(0xFFFFFFFF),
+    surfaceContainerHigh = Color(0xFFEBEBEB),
+    surfaceContainerHighest = Color(0xFFD1D1D6),
+)
+
+private val AppleDarkColorScheme = darkColorScheme(
+    primary = Color(0xFF0A84FF),
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFF003366),
+    onPrimaryContainer = Color(0xFF0A84FF),
+    secondary = Color(0xFF5E5CE6),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFF1C1C45),
+    onSecondaryContainer = Color(0xFF5E5CE6),
+    background = Color.Black,
+    onBackground = Color.White,
+    surface = Color(0xFF1C1C1E),
+    onSurface = Color.White,
+    surfaceVariant = Color(0xFF3A3A3C),
+    onSurfaceVariant = Color(0xFFEBEBF5),
+    outline = Color(0xFF48484A),
+    outlineVariant = Color(0xFF3A3A3C),
+    surfaceContainerLowest = Color.Black,
+    surfaceContainerLow = Color(0xFF1C1C1E),
+    surfaceContainer = Color(0xFF2C2C2E),
+    surfaceContainerHigh = Color(0xFF3A3A3C),
+    surfaceContainerHighest = Color(0xFF48484A),
+)
 
 @Composable
 fun XRClipTheme(
@@ -57,31 +105,31 @@ fun XRClipTheme(
         }
     }
 
-    val colorScheme =
-        dynamicColorScheme(!darkTheme).run {
-            if (isHighContrastModeEnabled && darkTheme)
-                copy(
-                    surface = Color.Black,
-                    background = Color.Black,
-                    surfaceContainerLowest = Color.Black,
-                    surfaceContainerLow = surfaceContainerLowest,
-                    surfaceContainer = surfaceContainerLow,
-                    surfaceContainerHigh = surfaceContainerLow,
-                    surfaceContainerHighest = surfaceContainer,
-                )
-            else {
-                // Apply a more "liquid/glass" feel to the color scheme by reducing opacity on some surfaces
-                // Alphas refined for better contrast and legibility
-                copy(
-                    surface = surface.copy(alpha = 0.88f),
-                    surfaceContainer = surfaceContainer.copy(alpha = 0.82f),
-                    surfaceContainerLow = surfaceContainerLow.copy(alpha = 0.72f),
-                    surfaceContainerHigh = surfaceContainerHigh.copy(alpha = 0.88f),
-                    surfaceContainerHighest = surfaceContainerHighest.copy(alpha = 0.95f),
-                    surfaceVariant = surfaceVariant.copy(alpha = 0.88f),
-                )
-            }
+    val baseColorScheme = if (darkTheme) AppleDarkColorScheme else AppleLightColorScheme
+
+    val colorScheme = baseColorScheme.run {
+        if (isHighContrastModeEnabled && darkTheme)
+            copy(
+                surface = Color.Black,
+                background = Color.Black,
+                surfaceContainerLowest = Color.Black,
+                surfaceContainerLow = surfaceContainerLowest,
+                surfaceContainer = surfaceContainerLow,
+                surfaceContainerHigh = surfaceContainerLow,
+                surfaceContainerHighest = surfaceContainer,
+            )
+        else {
+            // Apple-style translucent surfaces
+            copy(
+                surface = surface.copy(alpha = 0.92f),
+                surfaceContainer = surfaceContainer.copy(alpha = 0.88f),
+                surfaceContainerLow = surfaceContainerLow.copy(alpha = 0.82f),
+                surfaceContainerHigh = surfaceContainerHigh.copy(alpha = 0.92f),
+                surfaceContainerHighest = surfaceContainerHighest.copy(alpha = 0.98f),
+                surfaceVariant = surfaceVariant.copy(alpha = 0.92f),
+            )
         }
+    }
 
     val textStyle =
         LocalTextStyle.current.copy(
@@ -89,10 +137,11 @@ fun XRClipTheme(
             textDirection = TextDirection.Content,
         )
 
-    val tonalPalettes = LocalTonalPalettes.current
-
     CompositionLocalProvider(
-        LocalFixedColorRoles provides FixedColorRoles.fromTonalPalettes(tonalPalettes),
+        LocalFixedColorRoles provides FixedColorRoles.fromColorSchemes(
+            AppleLightColorScheme,
+            AppleDarkColorScheme
+        ),
         LocalTextStyle provides textStyle,
     ) {
         MaterialTheme(

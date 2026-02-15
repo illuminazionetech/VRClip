@@ -3,9 +3,14 @@ package com.xrclip.ui.page.downloadv2
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.animateTo
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.rememberSplineBasedDecay
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -462,26 +467,32 @@ fun DownloadPageImplV2(
                                 filteredMap.toList().sortedBy { (_, state) -> state.downloadState },
                             key = { (task, _) -> task.id },
                         ) { (task, state) ->
-                            with(state.viewState) {
-                                VideoCardV2(
-                                    modifier = Modifier.padding(bottom = 20.dp).padding(),
-                                    viewState = this,
-                                    actionButton = {
-                                        ActionButton(
-                                            modifier = Modifier,
-                                            downloadState = state.downloadState,
-                                        ) {
-                                            onActionPost(task, it)
-                                        }
-                                    },
-                                    stateIndicator = {
-                                        CardStateIndicator(
-                                            modifier = Modifier,
-                                            downloadState = state.downloadState,
-                                        )
-                                    },
-                                    onButtonClick = { showActionSheet(task) },
-                                )
+                            AnimatedVisibility(
+                                visible = true,
+                                enter = fadeIn() + scaleIn(initialScale = 0.95f),
+                                exit = fadeOut() + scaleOut(targetScale = 0.95f),
+                            ) {
+                                with(state.viewState) {
+                                    VideoCardV2(
+                                        modifier = Modifier.padding(bottom = 20.dp).padding(),
+                                        viewState = this,
+                                        actionButton = {
+                                            ActionButton(
+                                                modifier = Modifier,
+                                                downloadState = state.downloadState,
+                                            ) {
+                                                onActionPost(task, it)
+                                            }
+                                        },
+                                        stateIndicator = {
+                                            CardStateIndicator(
+                                                modifier = Modifier,
+                                                downloadState = state.downloadState,
+                                            )
+                                        },
+                                        onButtonClick = { showActionSheet(task) },
+                                    )
+                                }
                             }
                         }
                     } else {
@@ -491,17 +502,23 @@ fun DownloadPageImplV2(
                             key = { (task, _) -> task.id },
                             span = { GridItemSpan(maxLineSpan) },
                         ) { (task, state) ->
-                            VideoListItem(
-                                modifier = Modifier.padding(bottom = 16.dp),
-                                viewState = state.viewState,
-                                stateIndicator = {
-                                    ListItemStateText(
-                                        modifier = Modifier.padding(top = 3.dp),
-                                        downloadState = state.downloadState,
-                                    )
-                                },
-                                onButtonClick = { showActionSheet(task) },
-                            )
+                            AnimatedVisibility(
+                                visible = true,
+                                enter = fadeIn() + scaleIn(initialScale = 0.98f),
+                                exit = fadeOut() + scaleOut(targetScale = 0.98f),
+                            ) {
+                                VideoListItem(
+                                    modifier = Modifier.padding(bottom = 16.dp),
+                                    viewState = state.viewState,
+                                    stateIndicator = {
+                                        ListItemStateText(
+                                            modifier = Modifier.padding(top = 3.dp),
+                                            downloadState = state.downloadState,
+                                        )
+                                    },
+                                    onButtonClick = { showActionSheet(task) },
+                                )
+                            }
                         }
                     }
                 }

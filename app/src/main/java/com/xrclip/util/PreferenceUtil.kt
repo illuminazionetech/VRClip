@@ -210,7 +210,7 @@ private val IntPreferenceDefaults =
         CONCURRENT to 8,
         LANGUAGE to SYSTEM_DEFAULT,
         PALETTE_STYLE to 0,
-        DARK_THEME_VALUE to DarkThemePreference.FOLLOW_SYSTEM,
+        DARK_THEME_VALUE to DarkThemePreference.OFF,
         WELCOME_DIALOG to 1,
         AUDIO_CONVERSION_FORMAT to NOT_SPECIFIED,
         VIDEO_QUALITY to NOT_SPECIFIED,

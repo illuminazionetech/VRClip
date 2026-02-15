@@ -21,7 +21,6 @@ import com.xrclip.ui.component.BackButton
 import com.xrclip.ui.component.PreferenceSingleChoiceItem
 import com.xrclip.ui.component.PreferenceSubtitle
 import com.xrclip.ui.component.PreferenceSwitchVariant
-import com.xrclip.util.DarkThemePreference.Companion.FOLLOW_SYSTEM
 import com.xrclip.util.DarkThemePreference.Companion.OFF
 import com.xrclip.util.DarkThemePreference.Companion.ON
 import com.xrclip.util.PreferenceUtil

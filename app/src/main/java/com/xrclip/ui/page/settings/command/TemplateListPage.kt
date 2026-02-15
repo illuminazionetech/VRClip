@@ -15,14 +15,14 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.AssignmentReturn
-import androidx.compose.material.icons.outlined.BookmarkAdd
-import androidx.compose.material.icons.outlined.ContentPasteGo
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AssignmentReturn
+import androidx.compose.material.icons.rounded.BookmarkAdd
+import androidx.compose.material.icons.rounded.ContentPasteGo
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.DeleteSweep
+import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DropdownMenu
@@ -150,7 +150,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.HelpOutline,
+                            imageVector = Icons.Rounded.HelpOutline,
                             contentDescription = stringResource(id = R.string.how_does_it_work),
                         )
                     }
@@ -158,7 +158,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                         Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
                             IconButton(onClick = { expanded = true }) {
                                 Icon(
-                                    Icons.Outlined.MoreVert,
+                                    Icons.Rounded.MoreVert,
                                     contentDescription = stringResource(R.string.show_more_actions),
                                 )
                             }
@@ -167,7 +167,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                 onDismissRequest = { expanded = false },
                             ) {
                                 DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Outlined.ContentPasteGo, null) },
+                                    leadingIcon = { Icon(Icons.Rounded.ContentPasteGo, null) },
                                     text = { Text(stringResource(R.string.export_to_clipboard)) },
                                     onClick = {
                                         scope.launch {
@@ -186,7 +186,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                     },
                                 )
                                 DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Outlined.AssignmentReturn, null) },
+                                    leadingIcon = { Icon(Icons.Rounded.AssignmentReturn, null) },
                                     text = { Text(stringResource(R.string.import_from_clipboard)) },
                                     onClick = {
                                         scope.launch {
@@ -281,7 +281,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                             enabled = selectedTemplates.isNotEmpty(),
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.ContentPasteGo,
+                                imageVector = Icons.Rounded.ContentPasteGo,
                                 contentDescription =
                                     stringResource(id = R.string.export_to_clipboard),
                             )
@@ -294,7 +294,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                             enabled = selectedTemplates.isNotEmpty(),
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.DeleteSweep,
+                                imageVector = Icons.Rounded.DeleteSweep,
                                 contentDescription = stringResource(id = R.string.remove),
                             )
                         }
@@ -343,7 +343,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                 item {
                     PreferenceItemVariant(
                         title = stringResource(id = R.string.new_template),
-                        icon = Icons.Outlined.Add,
+                        icon = Icons.Rounded.Add,
                     ) {
                         onNavigateToEditPage(-1)
                     }
@@ -351,7 +351,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                 item {
                     PreferenceItemVariant(
                         title = stringResource(id = R.string.edit_shortcuts),
-                        icon = Icons.Outlined.BookmarkAdd,
+                        icon = Icons.Rounded.BookmarkAdd,
                     ) {
                         showShortcutsDialog = true
                     }
@@ -362,7 +362,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            icon = { Icon(Icons.Outlined.Delete, null) },
+            icon = { Icon(Icons.Rounded.Delete, null) },
             title = { Text(stringResource(R.string.remove_template)) },
             text = {
                 Text(

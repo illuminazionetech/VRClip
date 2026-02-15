@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.Cookie
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Spellcheck
-import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.Cookie
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Spellcheck
+import androidx.compose.material.icons.rounded.Update
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -74,7 +74,7 @@ fun TroubleShootingPage(
                     PreferenceItem(
                         title = "XRClip Issue Tracker",
                         description = null,
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        icon = Icons.AutoMirrored.Rounded.OpenInNew,
                         onClick = { uriHandler.openUri(knownIssueUrlXRClip) },
                     )
 
@@ -82,7 +82,7 @@ fun TroubleShootingPage(
                     PreferenceItem(
                         title = "yt-dlp Issue Tracker",
                         description = null,
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        icon = Icons.AutoMirrored.Rounded.OpenInNew,
                         onClick = { uriHandler.openUri(knownIssueUrlYtdlp) },
                     )
 
@@ -113,7 +113,7 @@ fun TroubleShootingPage(
                             )
                         } else {
                             Icon(
-                                imageVector = Icons.Outlined.Update,
+                                imageVector = Icons.Rounded.Update,
                                 contentDescription = null,
                                 modifier = Modifier.padding(start = 8.dp, end = 16.dp).size(24.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -150,7 +150,7 @@ fun TroubleShootingPage(
                     trailingIcon = {
                         IconButton(onClick = { showYtdlpDialog = true }) {
                             Icon(
-                                imageVector = Icons.Outlined.Settings,
+                                imageVector = Icons.Rounded.Settings,
                                 contentDescription = stringResource(id = R.string.open_settings),
                             )
                         }
@@ -166,7 +166,7 @@ fun TroubleShootingPage(
                 PreferenceItem(
                     title = stringResource(R.string.cookies),
                     description = stringResource(R.string.cookies_desc),
-                    icon = Icons.Outlined.Cookie,
+                    icon = Icons.Rounded.Cookie,
                     onClick = { onNavigateTo(Route.COOKIE_PROFILE) },
                 )
             }
@@ -175,7 +175,7 @@ fun TroubleShootingPage(
                 var restrictFilenames by RESTRICT_FILENAMES.booleanState
                 PreferenceSwitch(
                     title = stringResource(id = R.string.restrict_filenames),
-                    icon = Icons.Outlined.Spellcheck,
+                    icon = Icons.Rounded.Spellcheck,
                     description = stringResource(id = R.string.restrict_filenames_desc),
                     isChecked = restrictFilenames,
                 ) {

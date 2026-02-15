@@ -16,8 +16,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.PlaylistAdd
-import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.automirrored.rounded.PlaylistAdd
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -259,7 +259,7 @@ fun PlaylistSelectionPageImpl(
                 },
                 navigationIcon = {
                     IconButton(onClick = onDismissRequest) {
-                        Icon(Icons.Outlined.Close, stringResource(R.string.close))
+                        Icon(Icons.Rounded.Close, stringResource(R.string.close))
                     }
                 },
                 actions = {
@@ -331,7 +331,7 @@ fun PlaylistSelectionPageImpl(
                         },
                     ) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.PlaylistAdd,
+                            imageVector = Icons.AutoMirrored.Rounded.PlaylistAdd,
                             contentDescription = stringResource(R.string.download_range_selection),
                         )
                     }

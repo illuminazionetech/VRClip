@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ElevatedAssistChip
@@ -125,7 +125,7 @@ fun SingleChoiceChip(
     selected: Boolean,
     enabled: Boolean = true,
     label: String,
-    leadingIcon: ImageVector = Icons.Outlined.Check,
+    leadingIcon: ImageVector = Icons.Rounded.Check,
     onClick: () -> Unit,
 ) {
     FilterChip(
@@ -187,7 +187,7 @@ fun ShortcutChip(
                     modifier = Modifier.size(InputChipDefaults.IconSize),
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Clear,
+                        imageVector = Icons.Rounded.Clear,
                         contentDescription = stringResource(id = R.string.remove),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(InputChipDefaults.IconSize),

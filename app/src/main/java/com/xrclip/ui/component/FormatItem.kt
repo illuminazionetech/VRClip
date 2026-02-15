@@ -23,11 +23,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCut
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.VerticalSplit
+import androidx.compose.material.icons.rounded.ContentCut
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.VerticalSplit
 import androidx.compose.material.icons.rounded.Audiotrack
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Videocam
@@ -127,7 +127,7 @@ fun FormatVideoPreview(
         Box(modifier = Modifier.align(Alignment.BottomEnd)) {
             IconButton(onClick = { expanded = true }, modifier = Modifier.size(36.dp)) {
                 Icon(
-                    imageVector = Icons.Outlined.MoreVert,
+                    imageVector = Icons.Rounded.MoreVert,
                     stringResource(id = R.string.show_more_actions),
                     modifier = Modifier.size(18.dp),
                 )
@@ -140,7 +140,7 @@ fun FormatVideoPreview(
                 scrollState = rememberScrollState(),
             ) {
                 DropdownMenuItem(
-                    leadingIcon = { Icon(imageVector = Icons.Outlined.Edit, null) },
+                    leadingIcon = { Icon(imageVector = Icons.Rounded.Edit, null) },
                     text = { Text(text = stringResource(id = R.string.rename)) },
                     onClick = {
                         onRename()
@@ -148,7 +148,7 @@ fun FormatVideoPreview(
                     },
                 )
                 DropdownMenuItem(
-                    leadingIcon = { Icon(imageVector = Icons.Outlined.Image, null) },
+                    leadingIcon = { Icon(imageVector = Icons.Rounded.Image, null) },
                     text = { Text(text = stringResource(id = R.string.thumbnail)) },
                     onClick = {
                         onOpenThumbnail()
@@ -157,7 +157,7 @@ fun FormatVideoPreview(
                 )
                 if (isClippingAvailable && !isClippingVideo && !isSplittingVideo) {
                     DropdownMenuItem(
-                        leadingIcon = { Icon(Icons.Outlined.ContentCut, null) },
+                        leadingIcon = { Icon(Icons.Rounded.ContentCut, null) },
                         text = { Text(text = stringResource(id = R.string.clip_video)) },
                         onClick = {
                             onClippingToggled()
@@ -167,7 +167,7 @@ fun FormatVideoPreview(
                 }
                 if (isSplitByChapterAvailable && !isClippingVideo && !isSplittingVideo) {
                     DropdownMenuItem(
-                        leadingIcon = { Icon(Icons.Outlined.VerticalSplit, null) },
+                        leadingIcon = { Icon(Icons.Rounded.VerticalSplit, null) },
                         text = { Text(text = stringResource(id = R.string.split_video)) },
                         onClick = {
                             onSplittingToggled()

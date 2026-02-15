@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
@@ -113,7 +113,7 @@ fun VideoCard(
                                 ),
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.Cancel,
+                                imageVector = Icons.Rounded.Cancel,
                                 contentDescription = stringResource(id = R.string.cancel),
                                 modifier = Modifier.size(32.dp),
                             )

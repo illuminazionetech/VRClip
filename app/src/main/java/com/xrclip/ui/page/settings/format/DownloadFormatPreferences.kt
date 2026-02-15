@@ -3,18 +3,18 @@ package com.xrclip.ui.page.settings.format
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArtTrack
-import androidx.compose.material.icons.outlined.ContentCut
-import androidx.compose.material.icons.outlined.Crop
-import androidx.compose.material.icons.outlined.HighQuality
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.MusicNote
-import androidx.compose.material.icons.outlined.Sort
-import androidx.compose.material.icons.outlined.SpatialAudioOff
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.VideoFile
-import androidx.compose.material.icons.outlined.VideoSettings
+import androidx.compose.material.icons.rounded.ArtTrack
+import androidx.compose.material.icons.rounded.ContentCut
+import androidx.compose.material.icons.rounded.Crop
+import androidx.compose.material.icons.rounded.HighQuality
+import androidx.compose.material.icons.rounded.Movie
+import androidx.compose.material.icons.rounded.MusicNote
+import androidx.compose.material.icons.rounded.Sort
+import androidx.compose.material.icons.rounded.SpatialAudioOff
+import androidx.compose.material.icons.rounded.Subtitles
+import androidx.compose.material.icons.rounded.Sync
+import androidx.compose.material.icons.rounded.VideoFile
+import androidx.compose.material.icons.rounded.VideoSettings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -132,7 +132,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                     PreferenceSwitch(
                         title = stringResource(id = R.string.extract_audio),
                         description = stringResource(id = R.string.extract_audio_summary),
-                        icon = Icons.Outlined.MusicNote,
+                        icon = Icons.Rounded.MusicNote,
                         isChecked = audioSwitch,
                         enabled = !isCustomCommandEnabled,
                         onClick = {
@@ -145,7 +145,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                 //                    PreferenceItem(title = stringResource(id =
                 // R.string.audio_format_preference),
                 //                        description = audioFormat,
-                //                        icon = Icons.Outlined.AudioFile,
+                //                        icon = Icons.Rounded.AudioFile,
                 //                        enabled = !isCustomCommandEnabled &&
                 // !isFormatSortingEnabled,
                 //                        onClick = { showAudioFormatDialog = true })
@@ -154,7 +154,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                 //                    PreferenceItem(
                 //                        title = stringResource(id = R.string.audio_quality),
                 //                        description = audioQuality,
-                //                        icon = Icons.Outlined.HighQuality,
+                //                        icon = Icons.Rounded.HighQuality,
                 //                        onClick = { showAudioQualityDialog = true },
                 //                        enabled = !isCustomCommandEnabled &&
                 // !isFormatSortingEnabled
@@ -164,7 +164,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                     PreferenceSwitchWithDivider(
                         title = stringResource(R.string.convert_audio_format),
                         description = PreferenceStrings.getAudioConvertDesc(convertFormat),
-                        icon = Icons.Outlined.Sync,
+                        icon = Icons.Rounded.Sync,
                         enabled = audioSwitch && !isCustomCommandEnabled,
                         onClick = { showAudioConvertDialog = true },
                         isChecked = convertAudio,
@@ -180,7 +180,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                         description = stringResource(id = R.string.embed_metadata_desc),
                         enabled = audioSwitch && !isCustomCommandEnabled,
                         isChecked = embedMetadata,
-                        icon = Icons.Outlined.ArtTrack,
+                        icon = Icons.Rounded.ArtTrack,
                         onClick = {
                             embedMetadata = !embedMetadata
                             EMBED_METADATA.updateBoolean(embedMetadata)
@@ -191,7 +191,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                     PreferenceSwitch(
                         title = stringResource(R.string.crop_artwork),
                         description = stringResource(R.string.crop_artwork_desc),
-                        icon = Icons.Outlined.Crop,
+                        icon = Icons.Rounded.Crop,
                         enabled = embedMetadata && audioSwitch && !isCustomCommandEnabled,
                         isChecked = isArtworkCroppingEnabled,
                     ) {
@@ -204,7 +204,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                     PreferenceItem(
                         title = stringResource(R.string.video_format_preference),
                         description = PreferenceStrings.getVideoFormatLabel(videoFormat),
-                        icon = Icons.Outlined.VideoFile,
+                        icon = Icons.Rounded.VideoFile,
                         enabled = !audioSwitch && !isCustomCommandEnabled && !isFormatSortingEnabled,
                     ) {
                         showVideoFormatDialog = true
@@ -214,7 +214,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                     PreferenceItem(
                         title = stringResource(id = R.string.video_quality),
                         description = PreferenceStrings.getVideoResolutionDesc(videoQuality),
-                        icon = Icons.Outlined.HighQuality,
+                        icon = Icons.Rounded.HighQuality,
                         enabled = !audioSwitch && !isCustomCommandEnabled && !isFormatSortingEnabled,
                     ) {
                         showVideoQualityDialog = true
@@ -225,7 +225,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                       PreferenceSwitch(
                           title = stringResource(id = R.string.embed_thumbnail),
                           description = stringResource(id = R.string.embed_thumbnail_desc),
-                          icon = Icons.Outlined.Photo,
+                          icon = Icons.Rounded.Photo,
                           isChecked = embedThumbnail,
                           enabled = !isCustomCommandEnabled && !audioSwitch
                       ) {
@@ -239,7 +239,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                         title = stringResource(id = R.string.remux_container_mkv),
                         description = stringResource(id = R.string.remux_container_mkv_desc),
                         isChecked = (downloadSubtitle && embedSubtitle) || remuxToMkv,
-                        icon = Icons.Outlined.Movie,
+                        icon = Icons.Rounded.Movie,
                         enabled =
                             !(downloadSubtitle && embedSubtitle) &&
                                 !isCustomCommandEnabled &&
@@ -260,7 +260,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                 item {
                     PreferenceItem(
                         title = stringResource(id = R.string.subtitle),
-                        icon = Icons.Outlined.Subtitles,
+                        icon = Icons.Rounded.Subtitles,
                         enabled = !isCustomCommandEnabled,
                         description = stringResource(id = R.string.subtitle_desc),
                     ) {
@@ -270,7 +270,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                 item {
                     PreferenceSwitchWithDivider(
                         title = stringResource(id = R.string.format_sorting),
-                        icon = Icons.Outlined.Sort,
+                        icon = Icons.Rounded.Sort,
                         description = stringResource(id = R.string.format_sorting_desc),
                         enabled = !isCustomCommandEnabled,
                         isChecked = isFormatSortingEnabled,
@@ -284,7 +284,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                 item {
                     PreferenceSwitch(
                         title = stringResource(id = R.string.format_selection),
-                        icon = Icons.Outlined.VideoSettings,
+                        icon = Icons.Rounded.VideoSettings,
                         enabled = !isCustomCommandEnabled,
                         description = stringResource(id = R.string.format_selection_desc),
                         isChecked = isFormatSelectionEnabled,
@@ -297,7 +297,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                     PreferenceSwitch(
                         title = stringResource(id = R.string.clip_video),
                         description = stringResource(id = R.string.clip_video_desc),
-                        icon = Icons.Outlined.ContentCut,
+                        icon = Icons.Rounded.ContentCut,
                         isChecked = isVideoClipEnabled,
                         enabled = !isCustomCommandEnabled && isFormatSelectionEnabled,
                     ) {
@@ -313,7 +313,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                         title = stringResource(id = R.string.merge_audiostream),
                         description = stringResource(id = R.string.merge_audiostream_desc),
                         isChecked = mergeAudioStream,
-                        icon = Icons.Outlined.SpatialAudioOff,
+                        icon = Icons.Rounded.SpatialAudioOff,
                         onClick = {
                             if (mergeAudioStream) {
                                 mergeAudioStream = false
@@ -380,7 +380,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
     if (showVideoClipDialog) {
         AlertDialog(
             onDismissRequest = { showVideoClipDialog = false },
-            icon = { Icon(Icons.Outlined.ContentCut, null) },
+            icon = { Icon(Icons.Rounded.ContentCut, null) },
             confirmButton = {
                 ConfirmButton {
                     isVideoClipEnabled = true
@@ -401,7 +401,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
     if (showMergeAudioDialog) {
         AlertDialog(
             onDismissRequest = { showMergeAudioDialog = false },
-            icon = { Icon(Icons.Outlined.SpatialAudioOff, null) },
+            icon = { Icon(Icons.Rounded.SpatialAudioOff, null) },
             confirmButton = {
                 ConfirmButton {
                     mergeAudioStream = true

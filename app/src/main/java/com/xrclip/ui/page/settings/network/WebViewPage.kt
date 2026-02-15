@@ -8,7 +8,7 @@ import android.webkit.WebView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -95,7 +95,7 @@ fun WebViewPage(cookiesViewModel: CookiesViewModel, onDismissRequest: () -> Unit
                 navigationIcon = {
                     IconButton(onClick = { onDismissRequest() }) {
                         Icon(
-                            imageVector = Icons.Outlined.Close,
+                            imageVector = Icons.Rounded.Close,
                             stringResource(id = androidx.appcompat.R.string.abc_action_mode_done),
                         )
                     }

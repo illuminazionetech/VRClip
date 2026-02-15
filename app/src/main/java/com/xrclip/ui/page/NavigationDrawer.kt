@@ -19,19 +19,19 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Terminal
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Terminal
-import androidx.compose.material.icons.outlined.VolunteerActivism
+import androidx.compose.material.icons.automirrored.rounded.List
+import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material.icons.rounded.VolunteerActivism
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Cookie
 import androidx.compose.material.icons.rounded.Folder
@@ -169,7 +169,7 @@ fun NavigationDrawer(
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                             ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.Menu,
+                                    imageVector = Icons.Rounded.Menu,
                                     contentDescription = stringResource(R.string.show_navigation_drawer)
                                 )
                             }
@@ -211,7 +211,7 @@ fun NavigationDrawerSheetContent(
         ProvideTextStyle(MaterialTheme.typography.titleSmall) {
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.download_queue)) },
-                icon = { Icon(if (currentRoute == Route.HOME) Icons.Filled.Download else Icons.Outlined.Download, null) },
+                icon = { Icon(if (currentRoute == Route.HOME) Icons.Rounded.Download else Icons.Rounded.Download, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
@@ -222,7 +222,7 @@ fun NavigationDrawerSheetContent(
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.downloads_history)) },
-                icon = { Icon(if (currentRoute == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List else Icons.AutoMirrored.Outlined.List, null) },
+                icon = { Icon(if (currentRoute == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List else Icons.AutoMirrored.Rounded.List, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
@@ -233,7 +233,7 @@ fun NavigationDrawerSheetContent(
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.custom_command)) },
-                icon = { Icon(if (currentRoute == Route.TASK_LIST) Icons.Filled.Terminal else Icons.Outlined.Terminal, null) },
+                icon = { Icon(if (currentRoute == Route.TASK_LIST) Icons.Rounded.Terminal else Icons.Rounded.Terminal, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
@@ -244,7 +244,7 @@ fun NavigationDrawerSheetContent(
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.settings)) },
-                icon = { Icon(if (currentRoute == Route.SETTINGS_PAGE) Icons.Filled.Settings else Icons.Outlined.Settings, null) },
+                icon = { Icon(if (currentRoute == Route.SETTINGS_PAGE) Icons.Rounded.Settings else Icons.Rounded.Settings, null) },
                 onClick = {
                     scope
                         .launch { onDismissRequest() }
@@ -271,7 +271,7 @@ fun NavigationDrawerSheetContent(
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.general_settings)) },
-                    icon = { Icon(if (currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES) Icons.Filled.Settings else Icons.Outlined.Settings, null) },
+                    icon = { Icon(if (currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES) Icons.Rounded.Settings else Icons.Rounded.Settings, null) },
                     onClick = {
                         scope
                             .launch { onDismissRequest() }
@@ -285,7 +285,7 @@ fun NavigationDrawerSheetContent(
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.download_directory)) },
-                    icon = { Icon(if (currentRoute == Route.DOWNLOAD_DIRECTORY) Icons.Filled.Folder else Icons.Outlined.Folder, null) },
+                    icon = { Icon(if (currentRoute == Route.DOWNLOAD_DIRECTORY) Icons.Rounded.Folder else Icons.Rounded.Folder, null) },
                     onClick = {
                         scope
                             .launch { onDismissRequest() }
@@ -321,7 +321,7 @@ fun NavigationDrawerSheetContent(
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.about)) },
-                    icon = { Icon(if (currentRoute == Route.ABOUT) Icons.Filled.Info else Icons.Outlined.Info, null) },
+                    icon = { Icon(if (currentRoute == Route.ABOUT) Icons.Rounded.Info else Icons.Rounded.Info, null) },
                     onClick = {
                         scope
                             .launch { onDismissRequest() }
@@ -381,8 +381,8 @@ fun NavigationRailContent(
         NavigationRailItemVariant(
             icon = {
                 Icon(
-                    if (currentTopDestination == Route.HOME) Icons.Filled.Download
-                    else Icons.Outlined.Download,
+                    if (currentTopDestination == Route.HOME) Icons.Rounded.Download
+                    else Icons.Rounded.Download,
                     stringResource(R.string.download_queue),
                 )
             },
@@ -395,7 +395,7 @@ fun NavigationRailContent(
             icon = {
                 Icon(
                     if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
-                    else Icons.AutoMirrored.Outlined.List,
+                    else Icons.AutoMirrored.Rounded.List,
                     stringResource(R.string.downloads_history),
                 )
             },
@@ -407,8 +407,8 @@ fun NavigationRailContent(
         NavigationRailItemVariant(
             icon = {
                 Icon(
-                    if (currentTopDestination == Route.TASK_LIST) Icons.Filled.Terminal
-                    else Icons.Outlined.Terminal,
+                    if (currentTopDestination == Route.TASK_LIST) Icons.Rounded.Terminal
+                    else Icons.Rounded.Terminal,
                     stringResource(R.string.custom_command),
                 )
             },
@@ -420,8 +420,8 @@ fun NavigationRailContent(
         NavigationRailItemVariant(
             icon = {
                 Icon(
-                    if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Filled.Settings
-                    else Icons.Outlined.Settings,
+                    if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Rounded.Settings
+                    else Icons.Rounded.Settings,
                     stringResource(R.string.settings),
                 )
             },

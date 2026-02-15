@@ -40,11 +40,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.automirrored.rounded.List
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.GridView
+import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingActionButton
@@ -581,7 +581,7 @@ private fun HeaderCompact(modifier: Modifier = Modifier, onMenuOpen: () -> Unit)
     ) {
         IconButton(onClick = onMenuOpen, modifier = Modifier.padding(start = 8.dp)) {
             Icon(
-                imageVector = Icons.Outlined.Menu,
+                imageVector = Icons.Rounded.Menu,
                 contentDescription = stringResource(R.string.show_navigation_drawer),
                 modifier = Modifier,
             )
@@ -637,13 +637,13 @@ fun FABs(modifier: Modifier = Modifier, downloadCallback: () -> Unit = {}) {
                         modifier = Modifier.widthIn(min = 100.dp).padding(horizontal = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(Icons.Outlined.FileDownload, contentDescription = null)
+                        Icon(Icons.Rounded.FileDownload, contentDescription = null)
                         Spacer(Modifier.width(12.dp))
                         Text(stringResource(R.string.download), style = MaterialTheme.typography.titleMedium)
                     }
                 } else {
                     Icon(
-                        Icons.Outlined.FileDownload,
+                        Icons.Rounded.FileDownload,
                         contentDescription = stringResource(R.string.download),
                         modifier = Modifier.size(28.dp)
                     )
@@ -665,11 +665,12 @@ private fun DownloadQueuePlaceholder(modifier: Modifier = Modifier) {
                     this@BoxWithConstraints.constraints.maxHeight >= 240.dp.toPx()
                 }
             if (showImage) {
-                Image(
-                    painter = rememberVectorPainter(image = DynamicColorImageVectors.download()),
+                Icon(
+                    imageVector = Icons.Rounded.FileDownload,
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
                     modifier =
-                        Modifier.fillMaxHeight(0.5f).widthIn(max = 240.dp).constrainAs(image) {
+                        Modifier.size(160.dp).constrainAs(image) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
@@ -751,7 +752,7 @@ fun SubHeader(
         ) {
             Icon(
                 imageVector =
-                    if (isGridView) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView,
+                    if (isGridView) Icons.AutoMirrored.Rounded.List else Icons.Rounded.GridView,
                 contentDescription =
                     stringResource(
                         if (isGridView) R.string.switch_to_list_view else R.string.switch_to_grid_view
@@ -768,7 +769,7 @@ fun SubHeader(
             colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
         ) {
             Icon(
-                imageVector = Icons.Outlined.MoreVert,
+                imageVector = Icons.Rounded.MoreVert,
                 contentDescription = stringResource(id = R.string.show_more_actions),
                 modifier = Modifier.size(16.dp),
             )

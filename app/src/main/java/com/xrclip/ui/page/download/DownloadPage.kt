@@ -32,13 +32,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.ContentPaste
-import androidx.compose.material.icons.outlined.Error
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Subscriptions
-import androidx.compose.material.icons.outlined.Terminal
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.ContentPaste
+import androidx.compose.material.icons.rounded.Error
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Subscriptions
+import androidx.compose.material.icons.rounded.Terminal
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ButtonDefaults
@@ -386,7 +386,7 @@ fun DownloadPageImpl(
                             modifier = Modifier,
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.Settings,
+                                imageVector = Icons.Rounded.Settings,
                                 contentDescription = stringResource(id = R.string.settings),
                             )
                         }
@@ -419,7 +419,7 @@ fun DownloadPageImpl(
                                 modifier = Modifier,
                             ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.Terminal,
+                                    imageVector = Icons.Rounded.Terminal,
                                     contentDescription = stringResource(id = R.string.running_tasks),
                                 )
                             }
@@ -442,7 +442,7 @@ fun DownloadPageImpl(
                             modifier = Modifier,
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.Subscriptions,
+                                imageVector = Icons.Rounded.Subscriptions,
                                 contentDescription = stringResource(id = R.string.downloads_history),
                             )
                         }
@@ -600,7 +600,7 @@ fun InputUrl(
         AnimatedVisibility(visible = showCancelButton) {
             OutlinedButtonWithIcon(
                 onClick = onCancel,
-                icon = Icons.Outlined.Cancel,
+                icon = Icons.Rounded.Cancel,
                 text = stringResource(id = R.string.cancel),
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -670,7 +670,7 @@ fun ErrorMessage(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    Icons.Outlined.Error,
+                    Icons.Rounded.Error,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error,
                 )
@@ -755,7 +755,7 @@ fun FABs(
             onClick = pasteCallback,
             content = {
                 Icon(
-                    Icons.Outlined.ContentPaste,
+                    Icons.Rounded.ContentPaste,
                     contentDescription = stringResource(R.string.paste),
                 )
             },
@@ -765,7 +765,7 @@ fun FABs(
             onClick = downloadCallback,
             content = {
                 Icon(
-                    Icons.Outlined.FileDownload,
+                    Icons.Rounded.FileDownload,
                     contentDescription = stringResource(R.string.download),
                 )
             },

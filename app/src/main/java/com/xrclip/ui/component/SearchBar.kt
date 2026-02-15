@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Clear
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +46,7 @@ fun XRClipSearchBar(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(16.dp))
             Icon(
-                imageVector = Icons.Outlined.Search,
+                imageVector = Icons.Rounded.Search,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -66,7 +66,7 @@ fun XRClipSearchBar(
                         ) {
                             Icon(
                                 modifier = Modifier.size(24.dp),
-                                imageVector = Icons.Outlined.Clear,
+                                imageVector = Icons.Rounded.Clear,
                                 contentDescription = stringResource(id = R.string.clear),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )

@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -85,7 +85,7 @@ fun AppearancePreferences(onNavigateBack: () -> Unit, onNavigateTo: (String) -> 
                 val isDarkTheme = LocalDarkTheme.current.isDarkTheme()
                 PreferenceSwitchWithDivider(
                     title = stringResource(id = R.string.dark_theme),
-                    icon = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+                    icon = if (isDarkTheme) Icons.Rounded.DarkMode else Icons.Rounded.LightMode,
                     isChecked = isDarkTheme,
                     description = LocalDarkTheme.current.getDarkThemeDesc(),
                     onChecked = {
@@ -95,7 +95,7 @@ fun AppearancePreferences(onNavigateBack: () -> Unit, onNavigateTo: (String) -> 
                 )
                 PreferenceItem(
                     title = stringResource(R.string.language),
-                    icon = Icons.Outlined.Language,
+                    icon = Icons.Rounded.Language,
                     description = Locale.getDefault().toDisplayName(),
                 ) {
                     onNavigateTo(Route.LANGUAGES)

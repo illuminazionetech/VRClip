@@ -21,12 +21,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.DownloadDone
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.NewLabel
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.DownloadDone
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.NewLabel
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -135,7 +135,7 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
                 },
                 modifier = Modifier.padding(vertical = 18.dp, horizontal = 6.dp),
             ) {
-                Icon(Icons.Outlined.Add, stringResource(id = R.string.new_task))
+                Icon(Icons.Rounded.Add, stringResource(id = R.string.new_task))
             }
         },
     ) { paddings ->
@@ -219,7 +219,7 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
                             OutlinedButtonWithIcon(
                                 modifier = Modifier.padding(horizontal = 12.dp),
                                 onClick = onDismissRequest,
-                                icon = Icons.Outlined.Cancel,
+                                icon = Icons.Rounded.Cancel,
                                 text = stringResource(R.string.cancel),
                             )
                         }
@@ -230,7 +230,7 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
                                     Downloader.executeCommandWithUrl(url)
                                     onDismissRequest()
                                 },
-                                icon = Icons.Outlined.DownloadDone,
+                                icon = Icons.Rounded.DownloadDone,
                                 text = stringResource(R.string.start),
                             )
                         }
@@ -274,7 +274,7 @@ fun ColumnScope.TaskCreatorDialogContent(
 ) {
     Icon(
         modifier = Modifier.align(Alignment.CenterHorizontally),
-        imageVector = Icons.Outlined.Add,
+        imageVector = Icons.Rounded.Add,
         contentDescription = null,
     )
     Text(
@@ -316,21 +316,21 @@ fun ColumnScope.TaskCreatorDialogContent(
     ) {
         item {
             OutlinedButtonChip(
-                icon = Icons.Outlined.Code,
+                icon = Icons.Rounded.Code,
                 label = template.name,
                 onClick = onTemplateSelectionClicked,
             )
         }
         item {
             OutlinedButtonChip(
-                icon = Icons.Outlined.Edit,
+                icon = Icons.Rounded.Edit,
                 label = stringResource(id = R.string.edit_template, template.name),
                 onClick = onEditClicked,
             )
         }
         item {
             OutlinedButtonChip(
-                icon = Icons.Outlined.NewLabel,
+                icon = Icons.Rounded.NewLabel,
                 label = stringResource(id = R.string.new_template),
                 onClick = onNewTemplateClicked,
             )
@@ -354,7 +354,7 @@ fun TemplatePickerDialog(onDismissRequest: () -> Unit = {}) {
         onDismissRequest = onDismissRequest,
         confirmButton = { DismissButton(onClick = onDismissRequest) },
         title = { Text(text = stringResource(id = R.string.template_selection)) },
-        icon = { Icon(imageVector = Icons.Outlined.Code, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Code, contentDescription = null) },
         text = {
             Box(modifier = Modifier.heightIn(max = 450.dp)) {
                 androidx.compose.material3.HorizontalDivider(

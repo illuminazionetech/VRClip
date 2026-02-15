@@ -23,14 +23,14 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.AddLink
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.ContentPaste
-import androidx.compose.material.icons.outlined.ContentPasteGo
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AddLink
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.ContentPaste
+import androidx.compose.material.icons.rounded.ContentPasteGo
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -143,7 +143,7 @@ private fun InputUrlPageImpl(
         Header(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
             title = stringResource(R.string.new_task),
-            icon = Icons.Outlined.Add,
+            icon = Icons.Rounded.Add,
         )
         OutlinedTextField(
             value = url,
@@ -171,7 +171,7 @@ private fun InputUrlPageImpl(
                         label = { Text(stringResource(R.string.paste_msg)) },
                         icon = {
                             Icon(
-                                imageVector = Icons.Outlined.ContentPaste,
+                                imageVector = Icons.Rounded.ContentPaste,
                                 contentDescription = null,
                                 modifier = Modifier.size(SuggestionChipDefaults.IconSize),
                             )
@@ -195,7 +195,7 @@ private fun InputUrlPageImpl(
                         },
                         icon = {
                             Icon(
-                                imageVector = Icons.Outlined.ContentPasteGo,
+                                imageVector = Icons.Rounded.ContentPasteGo,
                                 contentDescription = null,
                                 modifier = Modifier.size(SuggestionChipDefaults.IconSize),
                             )
@@ -233,7 +233,7 @@ private fun InputUrlPageImpl(
                         },
                         icon = {
                             Icon(
-                                imageVector = Icons.Outlined.AddLink,
+                                imageVector = Icons.Rounded.AddLink,
                                 contentDescription = null,
                                 modifier = Modifier.size(SuggestionChipDefaults.IconSize),
                             )
@@ -250,11 +250,11 @@ private fun InputUrlPageImpl(
             OutlinedButtonWithIcon(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 onClick = { onActionPost(Action.HideSheet) },
-                icon = Icons.Outlined.Cancel,
+                icon = Icons.Rounded.Cancel,
                 text = stringResource(R.string.cancel),
             )
             FilledButtonWithIcon(
-                icon = Icons.AutoMirrored.Outlined.ArrowForward,
+                icon = Icons.AutoMirrored.Rounded.ArrowForward,
                 text = stringResource(R.string.proceed),
             ) {
                 onActionPost(Action.ProceedWithURLs(listOf(url)))
@@ -295,10 +295,10 @@ private fun URLSelectionDialog(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
         title = { Text(stringResource(R.string.select_multiple_link, urlListFromClipboard.size)) },
-        icon = { Icon(Icons.Outlined.AddLink, null) },
+        icon = { Icon(Icons.Rounded.AddLink, null) },
         confirmButton = {
             FilledButtonWithIcon(
-                icon = Icons.AutoMirrored.Outlined.ArrowForward,
+                icon = Icons.AutoMirrored.Rounded.ArrowForward,
                 text = stringResource(R.string.proceed),
                 enabled = indexList.isNotEmpty(),
             ) {
@@ -467,13 +467,13 @@ private fun SavedUrlDialogImpl(
 
     XRClipDialog(
         modifier = modifier,
-        icon = { Icon(Icons.Outlined.Link, contentDescription = null) },
+        icon = { Icon(Icons.Rounded.Link, contentDescription = null) },
         title = { Text(stringResource(R.string.saved_urls)) },
         onDismissRequest = onDismissRequest,
         dismissButton = { OutlinedDismissButton(onClick = onDismissRequest) },
         confirmButton = {
             FilledButtonWithIcon(
-                icon = Icons.AutoMirrored.Outlined.ArrowForward,
+                icon = Icons.AutoMirrored.Rounded.ArrowForward,
                 text = stringResource(R.string.proceed),
                 enabled = selectedUrl != null,
             ) {
@@ -521,7 +521,7 @@ private fun SavedUrlDialogImpl(
                             backgroundContent = {
                                 Box(Modifier.fillMaxSize().background(containerColor)) {
                                     Icon(
-                                        Icons.Outlined.Delete,
+                                        Icons.Rounded.Delete,
                                         null,
                                         modifier =
                                             Modifier.align(Alignment.CenterEnd)

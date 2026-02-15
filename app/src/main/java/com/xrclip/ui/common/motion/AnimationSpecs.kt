@@ -19,8 +19,8 @@ private val path =
         cubicTo(0.208333F, 0.82F, 0.25F, 1F, 1F, 1F)
     }
 
-val EmphasizeEasing = PathEasing(path)
-val EmphasizeEasingVariant = CubicBezierEasing(.2f, 0f, 0f, 1f)
+val EmphasizeEasing = CubicBezierEasing(0.2f, 1.4f, 0.4f, 1.0f) // Expressive bouncy easing
+val EmphasizeEasingVariant = CubicBezierEasing(0.34f, 1.56f, 0.64f, 1.0f)
 val EmphasizedDecelerate = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
 val EmphasizedAccelerate = CubicBezierEasing(0.3f, 0f, 1f, 1f)
 

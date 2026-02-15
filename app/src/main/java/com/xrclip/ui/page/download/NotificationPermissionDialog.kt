@@ -1,7 +1,7 @@
 package com.xrclip.ui.page.download
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NotificationsActive
+import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -21,7 +21,7 @@ fun NotificationPermissionDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         icon = {
-            Icon(imageVector = Icons.Outlined.NotificationsActive, contentDescription = null)
+            Icon(imageVector = Icons.Rounded.NotificationsActive, contentDescription = null)
         },
         text = { Text(text = stringResource(id = R.string.enable_notifications_desc)) },
         title = { Text(text = stringResource(id = R.string.enable_notifications)) },

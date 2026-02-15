@@ -17,16 +17,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.automirrored.outlined.Sort
-import androidx.compose.material.icons.outlined.AudioFile
-import androidx.compose.material.icons.outlined.HighQuality
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.SettingsSuggest
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.VideoFile
-import androidx.compose.material.icons.outlined.VideoSettings
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.automirrored.rounded.Sort
+import androidx.compose.material.icons.rounded.AudioFile
+import androidx.compose.material.icons.rounded.HighQuality
+import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.SettingsSuggest
+import androidx.compose.material.icons.rounded.Sync
+import androidx.compose.material.icons.rounded.VideoFile
+import androidx.compose.material.icons.rounded.VideoSettings
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
@@ -154,7 +154,7 @@ fun VideoFormatPreferenceSelectField(
             value = videoFormatText,
             onValueChange = {},
             readOnly = true,
-            leadingIcon = { Icon(Icons.Outlined.VideoFile, null) },
+            leadingIcon = { Icon(Icons.Rounded.VideoFile, null) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             label = { Text(stringResource(id = R.string.video_format_preference)) },
@@ -186,7 +186,7 @@ fun VideoQuickSettingsDialog(
 ) {
     XRClipDialog(
         onDismissRequest = onDismissRequest,
-        icon = { Icon(Icons.Outlined.VideoFile, null) },
+        icon = { Icon(Icons.Rounded.VideoFile, null) },
         title = { Text(text = stringResource(id = R.string.edit_preset)) },
         dismissButton = {
             OutlinedButton(onClick = onDismissRequest) { Text(stringResource(R.string.cancel)) }
@@ -390,7 +390,7 @@ fun AudioQuickSettingsDialog(
     XRClipDialog(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-        icon = { Icon(Icons.Outlined.AudioFile, null) },
+        icon = { Icon(Icons.Rounded.AudioFile, null) },
         title = { Text(stringResource(R.string.edit_preset)) },
         text = {
             AnimatedContent(
@@ -425,7 +425,7 @@ fun AudioQuickSettingsDialog(
                                     VerticalDivider(Modifier.height(32.dp))
                                     IconButton(onClick = { editingPreset = true }) {
                                         Icon(
-                                            imageVector = Icons.Outlined.Settings,
+                                            imageVector = Icons.Rounded.Settings,
                                             contentDescription = stringResource(R.string.edit),
                                         )
                                     }
@@ -484,7 +484,7 @@ fun AudioConversionDialog(
         dismissButton = {
             TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dismiss)) }
         },
-        icon = { Icon(Icons.Outlined.Sync, null) },
+        icon = { Icon(Icons.Rounded.Sync, null) },
         title = { Text(stringResource(R.string.convert_audio_format)) },
         confirmButton = {
             TextButton(
@@ -524,7 +524,7 @@ fun AudioConversionQuickSettingsDialog(onDismissRequest: () -> Unit, onConfirm: 
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         dismissButton = { DismissButton { onDismissRequest() } },
-        icon = { Icon(Icons.Outlined.Sync, null) },
+        icon = { Icon(Icons.Rounded.Sync, null) },
         title = { Text(stringResource(R.string.convert_audio_format)) },
         confirmButton = {
             ConfirmButton {
@@ -574,7 +574,7 @@ fun VideoFormatDialog(
         dismissButton = {
             TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dismiss)) }
         },
-        icon = { Icon(Icons.Outlined.VideoFile, null) },
+        icon = { Icon(Icons.Rounded.VideoFile, null) },
         title = { Text(stringResource(R.string.video_format_preference)) },
         confirmButton = {
             TextButton(
@@ -615,7 +615,7 @@ fun AudioFormatDialog(onDismissRequest: () -> Unit) {
         dismissButton = {
             TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dismiss)) }
         },
-        icon = { Icon(Icons.Outlined.AudioFile, null) },
+        icon = { Icon(Icons.Rounded.AudioFile, null) },
         title = { Text(stringResource(R.string.audio_format_preference)) },
         confirmButton = {
             ConfirmButton {
@@ -649,7 +649,7 @@ fun AudioQualityDialog(onDismissRequest: () -> Unit) {
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         dismissButton = { DismissButton { onDismissRequest() } },
-        icon = { Icon(Icons.Outlined.HighQuality, null) },
+        icon = { Icon(Icons.Rounded.HighQuality, null) },
         title = { Text(stringResource(R.string.audio_quality)) },
         confirmButton = {
             ConfirmButton {
@@ -691,7 +691,7 @@ fun FormatSortingDialog(
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         dismissButton = { DismissButton { onDismissRequest() } },
-        icon = { Icon(Icons.AutoMirrored.Outlined.Sort, null) },
+        icon = { Icon(Icons.AutoMirrored.Rounded.Sort, null) },
         title = { Text(stringResource(R.string.format_sorting)) },
         confirmButton = {
             ConfirmButton(text = stringResource(id = R.string.save)) {
@@ -724,13 +724,13 @@ fun FormatSortingDialog(
                     OutlinedButtonChip(
                         modifier = Modifier.padding(end = 8.dp),
                         label = stringResource(id = R.string.import_from_preferences),
-                        icon = Icons.Outlined.SettingsSuggest,
+                        icon = Icons.Rounded.SettingsSuggest,
                     ) {
                         onImport()
                     }
                     OutlinedButtonChip(
                         label = stringResource(R.string.yt_dlp_docs),
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        icon = Icons.AutoMirrored.Rounded.OpenInNew,
                     ) {
                         uriHandler.openUri(sortingFormats)
                     }
@@ -776,7 +776,7 @@ fun VideoQualityDialog(
         dismissButton = {
             TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dismiss)) }
         },
-        icon = { Icon(Icons.Outlined.HighQuality, null) },
+        icon = { Icon(Icons.Rounded.HighQuality, null) },
         title = { Text(stringResource(R.string.video_quality)) },
         confirmButton = {
             TextButton(
@@ -846,7 +846,7 @@ private fun SubtitleLanguageDialogImpl(
     XRClipDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(stringResource(id = R.string.subtitle_language)) },
-        icon = { Icon(Icons.Outlined.Language, null) },
+        icon = { Icon(Icons.Rounded.Language, null) },
         text = {
             Column() {
                 Text(
@@ -876,13 +876,13 @@ private fun SubtitleLanguageDialogImpl(
                     OutlinedButtonChip(
                         modifier = Modifier.padding(end = 8.dp),
                         label = stringResource(id = R.string.reset),
-                        icon = Icons.Outlined.Sync,
+                        icon = Icons.Rounded.Sync,
                     ) {
                         onReset()
                     }
                     OutlinedButtonChip(
                         label = stringResource(R.string.yt_dlp_docs),
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        icon = Icons.AutoMirrored.Rounded.OpenInNew,
                     ) {
                         uriHandler.openUri(sortingFormats)
                     }
@@ -912,7 +912,7 @@ fun SubtitleConversionDialog(onDismissRequest: () -> Unit) {
         },
         dismissButton = { DismissButton { onDismissRequest() } },
         title = { Text(text = stringResource(id = R.string.convert_subtitle)) },
-        icon = { Icon(imageVector = Icons.Outlined.Sync, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Sync, contentDescription = null) },
         text = {
             LazyColumn {
                 item {
@@ -951,7 +951,7 @@ fun VideoQualityPreferenceChip(
         label = { Text(text = PreferenceStrings.getVideoFormatLabel(videoQualityPreference)) },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Outlined.VideoSettings,
+                imageVector = Icons.Rounded.VideoSettings,
                 contentDescription = null,
                 modifier = Modifier.size(AssistChipDefaults.IconSize),
             )
@@ -973,7 +973,7 @@ fun VideoResolutionChip(
         label = { Text(text = PreferenceStrings.getVideoResolutionDesc(videoResolution)) },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Outlined.VideoSettings,
+                imageVector = Icons.Rounded.VideoSettings,
                 contentDescription = null,
                 modifier = Modifier.size(AssistChipDefaults.IconSize),
             )

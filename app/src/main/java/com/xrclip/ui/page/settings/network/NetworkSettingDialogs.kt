@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.OfflineBolt
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.VpnKey
+import androidx.compose.material.icons.rounded.OfflineBolt
+import androidx.compose.material.icons.rounded.Speed
+import androidx.compose.material.icons.rounded.VpnKey
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,7 +57,7 @@ fun RateLimitDialog(onDismissRequest: () -> Unit) {
     val softwareKeyboardController = LocalSoftwareKeyboardController.current
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        icon = { Icon(Icons.Outlined.Speed, null) },
+        icon = { Icon(Icons.Rounded.Speed, null) },
         title = { Text(stringResource(R.string.rate_limit)) },
         text = {
             Column {
@@ -128,7 +128,7 @@ fun ConcurrentDownloadDialog(onDismissRequest: () -> Unit) {
                 Text(stringResource(R.string.confirm))
             }
         },
-        icon = { Icon(Icons.Outlined.OfflineBolt, null) },
+        icon = { Icon(Icons.Rounded.OfflineBolt, null) },
         title = { Text(stringResource(R.string.concurrent_download)) },
         text = {
             Column {
@@ -160,7 +160,7 @@ fun ProxyConfigurationDialog(onDismissRequest: () -> Unit = {}) {
     var proxyUrl by remember { mutableStateOf(PROXY_URL.getString()) }
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        icon = { Icon(Icons.Outlined.VpnKey, null) },
+        icon = { Icon(Icons.Rounded.VpnKey, null) },
         title = { Text(stringResource(R.string.proxy)) },
         text = {
             Column {

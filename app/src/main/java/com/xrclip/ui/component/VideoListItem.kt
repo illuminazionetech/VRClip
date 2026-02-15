@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -152,7 +152,7 @@ fun MediaListItem(
             IconButton(onClick = onShowContextMenu) {
                 Icon(
                     modifier = Modifier.size(18.dp),
-                    imageVector = Icons.Outlined.MoreVert,
+                    imageVector = Icons.Rounded.MoreVert,
                     contentDescription = stringResource(id = R.string.show_more_actions),
                 )
             }

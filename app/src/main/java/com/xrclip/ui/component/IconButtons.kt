@@ -2,10 +2,10 @@ package com.xrclip.ui.component
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.ContentPaste
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.ContentPaste
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,14 +27,14 @@ fun PasteFromClipBoardButton(onPaste: (String) -> Unit = {}) {
 @Composable
 fun PasteButton(onClick: () -> Unit = {}) {
     IconButton(onClick = onClick) {
-        Icon(Icons.Outlined.ContentPaste, stringResource(R.string.paste))
+        Icon(Icons.Rounded.ContentPaste, stringResource(R.string.paste))
     }
 }
 
 @Composable
 fun AddButton(onClick: () -> Unit, enabled: Boolean = true) {
     IconButton(onClick = onClick, enabled = enabled) {
-        Icon(imageVector = Icons.Outlined.Add, contentDescription = stringResource(R.string.add))
+        Icon(imageVector = Icons.Rounded.Add, contentDescription = stringResource(R.string.add))
     }
 }
 
@@ -43,7 +43,7 @@ fun ClearButton(onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = Icons.Outlined.Cancel,
+            imageVector = Icons.Rounded.Cancel,
             contentDescription = stringResource(id = R.string.clear),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -61,7 +61,7 @@ fun BackButton(onClick: () -> Unit) {
         },
     ) {
         Icon(
-            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             contentDescription = stringResource(R.string.back),
         )
     }

@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentPaste
-import androidx.compose.material.icons.outlined.Downloading
-import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.SettingsSuggest
-import androidx.compose.material.icons.outlined.Subscriptions
+import androidx.compose.material.icons.rounded.ContentPaste
+import androidx.compose.material.icons.rounded.Downloading
+import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.SettingsSuggest
+import androidx.compose.material.icons.rounded.Subscriptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -62,23 +62,23 @@ fun WelcomeDialog(onClick: () -> Unit) {
             text = {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     IconDescription(
-                        icon = Icons.Outlined.ContentPaste,
+                        icon = Icons.Rounded.ContentPaste,
                         description = stringResource(R.string.paste_desc),
                     )
                     IconDescription(
-                        icon = Icons.Outlined.FileDownload,
+                        icon = Icons.Rounded.FileDownload,
                         description = stringResource(R.string.download_desc),
                     )
                     IconDescription(
-                        icon = Icons.Outlined.Subscriptions,
+                        icon = Icons.Rounded.Subscriptions,
                         description = stringResource(R.string.download_history_desc),
                     )
                     IconDescription(
-                        icon = Icons.Outlined.Downloading,
+                        icon = Icons.Rounded.Downloading,
                         description = stringResource(R.string.battery_settings_desc),
                     )
                     IconDescription(
-                        icon = Icons.Outlined.SettingsSuggest,
+                        icon = Icons.Rounded.SettingsSuggest,
                         description = stringResource(R.string.check_download_settings_desc),
                     )
                     if ((showWelcomeDialog > 1))

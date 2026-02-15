@@ -1,7 +1,7 @@
 package com.xrclip.ui.page.download
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.SignalCellularConnectedNoInternet4Bar
+import androidx.compose.material.icons.rounded.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +25,7 @@ fun MeteredNetworkDialog(
         onDismissRequest = onDismissRequest,
         icon = {
             Icon(
-                imageVector = Icons.Outlined.SignalCellularConnectedNoInternet4Bar,
+                imageVector = Icons.Rounded.SignalCellularConnectedNoInternet4Bar,
                 contentDescription = null,
             )
         },

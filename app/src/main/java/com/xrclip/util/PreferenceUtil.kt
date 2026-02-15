@@ -369,8 +369,8 @@ object PreferenceUtil {
             AppSettings(
                 DarkThemePreference(
                     darkThemeValue =
-                        kv.decodeInt(DARK_THEME_VALUE, DarkThemePreference.FOLLOW_SYSTEM),
-                    isHighContrastModeEnabled = kv.decodeBool(HIGH_CONTRAST, false),
+                        kv.decodeInt(DARK_THEME_VALUE, DarkThemePreference.OFF),
+                    isHighContrastModeEnabled = true,
                 )
             )
         )
@@ -378,8 +378,7 @@ object PreferenceUtil {
 
     fun modifyDarkThemePreference(
         darkThemeValue: Int = AppSettingsStateFlow.value.darkTheme.darkThemeValue,
-        isHighContrastModeEnabled: Boolean =
-            AppSettingsStateFlow.value.darkTheme.isHighContrastModeEnabled,
+        isHighContrastModeEnabled: Boolean = true,
     ) {
         applicationScope.launch(Dispatchers.IO) {
             mutableAppSettingsStateFlow.update {
@@ -387,12 +386,12 @@ object PreferenceUtil {
                     darkTheme =
                         AppSettingsStateFlow.value.darkTheme.copy(
                             darkThemeValue = darkThemeValue,
-                            isHighContrastModeEnabled = isHighContrastModeEnabled,
+                            isHighContrastModeEnabled = true,
                         )
                 )
             }
             kv.encode(DARK_THEME_VALUE, darkThemeValue)
-            kv.encode(HIGH_CONTRAST, isHighContrastModeEnabled)
+            kv.encode(HIGH_CONTRAST, true)
         }
     }
 
@@ -416,24 +415,22 @@ object PreferenceUtil {
 }
 
 data class DarkThemePreference(
-    val darkThemeValue: Int = FOLLOW_SYSTEM,
-    val isHighContrastModeEnabled: Boolean = false,
+    val darkThemeValue: Int = OFF,
+    val isHighContrastModeEnabled: Boolean = true,
 ) {
     companion object {
-        const val FOLLOW_SYSTEM = 1
         const val ON = 2
         const val OFF = 3
     }
 
     @Composable
     fun isDarkTheme(): Boolean {
-        return if (darkThemeValue == FOLLOW_SYSTEM) isSystemInDarkTheme() else darkThemeValue == ON
+        return darkThemeValue == ON
     }
 
     @Composable
     fun getDarkThemeDesc(): String {
         return when (darkThemeValue) {
-            FOLLOW_SYSTEM -> stringResource(R.string.follow_system)
             ON -> stringResource(R.string.on)
             else -> stringResource(R.string.off)
         }

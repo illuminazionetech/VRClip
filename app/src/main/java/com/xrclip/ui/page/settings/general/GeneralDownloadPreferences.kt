@@ -15,24 +15,24 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.DoneAll
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.HistoryToggleOff
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.MoneyOff
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material.icons.outlined.PlaylistAddCheck
-import androidx.compose.material.icons.outlined.Print
-import androidx.compose.material.icons.outlined.PrintDisabled
-import androidx.compose.material.icons.outlined.RemoveDone
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.rounded.Archive
+import androidx.compose.material.icons.rounded.DoneAll
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.History
+import androidx.compose.material.icons.rounded.HistoryToggleOff
+import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.MoneyOff
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.NotificationsActive
+import androidx.compose.material.icons.rounded.NotificationsOff
+import androidx.compose.material.icons.rounded.PlaylistAddCheck
+import androidx.compose.material.icons.rounded.Print
+import androidx.compose.material.icons.rounded.PrintDisabled
+import androidx.compose.material.icons.rounded.RemoveDone
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Update
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -192,7 +192,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                             if (isUpdating) UpdateProgressIndicator()
                             else {
                                 Icon(
-                                    imageVector = Icons.Outlined.Update,
+                                    imageVector = Icons.Rounded.Update,
                                     contentDescription = null,
                                     modifier =
                                         Modifier.padding(start = 8.dp, end = 16.dp).size(24.dp),
@@ -224,7 +224,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         trailingIcon = {
                             IconButton(onClick = { showYtdlpDialog = true }) {
                                 Icon(
-                                    imageVector = Icons.Outlined.Settings,
+                                    imageVector = Icons.Rounded.Settings,
                                     contentDescription = stringResource(id = R.string.open_settings),
                                 )
                             }
@@ -242,9 +242,9 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                                     else R.string.permission_denied
                             ),
                         icon =
-                            if (!isNotificationPermissionGranted) Icons.Outlined.NotificationsOff
-                            else if (!downloadNotification) Icons.Outlined.Notifications
-                            else Icons.Outlined.NotificationsActive,
+                            if (!isNotificationPermissionGranted) Icons.Rounded.NotificationsOff
+                            else if (!downloadNotification) Icons.Rounded.Notifications
+                            else Icons.Rounded.NotificationsActive,
                         isChecked = downloadNotification && isNotificationPermissionGranted,
                         onClick = {
                             if (notificationPermission?.status is PermissionStatus.Denied) {
@@ -264,8 +264,8 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         title = stringResource(id = R.string.settings_before_download),
                         description = stringResource(id = R.string.settings_before_download_desc),
                         icon =
-                            if (configureBeforeDownload) Icons.Outlined.DoneAll
-                            else Icons.Outlined.RemoveDone,
+                            if (configureBeforeDownload) Icons.Rounded.DoneAll
+                            else Icons.Rounded.RemoveDone,
                         isChecked = configureBeforeDownload,
                         onClick = {
                             configureBeforeDownload = !configureBeforeDownload
@@ -280,7 +280,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         title = stringResource(id = R.string.create_thumbnail),
                         description = stringResource(id = R.string.create_thumbnail_summary),
                         enabled = !isCustomCommandEnabled,
-                        icon = Icons.Outlined.Image,
+                        icon = Icons.Rounded.Image,
                         isChecked = thumbnailSwitch,
                         onClick = {
                             thumbnailSwitch = !thumbnailSwitch
@@ -293,8 +293,8 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         title = stringResource(R.string.print_details),
                         description = stringResource(R.string.print_details_desc),
                         icon =
-                            if (displayErrorReport) Icons.Outlined.Print
-                            else Icons.Outlined.PrintDisabled,
+                            if (displayErrorReport) Icons.Rounded.Print
+                            else Icons.Rounded.PrintDisabled,
                         enabled = !isCustomCommandEnabled,
                         onClick = {
                             displayErrorReport = !displayErrorReport
@@ -311,7 +311,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                     PreferenceSwitch(
                         title = stringResource(R.string.vr_mode),
                         description = stringResource(R.string.vr_mode_desc),
-                        icon = Icons.Outlined.Visibility,
+                        icon = Icons.Rounded.Visibility,
                         isChecked = vrMode,
                         onClick = {
                             vrMode = !vrMode
@@ -327,8 +327,8 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         title = stringResource(R.string.private_mode),
                         description = stringResource(R.string.private_mode_desc),
                         icon =
-                            if (isPrivateModeEnabled) Icons.Outlined.HistoryToggleOff
-                            else Icons.Outlined.History,
+                            if (isPrivateModeEnabled) Icons.Rounded.HistoryToggleOff
+                            else Icons.Rounded.History,
                         isChecked = isPrivateModeEnabled,
                         enabled = !isCustomCommandEnabled,
                         onClick = {
@@ -342,8 +342,8 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         title = stringResource(R.string.disable_preview),
                         description = stringResource(R.string.disable_preview_desc),
                         icon =
-                            if (isPreviewDisabled) Icons.Outlined.VisibilityOff
-                            else Icons.Outlined.Visibility,
+                            if (isPreviewDisabled) Icons.Rounded.VisibilityOff
+                            else Icons.Rounded.Visibility,
                         isChecked = isPreviewDisabled,
                         enabled = !isCustomCommandEnabled,
                         onClick = {
@@ -361,7 +361,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                             downloadPlaylist = !downloadPlaylist
                             PreferenceUtil.updateValue(PLAYLIST, downloadPlaylist)
                         },
-                        icon = Icons.Outlined.PlaylistAddCheck,
+                        icon = Icons.Rounded.PlaylistAddCheck,
                         enabled = !isCustomCommandEnabled,
                         description = stringResource(R.string.download_playlist_desc),
                         isChecked = downloadPlaylist,
@@ -377,7 +377,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                                 withContext(Dispatchers.Main) { showClearArchiveDialog = true }
                             }
                         },
-                        icon = Icons.Outlined.Archive,
+                        icon = Icons.Rounded.Archive,
                         description = stringResource(R.string.download_archive_desc),
                         isChecked = useDownloadArchive,
                         onChecked = {
@@ -392,7 +392,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                     PreferenceSwitchWithDivider(
                         title = stringResource(R.string.sponsorblock),
                         description = stringResource(R.string.sponsorblock_desc),
-                        icon = Icons.Outlined.MoneyOff,
+                        icon = Icons.Rounded.MoneyOff,
                         enabled = !isCustomCommandEnabled,
                         isChecked = isSponsorBlockEnabled,
                         onChecked = {
@@ -529,7 +529,7 @@ fun DownloadArchiveDialog(
             }
         },
         dismissButton = { DismissButton { onDismissRequest() } },
-        icon = { Icon(imageVector = Icons.Outlined.Edit, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Rounded.Edit, contentDescription = null) },
         title = { Text(text = stringResource(id = R.string.edit_file)) },
         text = {
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {

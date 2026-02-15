@@ -74,7 +74,6 @@ import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
 import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.common.motion.materialSharedAxisY
-import com.xrclip.ui.component.GreenTonalPalettes
 import com.xrclip.ui.theme.XRClipTheme
 import com.xrclip.util.toDurationText
 import com.xrclip.util.toFileSizeText
@@ -438,7 +437,7 @@ fun ListItemStateText(
                     )
                 }
                 is Completed -> {
-                    val color = GreenTonalPalettes.accent1(if (isDarkTheme) 80.0 else 40.0)
+                    val color = if (isDarkTheme) Color(0xFF30D158) else Color(0xFF34C759)
                     Icon(
                         imageVector = Icons.Filled.CheckCircle,
                         contentDescription = null,

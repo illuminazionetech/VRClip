@@ -589,7 +589,7 @@ private fun ResumeButton(
                 .size(IconButtonSize)
                 .clip(CircleShape)
                 .drawBehind { drawCircle(background) }
-                .clickable(onClickLabel = stringResource(R.string.cancel), onClick = onClick)
+                .clickable(onClickLabel = stringResource(R.string.resume), onClick = onClick)
     ) {
         if (progress != null) {
             CircularProgressIndicator(
@@ -602,7 +602,7 @@ private fun ResumeButton(
         }
         Icon(
             imageVector = Icons.Rounded.Download,
-            contentDescription = stringResource(R.string.restart),
+            contentDescription = stringResource(R.string.resume),
             modifier = Modifier.size(IconSize).align(Alignment.Center),
             tint = ActionButtonContentColor,
         )
@@ -619,7 +619,7 @@ fun RestartButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
                 .size(IconButtonSize)
                 .clip(CircleShape)
                 .drawBehind { drawCircle(background) }
-                .clickable(onClickLabel = stringResource(R.string.cancel), onClick = onClick)
+                .clickable(onClickLabel = stringResource(R.string.restart), onClick = onClick)
     ) {
         Icon(
             imageVector = Icons.Rounded.RestartAlt,
@@ -684,7 +684,7 @@ private fun ProgressButton(modifier: Modifier = Modifier, progress: Float, onCli
         }
         Icon(
             imageVector = Icons.Rounded.Pause,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.cancel),
             modifier = Modifier.align(Alignment.Center).size(IconSize),
             tint = ActionButtonContentColor,
         )

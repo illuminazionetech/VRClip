@@ -27,6 +27,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.meta.spatial.uiset.input.SpatialTextField
+import com.xrclip.ui.common.LocalIsVRMode
 import kotlinx.coroutines.delay
 
 /** @param contentDescription Text label of the `TextField` for the accessibility service */
@@ -62,38 +64,48 @@ fun XRClipTextField(
             disabledContainerColor = Color.Transparent,
         ),
 ) {
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier =
-            modifier.then(
-                Modifier.semantics {
-                    if (contentDescription != null) {
-                        this.contentDescription = contentDescription
+    if (LocalIsVRMode.current) {
+        SpatialTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = modifier,
+            enabled = enabled,
+            label = label?.let { "" } ?: "",
+        )
+    } else {
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier =
+                modifier.then(
+                    Modifier.semantics {
+                        if (contentDescription != null) {
+                            this.contentDescription = contentDescription
+                        }
                     }
-                }
-            ),
-        enabled = enabled,
-        readOnly = readOnly,
-        textStyle = textStyle,
-        label = label,
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        prefix = prefix,
-        suffix = suffix,
-        supportingText = supportingText,
-        isError = isError,
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        singleLine = singleLine,
-        maxLines = maxLines,
-        minLines = minLines,
-        interactionSource = interactionSource,
-        shape = shape,
-        colors = colors,
-    )
+                ),
+            enabled = enabled,
+            readOnly = readOnly,
+            textStyle = textStyle,
+            label = label,
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            prefix = prefix,
+            suffix = suffix,
+            supportingText = supportingText,
+            isError = isError,
+            visualTransformation = visualTransformation,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            minLines = minLines,
+            interactionSource = interactionSource,
+            shape = shape,
+            colors = colors,
+        )
+    }
 }
 
 @Composable

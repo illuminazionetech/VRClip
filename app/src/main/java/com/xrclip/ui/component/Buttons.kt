@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.meta.spatial.uiset.button.PrimaryButton
 import com.meta.spatial.uiset.button.SecondaryButton
 import com.xrclip.R
-import com.xrclip.ui.common.LocalDarkTheme
+import com.xrclip.ui.common.LocalIsVRMode
 import com.xrclip.ui.page.settings.general.ytdlpReference
 
 @Composable
@@ -95,7 +95,7 @@ fun FilledTonalButtonWithIcon(
     text: String,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
 ) {
-    if (LocalDarkTheme.current.isDarkTheme()) {
+    if (LocalIsVRMode.current) {
         SecondaryButton(
             modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
             onClick = onClick,
@@ -128,7 +128,7 @@ fun FilledButtonWithIcon(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    if (LocalDarkTheme.current.isDarkTheme()) {
+    if (LocalIsVRMode.current) {
         PrimaryButton(
             modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
             onClick = onClick,

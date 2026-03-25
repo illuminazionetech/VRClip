@@ -138,7 +138,7 @@ fun XRClipTheme(
             typography = Typography,
             shapes = Shapes,
         ) {
-            if (LocalDarkTheme.current.isDarkTheme()) {
+            if (darkTheme) {
                 SpatialTheme { content() }
             } else {
                 content()

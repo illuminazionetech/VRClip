@@ -35,6 +35,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
+import com.meta.spatial.uiset.control.SpatialCheckbox
+import com.meta.spatial.uiset.control.SpatialRadioButton
+import com.meta.spatial.uiset.control.SpatialSwitch
+import com.xrclip.ui.common.LocalIsVRMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -245,11 +249,15 @@ fun PreferenceSingleChoiceItem(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            RadioButton(
-                selected = selected,
-                onClick = onClick,
-                modifier = Modifier.padding(),
-            )
+            if (LocalIsVRMode.current) {
+                SpatialRadioButton(selected = selected, onClick = onClick)
+            } else {
+                RadioButton(
+                    selected = selected,
+                    onClick = onClick,
+                    modifier = Modifier.padding(),
+                )
+            }
         }
     }
 }
@@ -381,14 +389,22 @@ fun PreferenceSwitchVariant(
                 if (!description.isNullOrEmpty())
                     PreferenceItemDescription(text = description, enabled = enabled)
             }
-            Switch(
-                checked = isChecked,
-                onCheckedChange = null,
-                interactionSource = interactionSource,
-                modifier = Modifier.padding(start = 20.dp, end = 6.dp),
-                enabled = enabled,
-                thumbContent = thumbContent,
-            )
+            if (LocalIsVRMode.current) {
+                SpatialSwitch(
+                    checked = isChecked,
+                    onCheckedChange = { onClick() },
+                    enabled = enabled,
+                )
+            } else {
+                Switch(
+                    checked = isChecked,
+                    onCheckedChange = null,
+                    interactionSource = interactionSource,
+                    modifier = Modifier.padding(start = 20.dp, end = 6.dp),
+                    enabled = enabled,
+                    thumbContent = thumbContent,
+                )
+            }
         }
     }
 }
@@ -496,14 +512,22 @@ fun PreferenceSwitchWithDivider(
                         .align(Alignment.CenterVertically),
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
             )
-            Switch(
-                checked = isChecked,
-                onCheckedChange = { onChecked() },
-                modifier =
-                    Modifier.padding(horizontal = 6.dp).semantics { contentDescription = title },
-                enabled = isSwitchEnabled,
-                thumbContent = thumbContent,
-            )
+            if (LocalIsVRMode.current) {
+                SpatialSwitch(
+                    checked = isChecked,
+                    onCheckedChange = { onChecked() },
+                    enabled = isSwitchEnabled,
+                )
+            } else {
+                Switch(
+                    checked = isChecked,
+                    onCheckedChange = { onChecked() },
+                    modifier =
+                        Modifier.padding(horizontal = 6.dp).semantics { contentDescription = title },
+                    enabled = isSwitchEnabled,
+                    thumbContent = thumbContent,
+                )
+            }
         }
     }
 }
@@ -682,13 +706,17 @@ fun PreferenceSwitchWithContainer(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
-        Switch(
-            checked = isChecked,
-            interactionSource = interactionSource,
-            onCheckedChange = null,
-            modifier = Modifier.padding(start = 12.dp, end = 6.dp),
-            thumbContent = thumbContent,
-        )
+        if (LocalIsVRMode.current) {
+            SpatialSwitch(checked = isChecked, onCheckedChange = { onClick() })
+        } else {
+            Switch(
+                checked = isChecked,
+                interactionSource = interactionSource,
+                onCheckedChange = null,
+                modifier = Modifier.padding(start = 12.dp, end = 6.dp),
+                thumbContent = thumbContent,
+            )
+        }
     }
 }
 
@@ -763,11 +791,15 @@ fun TemplateItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AnimatedVisibility(visible = isMultiSelectEnabled) {
-                Checkbox(
-                modifier = Modifier,
-                    checked = checked,
-                    onCheckedChange = onCheckedChange,
-                )
+                if (LocalIsVRMode.current) {
+                    SpatialCheckbox(checked = checked, onCheckedChange = onCheckedChange)
+                } else {
+                    Checkbox(
+                        modifier = Modifier,
+                        checked = checked,
+                        onCheckedChange = onCheckedChange,
+                    )
+                }
             }
 
             Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp)) {
@@ -800,11 +832,15 @@ fun TemplateItem(
                         color = MaterialTheme.colorScheme.outlineVariant,
                         thickness = 1.dp,
                     )
-                    RadioButton(
-                        modifier = Modifier.semantics { contentDescription = label },
-                        selected = selected,
-                        onClick = onSelect,
-                    )
+                    if (LocalIsVRMode.current) {
+                        SpatialRadioButton(selected = selected, onClick = onSelect)
+                    } else {
+                        RadioButton(
+                            modifier = Modifier.semantics { contentDescription = label },
+                            selected = selected,
+                            onClick = onSelect,
+                        )
+                    }
                 }
             }
         }

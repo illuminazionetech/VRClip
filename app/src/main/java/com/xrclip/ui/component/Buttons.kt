@@ -37,7 +37,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.meta.spatial.uiset.button.PrimaryButton
+import com.meta.spatial.uiset.button.SecondaryButton
 import com.xrclip.R
+import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.page.settings.general.ytdlpReference
 
 @Composable
@@ -92,15 +95,28 @@ fun FilledTonalButtonWithIcon(
     text: String,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
 ) {
-    FilledTonalButton(
-        modifier = modifier.height(52.dp),
-        onClick = onClick,
-        contentPadding = PaddingValues(horizontal = 24.dp),
-        colors = colors,
-        shape = CircleShape,
-    ) {
-        Icon(modifier = Modifier.size(20.dp), imageVector = icon, contentDescription = null)
-        Text(modifier = Modifier.padding(start = 10.dp), text = text, style = MaterialTheme.typography.titleSmall)
+    if (LocalDarkTheme.current.isDarkTheme()) {
+        SecondaryButton(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            label = text,
+            leading = { Icon(imageVector = icon, contentDescription = null) },
+        )
+    } else {
+        FilledTonalButton(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            colors = colors,
+            shape = CircleShape,
+        ) {
+            Icon(modifier = Modifier.size(24.dp), imageVector = icon, contentDescription = null)
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
     }
 }
 
@@ -112,15 +128,29 @@ fun FilledButtonWithIcon(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    Button(
-        modifier = modifier.height(52.dp),
-        onClick = onClick,
-        contentPadding = PaddingValues(horizontal = 24.dp),
-        enabled = enabled,
-        shape = CircleShape,
-    ) {
-        Icon(modifier = Modifier.size(20.dp), imageVector = icon, contentDescription = null)
-        Text(modifier = Modifier.padding(start = 10.dp), text = text, style = MaterialTheme.typography.titleSmall)
+    if (LocalDarkTheme.current.isDarkTheme()) {
+        PrimaryButton(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            label = text,
+            isEnabled = enabled,
+            leading = { Icon(imageVector = icon, contentDescription = null) },
+        )
+    } else {
+        Button(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            enabled = enabled,
+            shape = CircleShape,
+        ) {
+            Icon(modifier = Modifier.size(24.dp), imageVector = icon, contentDescription = null)
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
     }
 }
 
@@ -130,17 +160,36 @@ fun ConfirmButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    TextButton(onClick = onClick, enabled = enabled) { Text(text) }
+    TextButton(
+        modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+        onClick = onClick,
+        enabled = enabled,
+        shape = CircleShape
+    ) {
+        Text(text)
+    }
 }
 
 @Composable
 fun DismissButton(text: String = stringResource(R.string.dismiss), onClick: () -> Unit) {
-    TextButton(onClick = onClick) { Text(text) }
+    TextButton(
+        modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+        onClick = onClick,
+        shape = CircleShape
+    ) {
+        Text(text)
+    }
 }
 
 @Composable
 fun OutlinedDismissButton(text: String = stringResource(R.string.dismiss), onClick: () -> Unit) {
-    OutlinedButton(onClick = onClick) { Text(text) }
+    OutlinedButton(
+        modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+        onClick = onClick,
+        shape = CircleShape
+    ) {
+        Text(text)
+    }
 }
 
 @Composable
@@ -149,7 +198,14 @@ fun FilledConfirmButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    Button(onClick = onClick, enabled = enabled) { Text(text) }
+    Button(
+        modifier = Modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+        onClick = onClick,
+        enabled = enabled,
+        shape = CircleShape
+    ) {
+        Text(text, style = MaterialTheme.typography.titleMedium)
+    }
 }
 
 @Composable

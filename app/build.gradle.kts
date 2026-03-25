@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId = "com.xrclip"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 35
         versionCode = 40400
         check(versionCode == currentVersionCode)
@@ -195,6 +195,9 @@ dependencies {
     implementation(libs.okhttp)
 
     implementation(libs.bundles.youtubedlAndroid)
+
+    implementation(libs.meta.spatial.sdk.compose)
+    implementation(libs.meta.spatial.sdk.uiset)
 
     implementation(libs.mmkv)
 

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:horizonos="http://schemas.horizonos/sdk"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <horizonos:uses-horizonos-sdk
+        horizonos:minSdkVersion="28"
+        horizonos:targetSdkVersion="35" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission
@@ -78,11 +83,16 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation"
+            android:configChanges="screenSize|screenLayout|orientation|keyboardHidden|keyboard|navigation|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.XRClip">
+            <layout
+                android:defaultHeight="800dp"
+                android:defaultWidth="1200dp"
+                android:minHeight="480dp"
+                android:minWidth="720dp" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -134,8 +144,30 @@
             android:name="com.oculus.vr.focusaware"
             android:value="true" />
         <meta-data
+            android:name="com.oculus.handtracking.version"
+            android:value="V2.0" />
+        <meta-data
             android:name="com.oculus.supported_devices"
             android:value="quest|quest2|questpro|quest3" />
     </application>
+
+    <uses-feature
+        android:name="com.oculus.feature.RENDER_MODEL"
+        android:required="false" />
+    <uses-feature
+        android:name="com.oculus.feature.VIRTUAL_KEYBOARD"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.vr.headtracking"
+        android:required="false" />
+    <uses-feature
+        android:name="com.oculus.feature.PASSTHROUGH"
+        android:required="false" />
+    <uses-feature
+        android:name="oculus.software.handtracking"
+        android:required="false" />
+
+    <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
+    <uses-permission android:name="com.oculus.permission.RENDER_MODEL" />
 
 </manifest>

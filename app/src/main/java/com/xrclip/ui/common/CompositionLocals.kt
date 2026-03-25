@@ -14,6 +14,7 @@ import com.xrclip.util.DarkThemePreference
 import com.xrclip.util.PreferenceUtil
 
 val LocalDarkTheme = compositionLocalOf { DarkThemePreference() }
+val LocalIsVRMode = compositionLocalOf { false }
 val LocalSeedColor = compositionLocalOf { DEFAULT_SEED_COLOR }
 val LocalWindowWidthState = staticCompositionLocalOf { WindowWidthSizeClass.Compact }
 val LocalDynamicColorSwitch = compositionLocalOf { false }

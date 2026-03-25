@@ -6,10 +6,12 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.xrclip.App.Companion.context
 import com.xrclip.ui.common.LocalDarkTheme
+import com.xrclip.ui.common.LocalIsVRMode
 import com.xrclip.ui.common.SettingsProvider
 import com.xrclip.ui.page.AppEntry
 import com.xrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
@@ -40,12 +42,15 @@ class MainActivity : AppCompatActivity() {
         setContent {
             KoinContext {
                 val windowSizeClass = calculateWindowSizeClass(this)
+                val isVR = isQuestDevice()
                 SettingsProvider(windowWidthSizeClass = windowSizeClass.widthSizeClass) {
-                    XRClipTheme(
-                        darkTheme = LocalDarkTheme.current.isDarkTheme(),
-                        isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
-                    ) {
-                        AppEntry(dialogViewModel = dialogViewModel)
+                    CompositionLocalProvider(LocalIsVRMode provides isVR) {
+                        XRClipTheme(
+                            darkTheme = LocalDarkTheme.current.isDarkTheme() || isVR,
+                            isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
+                        ) {
+                            AppEntry(dialogViewModel = dialogViewModel)
+                        }
                     }
                 }
             }

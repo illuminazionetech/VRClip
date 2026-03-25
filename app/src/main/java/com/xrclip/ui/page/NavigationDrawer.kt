@@ -70,7 +70,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.meta.spatial.uiset.navigation.SpatialSideNavItem
 import com.xrclip.R
+import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalWindowWidthState
 import com.xrclip.ui.common.Route
 import com.xrclip.ui.common.glassEffect
@@ -372,63 +374,128 @@ fun NavigationRailContent(
     currentTopDestination: String? = null,
     onNavigateToRoute: (String) -> Unit,
 ) {
-    Column(
-        modifier = modifier.padding(12.dp).glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true).selectableGroup().padding(vertical = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        val scope = rememberCoroutineScope()
-        NavigationRailItemVariant(
-            icon = {
-                Icon(
-                    if (currentTopDestination == Route.HOME) Icons.Rounded.Download
-                    else Icons.Rounded.Download,
-                    stringResource(R.string.download_queue),
-                )
-            },
-            modifier = Modifier,
-            selected = currentTopDestination == Route.HOME,
-            onClick = { onNavigateToRoute(Route.HOME) },
-        )
+    if (LocalDarkTheme.current.isDarkTheme()) {
+        Column(
+            modifier = modifier.padding(12.dp).selectableGroup().padding(vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            SpatialSideNavItem(
+                primaryLabel = stringResource(R.string.download_queue),
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.HOME) Icons.Rounded.Download
+                        else Icons.Rounded.Download,
+                        null,
+                    )
+                },
+                selected = currentTopDestination == Route.HOME,
+                onClick = { onNavigateToRoute(Route.HOME) },
+            )
 
-        NavigationRailItemVariant(
-            icon = {
-                Icon(
-                    if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
-                    else Icons.AutoMirrored.Rounded.List,
-                    stringResource(R.string.downloads_history),
-                )
-            },
-            modifier = Modifier,
-            selected = currentTopDestination == Route.DOWNLOADS,
-            onClick = { onNavigateToRoute(Route.DOWNLOADS) },
-        )
+            SpatialSideNavItem(
+                primaryLabel = stringResource(R.string.downloads_history),
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
+                        else Icons.AutoMirrored.Rounded.List,
+                        null,
+                    )
+                },
+                selected = currentTopDestination == Route.DOWNLOADS,
+                onClick = { onNavigateToRoute(Route.DOWNLOADS) },
+            )
 
-        NavigationRailItemVariant(
-            icon = {
-                Icon(
-                    if (currentTopDestination == Route.TASK_LIST) Icons.Rounded.Terminal
-                    else Icons.Rounded.Terminal,
-                    stringResource(R.string.custom_command),
-                )
-            },
-            modifier = Modifier,
-            selected = currentTopDestination == Route.TASK_LIST,
-            onClick = { onNavigateToRoute(Route.TASK_LIST) },
-        )
+            SpatialSideNavItem(
+                primaryLabel = stringResource(R.string.custom_command),
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.TASK_LIST) Icons.Rounded.Terminal
+                        else Icons.Rounded.Terminal,
+                        null,
+                    )
+                },
+                selected = currentTopDestination == Route.TASK_LIST,
+                onClick = { onNavigateToRoute(Route.TASK_LIST) },
+            )
 
-        NavigationRailItemVariant(
-            icon = {
-                Icon(
-                    if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Rounded.Settings
-                    else Icons.Rounded.Settings,
-                    stringResource(R.string.settings),
-                )
-            },
-            modifier = Modifier,
-            selected = currentTopDestination == Route.SETTINGS_PAGE,
-            onClick = { onNavigateToRoute(Route.SETTINGS_PAGE) },
-        )
+            SpatialSideNavItem(
+                primaryLabel = stringResource(R.string.settings),
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Rounded.Settings
+                        else Icons.Rounded.Settings,
+                        null,
+                    )
+                },
+                selected = currentTopDestination == Route.SETTINGS_PAGE,
+                onClick = { onNavigateToRoute(Route.SETTINGS_PAGE) },
+            )
+        }
+    } else {
+        Column(
+            modifier =
+                modifier
+                    .padding(12.dp)
+                    .glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true)
+                    .selectableGroup()
+                    .padding(vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            val scope = rememberCoroutineScope()
+            NavigationRailItemVariant(
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.HOME) Icons.Rounded.Download
+                        else Icons.Rounded.Download,
+                        stringResource(R.string.download_queue),
+                    )
+                },
+                modifier = Modifier,
+                selected = currentTopDestination == Route.HOME,
+                onClick = { onNavigateToRoute(Route.HOME) },
+            )
+
+            NavigationRailItemVariant(
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
+                        else Icons.AutoMirrored.Rounded.List,
+                        stringResource(R.string.downloads_history),
+                    )
+                },
+                modifier = Modifier,
+                selected = currentTopDestination == Route.DOWNLOADS,
+                onClick = { onNavigateToRoute(Route.DOWNLOADS) },
+            )
+
+            NavigationRailItemVariant(
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.TASK_LIST) Icons.Rounded.Terminal
+                        else Icons.Rounded.Terminal,
+                        stringResource(R.string.custom_command),
+                    )
+                },
+                modifier = Modifier,
+                selected = currentTopDestination == Route.TASK_LIST,
+                onClick = { onNavigateToRoute(Route.TASK_LIST) },
+            )
+
+            NavigationRailItemVariant(
+                icon = {
+                    Icon(
+                        if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Rounded.Settings
+                        else Icons.Rounded.Settings,
+                        stringResource(R.string.settings),
+                    )
+                },
+                modifier = Modifier,
+                selected = currentTopDestination == Route.SETTINGS_PAGE,
+                onClick = { onNavigateToRoute(Route.SETTINGS_PAGE) },
+            )
+        }
     }
 }
 

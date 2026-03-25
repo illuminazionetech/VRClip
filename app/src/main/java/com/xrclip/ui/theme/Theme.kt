@@ -17,6 +17,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDirection
 import com.google.android.material.color.MaterialColors
+import com.meta.spatial.uiset.theme.SpatialTheme
+import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
 
 fun Color.applyOpacity(enabled: Boolean): Color {
@@ -127,18 +129,21 @@ fun XRClipTheme(
         )
 
     CompositionLocalProvider(
-        LocalFixedColorRoles provides FixedColorRoles.fromColorSchemes(
-            AppleLightColorScheme,
-            AppleDarkColorScheme
-        ),
+        LocalFixedColorRoles provides
+            FixedColorRoles.fromColorSchemes(AppleLightColorScheme, AppleDarkColorScheme),
         LocalTextStyle provides textStyle,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
             shapes = Shapes,
-            content = content,
-        )
+        ) {
+            if (darkTheme) {
+                SpatialTheme { content() }
+            } else {
+                content()
+            }
+        }
     }
 }
 

@@ -26,7 +26,9 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.meta.spatial.uiset.input.SpatialSearchBar
 import com.xrclip.R
+import com.xrclip.ui.common.LocalIsVRMode
 import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.theme.XRClipTheme
 
@@ -39,41 +41,52 @@ fun XRClipSearchBar(
 ) {
     val view = LocalView.current
 
-    Surface(
-        modifier = modifier.widthIn(360.dp, 720.dp).glassEffect(shape = MaterialTheme.shapes.large),
-        color = Color.Transparent,
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Spacer(modifier = Modifier.width(16.dp))
-            Icon(
-                imageVector = Icons.Rounded.Search,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            XRClipAutoFocusTextField(
-                value = text,
-                onValueChange = onValueChange,
-                placeholder = { Text(text = placeholderText) },
-                modifier = Modifier.weight(1f),
-                contentDescription = stringResource(id = R.string.search),
-                trailingIcon = {
-                    if (text.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                onValueChange("")
-                                view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+    if (LocalIsVRMode.current) {
+        SpatialSearchBar(
+            query = text,
+            onQueryChange = onValueChange,
+            onQuerySubmit = {},
+            modifier = modifier.widthIn(360.dp, 720.dp),
+            placeholder = placeholderText,
+        )
+    } else {
+        Surface(
+            modifier =
+                modifier.widthIn(360.dp, 720.dp).glassEffect(shape = MaterialTheme.shapes.large),
+            color = Color.Transparent,
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(modifier = Modifier.width(16.dp))
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                XRClipAutoFocusTextField(
+                    value = text,
+                    onValueChange = onValueChange,
+                    placeholder = { Text(text = placeholderText) },
+                    modifier = Modifier.weight(1f),
+                    contentDescription = stringResource(id = R.string.search),
+                    trailingIcon = {
+                        if (text.isNotEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    onValueChange("")
+                                    view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                                }
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(24.dp),
+                                    imageVector = Icons.Rounded.Clear,
+                                    contentDescription = stringResource(id = R.string.clear),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
                             }
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(24.dp),
-                                imageVector = Icons.Rounded.Clear,
-                                contentDescription = stringResource(id = R.string.clear),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
                         }
-                    }
-                },
-            )
+                    },
+                )
+            }
         }
     }
 }

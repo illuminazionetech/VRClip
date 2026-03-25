@@ -42,6 +42,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import com.meta.spatial.uiset.card.PrimaryCard
+import com.meta.spatial.uiset.card.SecondaryCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -70,6 +72,7 @@ import com.xrclip.download.Task.DownloadState.ReadyWithInfo
 import com.xrclip.download.Task.DownloadState.Running
 import com.xrclip.download.Task.RestartableAction
 import com.xrclip.ui.common.AsyncImageImpl
+import com.xrclip.ui.common.LocalIsVRMode
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
 import com.xrclip.ui.common.glassEffect
@@ -241,49 +244,69 @@ fun VideoCardV2(
     actionButton: @Composable (BoxScope.() -> Unit)? = null,
     onButtonClick: () -> Unit,
 ) {
-    val containerColor =
-        MaterialTheme.colorScheme.run {
-            if (LocalDarkTheme.current.isDarkTheme()) surfaceContainer else surfaceContainerLowest
-        }
-
-    Surface(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .glassEffect(shape = MaterialTheme.shapes.large, blur = true)
-                .then(
-                    if (LocalDarkTheme.current.isDarkTheme())
-                        Modifier.drawBehind {
-                            drawRoundRect(
-                                color = Color.White.copy(alpha = 0.12f),
-                                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.dp.toPx()),
-                                cornerRadius = androidx.compose.ui.geometry.CornerRadius(24.dp.toPx()),
-                            )
-                        }
-                    else Modifier
-                ),
-        color = Color.Transparent,
-        shape = MaterialTheme.shapes.large,
-    ) {
-        Column {
-            Box(Modifier.fillMaxWidth()) {
-                CardImage(modifier = Modifier, thumbnailModel = thumbnailModel)
-                Box(Modifier.align(Alignment.TopStart)) { stateIndicator?.invoke(this) }
-                Box(Modifier.align(Alignment.Center)) { actionButton?.invoke(this) }
-                VideoInfoLabel(
-                    modifier = Modifier.align(Alignment.BottomEnd),
-                    duration = duration,
-                    fileSizeApprox = fileSizeApprox,
-                )
-            }
-            Row(modifier = Modifier.fillMaxWidth()) {
-                TitleText(modifier = Modifier.weight(1f), title = title, uploader = uploader)
-                IconButton(onButtonClick, modifier = Modifier.align(Alignment.CenterVertically)) {
-                    Icon(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(R.string.show_more_actions),
-                        modifier = Modifier.size(20.dp),
+    if (LocalIsVRMode.current) {
+        SecondaryCard(
+            modifier = modifier.fillMaxWidth(),
+            onClick = {},
+        ) {
+            Column {
+                Box(Modifier.fillMaxWidth()) {
+                    CardImage(modifier = Modifier, thumbnailModel = thumbnailModel)
+                    Box(Modifier.align(Alignment.TopStart)) { stateIndicator?.invoke(this) }
+                    Box(Modifier.align(Alignment.Center)) { actionButton?.invoke(this) }
+                    VideoInfoLabel(
+                        modifier = Modifier.align(Alignment.BottomEnd),
+                        duration = duration,
+                        fileSizeApprox = fileSizeApprox,
                     )
+                }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    TitleText(modifier = Modifier.weight(1f), title = title, uploader = uploader)
+                    IconButton(
+                        onButtonClick,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = stringResource(R.string.show_more_actions),
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                }
+            }
+        }
+    } else {
+        Surface(
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .glassEffect(shape = MaterialTheme.shapes.large, blur = true),
+            color = Color.Transparent,
+            shape = MaterialTheme.shapes.large,
+        ) {
+            Column {
+                Box(Modifier.fillMaxWidth()) {
+                    CardImage(modifier = Modifier, thumbnailModel = thumbnailModel)
+                    Box(Modifier.align(Alignment.TopStart)) { stateIndicator?.invoke(this) }
+                    Box(Modifier.align(Alignment.Center)) { actionButton?.invoke(this) }
+                    VideoInfoLabel(
+                        modifier = Modifier.align(Alignment.BottomEnd),
+                        duration = duration,
+                        fileSizeApprox = fileSizeApprox,
+                    )
+                }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    TitleText(modifier = Modifier.weight(1f), title = title, uploader = uploader)
+                    IconButton(
+                        onButtonClick,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = stringResource(R.string.show_more_actions),
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
                 }
             }
         }

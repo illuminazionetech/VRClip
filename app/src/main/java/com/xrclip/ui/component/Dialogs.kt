@@ -25,6 +25,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import com.meta.spatial.uiset.dialog.SpatialBasicDialog
+import com.xrclip.ui.common.LocalIsVRMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -86,76 +88,85 @@ fun XRClipDialog(
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
 ) {
-    BasicAlertDialog(
-        onDismissRequest = onDismissRequest,
-        modifier = modifier,
-        properties = properties,
-    ) {
-        Surface(
+    if (LocalIsVRMode.current) {
+        SpatialBasicDialog(
+            title = stringResource(id = R.string.confirm),
+            description = "",
+            primaryChoiceActionLabel = stringResource(id = R.string.confirm),
+            onPrimaryChoiceActionClick = {},
+        )
+    } else {
+        BasicAlertDialog(
+            onDismissRequest = onDismissRequest,
             modifier = modifier,
-            shape = shape,
-            color = containerColor,
-            tonalElevation = tonalElevation,
+            properties = properties,
         ) {
-            Column(modifier = Modifier.padding(DialogVerticalPadding)) {
-                icon?.let {
-                    CompositionLocalProvider(LocalContentColor provides iconContentColor) {
-                        Box(
-                            Modifier.padding(IconPadding)
-                                .padding(DialogHorizontalPadding)
-                                .align(Alignment.CenterHorizontally)
-                        ) {
-                            icon()
-                        }
-                    }
-                }
-                title?.let {
-                    CompositionLocalProvider(LocalContentColor provides titleContentColor) {
-                        val textStyle =
-                            MaterialTheme.typography.headlineSmall.copy(
-                                textAlign = TextAlign.Center
-                            )
-                        ProvideTextStyle(textStyle) {
+            Surface(
+                modifier = modifier,
+                shape = shape,
+                color = containerColor,
+                tonalElevation = tonalElevation,
+            ) {
+                Column(modifier = Modifier.padding(DialogVerticalPadding)) {
+                    icon?.let {
+                        CompositionLocalProvider(LocalContentColor provides iconContentColor) {
                             Box(
-                                // Align the title to the center when an icon is present.
-                                Modifier.padding(TitlePadding)
+                                Modifier.padding(IconPadding)
                                     .padding(DialogHorizontalPadding)
-                                    .align(
-                                        if (icon == null) {
-                                            Alignment.Start
-                                        } else {
-                                            Alignment.CenterHorizontally
-                                        }
-                                    )
+                                    .align(Alignment.CenterHorizontally)
                             ) {
-                                title()
+                                icon()
                             }
                         }
                     }
-                }
-                text?.let {
-                    CompositionLocalProvider(LocalContentColor provides textContentColor) {
-                        val textStyle = MaterialTheme.typography.bodyMedium
-                        ProvideTextStyle(textStyle) {
-                            Box(
-                                Modifier.weight(weight = 1f, fill = false)
-                                    .padding(TextPadding)
-                                    .align(Alignment.Start)
-                            ) {
-                                text()
+                    title?.let {
+                        CompositionLocalProvider(LocalContentColor provides titleContentColor) {
+                            val textStyle =
+                                MaterialTheme.typography.headlineSmall.copy(
+                                    textAlign = TextAlign.Center
+                                )
+                            ProvideTextStyle(textStyle) {
+                                Box(
+                                    // Align the title to the center when an icon is present.
+                                    Modifier.padding(TitlePadding)
+                                        .padding(DialogHorizontalPadding)
+                                        .align(
+                                            if (icon == null) {
+                                                Alignment.Start
+                                            } else {
+                                                Alignment.CenterHorizontally
+                                            }
+                                        )
+                                ) {
+                                    title()
+                                }
                             }
                         }
                     }
-                }
-                Box(modifier = Modifier.align(Alignment.End).padding(DialogHorizontalPadding)) {
-                    val textStyle = MaterialTheme.typography.labelLarge
-                    ProvideTextStyle(value = textStyle) {
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(ButtonsMainAxisSpacing),
-                            verticalArrangement = Arrangement.spacedBy(ButtonsCrossAxisSpacing),
-                        ) {
-                            dismissButton?.invoke()
-                            confirmButton?.invoke()
+                    text?.let {
+                        CompositionLocalProvider(LocalContentColor provides textContentColor) {
+                            val textStyle = MaterialTheme.typography.bodyMedium
+                            ProvideTextStyle(textStyle) {
+                                Box(
+                                    Modifier.weight(weight = 1f, fill = false)
+                                        .padding(TextPadding)
+                                        .align(Alignment.Start)
+                                ) {
+                                    text()
+                                }
+                            }
+                        }
+                    }
+                    Box(modifier = Modifier.align(Alignment.End).padding(DialogHorizontalPadding)) {
+                        val textStyle = MaterialTheme.typography.labelLarge
+                        ProvideTextStyle(value = textStyle) {
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(ButtonsMainAxisSpacing),
+                                verticalArrangement = Arrangement.spacedBy(ButtonsCrossAxisSpacing),
+                            ) {
+                                dismissButton?.invoke()
+                                confirmButton?.invoke()
+                            }
                         }
                     }
                 }

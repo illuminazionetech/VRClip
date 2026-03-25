@@ -6,6 +6,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.meta.spatial.plugin)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -24,6 +25,10 @@ val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 3, "x86_64" 
 
 val baseVersionName = currentVersion.name
 val currentVersionCode = currentVersion.code.toInt()
+
+spatial {
+    allowUsageDataCollection.set(true)
+}
 
 android {
     compileSdk = 35
@@ -45,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId = "com.xrclip"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 35
         versionCode = 40400
         check(versionCode == currentVersionCode)
@@ -195,6 +200,9 @@ dependencies {
     implementation(libs.okhttp)
 
     implementation(libs.bundles.youtubedlAndroid)
+
+    implementation(libs.meta.spatial.sdk.compose)
+    implementation(libs.meta.spatial.sdk.uiset)
 
     implementation(libs.mmkv)
 

@@ -15,7 +15,7 @@ import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material.icons.rounded.ThreeSixty
+import androidx.compose.material.icons.rounded.Vrpano
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -303,7 +303,7 @@ private fun PlayerBottomControls(
                 if (isStereo) {
                     IconButton(onClick = onToggleOutputMode) {
                         Icon(
-                            imageVector = Icons.Rounded.ThreeSixty,
+                            imageVector = Icons.Rounded.Vrpano,
                             contentDescription =
                                 stringResource(
                                     if (outputMode == StereoOutputMode.SplitScreen)

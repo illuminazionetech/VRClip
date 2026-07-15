@@ -4,10 +4,10 @@ import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.meta.spatial.compose.ComposeFeature
 import com.meta.spatial.core.SpatialFeature
 import com.meta.spatial.runtime.StereoMode
 import com.meta.spatial.toolkit.AppSystemActivity
-import com.meta.spatial.toolkit.ComposeFeature
 import com.meta.spatial.toolkit.Equirect180ShapeOptions
 import com.meta.spatial.toolkit.Equirect360ShapeOptions
 import com.meta.spatial.toolkit.MediaPanelRenderOptions
@@ -85,7 +85,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             ProjectionMode.STEREO_180_LR,
             ProjectionMode.SBS_3D -> StereoMode.LeftRight
 
-            else -> StereoMode.Mono
+            else -> StereoMode.None
         }
 
     override fun onDestroy() {

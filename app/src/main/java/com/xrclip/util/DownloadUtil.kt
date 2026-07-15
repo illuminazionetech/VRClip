@@ -11,13 +11,13 @@ import com.xrclip.App
 import com.xrclip.App.Companion.audioDownloadDir
 import com.xrclip.App.Companion.context
 import com.xrclip.App.Companion.videoDownloadDir
-import com.xrclip.Downloader
-import com.xrclip.Downloader.onProcessEnded
-import com.xrclip.Downloader.onProcessStarted
-import com.xrclip.Downloader.onTaskEnded
-import com.xrclip.Downloader.onTaskError
-import com.xrclip.Downloader.onTaskStarted
-import com.xrclip.Downloader.toNotificationId
+import com.xrclip.download.CommandTaskManager
+import com.xrclip.download.CommandTaskManager.onProcessEnded
+import com.xrclip.download.CommandTaskManager.onProcessStarted
+import com.xrclip.download.CommandTaskManager.onTaskEnded
+import com.xrclip.download.CommandTaskManager.onTaskError
+import com.xrclip.download.CommandTaskManager.onTaskStarted
+import com.xrclip.download.CommandTaskManager.toNotificationId
 import com.xrclip.R
 import com.xrclip.database.objects.CommandTemplate
 import com.xrclip.database.objects.DownloadedVideoInfo
@@ -926,7 +926,7 @@ object DownloadUtil {
         downloadPreferences: DownloadPreferences = DownloadPreferences.createFromPreferences(),
     ) {
         downloadPreferences.run {
-            val taskId = Downloader.makeKey(url = url, templateName = template.name)
+            val taskId = CommandTaskManager.makeKey(url = url, templateName = template.name)
             val notificationId = taskId.toNotificationId()
             val urlList = url.split(Regex("[\n ]")).filter { it.isNotBlank() }
 
@@ -970,7 +970,7 @@ object DownloadUtil {
                                 taskUrl = url,
                                 text = text,
                             )
-                            Downloader.updateTaskOutput(
+                            CommandTaskManager.updateTaskOutput(
                                 template = template,
                                 url = url,
                                 line = text,

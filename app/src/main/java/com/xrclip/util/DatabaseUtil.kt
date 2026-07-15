@@ -66,6 +66,11 @@ object DatabaseUtil {
 
     suspend fun getInfoById(id: Int): DownloadedVideoInfo = dao.getInfoById(id)
 
+    suspend fun getInfoByPath(path: String): DownloadedVideoInfo? = dao.getInfoByPath(path)
+
+    suspend fun updateProjectionOverride(path: String, projection: String?) =
+        dao.updateProjectionOverride(path, projection)
+
     suspend fun deleteInfoById(id: Int) = dao.deleteInfoById(id)
 
     suspend fun insertTemplate(commandTemplate: CommandTemplate) =

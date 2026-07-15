@@ -16,6 +16,11 @@ data class DownloadedVideoInfo(
     val thumbnailUrl: String,
     val videoPath: String,
     @ColumnInfo(defaultValue = "Unknown") val extractor: String = "Unknown",
+    /**
+     * User-forced [com.xrclip.player.ProjectionMode] name, overriding filename/aspect-ratio
+     * detection for this specific file. `null` means "auto-detect".
+     */
+    @ColumnInfo(defaultValue = "NULL") val projectionOverride: String? = null,
 ) {
     @Ignore
     constructor() :
@@ -27,5 +32,6 @@ data class DownloadedVideoInfo(
             thumbnailUrl = "Thumbnail",
             videoPath = "Path",
             extractor = "Unknown",
+            projectionOverride = null,
         )
 }

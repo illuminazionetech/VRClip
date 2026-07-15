@@ -60,7 +60,6 @@ import com.xrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.xrclip.ui.component.PlaylistItem
 import com.xrclip.ui.component.XRClipModalBottomSheet
 import com.xrclip.ui.component.XRClipModalBottomSheetM2Variant
-import com.xrclip.ui.page.download.PlaylistSelectionDialog
 import com.xrclip.ui.page.downloadv2.configure.DownloadDialogViewModel.SelectionState
 import com.xrclip.ui.page.settings.format.AudioQuickSettingsDialog
 import com.xrclip.ui.page.settings.format.VideoQuickSettingsDialog

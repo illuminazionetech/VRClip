@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Meta Spatial SDK panel registration IDs for ImmersivePlayerActivity. -->
+    <item name="panel_video" type="id" />
+    <item name="panel_controls" type="id" />
+</resources>

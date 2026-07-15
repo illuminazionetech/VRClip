@@ -107,6 +107,10 @@ const val USE_CUSTOM_AUDIO_PRESET = "custom_audio_preset"
 const val MERGE_MULTI_AUDIO_STREAM = "multi_audio_stream"
 const val VR_MODE = "vr_mode"
 
+const val PLAYER_QUEST_IMMERSIVE = "player_quest_immersive"
+const val PLAYER_QUEST_PASSTHROUGH_DEFAULT = "player_quest_passthrough_default"
+const val PLAYER_CARDBOARD_DEFAULT = "player_cardboard_default"
+
 const val DOWNLOAD_TYPE_INITIALIZATION = "download_type_init"
 private const val DOWNLOAD_TYPE = "download_type"
 

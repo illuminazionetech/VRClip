@@ -1,36 +1,66 @@
-# XRClip v0.0.4
+# VRClip
 
-### Downloader Video/Audio per Android e Meta Quest 3
+[![Build](https://github.com/illuminazionetech/VRClip/actions/workflows/build.yml/badge.svg)](https://github.com/illuminazionetech/VRClip/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/illuminazionetech/VRClip)](https://github.com/illuminazionetech/VRClip/releases/latest)
+[![License: GPL v3](https://img.shields.io/github/license/illuminazionetech/VRClip)](LICENSE)
 
-XRClip è un'applicazione potente e intuitiva per scaricare video e audio da centinaia di piattaforme, ottimizzata per smartphone e visori VR come Meta Quest 3.
+**Downloader video/audio universale + player immersivo 3D/360°/XR, per Android e Meta Quest.**
 
-## 🚀 Caratteristiche Principali
+VRClip scarica video e audio da centinaia di piattaforme (tramite yt-dlp) e li riproduce in-app con un player che riconosce automaticamente i contenuti flat, 360°, 180° e stereoscopici 3D — con un'esperienza completamente immersiva su Meta Quest tramite Meta Spatial SDK, e un player con rendering GL dedicato (pan touch/giroscopio, modalità split-screen per visori da telefono) su smartphone e tablet Android. L'interfaccia usa uno stile "Liquid Glass" con vetro sfocato reale, adattato automaticamente alla densità e alle interazioni a controller quando gira su Quest.
 
-- **Supporto Universale**: Scarica da tutte le piattaforme supportate da yt-dlp.
-- **Ottimizzato per VR**: Interfaccia progettata per essere utilizzata facilmente su Meta Quest 3 con i controller VR.
-- **Video 3D**: Supporto per il download di video stereoscopici 3D, perfetti per la visione in realtà virtuale.
-- **UI Apple Liquid Glass**: Interfaccia moderna con stile glassmorphism, trasparenze e sfocature eleganti.
-- **Alta Velocità**: Download multi-thread e supporto per aria2c integrato per la massima velocità.
-- **Privacy e Sicurezza**: Nessun tracciamento, nessuna pubblicità, nessuna sezione donazioni o link esterni non necessari.
-- **Gestione Metadati**: Incorpora automaticamente metadati, sottotitoli e miniature nei file scaricati.
+## ✨ Funzionalità principali
 
-## 🛠️ Installazione
+- **Download universale**: tutti i siti supportati da yt-dlp, con multi-thread e aria2c integrato per la massima velocità.
+- **Player immersivo integrato**: riconoscimento automatico di video flat / 360° mono / 360° 3D (top-bottom o side-by-side) / 180° / 3D side-by-side / 3D top-bottom, con possibilità di forzare manualmente la proiezione per ogni video.
+- **Rendering dedicato per piattaforma**:
+  - **Android (telefono/tablet)**: rendering OpenGL per sfera equirettangolare (360°/180°) con pan touch/giroscopio, e modalità split-screen in stile Cardboard per i video 3D.
+  - **Meta Quest (2, 3, Pro)**: scena immersiva reale tramite Meta Spatial SDK, con pannello video posizionato nello spazio e stereo corretto per occhio.
+- **Gestione metadati**: incorpora automaticamente metadati, sottotitoli e miniature nei file scaricati.
+- **UI Liquid Glass**: superfici in vetro con sfocatura reale (GPU, API 31+, con fallback elegante sotto), adattate automaticamente per l'uso a 10 piedi con controller su Meta Quest.
+- **Privacy-first**: nessun tracciamento, nessuna pubblicità, nessuna sezione donazioni. Tutti i download avvengono localmente.
 
-1. Scarica il file `.apk` dalla sezione Release.
-2. Su Android: Installa il file abilitando le "Origini Sconosciute" nelle impostazioni.
-3. Su Meta Quest 3: Utilizza SideQuest per caricare l'APK sul visore.
+## 📱 Installazione
 
-## 📱 Utilizzo
+### Su Android (telefono/tablet)
+1. Scarica l'APK dalla sezione [Release](https://github.com/illuminazionetech/VRClip/releases/latest) — vedi la tabella sotto per capire quale scegliere.
+2. Abilita "Origini sconosciute" nelle impostazioni del tuo dispositivo per installare l'APK.
 
-1. Copia il link del video che vuoi scaricare.
-2. Apri **XRClip** e incolla il link.
-3. Seleziona il formato desiderato (Video, Audio o 3D).
-4. Premi il pulsante di download e goditi il contenuto!
+### Su Meta Quest (2 / 3 / Pro)
+1. Scarica lo stesso APK (`generic` consigliato) dalla sezione Release — è un'unica app universale, non serve un file separato per Quest.
+2. Installalo sul visore con [SideQuest](https://sidequestvr.com/) o con `adb install`.
+3. L'app rileva automaticamente l'esecuzione su Quest e attiva l'interfaccia e il player dedicati.
+
+## ⬇️ Quale file scaricare
+
+Ogni build della CI produce questi APK (vedi [Release](https://github.com/illuminazionetech/VRClip/releases/latest)):
+
+| File | Piattaforma | Quando usarlo |
+|---|---|---|
+| `app-generic-release.apk` | Android e Meta Quest | **Consigliato** per la maggior parte degli utenti — build stabile, universale. |
+| `app-githubPreview-release.apk` | Android e Meta Quest | Canale beta/anteprima (ID app separato, si installa insieme alla build stabile senza sovrascriverla). |
+| `app-fdroid-release.apk` | Android e Meta Quest | Build compatibile F-Droid (nessun componente proprietario), utile se preferisci quella filosofia di distribuzione. |
+
+Non esiste un file separato "per Quest": la stessa app universale gira su entrambe le piattaforme e adatta automaticamente interfaccia e player.
+
+## 🕹️ Utilizzo
+
+1. Copia il link del video/audio che vuoi scaricare.
+2. Apri VRClip e incolla il link (o condividilo direttamente dall'app sorgente).
+3. Seleziona il formato desiderato.
+4. Al termine del download, tocca il video nella lista per aprirlo nel player integrato — la proiezione (flat/360°/3D) viene rilevata automaticamente; puoi forzarla manualmente dal menu ⋮ se la rilevazione sbaglia.
+
+## 🥽 Preparazione per il Meta Quest Store
+
+VRClip è tecnicamente pronto per Quest 2/3/Pro, ma essendo un downloader universale rientra in un'area grigia delle policy di contenuto di Meta (che restringono le app la cui funzione principale è scaricare contenuti di terzi). Il materiale di submission (manifest, privacy policy, checklist) è documentato in [`docs/META_QUEST_STORE_SUBMISSION.md`](docs/META_QUEST_STORE_SUBMISSION.md), incluso questo rischio — l'app resta comunque pienamente utilizzabile via sideload indipendentemente dall'esito di un'eventuale submission.
 
 ## 🔐 Sicurezza e Privacy
 
-XRClip è progettato per essere sicuro e privato. Tutti i download avvengono localmente sul tuo dispositivo. Non vengono raccolti dati personali e non ci sono collegamenti a social media o richieste di donazioni all'interno dell'app.
+Tutti i download avvengono localmente sul dispositivo. Non vengono raccolti dati personali, non ci sono SDK di tracciamento/pubblicità, non ci sono account. L'unico traffico di rete è verso i siti sorgente che l'utente sceglie esplicitamente, più un controllo opzionale di aggiornamento di yt-dlp. Per segnalazioni di sicurezza vedi [`SECURITY.md`](SECURITY.md).
 
----
+## 🤝 Contribuire
 
-*XRClip è un fork migliorato basato su tecnologie open-source come yt-dlp e ffmpeg.*
+Vedi [`CONTRIBUTING.md`](CONTRIBUTING.md) per build locale, stile del codice e linee guida per le PR.
+
+## 📜 Licenza e crediti
+
+VRClip è **GPLv3** (vedi [`LICENSE`](LICENSE)) ed è un fork di [Seal](https://github.com/JunkFood02/Seal) di JunkFood02, a cui si aggiungono il supporto Meta Quest, il player immersivo 3D/360°/XR e il restyling Liquid Glass. Usa [yt-dlp](https://github.com/yt-dlp/yt-dlp), [ffmpeg](https://ffmpeg.org/) e [aria2c](https://aria2.github.io/) tramite [youtubedl-android](https://github.com/JunkFood02/youtubedl-android). Dettagli completi in [`NOTICE`](NOTICE).

@@ -80,7 +80,7 @@ import com.xrclip.ui.component.PreferenceSubtitle
 import com.xrclip.ui.component.PreferenceSwitch
 import com.xrclip.ui.component.PreferenceSwitchWithDivider
 import com.xrclip.ui.component.XRClipDialog
-import com.xrclip.ui.page.download.NotificationPermissionDialog
+import com.xrclip.ui.component.NotificationPermissionDialog
 import com.xrclip.util.CONFIGURE
 import com.xrclip.util.CUSTOM_COMMAND
 import com.xrclip.util.DEBUG

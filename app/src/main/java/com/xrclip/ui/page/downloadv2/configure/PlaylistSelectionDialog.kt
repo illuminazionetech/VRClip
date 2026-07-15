@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.xrclip.ui.page.download
+package com.xrclip.ui.page.downloadv2.configure
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column

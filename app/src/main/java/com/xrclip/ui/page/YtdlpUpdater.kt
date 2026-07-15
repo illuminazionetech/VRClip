@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.xrclip.Downloader
+import com.xrclip.download.CommandTaskManager
 import com.xrclip.util.PreferenceUtil
 import com.xrclip.util.PreferenceUtil.getBoolean
 import com.xrclip.util.PreferenceUtil.getLong
@@ -20,10 +20,10 @@ import kotlinx.coroutines.withContext
 @Composable
 fun YtdlpUpdater() {
 
-    val downloaderState by Downloader.downloaderState.collectAsStateWithLifecycle()
+    val downloaderState by CommandTaskManager.downloaderState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        if (downloaderState !is Downloader.State.Idle) return@LaunchedEffect
+        if (downloaderState !is CommandTaskManager.State.Idle) return@LaunchedEffect
 
         if (!YT_DLP_AUTO_UPDATE.getBoolean() && YT_DLP_VERSION.getString().isNotEmpty())
             return@LaunchedEffect
@@ -40,10 +40,10 @@ fun YtdlpUpdater() {
         }
 
         runCatching {
-                Downloader.updateState(state = Downloader.State.Updating)
+                CommandTaskManager.updateState(state = CommandTaskManager.State.Updating)
                 withContext(Dispatchers.IO) { UpdateUtil.updateYtDlp() }
             }
             .onFailure { it.printStackTrace() }
-        Downloader.updateState(state = Downloader.State.Idle)
+        CommandTaskManager.updateState(state = CommandTaskManager.State.Idle)
     }
 }

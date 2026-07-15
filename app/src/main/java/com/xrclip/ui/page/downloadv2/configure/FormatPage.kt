@@ -89,8 +89,6 @@ import com.xrclip.ui.component.XRClipSearchBar
 import com.xrclip.ui.component.SuggestedFormatItem
 import com.xrclip.ui.component.TextButtonWithIcon
 import com.xrclip.ui.component.VideoFilterChip
-import com.xrclip.ui.page.download.VideoClipDialog
-import com.xrclip.ui.page.download.VideoSelectionSlider
 import com.xrclip.ui.page.settings.general.DialogCheckBoxItem
 import com.xrclip.ui.theme.XRClipTheme
 import com.xrclip.ui.theme.generateLabelColor

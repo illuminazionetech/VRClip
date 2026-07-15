@@ -1,0 +1,28 @@
+VRClip
+Copyright © contributors to the VRClip project.
+
+VRClip is a fork of Seal (https://github.com/JunkFood02/Seal) by JunkFood02 and
+contributors, licensed under the GNU General Public License v3.0. This fork adds:
+
+  - Meta Quest (2, 3, Pro) support, including a fully immersive Meta Spatial SDK
+    video player.
+  - An in-app 3D/360°/180°/stereoscopic video player for Android, with a custom
+    OpenGL equirectangular/stereo renderer.
+  - A "Liquid Glass" translucent design system.
+
+VRClip is distributed under the same license as Seal: GNU General Public
+License v3.0. See LICENSE for the full license text.
+
+Third-party components bundled or depended on by VRClip:
+
+  - yt-dlp (https://github.com/yt-dlp/yt-dlp) — Unlicense
+  - FFmpeg (https://ffmpeg.org/) — LGPL/GPL, as built by the youtubedl-android
+    project
+  - aria2 (https://aria2.github.io/) — GPL-2.0-or-later
+  - youtubedl-android (https://github.com/JunkFood02/youtubedl-android) — GPLv3,
+    providing the Android bindings for the above
+  - AndroidX Media3 / ExoPlayer (https://github.com/androidx/media3) — Apache-2.0
+  - Meta Spatial SDK (https://developer.oculus.com/) — per Meta's SDK license,
+    used for the Meta Quest immersive player
+
+None of the above imply endorsement by their respective authors.

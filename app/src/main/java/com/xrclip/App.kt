@@ -17,9 +17,9 @@ import androidx.core.content.getSystemService
 import com.google.android.material.color.DynamicColors
 import com.xrclip.download.DownloaderV2
 import com.xrclip.download.DownloaderV2Impl
-import com.xrclip.ui.page.download.HomePageViewModel
 import com.xrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.xrclip.ui.page.settings.directory.Directory
+import com.xrclip.player.PlayerEngine
 import com.xrclip.ui.page.settings.network.CookiesViewModel
 import com.xrclip.ui.page.videolist.VideoListViewModel
 import com.xrclip.util.AUDIO_DIRECTORY
@@ -65,8 +65,8 @@ class App : Application() {
             modules(
                 module {
                     single<DownloaderV2> { DownloaderV2Impl(androidContext()) }
+                    single { PlayerEngine(androidContext()) }
                     viewModel { DownloadDialogViewModel(downloader = get()) }
-                    viewModel { HomePageViewModel() }
                     viewModel { CookiesViewModel() }
                     viewModel { VideoListViewModel() }
                 }

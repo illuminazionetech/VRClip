@@ -1,4 +1,4 @@
-package com.xrclip.ui.page.download
+package com.xrclip.ui.page.downloadv2.configure
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

@@ -455,4 +455,29 @@
 
     <string name="switch_to_grid_view">Switch to grid view</string>
     <string name="switch_to_list_view">Switch to list view</string>
+
+    <string name="player_open_externally">Open externally</string>
+    <string name="player_projection">Projection</string>
+    <string name="player_projection_auto">Auto-detect</string>
+    <string name="player_projection_flat">Flat</string>
+    <string name="player_projection_mono_360">360° (mono)</string>
+    <string name="player_projection_stereo_360_tb">360° 3D (top/bottom)</string>
+    <string name="player_projection_stereo_360_lr">360° 3D (side-by-side)</string>
+    <string name="player_projection_mono_180">180° (mono)</string>
+    <string name="player_projection_stereo_180_tb">180° 3D (top/bottom)</string>
+    <string name="player_projection_stereo_180_lr">180° 3D (side-by-side)</string>
+    <string name="player_projection_sbs_3d">3D (side-by-side)</string>
+    <string name="player_projection_ou_3d">3D (top/bottom)</string>
+    <string name="player_stereo_output">3D display mode</string>
+    <string name="player_stereo_output_single">Single eye (normal viewing)</string>
+    <string name="player_stereo_output_split">Split screen (Cardboard-style headset)</string>
+    <string name="player_error">Playback error: %1$s</string>
+    <string name="player_settings_title">Player</string>
+    <string name="player_settings_subtitle">3D, 360° and Meta Quest playback</string>
+    <string name="player_default_immersive_quest">Immersive playback on Meta Quest</string>
+    <string name="player_default_immersive_quest_desc">Use a full spatial scene for 360°/180°/3D video instead of the flat panel</string>
+    <string name="player_default_passthrough">Passthrough by default</string>
+    <string name="player_default_passthrough_desc">Show your room behind flat videos in the Meta Quest immersive player</string>
+    <string name="player_default_cardboard">Cardboard split-screen by default</string>
+    <string name="player_default_cardboard_desc">Render 3D video as a side-by-side split for phone VR headset holders</string>
 </resources>

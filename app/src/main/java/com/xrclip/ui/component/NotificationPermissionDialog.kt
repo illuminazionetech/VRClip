@@ -1,4 +1,4 @@
-package com.xrclip.ui.page.download
+package com.xrclip.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.NotificationsActive

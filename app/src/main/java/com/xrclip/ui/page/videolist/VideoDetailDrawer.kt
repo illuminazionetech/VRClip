@@ -21,6 +21,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +30,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -44,14 +50,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.xrclip.R
 import com.xrclip.database.objects.DownloadedVideoInfo
+import com.xrclip.player.ProjectionMenu
+import com.xrclip.player.ProjectionMode
 import com.xrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.xrclip.ui.component.FilledTonalButtonWithIcon
 import com.xrclip.ui.component.LongTapTextButton
 import com.xrclip.ui.component.OutlinedButtonWithIcon
 import com.xrclip.ui.component.XRClipModalBottomSheetM2
 import com.xrclip.ui.theme.XRClipTheme
+import com.xrclip.util.AUDIO_REGEX
+import com.xrclip.util.DatabaseUtil
 import com.xrclip.util.FileUtil
 import com.xrclip.util.makeToast
+import kotlinx.coroutines.launch
 
 @Composable
 fun VideoDetailDrawer(
@@ -65,6 +76,8 @@ fun VideoDetailDrawer(
     val view = LocalView.current
     val context = LocalContext.current
     val hapticFeedback = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
+    var showProjectionMenu by remember { mutableStateOf(false) }
     BackHandler(sheetState.targetValue == ModalBottomSheetValue.Expanded) { onDismissRequest() }
 
     val onReDownload =
@@ -82,6 +95,7 @@ fun VideoDetailDrawer(
         }
 
     val shareTitle = stringResource(id = R.string.share)
+    val isAudio = remember(info) { info.videoPath.contains(Regex(AUDIO_REGEX)) }
     with(info) {
         VideoDetailDrawerImpl(
             sheetState = sheetState,
@@ -89,6 +103,7 @@ fun VideoDetailDrawer(
             author = videoAuthor,
             url = videoUrl,
             isFileAvailable = isFileAvailable,
+            showPlayerActions = isFileAvailable && !isAudio,
             onReDownload = onReDownload,
             onDismissRequest = onDismissRequest,
             onDelete = {
@@ -106,6 +121,24 @@ fun VideoDetailDrawer(
                 FileUtil.createIntentForSharingFile(videoPath)?.runCatching {
                     context.startActivity(Intent.createChooser(this, shareTitle))
                 }
+            },
+            onOpenExternally = {
+                view.slightHapticFeedback()
+                FileUtil.openFile(path = videoPath) {
+                    makeToast(context.getString(R.string.file_unavailable))
+                }
+            },
+            onShowProjectionMenu = { showProjectionMenu = true },
+        )
+    }
+
+    if (showProjectionMenu) {
+        ProjectionMenu(
+            current = ProjectionMode.fromStorageKey(info.projectionOverride),
+            onDismiss = { showProjectionMenu = false },
+            onSelect = { mode ->
+                showProjectionMenu = false
+                scope.launch { DatabaseUtil.updateProjectionOverride(info.videoPath, mode?.name) }
             },
         )
     }
@@ -136,10 +169,13 @@ fun VideoDetailDrawerImpl(
     url: String = "https://www.example.com",
     onDismissRequest: () -> Unit = {},
     isFileAvailable: Boolean = true,
+    showPlayerActions: Boolean = false,
     onReDownload: (() -> Unit) = {},
     onDelete: () -> Unit = {},
     onOpenLink: () -> Unit = {},
     onShareFile: () -> Unit = {},
+    onOpenExternally: () -> Unit = {},
+    onShowProjectionMenu: () -> Unit = {},
 ) {
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
@@ -200,6 +236,20 @@ fun VideoDetailDrawerImpl(
                     text = stringResource(R.string.remove),
                 )
                 if (isFileAvailable) {
+                    if (showPlayerActions) {
+                        OutlinedButtonWithIcon(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            onClick = onShowProjectionMenu,
+                            icon = Icons.Rounded.Public,
+                            text = stringResource(R.string.player_projection),
+                        )
+                        OutlinedButtonWithIcon(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            onClick = onOpenExternally,
+                            icon = Icons.Rounded.OpenInNew,
+                            text = stringResource(R.string.player_open_externally),
+                        )
+                    }
                     FilledTonalButtonWithIcon(
                         onClick = onShareFile,
                         icon = Icons.Rounded.Share,

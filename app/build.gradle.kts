@@ -201,8 +201,13 @@ dependencies {
 
     implementation(libs.bundles.youtubedlAndroid)
 
+    implementation(libs.meta.spatial.sdk)
     implementation(libs.meta.spatial.sdk.compose)
     implementation(libs.meta.spatial.sdk.uiset)
+    implementation(libs.meta.spatial.sdk.toolkit)
+    implementation(libs.meta.spatial.sdk.vr)
+
+    implementation(libs.bundles.media3)
 
     implementation(libs.mmkv)
 

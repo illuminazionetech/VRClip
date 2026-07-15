@@ -17,6 +17,7 @@ import com.xrclip.ui.page.AppEntry
 import com.xrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.xrclip.ui.theme.XRClipTheme
 import com.xrclip.util.PreferenceUtil
+import com.xrclip.util.isQuestDevice
 import com.xrclip.util.matchUrlFromSharedText
 import com.xrclip.util.setLanguage
 import kotlinx.coroutines.runBlocking
@@ -88,12 +89,6 @@ class MainActivity : AppCompatActivity() {
                 null
             }
         }
-    }
-
-    private fun isQuestDevice(): Boolean {
-        return Build.MANUFACTURER.contains("Oculus", ignoreCase = true) ||
-            Build.MANUFACTURER.contains("Meta", ignoreCase = true) ||
-            Build.MODEL.contains("Quest", ignoreCase = true)
     }
 
     companion object {

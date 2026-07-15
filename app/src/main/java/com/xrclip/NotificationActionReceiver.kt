@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.xrclip.App.Companion.context
+import com.xrclip.download.CommandTaskManager
 import com.xrclip.download.DownloaderV2
 import com.xrclip.util.NotificationUtil
 import com.xrclip.util.makeToast
@@ -59,7 +60,7 @@ class NotificationActionReceiver : BroadcastReceiver(), KoinComponent {
         } else {
             // todo: reserved for custom commands
             YoutubeDL.destroyProcessById(taskId)
-            Downloader.onProcessCanceled(taskId)
+            CommandTaskManager.onProcessCanceled(taskId)
         }
     }
 

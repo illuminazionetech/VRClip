@@ -28,6 +28,7 @@ import androidx.compose.material.icons.rounded.SettingsApplications
 import androidx.compose.material.icons.rounded.SignalCellular4Bar
 import androidx.compose.material.icons.rounded.SignalWifi4Bar
 import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material.icons.rounded.ThreeSixty
 import androidx.compose.material.icons.rounded.VideoFile
 import androidx.compose.material.icons.rounded.ViewComfy
 import androidx.compose.material.icons.rounded.VolunteerActivism
@@ -203,6 +204,15 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
                     icon = Icons.Rounded.Terminal,
                 ) {
                     onNavigateTo(Route.TEMPLATE)
+                }
+            }
+            item {
+                SettingItem(
+                    title = stringResource(id = R.string.player_settings_title),
+                    description = stringResource(id = R.string.player_settings_subtitle),
+                    icon = Icons.Rounded.ThreeSixty,
+                ) {
+                    onNavigateTo(Route.PLAYER_PREFERENCES)
                 }
             }
             item {

@@ -63,8 +63,11 @@ import com.xrclip.ui.page.settings.network.CookieProfilePage
 import com.xrclip.ui.page.settings.network.CookiesViewModel
 import com.xrclip.ui.page.settings.network.NetworkPreferences
 import com.xrclip.ui.page.settings.network.WebViewPage
+import com.xrclip.ui.page.settings.player.PlayerPreferences
 import com.xrclip.ui.page.settings.troubleshooting.TroubleShootingPage
 import com.xrclip.ui.page.videolist.VideoListPage
+import com.xrclip.player.PlayerLauncher
+import com.xrclip.player.PlayerScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -151,7 +154,29 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
                         },
                     )
                 }
-                animatedComposable(Route.DOWNLOADS) { VideoListPage { onNavigateBack() } }
+                animatedComposable(Route.DOWNLOADS) {
+                    VideoListPage(
+                        onNavigateBack = { onNavigateBack() },
+                        onNavigateToPlayer = { info ->
+                            PlayerLauncher.launch(
+                                context = context,
+                                videoId = info.id,
+                                videoPath = info.videoPath,
+                                projectionOverride = info.projectionOverride,
+                                onNavigateToPlayer = { id -> navController.navigate(Route.PLAYER id id) },
+                            )
+                        },
+                    )
+                }
+                animatedComposable(
+                    Route.PLAYER arg Route.VIDEO_ID,
+                    arguments = listOf(navArgument(Route.VIDEO_ID) { type = NavType.IntType }),
+                ) {
+                    PlayerScreen(
+                        videoId = it.arguments?.getInt(Route.VIDEO_ID) ?: -1,
+                        onNavigateBack = onNavigateBack,
+                    )
+                }
                 animatedComposableVariant(Route.TASK_LIST) {
                     TaskListPage(
                         onNavigateBack = onNavigateBack,
@@ -200,6 +225,7 @@ fun NavGraphBuilder.settingsGraph(
                 onNavigateTo(Route.TEMPLATE)
             }
         }
+        animatedComposable(Route.PLAYER_PREFERENCES) { PlayerPreferences(onNavigateBack) }
         animatedComposable(Route.DOWNLOAD_FORMAT) {
             DownloadFormatPreferences(onNavigateBack = onNavigateBack) {
                 onNavigateTo(Route.SUBTITLE_PREFERENCES)

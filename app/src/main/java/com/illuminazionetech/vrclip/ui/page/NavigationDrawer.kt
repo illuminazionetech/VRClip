@@ -70,7 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.meta.spatial.uiset.navigation.SpatialSideNavItem
 import com.illuminazionetech.vrclip.R
-import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
 import com.illuminazionetech.vrclip.ui.common.Route
 import com.illuminazionetech.vrclip.ui.common.tonalSurface
@@ -362,7 +362,7 @@ fun NavigationRailContent(
     currentTopDestination: String? = null,
     onNavigateToRoute: (String) -> Unit,
 ) {
-    if (LocalDarkTheme.current.isDarkTheme()) {
+    if (LocalIsVRMode.current) {
         Column(
             modifier = modifier.padding(12.dp).selectableGroup().padding(vertical = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -49,6 +49,8 @@ import com.illuminazionetech.vrclip.player.gl.VideoGLSurfaceView
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.util.DatabaseUtil
 import com.illuminazionetech.vrclip.util.FileUtil
+import com.illuminazionetech.vrclip.util.PLAYER_CARDBOARD_DEFAULT
+import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -81,6 +83,9 @@ fun PlayerScreen(
         info = loaded
         val override = ProjectionMode.fromStorageKey(loaded.projectionOverride)
         projectionMode = override ?: ProjectionDetector.detectProjection(loaded.videoPath)
+        if (projectionMode.isStereo && PLAYER_CARDBOARD_DEFAULT.getBoolean()) {
+            outputMode = StereoOutputMode.SplitScreen
+        }
         playerEngine.play(loaded.videoPath)
     }
 
@@ -96,6 +101,9 @@ fun PlayerScreen(
     fun applyProjectionOverride(mode: ProjectionMode?) {
         val path = info?.videoPath ?: return
         projectionMode = mode ?: ProjectionDetector.detectProjection(path)
+        if (projectionMode.isStereo && PLAYER_CARDBOARD_DEFAULT.getBoolean()) {
+            outputMode = StereoOutputMode.SplitScreen
+        }
         scope.launch { DatabaseUtil.updateProjectionOverride(path, mode?.name) }
     }
 

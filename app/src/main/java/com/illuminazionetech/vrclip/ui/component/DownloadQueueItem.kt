@@ -53,7 +53,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.AsyncImageImpl
-import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.ui.theme.harmonizeWith
@@ -166,13 +165,10 @@ fun CustomCommandTaskItem(
     onShowLog: () -> Unit = {},
     onCancel: () -> Unit = {},
 ) {
-    val isDark = LocalDarkTheme.current.isDarkTheme()
-    val appleGreen = if (isDark) Color(0xFF30D158) else Color(0xFF34C759)
-
     val accentColor =
         MaterialTheme.colorScheme.run {
             when (status) {
-                TaskStatus.FINISHED -> appleGreen
+                TaskStatus.FINISHED -> primary
                 TaskStatus.CANCELED -> onSurfaceVariant
                 TaskStatus.RUNNING -> primary
                 TaskStatus.ERROR -> error

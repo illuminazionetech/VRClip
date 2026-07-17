@@ -1,6 +1,7 @@
 package com.xrclip.ui.page.settings.about
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
@@ -19,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import com.xrclip.App
 import com.xrclip.App.Companion.packageInfo
 import com.xrclip.R
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.component.BackButton
 import com.xrclip.ui.component.ConfirmButton
 import com.xrclip.ui.component.PreferenceItem
@@ -79,21 +78,15 @@ fun AboutPage(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true)
-            ) {
-                LargeTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.about)) },
-                    navigationIcon = { BackButton { onNavigateBack() } },
-                    scrollBehavior = scrollBehavior,
-                    colors = TopAppBarDefaults.largeTopAppBarColors(
-                        containerColor = Color.Transparent,
-                        scrolledContainerColor = Color.Transparent
-                    )
-                )
-            }
+            LargeTopAppBar(
+                title = { Text(text = stringResource(id = R.string.about)) },
+                navigationIcon = { BackButton { onNavigateBack() } },
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                ),
+            )
         },
         content = {
             LazyColumn(modifier = Modifier.padding(it)) {

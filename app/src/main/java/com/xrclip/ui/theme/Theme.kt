@@ -20,6 +20,7 @@ import com.google.android.material.color.MaterialColors
 import com.meta.spatial.uiset.theme.SpatialTheme
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
+import com.xrclip.ui.common.LocalIsVRMode
 
 fun Color.applyOpacity(enabled: Boolean): Color {
     return if (enabled) this else this.copy(alpha = 0.62f)
@@ -35,52 +36,69 @@ fun Color.harmonizeWith(other: Color) =
 fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
-private val AppleLightColorScheme = lightColorScheme(
-    primary = Color(0xFF007AFF),
+// Material You – VRClip Blue seed (#0A6EFF)
+private val VRClipLightColorScheme = lightColorScheme(
+    primary = Color(0xFF0059D8),
     onPrimary = Color.White,
-    primaryContainer = Color(0xFFE5F1FF),
-    onPrimaryContainer = Color(0xFF007AFF),
-    secondary = Color(0xFF5856D6),
+    primaryContainer = Color(0xFFD1E3FF),
+    onPrimaryContainer = Color(0xFF001647),
+    secondary = Color(0xFF545F71),
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFEBEBFF),
-    onSecondaryContainer = Color(0xFF5856D6),
-    background = Color(0xFFF2F2F7),
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
-    surfaceVariant = Color(0xFFE5E5EA),
-    onSurfaceVariant = Color(0xFF3C3C43),
-    outline = Color(0xFFC7C7CC),
-    outlineVariant = Color(0xFFD1D1D6),
+    secondaryContainer = Color(0xFFD8E3F8),
+    onSecondaryContainer = Color(0xFF111C2C),
+    tertiary = Color(0xFF6A5679),
+    onTertiary = Color.White,
+    tertiaryContainer = Color(0xFFF2DAFF),
+    onTertiaryContainer = Color(0xFF251432),
+    error = Color(0xFFBA1A1A),
+    onError = Color.White,
+    errorContainer = Color(0xFFFFDAD6),
+    onErrorContainer = Color(0xFF410002),
+    background = Color(0xFFF9F9FF),
+    onBackground = Color(0xFF1A1B23),
+    surface = Color(0xFFF9F9FF),
+    onSurface = Color(0xFF1A1B23),
+    surfaceVariant = Color(0xFFE1E2EC),
+    onSurfaceVariant = Color(0xFF44474F),
+    outline = Color(0xFF74777F),
+    outlineVariant = Color(0xFFC4C6D0),
     surfaceContainerLowest = Color.White,
-    surfaceContainerLow = Color(0xFFF2F2F7),
-    surfaceContainer = Color(0xFFFFFFFF),
-    surfaceContainerHigh = Color(0xFFEBEBEB),
-    surfaceContainerHighest = Color(0xFFD1D1D6),
+    surfaceContainerLow = Color(0xFFF3F3FA),
+    surfaceContainer = Color(0xFFEEEEF5),
+    surfaceContainerHigh = Color(0xFFE8E8EF),
+    surfaceContainerHighest = Color(0xFFE2E2EA),
 )
 
-private val AppleDarkColorScheme = darkColorScheme(
-    primary = Color(0xFF0A84FF),
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFF003366),
-    onPrimaryContainer = Color(0xFF0A84FF),
-    secondary = Color(0xFF5E5CE6),
-    onSecondary = Color.White,
-    secondaryContainer = Color(0xFF1C1C45),
-    onSecondaryContainer = Color(0xFF5E5CE6),
-    background = Color.Black,
-    onBackground = Color.White,
-    surface = Color(0xFF1C1C1E),
-    onSurface = Color.White,
-    surfaceVariant = Color(0xFF3A3A3C),
-    onSurfaceVariant = Color(0xFFEBEBF5),
-    outline = Color(0xFF48484A),
-    outlineVariant = Color(0xFF3A3A3C),
-    surfaceContainerLowest = Color.Black,
-    surfaceContainerLow = Color(0xFF1C1C1E),
-    surfaceContainer = Color(0xFF2C2C2E),
-    surfaceContainerHigh = Color(0xFF3A3A3C),
-    surfaceContainerHighest = Color(0xFF48484A),
+private val VRClipDarkColorScheme = darkColorScheme(
+    primary = Color(0xFFA3C4FF),
+    onPrimary = Color(0xFF002B75),
+    primaryContainer = Color(0xFF0043A5),
+    onPrimaryContainer = Color(0xFFD1E3FF),
+    secondary = Color(0xFFBBC6DD),
+    onSecondary = Color(0xFF263040),
+    secondaryContainer = Color(0xFF3C4758),
+    onSecondaryContainer = Color(0xFFD8E3F8),
+    tertiary = Color(0xFFD8BCE6),
+    onTertiary = Color(0xFF3B2848),
+    tertiaryContainer = Color(0xFF523E60),
+    onTertiaryContainer = Color(0xFFF2DAFF),
+    error = Color(0xFFFFB4AB),
+    onError = Color(0xFF690005),
+    errorContainer = Color(0xFF93000A),
+    onErrorContainer = Color(0xFFFFDAD6),
+    background = Color(0xFF12131A),
+    onBackground = Color(0xFFE2E2EA),
+    surface = Color(0xFF12131A),
+    onSurface = Color(0xFFE2E2EA),
+    surfaceVariant = Color(0xFF44474F),
+    onSurfaceVariant = Color(0xFFC4C6D0),
+    outline = Color(0xFF8E9099),
+    outlineVariant = Color(0xFF44474F),
+    surfaceContainerLowest = Color(0xFF0D0E15),
+    surfaceContainerLow = Color(0xFF1A1B23),
+    surfaceContainer = Color(0xFF1E1F27),
+    surfaceContainerHigh = Color(0xFF282A32),
+    surfaceContainerHighest = Color(0xFF333540),
 )
 
 @Composable
@@ -90,6 +108,7 @@ fun XRClipTheme(
     content: @Composable () -> Unit,
 ) {
     val view = LocalView.current
+    val isVRMode = LocalIsVRMode.current
 
     LaunchedEffect(darkTheme) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -107,20 +126,7 @@ fun XRClipTheme(
         }
     }
 
-    val colorScheme = if (darkTheme) {
-        AppleDarkColorScheme.copy(
-            surface = Color.Black,
-            background = Color.Black,
-            surfaceContainerLowest = Color.Black,
-            surfaceContainerLow = Color.Black,
-            surfaceContainer = Color.Black,
-            surfaceContainerHigh = Color(0xFF1C1C1E),
-            surfaceContainerHighest = Color(0xFF2C2C2E),
-            surfaceVariant = Color(0xFF1C1C1E),
-        )
-    } else {
-        AppleLightColorScheme
-    }
+    val colorScheme = if (darkTheme) VRClipDarkColorScheme else VRClipLightColorScheme
 
     val textStyle =
         LocalTextStyle.current.copy(
@@ -130,7 +136,7 @@ fun XRClipTheme(
 
     CompositionLocalProvider(
         LocalFixedColorRoles provides
-            FixedColorRoles.fromColorSchemes(AppleLightColorScheme, AppleDarkColorScheme),
+            FixedColorRoles.fromColorSchemes(VRClipLightColorScheme, VRClipDarkColorScheme),
         LocalTextStyle provides textStyle,
     ) {
         MaterialTheme(
@@ -138,7 +144,7 @@ fun XRClipTheme(
             typography = Typography,
             shapes = Shapes,
         ) {
-            if (darkTheme) {
+            if (isVRMode) {
                 SpatialTheme { content() }
             } else {
                 content()

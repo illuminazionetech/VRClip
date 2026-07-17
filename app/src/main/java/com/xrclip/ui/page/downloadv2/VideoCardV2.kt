@@ -75,7 +75,6 @@ import com.xrclip.ui.common.AsyncImageImpl
 import com.xrclip.ui.common.LocalIsVRMode
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.common.motion.materialSharedAxisY
 import com.xrclip.ui.theme.XRClipTheme
 import com.xrclip.util.toDurationText
@@ -276,13 +275,10 @@ fun VideoCardV2(
             }
         }
     } else {
-        Surface(
-            modifier =
-                modifier
-                    .fillMaxWidth()
-                    .glassEffect(shape = MaterialTheme.shapes.large, blur = true),
-            color = Color.Transparent,
+        Card(
+            modifier = modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         ) {
             Column {
                 Box(Modifier.fillMaxWidth()) {

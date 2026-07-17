@@ -3,12 +3,19 @@ package com.xrclip.ui.page
 import android.webkit.CookieManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -87,9 +95,10 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
     val cookiesViewModel: CookiesViewModel = koinViewModel()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val versionReport = App.packageInfo.versionName.toString()
+    val versionName = App.packageInfo.versionName.toString()
     val appName = stringResource(R.string.app_name)
     val scope = rememberCoroutineScope()
+    val uriHandler = LocalUriHandler.current
 
     val onNavigateBack: () -> Unit = {
         with(navController) {
@@ -132,11 +141,34 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
                 }
             },
             footer = {
-                Text(
-                    appName + "\n" + versionReport + "\n" + currentRoute,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 12.dp),
+                NavigationDrawerItem(
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    label = {
+                        Column {
+                            Text(
+                                appName,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            Text(
+                                "v$versionName",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    },
+                    selected = false,
+                    onClick = { uriHandler.openUri("https://github.com/XRClipTeam/XRClip/releases") },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = Color.Transparent,
+                    ),
                 )
             },
         ) {

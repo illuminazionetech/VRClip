@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import com.meta.spatial.uiset.input.SpatialSearchBar
 import com.xrclip.R
 import com.xrclip.ui.common.LocalIsVRMode
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.theme.XRClipTheme
 
 @Composable
@@ -51,9 +49,9 @@ fun XRClipSearchBar(
         )
     } else {
         Surface(
-            modifier =
-                modifier.widthIn(360.dp, 720.dp).glassEffect(shape = MaterialTheme.shapes.large),
-            color = Color.Transparent,
+            modifier = modifier.widthIn(360.dp, 720.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            shape = MaterialTheme.shapes.large,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Spacer(modifier = Modifier.width(16.dp))

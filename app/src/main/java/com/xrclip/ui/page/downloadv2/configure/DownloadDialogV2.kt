@@ -93,7 +93,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.xrclip.App
 import com.xrclip.R
 import com.xrclip.ui.common.HapticFeedback.longPressHapticFeedback
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.common.motion.materialSharedAxisX
 import com.xrclip.ui.component.ButtonChip
 import com.xrclip.ui.component.DrawerSheetSubtitle
@@ -888,9 +887,9 @@ private fun SingleChoiceItem(
     Surface(
         selected = selected,
         onClick = onClick,
-        color = Color.Transparent,
+        color = color,
         shape = RoundedCornerShape(corner),
-        modifier = modifier.padding(vertical = 4.dp).run { if (!enabled) alpha(0.32f) else this }.glassEffect(shape = RoundedCornerShape(corner), color = color, blur = false),
+        modifier = modifier.padding(vertical = 4.dp).run { if (!enabled) alpha(0.32f) else this },
         enabled = enabled,
     ) {
         Row(

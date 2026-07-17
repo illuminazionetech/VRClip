@@ -47,7 +47,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalView
@@ -63,7 +62,6 @@ import com.xrclip.download.CommandTaskManager
 import com.xrclip.R
 import com.xrclip.database.objects.CommandTemplate
 import com.xrclip.ui.common.HapticFeedback.slightHapticFeedback
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.common.intState
 import com.xrclip.ui.component.BackButton
 import com.xrclip.ui.component.ClearButton
@@ -102,27 +100,21 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true)
-            ) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.running_tasks),
-                            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
-                        )
-                    },
-                    navigationIcon = { BackButton { onNavigateBack() } },
-                    actions = {},
-                    scrollBehavior = scrollBehavior,
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        scrolledContainerColor = Color.Transparent
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.running_tasks),
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                     )
-                )
-            }
+                },
+                navigationIcon = { BackButton { onNavigateBack() } },
+                actions = {},
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                ),
+            )
         },
         floatingActionButton = {
             FloatingActionButton(

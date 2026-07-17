@@ -103,12 +103,10 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
     var convertFormat by AUDIO_CONVERSION_FORMAT.intState
     var sortingFields by
         remember(showFormatSorterDialog) { mutableStateOf(SORTING_FIELDS.getString()) }
-    val audioFormat by
-        remember(showAudioFormatDialog) { mutableStateOf(PreferenceStrings.getAudioFormatDesc()) }
+    val audioFormat = PreferenceStrings.getAudioFormatDesc()
     var convertAudio by AUDIO_CONVERT.booleanState
     var isFormatSortingEnabled by FORMAT_SORTING.booleanState
-    val audioQuality by
-        remember(showAudioQualityDialog) { mutableStateOf(PreferenceStrings.getAudioQualityDesc()) }
+    val audioQuality = PreferenceStrings.getAudioQualityDesc()
     var isVideoClipEnabled by VIDEO_CLIP.booleanState
     var isFormatSelectionEnabled by FORMAT_SELECTION.booleanState
     var mergeAudioStream by MERGE_MULTI_AUDIO_STREAM.booleanState

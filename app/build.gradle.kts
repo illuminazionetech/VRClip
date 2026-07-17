@@ -185,6 +185,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidxCompose)
     implementation(libs.bundles.accompanist)
+    // Compose Material 2 - only ModalBottomSheetM2.kt's legacy ModalBottomSheetLayout still
+    // needs this (M3's ModalBottomSheet doesn't support the same partial-expand/gesture
+    // config); was previously pulled in transitively via accompanist-webview/pager-indicators.
+    implementation(libs.androidx.compose.material)
 
     implementation(libs.coil.kt.compose)
 

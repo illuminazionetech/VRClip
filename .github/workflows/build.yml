@@ -62,8 +62,15 @@ jobs:
       - name: Run Tests
         run: ./gradlew test
 
-      - name: Build with Gradle
-        run: ./gradlew assembleRelease assembleDebug
+      - name: Build Release APKs
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Build Debug APKs
+        # Debug APKs are only a convenience CI artifact for manual QA, not required to publish
+        # the release (only the release APKs below are attached to it) — don't let a debug-only
+        # packaging issue block the release.
+        continue-on-error: true
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload Release APKs
         uses: actions/upload-artifact@v4
@@ -76,6 +83,7 @@ jobs:
         with:
           name: VRClip-Debug-APKs
           path: app/build/outputs/apk/*/debug/*.apk
+          if-no-files-found: ignore
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -87,5 +95,68 @@ jobs:
           files: |
             app/build/outputs/apk/generic/release/*.apk
             app/build/outputs/apk/githubPreview/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  auto-tag-release:
+    name: Auto-tag and publish new version
+    # Runs only right after a plain push to main (not for PRs). Gated on lint+build already
+    # succeeding, so a version bump is only ever tagged/released off a commit that's known to
+    # build cleanly. Publishes directly in this same job (reusing the APKs "build" just produced)
+    # instead of pushing a tag and waiting for that to retrigger the workflow — a push made with
+    # the default GITHUB_TOKEN does NOT retrigger workflows (GitHub blocks that to avoid
+    # recursion), so relying on a second run here would silently never fire.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [lint, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine version and whether it's already released
+        id: version
+        run: |
+          set -euo pipefail
+          VERSION_FILE="buildSrc/src/main/kotlin/Version.kt"
+          MAJOR=$(grep -oP 'versionMajor\s*=\s*\K\d+' "$VERSION_FILE")
+          MINOR=$(grep -oP 'versionMinor\s*=\s*\K\d+' "$VERSION_FILE")
+          PATCH=$(grep -oP 'versionPatch\s*=\s*\K\d+' "$VERSION_FILE")
+          TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "Version in $VERSION_FILE is $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
+            echo "$TAG already exists on origin — this version was already released, nothing to do."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download release APKs built by the build job
+        if: steps.version.outputs.exists == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: VRClip-Release-APKs
+          path: release-apks
+
+      - name: Tag this version
+        if: steps.version.outputs.exists == 'false'
+        run: |
+          git tag "${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+
+      - name: Publish release
+        if: steps.version.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: VRClip ${{ steps.version.outputs.tag }}
+          draft: false
+          prerelease: false
+          files: release-apks/**/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

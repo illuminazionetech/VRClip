@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.core.content.FileProvider
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.App.Companion.context
+import com.illuminazionetech.vrclip.BuildConfig
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.util.FileUtil.getFileProvider
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getInt
@@ -164,7 +165,8 @@ object UpdateUtil {
             val targetUrl =
                 release.assets
                     ?.find {
-                        return@find it.name?.contains(preferredArch) ?: false
+                        val name = it.name ?: return@find false
+                        name.contains(preferredArch) && name.contains(BuildConfig.FLAVOR)
                     }
                     ?.browserDownloadUrl ?: return@withContext emptyFlow()
             val request = Request.Builder().url(targetUrl).build()

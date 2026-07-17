@@ -6,7 +6,7 @@
 
 **Downloader video/audio universale + player immersivo 3D/360°/XR, per Android e Meta Quest.**
 
-VRClip scarica video e audio da centinaia di piattaforme (tramite yt-dlp) e li riproduce in-app con un player che riconosce automaticamente i contenuti flat, 360°, 180° e stereoscopici 3D — con un'esperienza completamente immersiva su Meta Quest tramite Meta Spatial SDK, e un player con rendering GL dedicato (pan touch/giroscopio, modalità split-screen per visori da telefono) su smartphone e tablet Android. L'interfaccia usa uno stile "Liquid Glass" con vetro sfocato reale, adattato automaticamente alla densità e alle interazioni a controller quando gira su Quest.
+VRClip scarica video e audio da centinaia di piattaforme (tramite yt-dlp) e li riproduce in-app con un player che riconosce automaticamente i contenuti flat, 360°, 180° e stereoscopici 3D — con un'esperienza completamente immersiva su Meta Quest tramite Meta Spatial SDK, e un player con rendering GL dedicato (pan touch/giroscopio, modalità split-screen per visori da telefono) su smartphone e tablet Android. L'interfaccia segue le linee guida Material Design 3 Expressive di Google (colore dinamico, forme e tipografia espansive, animazioni a molla), adattata automaticamente alla densità e alle interazioni a controller quando gira su Quest.
 
 ## ✨ Funzionalità principali
 
@@ -16,7 +16,7 @@ VRClip scarica video e audio da centinaia di piattaforme (tramite yt-dlp) e li r
   - **Android (telefono/tablet)**: rendering OpenGL per sfera equirettangolare (360°/180°) con pan touch/giroscopio, e modalità split-screen in stile Cardboard per i video 3D.
   - **Meta Quest (2, 3, Pro)**: scena immersiva reale tramite Meta Spatial SDK, con pannello video posizionato nello spazio e stereo corretto per occhio.
 - **Gestione metadati**: incorpora automaticamente metadati, sottotitoli e miniature nei file scaricati.
-- **UI Liquid Glass**: superfici in vetro con sfocatura reale (GPU, API 31+, con fallback elegante sotto), adattate automaticamente per l'uso a 10 piedi con controller su Meta Quest.
+- **UI Material Design 3 Expressive**: colore dinamico (Material You), forme e tipografia espansive, motion a molla, adattate automaticamente per l'uso a 10 piedi con controller su Meta Quest.
 - **Privacy-first**: nessun tracciamento, nessuna pubblicità, nessuna sezione donazioni. Tutti i download avvengono localmente.
 
 ## 📱 Installazione
@@ -65,4 +65,4 @@ Vedi [`CONTRIBUTING.md`](CONTRIBUTING.md) per build locale, stile del codice e l
 
 ## 📜 Licenza e crediti
 
-VRClip è **GPLv3** (vedi [`LICENSE`](LICENSE)) ed è un fork di [Seal](https://github.com/JunkFood02/Seal) di JunkFood02, a cui si aggiungono il supporto Meta Quest, il player immersivo 3D/360°/XR e il restyling Liquid Glass. Usa [yt-dlp](https://github.com/yt-dlp/yt-dlp), [ffmpeg](https://ffmpeg.org/) e [aria2c](https://aria2.github.io/) tramite [youtubedl-android](https://github.com/JunkFood02/youtubedl-android). Dettagli completi in [`NOTICE`](NOTICE).
+VRClip è **GPLv3** (vedi [`LICENSE`](LICENSE)) ed è un fork di [Seal](https://github.com/JunkFood02/Seal) di JunkFood02, a cui si aggiungono il supporto Meta Quest, il player immersivo 3D/360°/XR e il restyling completo in Material Design 3 Expressive. Usa [yt-dlp](https://github.com/yt-dlp/yt-dlp), [ffmpeg](https://ffmpeg.org/) e [aria2c](https://aria2.github.io/) tramite [youtubedl-android](https://github.com/JunkFood02/youtubedl-android). Dettagli completi in [`NOTICE`](NOTICE).

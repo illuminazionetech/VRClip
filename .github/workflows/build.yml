@@ -59,29 +59,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Free disk space
-        # The app bundles several sizeable native libraries per ABI split (ffmpeg, python,
-        # aria2c, Meta Spatial SDK) across 2 flavors x 2 build types; on a stock ubuntu-latest
-        # runner this has intermittently exhausted disk mid-build and failed packaging with an
-        # opaque IncrementalSplitterRunnable error. Clearing unrelated preinstalled toolchains
-        # frees tens of GB before Gradle starts.
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk/ndk /opt/ghc \
-            /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" /opt/hostedtoolcache/CodeQL || true
-          df -h /
-
       - name: Run Tests
         run: ./gradlew test
 
       - name: Build Release APKs
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease --stacktrace
 
       - name: Build Debug APKs
         # Debug APKs are only a convenience CI artifact for manual QA, not required to publish
         # the release (only the release APKs below are attached to it) — don't let a debug-only
         # packaging issue block the release.
         continue-on-error: true
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload Release APKs
         uses: actions/upload-artifact@v4

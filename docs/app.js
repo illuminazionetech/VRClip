@@ -60,6 +60,31 @@
     );
   }
 
+  function triggerDownload(url) {
+    // Deliberately not `window.location.href = url`: reassigning the current document's
+    // location to a large binary (70-180MB release APK) makes the tab's own loading spinner
+    // spin for the whole transfer on several mobile/Quest browsers, since the browser treats it
+    // as an in-flight navigation until the attachment headers redirect it into download mode —
+    // it looks stuck even though the file is downloading fine in the background. A detached
+    // anchor click starts the same download without touching the page's navigation state.
+    const a = document.createElement("a");
+    a.href = url;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function confirmDownloadStarted() {
+    const originalLabel = downloadLabel.textContent;
+    downloadBtn.classList.add("started");
+    downloadLabel.textContent = "Download avviato ✓";
+    window.setTimeout(() => {
+      downloadBtn.classList.remove("started");
+      downloadLabel.textContent = originalLabel;
+    }, 2500);
+  }
+
   function setFallbackToReleasesPage(message) {
     downloadBtn.disabled = false;
     downloadLabel.textContent = "Vai alla pagina delle release";
@@ -101,7 +126,8 @@
       `${friendlyArchLabel(recommended.name)} · ${formatSize(recommended.size)} — ` +
       `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">tutte le release</a>`;
     downloadBtn.onclick = () => {
-      window.location.href = recommended.browser_download_url;
+      triggerDownload(recommended.browser_download_url);
+      confirmDownloadStarted();
     };
 
     const others = apkAssets.filter((a) => a.name !== recommended.name);

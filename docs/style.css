@@ -61,6 +61,32 @@
   box-sizing: border-box;
 }
 
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -48px;
+  z-index: 100;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 12px 20px;
+  border-radius: var(--shape-sm);
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.2s var(--standard);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: var(--shape-xs);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -191,6 +217,7 @@ body {
   margin: 0 0 12px;
   letter-spacing: -0.02em;
   font-weight: 700;
+  text-wrap: balance;
   background: linear-gradient(120deg, var(--primary), #6a8fff 60%, var(--primary));
   -webkit-background-clip: text;
   background-clip: text;
@@ -203,6 +230,7 @@ body {
   max-width: 620px;
   margin: 0 auto 32px;
   line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .pill-row {
@@ -280,6 +308,17 @@ body {
   opacity: 0.6;
   cursor: wait;
   transform: none;
+}
+
+.download-btn.started {
+  background: #1d8a4c;
+}
+
+@media (prefers-color-scheme: dark) {
+  .download-btn.started {
+    background: #4ade80;
+    color: #003919;
+  }
 }
 
 .download-btn svg {

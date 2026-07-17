@@ -1,3 +1,8 @@
+## 1.0.1 — Release pipeline fix
+- 🛠️ Fixed a CI packaging failure that prevented 1.0.0's release build from completing, and made
+  release publishing fully automatic: pushing a version bump to `main` now tags, builds, and
+  publishes the GitHub Release (with the in-app auto-updater picking it up) with no manual steps.
+
 ## 1.0.0 — Material 3 Expressive rewrite
 - 🎨 Full UI rewrite on Material Design 3 Expressive: the "Liquid Glass" blur/translucent-border
   system is gone, replaced with real M3 tonal surfaces, an expressive shape scale, spring-based

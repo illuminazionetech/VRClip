@@ -16,6 +16,6 @@ dependencyResolutionManagement {
         mavenLocal()
     }
 }
-rootProject.name = "XRClip"
+rootProject.name = "VRClip"
 include (":app")
 include(":color")

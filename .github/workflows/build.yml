@@ -68,20 +68,20 @@ jobs:
       - name: Upload Release APKs
         uses: actions/upload-artifact@v4
         with:
-          name: XRClip-Release-APKs
+          name: VRClip-Release-APKs
           path: app/build/outputs/apk/*/release/*.apk
 
       - name: Upload Debug APKs
         uses: actions/upload-artifact@v4
         with:
-          name: XRClip-Debug-APKs
+          name: VRClip-Debug-APKs
           path: app/build/outputs/apk/*/debug/*.apk
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          name: XRClip ${{ github.ref_name }}
+          name: VRClip ${{ github.ref_name }}
           draft: false
           prerelease: false
           files: |

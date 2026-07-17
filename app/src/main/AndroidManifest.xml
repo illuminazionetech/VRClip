@@ -49,14 +49,14 @@
             android:name=".CrashReportActivity"
             android:exported="false"
             android:label="CrashReportActivity"
-            android:theme="@style/Theme.XRClip" />
+            android:theme="@style/Theme.VRClip" />
         <activity
             android:name=".QuickDownloadActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/title_activity_share"
             android:launchMode="singleInstance"
-            android:theme="@style/Theme.XRClip.Dialog">
+            android:theme="@style/Theme.VRClip.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -89,7 +89,7 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="unspecified"
-            android:theme="@style/Theme.XRClip">
+            android:theme="@style/Theme.VRClip">
             <layout
                 android:defaultHeight="800dp"
                 android:defaultWidth="1200dp"

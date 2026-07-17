@@ -101,7 +101,7 @@
     <string name="permission_issue">Problem mit der Speicherberechtigung</string>
     <string name="battery_configuration">Akkukonfiguration</string>
     <string name="battery_configuration_desc">Akku-Optimierung für diese App ignorieren, um im Hintergrund herunterzuladen</string>
-    <string name="service_title">XRClip lädt herunter …</string>
+    <string name="service_title">VRClip lädt herunter …</string>
     <string name="channel_description">Benachrichtigung über heruntergeladene Dateien und den Fortschritt</string>
     <string name="additional_settings">Zusätzliche Einstellungen</string>
     <string name="playlist_indicator_text">Herunterladen der Wiedergabeliste (%1$d/%2$d)…</string>
@@ -277,11 +277,7 @@
     <string name="rename">Umbenennen</string>
     <string name="clear_all_cookies">Alle Cookies löschen</string>
     <string name="temporary_directory_desc">Temporäre Dateien im internen Ordner speichern</string>
-    <string name="sponsor">Sponsor</string>
-    <string name="sponsor_desc">Unterstütze diese App durch Sponsoring auf GitHub</string>
-    <string name="sponsor_msg">XRClip wird immer frei und kostenlos für alle sein. Wenn du es magst, bitte denke bitte darüber nach, mich auf GitHub zu sponsern!</string>
     <string name="feedback">Rückmeldung</string>
-    <string name="sponsors">Sponsoren</string>
     <string name="no_downloaded_media">Keine heruntergeladenen Medien</string>
     <string name="beta_features">Beta</string>
     <string name="enable_experimental_feature">Experimentelle Funktion aktivieren\?</string>
@@ -290,9 +286,7 @@
     <string name="clip_video_desc">Videoclips auf der Formatauswahlseite erstellen</string>
     <string name="okay">Okay</string>
     <string name="feature_unavailable">Funktion nicht verfügbar</string>
-    <string name="auto_update_disabled_msg">Automatische Updates sind für %1$s Builds nicht verfügbar. Wenn du %1$s nicht auf deinem Gerät installiert hast, oder eine Vorschau kommender Funktionen in XRClip möchtest, ziehe bitte %2$s in Erwägung.</string>
-    <string name="msg_from_developer">Nachricht vom Entwickler</string>
-    <string name="sponsor_msg2">Vielen Dank!</string>
+    <string name="auto_update_disabled_msg">Automatische Updates sind für %1$s Builds nicht verfügbar. Wenn du %1$s nicht auf deinem Gerät installiert hast, oder eine Vorschau kommender Funktionen in VRClip möchtest, ziehe bitte %2$s in Erwägung.</string>
     <string name="switch_to_github_builds">Wechseln zu GitHub-Builds</string>
     <string name="no_custom_command_tasks">Keine benutzerdefinierten Befehlsaufgaben</string>
     <string name="got_it">Verstanden</string>
@@ -336,9 +330,9 @@
     <string name="refresh_cookies_desc">Tippen, um die Webseite für die Erstellung neuer Cookies zu öffnen:</string>
     <string name="custom">Benutzerdefiniert</string>
     <string name="remove_multiple_templates_msg">\"%1$s\" endgültig aus den Befehlsvorlagen entfernen\?</string>
-    <string name="custom_command_usage_msg">yt-dlp ist ein mächtiges Werkzeug um Videos herunterzuladen. XRClip macht es einfacher yt-dlp zu nutzten, indem es eine intuitive Benutzeroberfläche, Voreinstellungen für häufige Befehle und andere Funktionen bereitstellt.
+    <string name="custom_command_usage_msg">yt-dlp ist ein mächtiges Werkzeug um Videos herunterzuladen. VRClip macht es einfacher yt-dlp zu nutzten, indem es eine intuitive Benutzeroberfläche, Voreinstellungen für häufige Befehle und andere Funktionen bereitstellt.
 \n
-\nFür erweiterte Nutzung von yt-dlp erlaubt XRClip es dir benutzerdefinierte Befehlsvorlagen zu erstellen, speichern und auszuführen, genau wie in einer Befehlszeile.
+\nFür erweiterte Nutzung von yt-dlp erlaubt VRClip es dir benutzerdefinierte Befehlsvorlagen zu erstellen, speichern und auszuführen, genau wie in einer Befehlszeile.
 \n
 \nWenn benutzerdefinierte Befehle genutzt werden sind die meisten Optionen und Funktionen in der Benutzeroberfläche deaktiviert.</string>
     <string name="output_template">Ausgabemuster</string>

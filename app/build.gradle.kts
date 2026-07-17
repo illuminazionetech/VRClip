@@ -49,10 +49,10 @@ android {
     buildFeatures { buildConfig = true }
 
     defaultConfig {
-        applicationId = "com.xrclip"
+        applicationId = "com.illuminazionetech.vrclip"
         minSdk = 28
         targetSdk = 35
-        versionCode = 40400
+        versionCode = 100_000_400
         check(versionCode == currentVersionCode)
 
         versionName = baseVersionName
@@ -124,7 +124,7 @@ android {
             }
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            resValue("string", "app_name", "XRClip Debug")
+            resValue("string", "app_name", "VRClip Debug")
         }
     }
 
@@ -139,7 +139,7 @@ android {
         create("githubPreview") {
             dimension = "publishChannel"
             applicationIdSuffix = ".preview"
-            resValue("string", "app_name", "XRClip Preview")
+            resValue("string", "app_name", "VRClip Preview")
         }
 
         create("fdroid") {
@@ -167,7 +167,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    namespace = "com.xrclip"
+    namespace = "com.illuminazionetech.vrclip"
 }
 
 ktfmt { kotlinLangStyle() }

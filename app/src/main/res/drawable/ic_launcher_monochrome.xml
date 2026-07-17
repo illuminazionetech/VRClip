@@ -3,19 +3,54 @@
     android:height="108dp"
     android:viewportWidth="100"
     android:viewportHeight="100">
+    <!-- Themed/monochrome variant (Android 13+): same seal-with-VR-headset silhouette, -->
+    <!-- single alpha channel — the system supplies the tint color. -->
     <group
         android:translateX="10"
         android:translateY="10"
         android:scaleX="0.8"
         android:scaleY="0.8">
         <path
-            android:pathData="M20,30 L40,70 L60,30 L80,70 M60,70 L80,70 L80,50 C80,40 70,30 60,30"
-            android:strokeColor="#FF000000"
-            android:strokeWidth="8"
-            android:strokeLineCap="round"
-            android:strokeLineJoin="round" />
+            android:fillColor="#FF000000"
+            android:pathData="M84,78
+                C84,90.70 68.78,101 50,101
+                C31.22,101 16,90.70 16,78
+                C16,65.30 31.22,55 50,55
+                C68.78,55 84,65.30 84,78
+                Z" />
         <path
             android:fillColor="#FF000000"
-            android:pathData="M45,80 L55,80 L50,90 Z" />
+            android:pathData="M30,79
+                C30,83.42 24.63,87 18,87
+                C11.37,87 6,83.42 6,79
+                C6,74.58 11.37,71 18,71
+                C24.63,71 30,74.58 30,79
+                Z" />
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M94,79
+                C94,83.42 88.63,87 82,87
+                C75.37,87 70,83.42 70,79
+                C70,74.58 75.37,71 82,71
+                C88.63,71 94,74.58 94,79
+                Z" />
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M74,35
+                C74,48.25 62.25,59 50,59
+                C37.75,59 26,48.25 26,35
+                C26,21.75 37.75,11 50,11
+                C62.25,11 74,21.75 74,35
+                Z" />
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M36,27
+                L64,27
+                A10,10 0 0 1 74,37
+                A10,10 0 0 1 64,47
+                L36,47
+                A10,10 0 0 1 26,37
+                A10,10 0 0 1 36,27
+                Z" />
     </group>
 </vector>

@@ -127,7 +127,7 @@
     <string name="permission_issue_desc">无法下载到除 Download/ 及 Documents/ 以外的目录</string>
     <string name="battery_configuration">后台下载设置</string>
     <string name="battery_configuration_desc">允许本应用在后台运行以在后台进行下载</string>
-    <string name="service_title">XRClip 正在进行下载…</string>
+    <string name="service_title">VRClip 正在进行下载…</string>
     <string name="unknown_error">出现不可预知的错误</string>
     <string name="translate">翻译</string>
     <string name="translate_desc">在 Weblate 上帮助我们翻译此应用</string>
@@ -278,29 +278,23 @@
     <string name="clear_all_cookies">清除所有 Cookies</string>
     <string name="clear_all_cookies_desc">确定要删除储存在应用中的所有 Cookies 吗？</string>
     <string name="temporary_directory_desc">将临时文件储存在内部目录中</string>
-    <string name="sponsor">赞助</string>
-    <string name="sponsor_desc">在 GitHub 上赞助以支持本应用</string>
-    <string name="sponsor_msg">XRClip 将永远保持免费与开源，如果你想要支持它的持续开发与改进，请考虑在 GitHub 上赞助我！</string>
     <string name="feedback">反馈</string>
-    <string name="sponsors">赞助</string>
     <string name="no_downloaded_media">下载记录空空如也</string>
     <string name="beta_features">测试</string>
     <string name="enable_experimental_feature">启用试验性功能吗？</string>
     <string name="clip_video_desc">在格式选择页面进行视频剪辑</string>
     <string name="clip_video_dialog_msg">该功能将使用 FFmpeg 以下载选定部分的视频，该功能仍处于试验阶段，剪辑不会完全准确，且并非所有格式都支持该功能，使用该功能时的下载速度将会显著减慢。</string>
     <string name="audio_format">音频格式</string>
-    <string name="auto_update_disabled_msg">%1$s 版本无法使用自动更新，如果你的设备并未安装 %1$s，或想要升级到测试版本以提前体验 XRClip 中即将加入的新功能，请考虑 %2$s。</string>
+    <string name="auto_update_disabled_msg">%1$s 版本无法使用自动更新，如果你的设备并未安装 %1$s，或想要升级到测试版本以提前体验 VRClip 中即将加入的新功能，请考虑 %2$s。</string>
     <string name="switch_to_github_builds">切换至 GitHub 版本</string>
     <string name="okay">好</string>
     <string name="got_it">好</string>
     <string name="feature_unavailable">此功能不可用</string>
-    <string name="sponsor_msg2">感激不尽！</string>
     <string name="convert_subtitle">转换字幕格式</string>
     <string name="convert_subtitle_desc">将字幕文件转换为另一格式</string>
     <string name="split_video">切分视频</string>
     <string name="split_video_msg">视频会被切分为 %1$d 个片段</string>
     <string name="unknown_error_title">糟糕！出现了不可预知的错误</string>
-    <string name="msg_from_developer">开发者的话</string>
     <string name="copy_and_exit">复制并退出</string>
     <string name="no_custom_command_tasks">没有正在执行中的自定义命令任务</string>
     <string name="download_video_desc">从链接下载视频文件</string>
@@ -336,9 +330,9 @@
     <string name="refresh_cookies_desc">点击打开网页以刷新 cookies：</string>
     <string name="ua_header">用户代理</string>
     <string name="export_to_file">导出到文件</string>
-    <string name="custom_command_usage_msg">yt-dlp 是一款强大的命令行视频下载工具。通过提供直观的图形用户界面（GUI）、 常见命令行的预设以及其他附加功能，XRClip 使该工具更易使用。
+    <string name="custom_command_usage_msg">yt-dlp 是一款强大的命令行视频下载工具。通过提供直观的图形用户界面（GUI）、 常见命令行的预设以及其他附加功能，VRClip 使该工具更易使用。
 \n
-\n对于 yt-dlp 的高级用法，XRClip 允许你直接创建、保存并执行自定义的命令行模板，就像在命令行终端上操作一样。
+\n对于 yt-dlp 的高级用法，VRClip 允许你直接创建、保存并执行自定义的命令行模板，就像在命令行终端上操作一样。
 \n
 \n使用自定义命令行时，多数 GUI 选项和功能会被禁用。</string>
     <string name="presets">预设</string>

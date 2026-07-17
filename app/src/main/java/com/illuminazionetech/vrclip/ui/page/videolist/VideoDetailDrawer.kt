@@ -21,7 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.Link
-import androidx.compose.material.icons.rounded.OpenInNew
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ButtonDefaults
@@ -246,7 +246,7 @@ fun VideoDetailDrawerImpl(
                         OutlinedButtonWithIcon(
                             modifier = Modifier.padding(horizontal = 12.dp),
                             onClick = onOpenExternally,
-                            icon = Icons.Rounded.OpenInNew,
+                            icon = Icons.AutoMirrored.Rounded.OpenInNew,
                             text = stringResource(R.string.player_open_externally),
                         )
                     }

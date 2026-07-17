@@ -16,12 +16,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AssignmentReturn
+import androidx.compose.material.icons.automirrored.rounded.AssignmentReturn
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.ContentPasteGo
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DeleteSweep
-import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
@@ -150,7 +150,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Rounded.HelpOutline,
+                            imageVector = Icons.AutoMirrored.Rounded.HelpOutline,
                             contentDescription = stringResource(id = R.string.how_does_it_work),
                         )
                     }
@@ -186,7 +186,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                     },
                                 )
                                 DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.Rounded.AssignmentReturn, null) },
+                                    leadingIcon = { Icon(Icons.AutoMirrored.Rounded.AssignmentReturn, null) },
                                     text = { Text(stringResource(R.string.import_from_clipboard)) },
                                     onClick = {
                                         scope.launch {

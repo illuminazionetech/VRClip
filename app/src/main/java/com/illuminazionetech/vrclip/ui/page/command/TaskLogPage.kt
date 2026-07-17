@@ -21,7 +21,7 @@ import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.UnfoldMore
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -83,7 +83,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                 modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp).navigationBarsPadding(),
                 verticalArrangement = Arrangement.Center,
             ) {
-                Divider(modifier = Modifier.fillMaxWidth())
+                HorizontalDivider(modifier = Modifier.fillMaxWidth())
                 Row(
                     Modifier.fillMaxWidth()
                         .horizontalScroll(rememberScrollState())

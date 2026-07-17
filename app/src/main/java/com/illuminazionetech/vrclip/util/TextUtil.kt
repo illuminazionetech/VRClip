@@ -114,13 +114,6 @@ fun Number?.toBitrateText(): String {
 fun getErrorReport(th: Throwable, url: String): String =
     App.getVersionReport() + "\nURL: ${url}\n${th.message}"
 
-@Deprecated(
-    "Use findURLsFromString instead",
-    ReplaceWith("findURLsFromString(s, !isMatchingMultiLink).joinToString(separator = \"\\n\")"),
-)
-fun matchUrlFromString(s: String, isMatchingMultiLink: Boolean = false): String =
-    findURLsFromString(s, !isMatchingMultiLink).joinToString(separator = "\n")
-
 fun findURLsFromString(input: String, firstMatchOnly: Boolean = false): List<String> {
     val result = mutableListOf<String>()
     val pattern = Pattern.compile(URL_REGEX_PATTERN)

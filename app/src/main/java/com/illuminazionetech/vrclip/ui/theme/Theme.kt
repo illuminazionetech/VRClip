@@ -124,9 +124,3 @@ fun VRClipTheme(
         }
     }
 }
-
-@Composable
-@Deprecated("Use VRClipTheme instead", replaceWith = ReplaceWith("VRClipTheme(content)"))
-fun PreviewThemeLight(content: @Composable () -> Unit) {
-    VRClipTheme(darkTheme = false, content = content)
-}

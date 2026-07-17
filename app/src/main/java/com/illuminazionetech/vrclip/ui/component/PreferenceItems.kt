@@ -61,7 +61,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.illuminazionetech.vrclip.R
-import com.illuminazionetech.vrclip.ui.theme.FixedAccentColors
+import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.ui.theme.applyOpacity
 import com.illuminazionetech.vrclip.ui.theme.harmonizeWithPrimary
@@ -590,8 +590,8 @@ fun PreferencesHintCardPreview() {
             title = "Explore new features",
             icon = Icons.Rounded.TipsAndUpdates,
             description = "Find out what's new in this version",
-            containerColor = FixedAccentColors.primaryFixed,
-            contentColor = FixedAccentColors.onPrimaryFixed,
+            containerColor = LocalFixedColorRoles.current.primaryFixed,
+            contentColor = LocalFixedColorRoles.current.onPrimaryFixed,
         )
     }
 }
@@ -601,8 +601,8 @@ fun PreferencesHintCard(
     title: String = "Title ".repeat(2),
     description: String? = "Description text ".repeat(3),
     icon: ImageVector? = Icons.Rounded.Translate,
-    containerColor: Color = FixedAccentColors.secondaryFixed,
-    contentColor: Color = FixedAccentColors.onSecondaryFixed,
+    containerColor: Color = LocalFixedColorRoles.current.secondaryFixed,
+    contentColor: Color = LocalFixedColorRoles.current.onSecondaryFixed,
     onClick: () -> Unit = {},
 ) {
     Row(

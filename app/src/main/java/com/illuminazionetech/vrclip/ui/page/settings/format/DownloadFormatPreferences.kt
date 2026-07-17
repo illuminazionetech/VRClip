@@ -11,7 +11,7 @@ import androidx.compose.material.icons.rounded.HighQuality
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.Photo
-import androidx.compose.material.icons.rounded.Sort
+import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.SpatialAudioOff
 import androidx.compose.material.icons.rounded.Subtitles
 import androidx.compose.material.icons.rounded.Sync
@@ -273,7 +273,7 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                 item {
                     PreferenceSwitchWithDivider(
                         title = stringResource(id = R.string.format_sorting),
-                        icon = Icons.Rounded.Sort,
+                        icon = Icons.AutoMirrored.Rounded.Sort,
                         description = stringResource(id = R.string.format_sorting_desc),
                         enabled = !isCustomCommandEnabled,
                         isChecked = isFormatSortingEnabled,

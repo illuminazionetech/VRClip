@@ -30,7 +30,7 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.FileCopy
 import androidx.compose.material.icons.rounded.GeneratingTokens
-import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
@@ -165,7 +165,7 @@ fun CookieProfilePage(
                     var expanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { showHelpDialog = true }) {
                         Icon(
-                            imageVector = Icons.Rounded.HelpOutline,
+                            imageVector = Icons.AutoMirrored.Rounded.HelpOutline,
                             contentDescription = stringResource(R.string.how_does_it_work),
                         )
                     }

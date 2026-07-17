@@ -25,7 +25,7 @@ import androidx.compose.material.icons.rounded.MoneyOff
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsOff
-import androidx.compose.material.icons.rounded.PlaylistAddCheck
+import androidx.compose.material.icons.automirrored.rounded.PlaylistAddCheck
 import androidx.compose.material.icons.rounded.Print
 import androidx.compose.material.icons.rounded.PrintDisabled
 import androidx.compose.material.icons.rounded.RemoveDone
@@ -341,7 +341,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                             downloadPlaylist = !downloadPlaylist
                             PreferenceUtil.updateValue(PLAYLIST, downloadPlaylist)
                         },
-                        icon = Icons.Rounded.PlaylistAddCheck,
+                        icon = Icons.AutoMirrored.Rounded.PlaylistAddCheck,
                         enabled = !isCustomCommandEnabled,
                         description = stringResource(R.string.download_playlist_desc),
                         isChecked = downloadPlaylist,

@@ -78,7 +78,7 @@ import com.illuminazionetech.vrclip.ui.page.settings.command.CommandTemplateDial
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 import com.illuminazionetech.vrclip.util.TEMPLATE_ID
-import com.illuminazionetech.vrclip.util.matchUrlFromString
+import com.illuminazionetech.vrclip.util.findURLsFromString
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -192,7 +192,9 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
 
                 LaunchedEffect(sheetState.targetValue) {
                     if (sheetState.targetValue == ModalBottomSheetValue.Expanded)
-                        url = matchUrlFromString(clipboardManager.getText()?.text.toString(), true)
+                        url =
+                            findURLsFromString(clipboardManager.getText()?.text.toString(), false)
+                                .joinToString(separator = "\n")
                 }
 
                 Column(Modifier.fillMaxWidth()) {

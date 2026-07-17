@@ -200,12 +200,8 @@ class App : Application() {
         fun getVersionReport(): String {
             val versionName = packageInfo.versionName
             val page = packageInfo
-            val versionCode =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    packageInfo.longVersionCode
-                } else {
-                    packageInfo.versionCode.toLong()
-                }
+            // minSdk is 28 (API P), so longVersionCode is always available.
+            val versionCode = packageInfo.longVersionCode
             val release =
                 if (Build.VERSION.SDK_INT >= 30) {
                     Build.VERSION.RELEASE_OR_CODENAME

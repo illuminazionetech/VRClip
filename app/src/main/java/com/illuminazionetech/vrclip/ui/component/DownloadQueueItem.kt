@@ -55,7 +55,7 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.AsyncImageImpl
 import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
-import com.illuminazionetech.vrclip.ui.theme.PreviewThemeLight
+import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.ui.theme.harmonizeWith
 import com.illuminazionetech.vrclip.ui.theme.harmonizeWithPrimary
 
@@ -63,7 +63,7 @@ import com.illuminazionetech.vrclip.ui.theme.harmonizeWithPrimary
 // @Preview
 fun PlaylistPreview() {
     var selected by remember { mutableStateOf(false) }
-    Column() { PreviewThemeLight { PlaylistItem(selected = selected) { selected = !selected } } }
+    Column() { VRClipTheme(darkTheme = false) { PlaylistItem(selected = selected) { selected = !selected } } }
 }
 
 @Composable
@@ -127,7 +127,7 @@ fun PlaylistItem(
 @Composable
 @Preview
 fun TaskItemPreview() {
-    PreviewThemeLight {
+    VRClipTheme(darkTheme = false) {
         Surface {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 item { CustomCommandTaskItem(status = TaskStatus.RUNNING) }
@@ -231,7 +231,7 @@ fun CustomCommandTaskItem(
                             CircularProgressIndicator(
                                 modifier = Modifier.padding(8.dp).size(24.dp),
                                 strokeWidth = 5.dp,
-                                progress = animatedProgress,
+                                progress = { animatedProgress },
                                 color = accentColor,
                             )
                     }

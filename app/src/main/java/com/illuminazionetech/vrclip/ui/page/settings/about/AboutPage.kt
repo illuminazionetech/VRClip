@@ -3,7 +3,6 @@ package com.illuminazionetech.vrclip.ui.page.settings.about
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Description
@@ -30,11 +29,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.UrlAnnotation
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.App
@@ -184,23 +185,31 @@ fun AutoUpdateUnavailableDialog(onDismissRequest: () -> Unit = {}) {
     val hyperLinkText = stringResource(id = R.string.switch_to_github_builds)
     val text = stringResource(id = R.string.auto_update_disabled_msg, "F-Droid", hyperLinkText)
 
+    val releaseUrl = "https://github.com/illuminazionetech/VRClip/releases/latest"
     val annotatedString = buildAnnotatedString {
-        append(text)
         val startIndex = text.indexOf(hyperLinkText)
         val endIndex = startIndex + hyperLinkText.length
-        addUrlAnnotation(
-            UrlAnnotation("https://github.com/illuminazionetech/VRClip/releases/latest"),
-            start = startIndex,
-            end = endIndex,
-        )
-        addStyle(
-            SpanStyle(
-                color = MaterialTheme.colorScheme.tertiary,
-                textDecoration = TextDecoration.Underline,
-            ),
-            start = startIndex,
-            end = endIndex,
-        )
+        append(text.substring(0, startIndex))
+        withLink(
+            LinkAnnotation.Url(
+                url = releaseUrl,
+                styles =
+                    TextLinkStyles(
+                        style =
+                            SpanStyle(
+                                color = MaterialTheme.colorScheme.tertiary,
+                                textDecoration = TextDecoration.Underline,
+                            )
+                    ),
+                linkInteractionListener = {
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                    uriHandler.openUri(releaseUrl)
+                },
+            )
+        ) {
+            append(hyperLinkText)
+        }
+        append(text.substring(endIndex))
     }
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -215,14 +224,8 @@ fun AutoUpdateUnavailableDialog(onDismissRequest: () -> Unit = {}) {
             )
         },
         text = {
-            ClickableText(
+            Text(
                 text = annotatedString,
-                onClick = { index ->
-                    annotatedString.getUrlAnnotations(index, index).firstOrNull()?.let {
-                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                        uriHandler.openUri(it.item.url)
-                    }
-                },
                 style =
                     MaterialTheme.typography.bodyMedium.copy(
                         MaterialTheme.colorScheme.onSurfaceVariant

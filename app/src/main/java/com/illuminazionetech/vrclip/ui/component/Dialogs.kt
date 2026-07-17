@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.HelpOutline
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.SignalCellularConnectedNoInternet4Bar
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.illuminazionetech.vrclip.R
-import com.illuminazionetech.vrclip.ui.theme.FixedAccentColors
+import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 
 private val DialogVerticalPadding = PaddingValues(vertical = 24.dp)
@@ -63,7 +63,7 @@ fun HelpDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(text = stringResource(id = R.string.how_does_it_work)) },
-        icon = { Icon(Icons.Rounded.HelpOutline, null) },
+        icon = { Icon(Icons.AutoMirrored.Rounded.HelpOutline, null) },
         text = { Text(text = text) },
         confirmButton = confirmButton,
         dismissButton = dismissButton,
@@ -185,13 +185,13 @@ fun VRClipDialogButtonVariant(
     Box() {
         Surface(
             modifier = modifier.clickable(onClick = onClick).fillMaxWidth().height(48.dp),
-            color = FixedAccentColors.secondaryFixed,
+            color = LocalFixedColorRoles.current.secondaryFixed,
             shape = shape,
         ) {}
         Text(
             text = text,
             style = MaterialTheme.typography.labelLarge,
-            color = FixedAccentColors.onSecondaryFixed,
+            color = LocalFixedColorRoles.current.onSecondaryFixed,
             modifier = Modifier.align(Alignment.Center),
         )
     }

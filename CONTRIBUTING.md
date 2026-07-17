@@ -14,10 +14,12 @@ toolchain.
 ./gradlew lintGenericDebug        # Android Lint
 ```
 
-The project has three product flavors (`generic`, `githubPreview`, `fdroid`) and
-splits release APKs per ABI unless `-PnoSplits` is passed — CI builds with
-`-PnoSplits`, so `./gradlew assembleGenericDebug -PnoSplits` most closely matches
-what CI produces.
+The project has two product flavors (`generic`, `githubPreview`) and splits
+release APKs per ABI (`arm64-v8a`, `armeabi-v7a`, `x86`, `x86_64`, plus a
+universal fallback) — this is also what CI produces, so
+`./gradlew assembleGenericDebug` matches CI locally. Pass `-PnoSplits` to build a
+single fat APK bundling all ABIs instead (useful for quick local testing on an
+emulator without waiting on the split matrix).
 
 A release build falls back to the debug signing key unless a local (gitignored)
 `keystore.properties` exists at the repo root — you don't need a real signing key

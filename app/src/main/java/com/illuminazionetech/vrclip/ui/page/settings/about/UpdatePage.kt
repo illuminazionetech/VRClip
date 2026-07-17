@@ -34,7 +34,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.intState
 import com.illuminazionetech.vrclip.ui.component.BackButton
@@ -71,7 +70,6 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
 
     var release by remember { mutableStateOf(UpdateUtil.Release()) }
     var showUpdateDialog by remember { mutableStateOf(false) }
-    var showUnavailableDialog by remember { mutableStateOf(App.isFDroidBuild()) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -172,13 +170,6 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
     )
     if (showUpdateDialog)
         UpdateDialog(onDismissRequest = { showUpdateDialog = false }, release = release)
-
-    if (showUnavailableDialog) {
-        AutoUpdateUnavailableDialog {
-            showUnavailableDialog = false
-            onNavigateBack()
-        }
-    }
 }
 
 @Composable

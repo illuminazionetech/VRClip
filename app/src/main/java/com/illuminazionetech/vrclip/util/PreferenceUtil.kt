@@ -9,7 +9,6 @@ import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.App.Companion.applicationScope
 import com.illuminazionetech.vrclip.App.Companion.context
 import com.illuminazionetech.vrclip.App.Companion.isDebugBuild
-import com.illuminazionetech.vrclip.App.Companion.isFDroidBuild
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.database.objects.CommandTemplate
 import com.illuminazionetech.vrclip.download.Task
@@ -294,7 +293,6 @@ object PreferenceUtil {
 
     fun isAutoUpdateEnabled(): Boolean {
         return when {
-            isFDroidBuild() -> false
             isDebugBuild() -> false
             else -> AUTO_UPDATE.getBoolean()
         }

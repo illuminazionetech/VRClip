@@ -10,7 +10,6 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.NewReleases
 import androidx.compose.material.icons.rounded.Update
 import androidx.compose.material.icons.rounded.UpdateDisabled
-import androidx.compose.material.icons.rounded.VolunteerActivism
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,30 +18,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withLink
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.App.Companion.packageInfo
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.component.BackButton
-import com.illuminazionetech.vrclip.ui.component.ConfirmButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider
 import com.illuminazionetech.vrclip.util.AUTO_UPDATE
@@ -144,7 +131,6 @@ fun AboutPage(
                             if (isAutoUpdateEnabled) Icons.Rounded.Update
                             else Icons.Rounded.UpdateDisabled,
                         isChecked = isAutoUpdateEnabled,
-                        isSwitchEnabled = !App.isFDroidBuild(),
                         onClick = onNavigateToUpdatePage,
                         onChecked = {
                             isAutoUpdateEnabled = !isAutoUpdateEnabled
@@ -172,65 +158,6 @@ fun AboutPage(
                     }
                 }
             }
-        },
-    )
-}
-
-@OptIn(ExperimentalTextApi::class)
-@Composable
-@Preview
-fun AutoUpdateUnavailableDialog(onDismissRequest: () -> Unit = {}) {
-    val uriHandler = LocalUriHandler.current
-    val hapticFeedback = LocalHapticFeedback.current
-    val hyperLinkText = stringResource(id = R.string.switch_to_github_builds)
-    val text = stringResource(id = R.string.auto_update_disabled_msg, "F-Droid", hyperLinkText)
-
-    val releaseUrl = "https://github.com/illuminazionetech/VRClip/releases/latest"
-    val annotatedString = buildAnnotatedString {
-        val startIndex = text.indexOf(hyperLinkText)
-        val endIndex = startIndex + hyperLinkText.length
-        append(text.substring(0, startIndex))
-        withLink(
-            LinkAnnotation.Url(
-                url = releaseUrl,
-                styles =
-                    TextLinkStyles(
-                        style =
-                            SpanStyle(
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline,
-                            )
-                    ),
-                linkInteractionListener = {
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                    uriHandler.openUri(releaseUrl)
-                },
-            )
-        ) {
-            append(hyperLinkText)
-        }
-        append(text.substring(endIndex))
-    }
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            ConfirmButton(stringResource(id = R.string.got_it)) { onDismissRequest() }
-        },
-        icon = { Icon(Icons.Rounded.UpdateDisabled, null) },
-        title = {
-            Text(
-                text = stringResource(id = R.string.feature_unavailable),
-                textAlign = TextAlign.Center,
-            )
-        },
-        text = {
-            Text(
-                text = annotatedString,
-                style =
-                    MaterialTheme.typography.bodyMedium.copy(
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-            )
         },
     )
 }

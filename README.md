@@ -32,15 +32,17 @@ VRClip scarica video e audio da centinaia di piattaforme (tramite yt-dlp) e li r
 
 ## ⬇️ Quale file scaricare
 
-Ogni build della CI produce questi APK (vedi [Release](https://github.com/illuminazionetech/VRClip/releases/latest)):
+Ogni build della CI produce un APK per architettura, molto più leggero di un pacchetto universale (vedi [Release](https://github.com/illuminazionetech/VRClip/releases/latest)), oppure puoi scaricare il file giusto in automatico dal [sito di download](https://illuminazionetech.github.io/VRClip/):
 
 | File | Piattaforma | Quando usarlo |
 |---|---|---|
-| `app-generic-release.apk` | Android e Meta Quest | **Consigliato** per la maggior parte degli utenti — build stabile, universale. |
-| `app-githubPreview-release.apk` | Android e Meta Quest | Canale beta/anteprima (ID app separato, si installa insieme alla build stabile senza sovrascriverla). |
-| `app-fdroid-release.apk` | Android e Meta Quest | Build compatibile F-Droid (nessun componente proprietario), utile se preferisci quella filosofia di distribuzione. |
+| `app-generic-arm64-v8a-release.apk` | Android e Meta Quest | **Consigliato** — copre tutti i visori Meta Quest e la quasi totalità degli smartphone Android recenti. |
+| `app-generic-armeabi-v7a-release.apk` | Android | Solo per dispositivi Android a 32 bit molto datati. |
+| `app-generic-x86_64-release.apk` / `app-generic-x86-release.apk` | Android | Solo per emulatori o dispositivi Android con CPU Intel/AMD. |
+| `app-generic-universal-release.apk` | Android e Meta Quest | Contiene tutte le architetture: usalo solo se non sei sicuro di quale scegliere (file più pesante). |
+| `app-githubPreview-*-release.apk` | Android e Meta Quest | Canale beta/anteprima (ID app separato, si installa insieme alla build stabile senza sovrascriverla). |
 
-Non esiste un file separato "per Quest": la stessa app universale gira su entrambe le piattaforme e adatta automaticamente interfaccia e player.
+Non esiste un file separato "per Quest": la stessa app gira su entrambe le piattaforme e adatta automaticamente interfaccia e player.
 
 ## 🕹️ Utilizzo
 

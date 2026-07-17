@@ -63,7 +63,7 @@ jobs:
         run: ./gradlew test
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease assembleDebug -PnoSplits
+        run: ./gradlew assembleRelease assembleDebug
 
       - name: Upload Release APKs
         uses: actions/upload-artifact@v4
@@ -87,6 +87,5 @@ jobs:
           files: |
             app/build/outputs/apk/generic/release/*.apk
             app/build/outputs/apk/githubPreview/release/*.apk
-            app/build/outputs/apk/fdroid/release/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

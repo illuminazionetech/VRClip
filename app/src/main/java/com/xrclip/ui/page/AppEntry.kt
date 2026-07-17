@@ -133,10 +133,10 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
             },
             footer = {
                 Text(
-                    appName + "\n" + versionReport + "\n" + currentRoute,
+                    "$appName $versionReport",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 12.dp),
+                    modifier = Modifier.padding(start = 12.dp, bottom = 8.dp),
                 )
             },
         ) {

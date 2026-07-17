@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.xrclip.ui.common.glassEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,19 +37,14 @@ fun XRClipModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         properties = properties,
-        containerColor = Color.Transparent,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         tonalElevation = 0.dp,
-        dragHandle = null
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+        shape = MaterialTheme.shapes.extraLarge,
     ) {
         Column(
-            modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
-                .glassEffect(shape = MaterialTheme.shapes.extraLarge)
-                .padding(contentPadding)
+            modifier = Modifier.padding(contentPadding)
         ) {
-            Box(Modifier.fillMaxWidth().height(32.dp), contentAlignment = Alignment.Center) {
-                BottomSheetDefaults.DragHandle()
-            }
             content()
             Spacer(modifier = Modifier.height(28.dp))
         }

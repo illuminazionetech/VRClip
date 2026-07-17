@@ -111,7 +111,6 @@ import com.xrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
 import com.xrclip.ui.common.LocalWindowWidthState
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.component.XRClipModalBottomSheet
 import com.xrclip.ui.component.SelectionGroupDefaults
 import com.xrclip.ui.component.SelectionGroupItem
@@ -575,8 +574,7 @@ private fun HeaderCompact(modifier: Modifier = Modifier, onMenuOpen: () -> Unit)
         modifier =
             modifier
                 .fillMaxWidth()
-                .height(64.dp)
-                .glassEffect(shape = MaterialTheme.shapes.large),
+                .height(64.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onMenuOpen, modifier = Modifier.padding(start = 8.dp)) {
@@ -605,8 +603,7 @@ private fun HeaderExpanded(modifier: Modifier = Modifier) {
         modifier =
             modifier
                 .fillMaxWidth()
-                .height(72.dp)
-                .glassEffect(shape = MaterialTheme.shapes.extraLarge),
+                .height(72.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width(16.dp))

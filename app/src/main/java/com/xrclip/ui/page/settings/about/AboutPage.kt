@@ -17,16 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -40,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import com.xrclip.App
 import com.xrclip.App.Companion.packageInfo
 import com.xrclip.R
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.component.BackButton
 import com.xrclip.ui.component.ConfirmButton
 import com.xrclip.ui.component.PreferenceItem
@@ -49,11 +45,11 @@ import com.xrclip.util.AUTO_UPDATE
 import com.xrclip.util.PreferenceUtil
 import com.xrclip.util.makeToast
 
-private const val releaseURL = "https://github.com/XRClipTeam/XRClip/releases"
-private const val repoUrl = "https://github.com/XRClipTeam/XRClip"
+private const val releaseURL = "https://github.com/illuminazionetech/VRClip/releases/latest"
+private const val repoUrl = "https://github.com/illuminazionetech/VRClip"
 const val weblate = "https://hosted.weblate.org/engage/xrclip/"
 const val YtdlpRepository = "https://github.com/yt-dlp/yt-dlp"
-private const val githubIssueUrl = "https://github.com/XRClipTeam/XRClip/issues"
+private const val githubIssueUrl = "https://github.com/illuminazionetech/VRClip/issues"
 private const val TAG = "AboutPage"
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,21 +75,15 @@ fun AboutPage(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true)
-            ) {
-                LargeTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.about)) },
-                    navigationIcon = { BackButton { onNavigateBack() } },
-                    scrollBehavior = scrollBehavior,
-                    colors = TopAppBarDefaults.largeTopAppBarColors(
-                        containerColor = Color.Transparent,
-                        scrolledContainerColor = Color.Transparent
-                    )
-                )
-            }
+            LargeTopAppBar(
+                title = { Text(text = stringResource(id = R.string.about)) },
+                navigationIcon = { BackButton { onNavigateBack() } },
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                ),
+            )
         },
         content = {
             LazyColumn(modifier = Modifier.padding(it)) {
@@ -175,7 +165,7 @@ fun AutoUpdateUnavailableDialog(onDismissRequest: () -> Unit = {}) {
         val startIndex = text.indexOf(hyperLinkText)
         val endIndex = startIndex + hyperLinkText.length
         addUrlAnnotation(
-            UrlAnnotation("https://github.com/XRClipTeam/XRClip/releases/latest"),
+            UrlAnnotation("https://github.com/illuminazionetech/VRClip/releases/latest"),
             start = startIndex,
             end = endIndex,
         )

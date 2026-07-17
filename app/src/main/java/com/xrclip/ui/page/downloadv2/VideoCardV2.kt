@@ -34,6 +34,7 @@ import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -75,7 +76,6 @@ import com.xrclip.ui.common.AsyncImageImpl
 import com.xrclip.ui.common.LocalIsVRMode
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalFixedColorRoles
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.common.motion.materialSharedAxisY
 import com.xrclip.ui.theme.XRClipTheme
 import com.xrclip.util.toDurationText
@@ -276,13 +276,13 @@ fun VideoCardV2(
             }
         }
     } else {
-        Surface(
-            modifier =
-                modifier
-                    .fillMaxWidth()
-                    .glassEffect(shape = MaterialTheme.shapes.large, blur = true),
-            color = Color.Transparent,
+        ElevatedCard(
+            modifier = modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            ),
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp),
         ) {
             Column {
                 Box(Modifier.fillMaxWidth()) {
@@ -485,11 +485,10 @@ fun ListItemStateText(
                     )
                 }
                 is Completed -> {
-                    val color = if (isDarkTheme) Color(0xFF30D158) else Color(0xFF34C759)
                     Icon(
                         imageVector = Icons.Rounded.CheckCircle,
                         contentDescription = null,
-                        tint = color,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = sizeModifier,
                     )
                 }

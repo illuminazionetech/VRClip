@@ -1,7 +1,6 @@
 package com.xrclip.ui.page
 
 import androidx.compose.foundation.background
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,7 +61,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -75,7 +73,6 @@ import com.xrclip.R
 import com.xrclip.ui.common.LocalDarkTheme
 import com.xrclip.ui.common.LocalWindowWidthState
 import com.xrclip.ui.common.Route
-import com.xrclip.ui.common.glassEffect
 import com.xrclip.ui.page.downloadv2.DownloadPageImplV2
 import kotlinx.coroutines.launch
 
@@ -94,10 +91,6 @@ fun NavigationDrawer(
     content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-    val blurAmount by animateDpAsState(
-        targetValue = if (drawerState.isOpen) 16.dp else 0.dp,
-        label = "drawerBlur"
-    )
 
     when (windowWidth) {
         WindowWidthSizeClass.Compact,
@@ -110,11 +103,9 @@ fun NavigationDrawer(
                         drawerState = drawerState,
                         modifier = Modifier
                             .fillMaxHeight()
-                            .width(320.dp)
-                            .padding(16.dp)
-                            .glassEffect(shape = MaterialTheme.shapes.extraLarge),
-                        drawerContainerColor = Color.Transparent,
-                        drawerTonalElevation = 0.dp
+                            .width(320.dp),
+                        drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        drawerTonalElevation = 0.dp,
                     ) {
                         NavigationDrawerSheetContent(
                             modifier = Modifier,
@@ -126,11 +117,7 @@ fun NavigationDrawer(
                         )
                     }
                 },
-                content = {
-                    Box(modifier = Modifier.blur(blurAmount)) {
-                        content()
-                    }
-                },
+                content = { content() },
             )
         }
         WindowWidthSizeClass.Expanded -> {
@@ -140,9 +127,9 @@ fun NavigationDrawer(
                 drawerContent = {
                     ModalDrawerSheet(
                         drawerState = drawerState,
-                        modifier = modifier.width(360.dp).padding(16.dp).glassEffect(shape = MaterialTheme.shapes.extraLarge),
-                        drawerContainerColor = Color.Transparent,
-                        drawerTonalElevation = 0.dp
+                        modifier = modifier.width(360.dp),
+                        drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        drawerTonalElevation = 0.dp,
                     ) {
                         NavigationDrawerSheetContent(
                             modifier = Modifier,
@@ -155,7 +142,7 @@ fun NavigationDrawer(
                     }
                 },
             ) {
-                Row(modifier = Modifier.blur(blurAmount)) {
+                Row {
                     Surface(
                         color = MaterialTheme.colorScheme.surfaceContainer,
                         modifier = Modifier.zIndex(1f),
@@ -437,7 +424,10 @@ fun NavigationRailContent(
             modifier =
                 modifier
                     .padding(12.dp)
-                    .glassEffect(shape = MaterialTheme.shapes.extraLarge, blur = true)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceContainerLow,
+                        MaterialTheme.shapes.extraLarge,
+                    )
                     .selectableGroup()
                     .padding(vertical = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,

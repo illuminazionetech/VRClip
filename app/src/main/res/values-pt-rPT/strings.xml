@@ -8,9 +8,9 @@
     <string name="subdirectory">Guardar no subdiretório</string>
     <string name="dismiss">Cancelar</string>
     <string name="download_directory">Diretório de transferência</string>
-    <string name="custom_command_usage_msg">O yt-dlp é uma poderosa ferramenta de linha de comando para descarregar vídeos. O XRClip facilita o uso do yt-dlp fornecendo uma GUI intuitiva, predefinições para comandos comuns e outros recursos adicionais.
+    <string name="custom_command_usage_msg">O yt-dlp é uma poderosa ferramenta de linha de comando para descarregar vídeos. O VRClip facilita o uso do yt-dlp fornecendo uma GUI intuitiva, predefinições para comandos comuns e outros recursos adicionais.
 \n
-\nPara uma utilização avançada do yt-dlp, o XRClip permite-lhe criar, guardar e executar modelos de comandos personalizados diretamente, tal como num terminal.
+\nPara uma utilização avançada do yt-dlp, o VRClip permite-lhe criar, guardar e executar modelos de comandos personalizados diretamente, tal como num terminal.
 \n
 \nAo usar comandos personalizados, a maioria das opções e recursos da GUI serão desativados.</string>
     <string name="status_enqueued">Enfileirado</string>
@@ -153,21 +153,18 @@
     <string name="release">Versão mais recente</string>
     <string name="download_desc">Em seguida, clique em \"Descarregar\" depois de ajustar as definições.</string>
     <string name="audio_directory">Pasta áudio</string>
-    <string name="sponsor_msg">O XRClip será sempre gratuito e de código aberto para todos. Se gostar, por favor considere patrocinar-me no GitHub!</string>
     <string name="crop_artwork">Cortar arte</string>
     <string name="subtitle_sponsorblock">As legendas podem ser desfasadas no tempo ao remover segmentos SponsorBlock.</string>
     <string name="start">Iniciar</string>
     <string name="to">Terminar</string>
     <string name="filesize_gb">%.2f GB</string>
-    <string name="sponsor_msg2">Muito obrigado!</string>
     <string name="task_canceled">Descarregar tarefa cancelada</string>
-    <string name="sponsor_desc">Apoie esta aplicação patrocinando-a no GitHub</string>
     <string name="version">Versão</string>
     <string name="yt_dlp_update_fail">Não foi possível instalar a versão mais recente do yt-dlp. Certifique-se de que está ligado à Internet.</string>
     <string name="enable_experimental_feature">Ativar a funcionalidade experimental?</string>
     <string name="running_tasks">Tarefas em curso</string>
     <string name="general_settings">Geral</string>
-    <string name="service_title">O XRClip está a descarregar…</string>
+    <string name="service_title">O VRClip está a descarregar…</string>
     <string name="ua_header">Cabeçalho de requisição User-Agent</string>
     <string name="show_logs">Mostrar registo</string>
     <string name="print_details_desc">Imprimir mensagens detalhadas durante o descarregamento</string>
@@ -212,7 +209,6 @@
     <string name="open_url">Abrir ligação</string>
     <string name="restart">Reiniciar</string>
     <string name="options">Opções</string>
-    <string name="sponsor">Patrocinador</string>
     <string name="convert_audio_format_desc">A recodificação de ficheiros de áudio causará perda de qualidade de áudio e aumento do tamanho do ficheiro.</string>
     <string name="not_convert">Não convertido</string>
     <string name="auto_subtitle">Legendas automáticas</string>
@@ -295,7 +291,7 @@
     <string name="feature_unavailable">Funcionalidade não disponível</string>
     <string name="temporary_directory_desc">Armazenar ficheiros temporários no diretório interno</string>
     <string name="system_settings">Definições do sistema</string>
-    <string name="auto_update_disabled_msg">A atualização automática não está disponível para %1$s compilações. Se não tiver %1$s instalado no seu dispositivo, ou se pretender pré-visualizar as novas funcionalidades do XRClip, considere %2$s.</string>
+    <string name="auto_update_disabled_msg">A atualização automática não está disponível para %1$s compilações. Se não tiver %1$s instalado no seu dispositivo, ou se pretender pré-visualizar as novas funcionalidades do VRClip, considere %2$s.</string>
     <string name="cookies_usage_msg">O descarregamento de alguns sites requer informações de autenticação da conta. Clique em \"Gerar novos cookies\", introduza o URL do sítio Web e, em seguida, inicie sessão com a sua conta na página do browser; a aplicação irá gerá-los para si.</string>
     <string name="proxy_desc">Utilizar proxy para ligações à Internet</string>
     <string name="generate_new_cookies">Gerar novos cookies</string>
@@ -314,7 +310,6 @@
     <string name="subtitle">Legenda</string>
     <string name="download_task_count">%1$d Tarefas de transferência</string>
     <string name="github_issue">GitHub issue</string>
-    <string name="msg_from_developer">Mensagem do programador</string>
     <string name="export_to_clipboard">Exportar para a área de transferência</string>
     <string name="create_thumbnail">Guardar a miniatura</string>
     <string name="import_from_preferences">Importar</string>
@@ -353,7 +348,6 @@
     <string name="proxy">Proxy</string>
     <string name="multiselect_item_count">%1$d vídeo(s), %2$d ficheiro(s) áudio</string>
     <string name="format_settings_desc">Formato do ficheiro, qualidade do vídeo, legendas</string>
-    <string name="sponsors">Patrocinadores</string>
     <string name="credits">Créditos</string>
     <string name="copy_link">Copiar ligação</string>
     <string name="fetching_info">Obtenção de informações sobre o vídeo…</string>

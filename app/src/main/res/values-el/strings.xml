@@ -212,9 +212,6 @@
     <string name="rename">Μετονομασία</string>
     <string name="minute">λεπτό</string>
     <string name="temporary_directory_desc">Αποθήκευση προσωρινών αρχείων στον εσωτερικό κατάλογο</string>
-    <string name="sponsor">Χορηγός</string>
-    <string name="sponsor_desc">Υποστηρίξτε αυτή την εφαρμογή με χορηγία στο GitHub</string>
-    <string name="sponsor_msg">Η XRClip θα είναι πάντα δωρεάν και ανοιχτού κώδικα για όλους. Αν σας αρέσει, παρακαλώ σκεφτείτε να με χρηματοδοτήσετε στο GitHub!</string>
     <string name="feedback">Ανατροφοδότηση</string>
     <string name="audio_format">Μορφή ήχου</string>
     <string name="beta_features">Beta</string>
@@ -222,8 +219,6 @@
     <string name="switch_to_github_builds">μετάβαση σε GitHub builds</string>
     <string name="okay">Εντάξει</string>
     <string name="got_it">Το πήρα</string>
-    <string name="msg_from_developer">Μήνυμα από τον προγραμματιστή</string>
-    <string name="sponsor_msg2">Σας ευχαριστώ πολύ!</string>
     <string name="convert_subtitle">Μετατροπή υποτίτλων</string>
     <string name="convert_subtitle_desc">Μετατροπή των υποτίτλων σε άλλη μορφή</string>
     <string name="split_video_msg">Το βίντεο θα χωριστεί σε %1$d κεφάλαια</string>
@@ -290,7 +285,7 @@
     <string name="concurrent_download">Λήψη με πολλαπλά νήματα</string>
     <string name="download_range_selection">Επιλογή λίστας αναπαραγωγής</string>
     <string name="permission_issue_desc">Δεν υποστηρίζονται κατάλογοι εκτός των Download/ και Documents/</string>
-    <string name="service_title">Η XRClip κατεβάζει…</string>
+    <string name="service_title">Η VRClip κατεβάζει…</string>
     <string name="unknown_error">Άγνωστο σφάλμα</string>
     <string name="translate">Μεταφράστε</string>
     <string name="translate_desc">Βοήθεια για τη μετάφραση αυτής της εφαρμογής στο Hosted Weblate</string>
@@ -302,9 +297,9 @@
     <string name="clear_temp_files_info">”Τα προσωρινά αρχεία μπορούν να χρησιμοποιηθούν για την επανάληψη των ακυρωμένων λήψεων. Είστε σίγουροι ότι διαγράψατε όλα αυτά τα αρχεία;
 \n
 \nΜπορείτε να έχετε πρόσβαση σε αυτά τα αρχεία στο %1$s</string>
-    <string name="custom_command_usage_msg">Το yt-dlp είναι ένα ισχυρό εργαλείο γραμμής εντολών για τη λήψη βίντεο. Το XRClip διευκολύνει τη χρήση του yt-dlp παρέχοντας ένα διαισθητικό γραφικό περιβάλλον, προεπιλογές για κοινές εντολές και άλλα πρόσθετα χαρακτηριστικά.
+    <string name="custom_command_usage_msg">Το yt-dlp είναι ένα ισχυρό εργαλείο γραμμής εντολών για τη λήψη βίντεο. Το VRClip διευκολύνει τη χρήση του yt-dlp παρέχοντας ένα διαισθητικό γραφικό περιβάλλον, προεπιλογές για κοινές εντολές και άλλα πρόσθετα χαρακτηριστικά.
 \n
-\nΓια προχωρημένη χρήση του yt-dlp, το XRClip σας επιτρέπει να δημιουργείτε, να αποθηκεύετε και να εκτελείτε προσαρμοσμένα πρότυπα εντολών απευθείας, ακριβώς όπως σε ένα τερματικό.
+\nΓια προχωρημένη χρήση του yt-dlp, το VRClip σας επιτρέπει να δημιουργείτε, να αποθηκεύετε και να εκτελείτε προσαρμοσμένα πρότυπα εντολών απευθείας, ακριβώς όπως σε ένα τερματικό.
 \n
 \nΌταν χρησιμοποιείτε προσαρμοσμένες εντολές, οι περισσότερες επιλογές και δυνατότητες του GUI θα είναι απενεργοποιημένες.</string>
     <string name="video_title_sample_text">Δείγμα κειμένου τίτλου βίντεο</string>
@@ -329,11 +324,10 @@
     <string name="second">δεύτερο</string>
     <string name="clear_all_cookies">Διαγραφή όλων των cookies</string>
     <string name="clear_all_cookies_desc">Να διαγράψετε οριστικά όλα τα cookies που είναι αποθηκευμένα στην εφαρμογή;</string>
-    <string name="sponsors">Χορηγοί</string>
     <string name="no_downloaded_media">Δεν υπάρχουν κατεβασμένα πολυμέσα</string>
     <string name="enable_experimental_feature">Ενεργοποίηση πειραματικής λειτουργίας;</string>
     <string name="clip_video_dialog_msg">Οι λήψεις που χρησιμοποιούν αυτή τη λειτουργία θα ανατεθούν στο FFmpeg για να κατεβάσει επιλεγμένα τμήματα του βίντεο, αυτή η λειτουργία είναι ακόμα πειραματική και η κοπή δεν θα είναι απόλυτα ακριβής, δεν υποστηρίζουν όλες οι μορφές αυτή τη λειτουργία και ενδέχεται να έχετε χαμηλότερες ταχύτητες λήψης.</string>
-    <string name="auto_update_disabled_msg">Η αυτόματη ενημέρωση δεν είναι διαθέσιμη για %1$s builds. Αν δεν έχετε εγκαταστήσει το %1$s στη συσκευή σας ή αν θέλετε να κάνετε προεπισκόπηση των επερχόμενων νέων χαρακτηριστικών στο XRClip, παρακαλούμε εξετάστε το %2$s.</string>
+    <string name="auto_update_disabled_msg">Η αυτόματη ενημέρωση δεν είναι διαθέσιμη για %1$s builds. Αν δεν έχετε εγκαταστήσει το %1$s στη συσκευή σας ή αν θέλετε να κάνετε προεπισκόπηση των επερχόμενων νέων χαρακτηριστικών στο VRClip, παρακαλούμε εξετάστε το %2$s.</string>
     <string name="feature_unavailable">Χαρακτηριστικό δεν είναι διαθέσιμο</string>
     <string name="no_custom_command_tasks">Δεν υπάρχουν προσαρμοσμένες εργασίες εντολών</string>
     <string name="download_video_desc">Λήψη βίντεο από τη διεύθυνση URL</string>

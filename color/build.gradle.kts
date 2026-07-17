@@ -16,7 +16,7 @@ android {
     defaultConfig {
         minSdk = 21
     }
-    namespace = "com.xrclip.color"
+    namespace = "com.illuminazionetech.vrclip.color"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         sourceCompatibility = JavaVersion.VERSION_1_8

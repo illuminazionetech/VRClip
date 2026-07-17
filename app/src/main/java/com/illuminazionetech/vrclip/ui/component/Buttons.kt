@@ -1,0 +1,267 @@
+package com.illuminazionetech.vrclip.ui.component
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.meta.spatial.uiset.button.PrimaryButton
+import com.meta.spatial.uiset.button.SecondaryButton
+import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
+import com.illuminazionetech.vrclip.ui.page.settings.general.ytdlpReference
+
+@Composable
+fun OutlinedButtonWithIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    icon: ImageVector,
+    text: String,
+    contentColor: Color = MaterialTheme.colorScheme.primary,
+) {
+    OutlinedButton(
+        modifier = modifier,
+        onClick = onClick,
+        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = contentColor),
+    ) {
+        Icon(
+            modifier = Modifier.size(ButtonDefaults.IconSize),
+            imageVector = icon,
+            contentDescription = null,
+        )
+        Text(modifier = Modifier.padding(start = 8.dp), text = text)
+    }
+}
+
+@Composable
+fun TextButtonWithIcon(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    text: String,
+    contentColor: Color = MaterialTheme.colorScheme.primary,
+    onClick: () -> Unit,
+) {
+    TextButton(
+        modifier = modifier,
+        onClick = onClick,
+        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+        colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(modifier = Modifier.size(18.dp), imageVector = icon, contentDescription = null)
+            Text(modifier = Modifier.padding(start = 8.dp), text = text)
+        }
+    }
+}
+
+@Composable
+fun FilledTonalButtonWithIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    icon: ImageVector,
+    text: String,
+    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
+) {
+    if (LocalIsVRMode.current) {
+        SecondaryButton(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            label = text,
+            leading = { Icon(imageVector = icon, contentDescription = null) },
+        )
+    } else {
+        FilledTonalButton(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            colors = colors,
+            shape = CircleShape,
+        ) {
+            Icon(modifier = Modifier.size(24.dp), imageVector = icon, contentDescription = null)
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+    }
+}
+
+@Composable
+fun FilledButtonWithIcon(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    text: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    if (LocalIsVRMode.current) {
+        PrimaryButton(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            label = text,
+            isEnabled = enabled,
+            leading = { Icon(imageVector = icon, contentDescription = null) },
+        )
+    } else {
+        Button(
+            modifier = modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+            onClick = onClick,
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            enabled = enabled,
+            shape = CircleShape,
+        ) {
+            Icon(modifier = Modifier.size(24.dp), imageVector = icon, contentDescription = null)
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+    }
+}
+
+@Composable
+fun ConfirmButton(
+    text: String = stringResource(R.string.confirm),
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    TextButton(
+        modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+        onClick = onClick,
+        enabled = enabled,
+        shape = CircleShape
+    ) {
+        Text(text)
+    }
+}
+
+@Composable
+fun DismissButton(text: String = stringResource(R.string.dismiss), onClick: () -> Unit) {
+    TextButton(
+        modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+        onClick = onClick,
+        shape = CircleShape
+    ) {
+        Text(text)
+    }
+}
+
+@Composable
+fun OutlinedDismissButton(text: String = stringResource(R.string.dismiss), onClick: () -> Unit) {
+    OutlinedButton(
+        modifier = Modifier.defaultMinSize(minHeight = 48.dp),
+        onClick = onClick,
+        shape = CircleShape
+    ) {
+        Text(text)
+    }
+}
+
+@Composable
+fun FilledConfirmButton(
+    text: String = stringResource(R.string.confirm),
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    Button(
+        modifier = Modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
+        onClick = onClick,
+        enabled = enabled,
+        shape = CircleShape
+    ) {
+        Text(text, style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+fun LinkButton(
+    modifier: Modifier = Modifier,
+    text: String = stringResource(R.string.yt_dlp_docs),
+    icon: ImageVector = Icons.AutoMirrored.Rounded.OpenInNew,
+    link: String = ytdlpReference,
+) {
+    val uriHandler = LocalUriHandler.current
+    TextButtonWithIcon(
+        modifier = modifier,
+        onClick = { uriHandler.openUri(link) },
+        icon = icon,
+        text = text,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun LongTapTextButton(
+    onClick: () -> Unit,
+    onClickLabel: String,
+    onLongClick: () -> Unit,
+    onLongClickLabel: String,
+    modifier: Modifier = Modifier,
+    shape: Shape = ButtonDefaults.shape,
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = ButtonDefaults.ButtonWithIconContentPadding,
+    content: @Composable RowScope.() -> Unit,
+) {
+    val contentColor = MaterialTheme.colorScheme.primary
+    Row(
+        modifier =
+            modifier
+                .clip(shape)
+                .combinedClickable(
+                    onClick = onClick,
+                    onClickLabel = onClickLabel,
+                    onLongClick = onLongClick,
+                    onLongClickLabel = onLongClickLabel,
+                )
+    ) {
+        CompositionLocalProvider(LocalContentColor provides contentColor) {
+            ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
+                Row(
+                    Modifier.defaultMinSize(
+                            minWidth = ButtonDefaults.MinWidth,
+                            minHeight = ButtonDefaults.MinHeight,
+                        )
+                        .padding(contentPadding),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    content = content,
+                )
+            }
+        }
+    }
+}

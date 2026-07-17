@@ -63,30 +63,29 @@ jobs:
         run: ./gradlew test
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease assembleDebug -PnoSplits
+        run: ./gradlew assembleRelease assembleDebug
 
       - name: Upload Release APKs
         uses: actions/upload-artifact@v4
         with:
-          name: XRClip-Release-APKs
+          name: VRClip-Release-APKs
           path: app/build/outputs/apk/*/release/*.apk
 
       - name: Upload Debug APKs
         uses: actions/upload-artifact@v4
         with:
-          name: XRClip-Debug-APKs
+          name: VRClip-Debug-APKs
           path: app/build/outputs/apk/*/debug/*.apk
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          name: XRClip ${{ github.ref_name }}
+          name: VRClip ${{ github.ref_name }}
           draft: false
           prerelease: false
           files: |
             app/build/outputs/apk/generic/release/*.apk
             app/build/outputs/apk/githubPreview/release/*.apk
-            app/build/outputs/apk/fdroid/release/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

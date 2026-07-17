@@ -6,7 +6,6 @@ androidxCore = "1.15.0"
 androidMaterial = "1.12.0"
 androidxAppCompat = "1.7.0"
 androidxActivity = "1.10.1"
-graphics = "1.0.1"
 constraintLayout = "1.1.0"
 
 androidxLifecycle = "2.8.7"
@@ -55,8 +54,6 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
-accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist" }
-accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 
@@ -69,8 +66,6 @@ androidx-compose-material = { group = "androidx.compose.material", name = "mater
 
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
-
-androidx-graphics-shapes = { group = "androidx.graphics", name = "graphics-shapes", version.ref = "graphics" }
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 
@@ -140,8 +135,6 @@ ktfmt-gradle = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
 [bundles]
 accompanist = [
     "accompanist-permissions",
-    "accompanist-webview",
-    "accompanist-pager-indicators",
 ]
 
 androidxCompose = ["androidx-compose-ui",

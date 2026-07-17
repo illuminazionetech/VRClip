@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">XRClip</string>
+    <string name="app_name" translatable="false">VRClip</string>
     <string name="video_directory">Video folder</string>
     <string name="extract_audio">Save as audio</string>
     <string name="create_thumbnail">Save thumbnail</string>
@@ -20,6 +20,7 @@
     <string name="general_settings">General</string>
     <string name="vr_mode">VR Mode</string>
     <string name="vr_mode_desc">Optimize downloads for Meta Quest 3 and 3D videos</string>
+    <string name="vr_and_3d">VR &amp; 3D</string>
     <string name="language">Display language</string>
     <string name="language_settings">Set display language</string>
     <string name="task_running">An existing download task is already running</string>
@@ -43,6 +44,7 @@
     <string name="about_page">Version, feedback, auto update</string>
     <string name="back">Back</string>
     <string name="version">Version</string>
+    <string name="package_name">Package name</string>
     <string name="release_desc">Look for changelogs and new versions</string>
     <string name="release">Latest release</string>
     <string name="readme_desc">Check the GitHub repository and the README</string>
@@ -135,7 +137,7 @@
     <string name="permission_issue_desc">Directories outside Download/ and Documents/ are not supported</string>
     <string name="battery_configuration">Battery configuration</string>
     <string name="battery_configuration_desc">Ignore battery optimization for this app to download in the background</string>
-    <string name="service_title">XRClip is downloading…</string>
+    <string name="service_title">VRClip is downloading…</string>
     <string name="unknown_error">Unknown error</string>
     <string name="translate">Translate</string>
     <string name="translate_desc">Help translate this app on Hosted Weblate</string>
@@ -234,7 +236,7 @@
     <string name="custom_command_enabled_hint">Some options are unavailable when using custom command</string>
     <string name="how_does_it_work">How does it work?</string>
     <string name="cookies_usage_msg">Downloading from some sites requires account authentication information. Click \"Generate new cookies\", enter the URL of the website and then log in with your account in the browser page, the app will generate it for you.</string>
-    <string name="custom_command_usage_msg">yt-dlp is a powerful command-line tool for downloading videos. XRClip makes it easier to use yt-dlp by providing an intuitive GUI, presets for common commands, and other additional features.\n\nFor advanced usage of yt-dlp, XRClip allows you to create, save and execute custom command templates directly, just like in a terminal.\n\nWhen using custom commands, most of the GUI options and features would be disabled.</string>
+    <string name="custom_command_usage_msg">yt-dlp is a powerful command-line tool for downloading videos. VRClip makes it easier to use yt-dlp by providing an intuitive GUI, presets for common commands, and other additional features.\n\nFor advanced usage of yt-dlp, VRClip allows you to create, save and execute custom command templates directly, just like in a terminal.\n\nWhen using custom commands, most of the GUI options and features would be disabled.</string>
     <string name="telegram_channel">Telegram channel</string>
     <string name="matrix_space">Matrix space</string>
     <string name="sdcard_directory">SD card folder</string>
@@ -288,11 +290,7 @@
     <string name="clear_all_cookies">Clear all cookies</string>
     <string name="clear_all_cookies_desc">Delete all the cookies stored in the app for good?</string>
     <string name="temporary_directory_desc">Store temporary files in the internal directory</string>
-    <string name="sponsor">Sponsor</string>
-    <string name="sponsor_desc">Support this app by sponsoring on GitHub</string>
-    <string name="sponsor_msg">XRClip will be always free and open source for everyone. If you like it, please consider sponsoring me on GitHub!</string>
     <string name="feedback">Feedback</string>
-    <string name="sponsors">Sponsors</string>
     <string name="audio_format">Audio format</string>
     <string name="no_downloaded_media">No downloaded media</string>
     <string name="beta_features">Beta</string>
@@ -301,14 +299,12 @@
     <string name="clip_video_desc">Make video clips in the format selection page</string>
     <string name="embed_thumbnail" translatable="false">Embed thumbnail</string>
     <string name="embed_thumbnail_desc" translatable="false">Embed thumbnails into videos</string>
-    <string name="auto_update_disabled_msg">Auto-update is not available for %1$s builds. If you don\'t have %1$s installed on your device, or would like to preview upcoming new features in XRClip, please consider %2$s.</string>
+    <string name="auto_update_disabled_msg">Auto-update is not available for %1$s builds. If you don\'t have %1$s installed on your device, or would like to preview upcoming new features in VRClip, please consider %2$s.</string>
     <string name="switch_to_github_builds">switching to GitHub builds</string>
     <string name="okay">Okay</string>
     <string name="got_it">Got it</string>
     <string name="feature_unavailable">Feature not available</string>
     <string name="no_custom_command_tasks">No custom command tasks</string>
-    <string name="msg_from_developer">Message from developer</string>
-    <string name="sponsor_msg2">Thank you very much!</string>
     <string name="download_video_desc">Download videos from the URL</string>
     <string name="convert_subtitle">Convert subtitles</string>
     <string name="convert_subtitle_desc">Convert the subtitles to another format</string>
@@ -437,6 +433,7 @@
     <string name="issue_tracker">Issue tracker</string>
     <string name="trouble_shooting_desc">Fix common errors and check for known issues</string>
     <string name="issue_tracker_hint">Encountered an error? Before reporting a new issue, please search our issue tracker. Many common problems have already been addressed and documented there.</string>
+    <string name="ytdlp_issue_tracker">yt-dlp issue tracker</string>
     <string name="saved_urls">Saved links</string>
     <string name="add_new_url">Add new link</string>
     <string name="add_to">Add to %1$s</string>

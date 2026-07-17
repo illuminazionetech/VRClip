@@ -179,7 +179,6 @@
     <string name="filesize_gb">%.2f G</string>
     <string name="apply">Aplică</string>
     <string name="unlimited">Nelimitat</string>
-    <string name="sponsor_msg">XRClip va fi întotdeauna gratuit și open source pentru toată lumea. Dacă îți place, te rog să mă sponsorizezi pe GitHub!</string>
     <string name="convert_audio_format_desc">Recodificarea fișierelor audio va duce la pierderea calității audio și la creșterea dimensiunii fișierului.</string>
     <string name="clip_video">Clipează video</string>
     <string name="convert_audio_format">Convertiți formatul audio</string>
@@ -199,7 +198,7 @@
     <string name="show_logs">Arată jurnal</string>
     <string name="logs">Jurnal</string>
     <string name="abs_hint">Majoritatea platformelor de streaming video oferă audio și video separat, puteți selecta și îmbina un format numai audio cu un format numai video într-un singur videoclip.</string>
-    <string name="auto_update_disabled_msg">Actualizarea automată nu este disponibilă pentru versiunile %1$s. Dacă nu aveți %1$s instalat pe dispozitiv sau doriți să previzualizați funcțiile noi viitoare în XRClip, vă rugăm să luați în considerare %2$s.</string>
+    <string name="auto_update_disabled_msg">Actualizarea automată nu este disponibilă pentru versiunile %1$s. Dacă nu aveți %1$s instalat pe dispozitiv sau doriți să previzualizați funcțiile noi viitoare în VRClip, vă rugăm să luați în considerare %2$s.</string>
     <string name="switch_to_github_builds">trecerea la versiunile GitHub</string>
     <string name="okay">Ok</string>
     <string name="got_it">Am înţeles</string>
@@ -232,7 +231,7 @@
     <string name="subdirectory_desc">Salvați fișierele în folderele numite ca și câmpurile respective</string>
     <string name="multiselect_mode">Modul Multiselect</string>
     <string name="print_details_desc">Imprimă mesaje detaliate la descărcare</string>
-    <string name="service_title">XRClip se descarcă…</string>
+    <string name="service_title">VRClip se descarcă…</string>
     <string name="language_settings">Setați limba de afișare</string>
     <string name="delete_info_msg">Eliminați definitiv \"%1$s” din istoricul descărcărilor\?</string>
     <string name="readme_desc">Verificați depozitul GitHub și README</string>
@@ -279,15 +278,10 @@
     <string name="minute">minut</string>
     <string name="clear_all_cookies">Ștergeți toate cookie-urile</string>
     <string name="clear_all_cookies_desc">Ștergeți definitiv toate cookie-urile stocate în aplicație\?</string>
-    <string name="sponsor">Sponsor</string>
-    <string name="sponsor_desc">Sprijină această aplicație prin sponsorizare pe GitHub</string>
     <string name="feedback">Părere</string>
-    <string name="sponsors">Sponsori</string>
     <string name="temporary_directory_desc">Stocați fișierele temporare în directorul intern</string>
     <string name="format">Format</string>
     <string name="download_range_desc">Specifica intervalul de videoclipuri pentru a descarca din playlist-ul \"%3$s\" (de la %1$d pana la %2$d).</string>
-    <string name="msg_from_developer">Mesaj de la dezvoltator</string>
-    <string name="sponsor_msg2">Mulțumesc foarte mult!</string>
     <string name="concurrent_download_num">%d din thread-uri v-or fi folosit pentru a descărca video nativ DASH/HLS concurent.</string>
     <string name="crop_artwork">Decupeaza arta</string>
     <string name="permission_issue_desc">Locatiile din afara Download/ si Documents/ nu sunt suportate</string>

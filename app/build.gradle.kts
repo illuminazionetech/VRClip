@@ -49,10 +49,10 @@ android {
     buildFeatures { buildConfig = true }
 
     defaultConfig {
-        applicationId = "com.xrclip"
+        applicationId = "com.illuminazionetech.vrclip"
         minSdk = 28
         targetSdk = 35
-        versionCode = 40400
+        versionCode = 100_000_400
         check(versionCode == currentVersionCode)
 
         versionName = baseVersionName
@@ -124,7 +124,7 @@ android {
             }
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            resValue("string", "app_name", "XRClip Debug")
+            resValue("string", "app_name", "VRClip Debug")
         }
     }
 
@@ -139,12 +139,7 @@ android {
         create("githubPreview") {
             dimension = "publishChannel"
             applicationIdSuffix = ".preview"
-            resValue("string", "app_name", "XRClip Preview")
-        }
-
-        create("fdroid") {
-            dimension = "publishChannel"
-            versionName = "$baseVersionName-(F-Droid)"
+            resValue("string", "app_name", "VRClip Preview")
         }
     }
 
@@ -167,7 +162,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    namespace = "com.xrclip"
+    namespace = "com.illuminazionetech.vrclip"
 }
 
 ktfmt { kotlinLangStyle() }
@@ -185,6 +180,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidxCompose)
     implementation(libs.bundles.accompanist)
+    // Compose Material 2 - only ModalBottomSheetM2.kt's legacy ModalBottomSheetLayout still
+    // needs this (M3's ModalBottomSheet doesn't support the same partial-expand/gesture
+    // config); was previously pulled in transitively via accompanist-webview/pager-indicators.
+    implementation(libs.androidx.compose.material)
 
     implementation(libs.coil.kt.compose)
 

@@ -87,10 +87,8 @@
     <string name="stable_channel">יציב</string>
     <string name="enable_auto_update">הפעלת עדכון אוטומטי</string>
     <string name="discard">השלכה</string>
-    <string name="sponsor">חסות</string>
     <string name="feedback">משוב</string>
     <string name="convert_subtitle">המרת כתוביות</string>
-    <string name="sponsor_msg2">תודה רבה לך!</string>
     <string name="split_video">פיצול וידאו</string>
     <string name="convert_subtitle_desc">המר את הכתוביות לפורמט אחר</string>
     <string name="unknown_error_title">אופס! משהו השתבש</string>
@@ -111,7 +109,6 @@
     <string name="video_title_sample_text">כותרת סרטון לדוגמה</string>
     <string name="download_subtitles">הורדת כתוביות</string>
     <string name="subtitle_language">שפת כתוביות</string>
-    <string name="sponsors">נותני חסות</string>
     <string name="rename">שינוי שם</string>
     <string name="audio_format">פורמט אודיו</string>
     <string name="switch_to_github_builds">מעבר ל-GitHub builds</string>
@@ -145,7 +142,6 @@
     <string name="show_logs">הצג יומן</string>
     <string name="logs">לוג</string>
     <string name="edit_shortcuts_desc">ערוך את הקיצורים המותאמים אישית שניתן להשתמש בהם כדי ליצור תבניות פקודות.</string>
-    <string name="sponsor_msg">XRClip יהיה תמיד קוד פתוח ובחינם לכולם. אם אתה אוהב את זה, בבקשה שקול לתת לי חסות ב-GitHub!</string>
     <string name="clear_all_cookies_desc">האם למחוק לצמיתות את כל העוגיות המאוחסנות באפליקציה?</string>
     <string name="clip_video_desc">צור קטעי וידאו בדף בחירת הפורמט</string>
     <string name="proxy">פרוקסי</string>
@@ -252,9 +248,9 @@
     <string name="beta_features">בטא</string>
     <string name="split_video_msg">הסרטון יפוצל ל-%1$d פרקים</string>
     <string name="cookies_usage_msg">הורדה מאתרים מסוימים דורשת אימות חשבון. לחץ על \"צור עוגיות חדשות\", הזן את כתובת האתר ולאחר מכן התחבר עם חשבונך בדף הדפדפן, והאפליקציה תייצר אותן עבורך.</string>
-    <string name="custom_command_usage_msg">yt-dlp הוא כלי שורת פקודה רב עוצמה להורדת סרטונים. XRClip מקל על השימוש ב-yt-dlp על ידי מתן GUI אינטואיטיבי, הגדרות קבועות מראש לפקודות נפוצות ותכונות נוספות אחרות.
+    <string name="custom_command_usage_msg">yt-dlp הוא כלי שורת פקודה רב עוצמה להורדת סרטונים. VRClip מקל על השימוש ב-yt-dlp על ידי מתן GUI אינטואיטיבי, הגדרות קבועות מראש לפקודות נפוצות ותכונות נוספות אחרות.
 \n
-\nלשימוש מתקדם ב-yt-dlp, אפליקציית XRClip מאפשרת ליצור, לשמור ולבצע תבניות פקודות מותאמות אישית ישירות, ממש כמו בטרמינל.
+\nלשימוש מתקדם ב-yt-dlp, אפליקציית VRClip מאפשרת ליצור, לשמור ולבצע תבניות פקודות מותאמות אישית ישירות, ממש כמו בטרמינל.
 \n
 \nבעת שימוש בפקודות מותאמות אישית, רוב אפשרויות ה-GUI והתכונות יהיו מושבתות.</string>
     <string name="abs_hint">רוב פלטפורמות הזרמת הווידאו מספקות אודיו ווידאו בנפרד, ניתן לבחור ולמזג פורמט אודיו בלבד עם פורמט וידאו בלבד לסרטון אחד.</string>
@@ -262,12 +258,10 @@
 \n
 \nתיתכן חוסר יציבות בגרסאות אלה, אז אנא אל תהסס לשלוח לנו משוב אם אתה נתקל בבעיות כלשהן, כדי לעזור לנו לשפר את האפליקציה בעתיד.</string>
     <string name="auto_update">עדכון אוטומטי</string>
-    <string name="sponsor_desc">תמכו באפליקציה זו על ידי מתן חסות ב-GitHub</string>
     <string name="subtitle">כתוביות</string>
     <string name="clip_video">חיתוך וידאו</string>
     <string name="clip_start">התחלה</string>
     <string name="audio_quality_desc">הגבל את קצב סיביות השמע כאשר קיימות איכויות מרובות</string>
-    <string name="msg_from_developer">הודעה מהמפתח</string>
     <string name="ytdlp_update_action">עדכון yt-dlp</string>
     <string name="print_details_desc">הדפס הודעות מפורטות בזמן הורדה</string>
     <string name="disabled">מושבת</string>
@@ -300,7 +294,7 @@
     <string name="aria2_desc">השתמש ב-aria2c בתור מוריד חיצוני</string>
     <string name="start_execute">התחל הרצת פקודה</string>
     <string name="download_range_desc">ציין את טווח הסרטונים להורדה מהפלייליסט \"%3$s\" (מ-%1$d עד %2$d).</string>
-    <string name="service_title">XRClip מוריד…</string>
+    <string name="service_title">VRClip מוריד…</string>
     <string name="download_with_cellular">הורדה באמצעות חיבור סלולרי</string>
     <string name="export_to_file">ייצוא לקובץ</string>
     <string name="sponsorblock_desc">הסר או סמן קטעים בסרטונים באמצעות SponsorBlock API</string>
@@ -354,7 +348,7 @@
     <string name="prefer_quality_desc">העדף פורמט AV1, VP9 או H.265 לצפייה באפליקציות תואמות</string>
     <string name="multiselect_item_count">%1$d סרטונים, %2$d קובצי שמע</string>
     <string name="embed_subtitles_mkv_msg">כדי להטמיע כתוביות רכות, סרטונים יבוצעו מחדש לתוך מיכל mkv. אתה יכול להשתמש ב-VLC Media Player או באפליקציות תואמות אחרות כדי לצפות בסרטונים עם כתוביות רכות.</string>
-    <string name="auto_update_disabled_msg">עדכון אוטומטי אינו זמין עבור בניית %1$s. אם אין לך %1$s מותקן במכשיר שלך, או אם תרצה לקבל תצוגה מקדימה של תכונות חדשות של XRClip, שקול להשתמש ב-%2$s.</string>
+    <string name="auto_update_disabled_msg">עדכון אוטומטי אינו זמין עבור בניית %1$s. אם אין לך %1$s מותקן במכשיר שלך, או אם תרצה לקבל תצוגה מקדימה של תכונות חדשות של VRClip, שקול להשתמש ב-%2$s.</string>
     <string name="ua_header">כותרת User-Agent</string>
     <string name="dynamic_color_desc">החל צבעים מהטפט על ערכת הנושא של האפליקציה</string>
     <string name="custom_command_enabled_hint">חלק מהאפשרויות אינן זמינות בעת שימוש בפקודה מותאמת אישית</string>

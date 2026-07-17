@@ -27,8 +27,6 @@
     <string name="update_channel">อัปเดทช่อง</string>
     <string name="auto_update">อัปเดทอัตโนมัติ</string>
     <string name="enable_auto_update">เปิดใช้งานการอัปเดทอัตโนมัติ</string>
-    <string name="sponsor_msg2">ขอบคุณมาก!</string>
-    <string name="msg_from_developer">ข้อความจากผู้พัฒนา</string>
     <string name="okay">ตกลง</string>
     <string name="apply">นำไปใช้</string>
     <string name="discard">ละทิ้ง</string>
@@ -37,12 +35,9 @@
     <string name="clip_end">จบ</string>
     <string name="clip_video">คลิปวีดีโอ</string>
     <string name="feature_unavailable">ฟีเจอร์นี้ไม่สามารถใช้งานได้</string>
-    <string name="sponsor_desc">สนับสนุนแอปนี้โดยการสนับสนุนบน GitHub</string>
     <string name="format_sorting">การจัดเรียงรูปแบบ</string>
     <string name="audio_quality_desc">จำกัดอัตราการส่งถ่ายบิทเรตของเสียงเมื่อมีคุณภาพหลายชนิดอยู่</string>
-    <string name="sponsors">ผู้สนับสนุน</string>
     <string name="feedback">ความคิดเห็น</string>
-    <string name="sponsor">ผู้สนับสนุน</string>
     <string name="temporary_directory_desc">เก็บไฟล์ชั่วคราวในไดเรกทอรีภายใน</string>
     <string name="rename">เปลี่ยนชื่อ</string>
     <string name="audio_format_preference">รูปแบบเสียงที่ชอบ</string>
@@ -67,7 +62,7 @@
     <string name="github_issue">Issue ใน GitHub</string>
     <string name="task_canceled">ยกเลิกงานดาวน์โหลดแล้ว</string>
     <string name="unknown_error">ข้อผิดพลาดที่ไม่รู้จัก</string>
-    <string name="service_title">XRClip กำลังดาวน์โหลด…</string>
+    <string name="service_title">VRClip กำลังดาวน์โหลด…</string>
     <string name="battery_configuration_desc">ละเว้นการเพิ่มประสิทธิภาพแบตเตอรี่สำหรับแอพฯ นี้เพื่อดาวน์โหลดในพื้นหลัง</string>
     <string name="downloading_indicator_text">กำลังดาวน์โหลด…</string>
     <string name="info_copied">­ข้อมูลถูกคัดลอกไปยังคลิปบอร์ดแล้ว</string>
@@ -240,7 +235,7 @@
     <string name="convert_audio_format_desc">การเข้ารหัสไฟล์เสียงอีกครั้งจะทำให้ไฟล์เสียงสูญเสียคุณภาพและขนาดไฟล์จะเพิ่มมากขึ้น</string>
     <string name="advanced_settings">ขั้นสูง</string>
     <string name="delete_info_msg">ต้องการลบ \"%1$s\" ออกจากประวัติการดาวน์โหลดของคุณอย่างถาวร?</string>
-    <string name="auto_update_disabled_msg">ออโต้อัปเดทไม่สามารถใช้ได้สำหรับ %1$s นี้ ถ้าคุณไม่ได้ติดตั้ง %1$s บนอุปกรณ์ของคุณหรือต้องการดูฟีเจอร์ใหม่ที่กำลังจะมาใน XRClip โปรดพิจารณา %2$s</string>
+    <string name="auto_update_disabled_msg">ออโต้อัปเดทไม่สามารถใช้ได้สำหรับ %1$s นี้ ถ้าคุณไม่ได้ติดตั้ง %1$s บนอุปกรณ์ของคุณหรือต้องการดูฟีเจอร์ใหม่ที่กำลังจะมาใน VRClip โปรดพิจารณา %2$s</string>
     <string name="embed_subtitles_mkv_msg">สำหรับการฝังซับไทเทิลฝังแยก วิดีโอจะถูกรีมักซ์เข้ากับคอนเทนเนอร์ mkv คุณสามารถใช้ VLC Media Player หรือแอปพลิเคชั่นอื่น ๆ ที่รองรับเพื่อเล่นวีดีโอที่มีซับไทเทิลฝังแยก</string>
     <string name="settings_before_download_desc">กำหนดตัวเลือกก่อนการดาวน์โหลด</string>
     <string name="version">เวอร์ชั่น</string>
@@ -280,7 +275,6 @@
     <string name="subtitle">ซับไตเติ้ล</string>
     <string name="video_title_sample_text">ตัวอย่างข้อความของไตเติ้ล</string>
     <string name="running_tasks">กำลังรันงาน</string>
-    <string name="sponsor_msg">XRClip จะยังคงเป็นซอร์ตฟรีและเปิดกว้างสำหรับทุกคน ถ้าคุณชอบมัน กรุณาพิจารณาสนับสนุนฉันใน GitHub!</string>
     <string name="format_sorting_desc">จัดเรียงรูปแบบด้วยตัวเลือก -S ของ yt-dlp</string>
     <string name="update_channel_desc">ติดตั้งรุ่นก่อนวางจำหน่ายเพื่อดูลักษณะใหม่และการเปลี่ยนแปลง
 \n
@@ -291,9 +285,9 @@
     <string name="matrix_space">เมทริกซ์สเปซ</string>
     <string name="multiselect_mode">โหมดเลือกหลายรายการ</string>
     <string name="crop_artwork">ครอบตัดรูปภาพ</string>
-    <string name="custom_command_usage_msg">yt-dlp คือเครื่องมือ command line ประสิทธิภาพสูงสำหรับดาวน์โหลดวีดีโอ XRClip ทำให้การใช้งาน yt-dlp ง่ายขึ้นด้วยอินเทอร์เฟซที่เรียบง่าย, พรีเซ็ตคำสั่งทั่วไป และฟีเจอร์เพิ่มเติมอื่นๆ
+    <string name="custom_command_usage_msg">yt-dlp คือเครื่องมือ command line ประสิทธิภาพสูงสำหรับดาวน์โหลดวีดีโอ VRClip ทำให้การใช้งาน yt-dlp ง่ายขึ้นด้วยอินเทอร์เฟซที่เรียบง่าย, พรีเซ็ตคำสั่งทั่วไป และฟีเจอร์เพิ่มเติมอื่นๆ
 \n
-\nสำหรับการใช้งานขั้นสูงของ yt-dlp. XRClip ให้คุณสามารถสร้าง, บันทึก และใช้เทมเพลตคำสั่งที่กำเองได้โดยตรง เหมือนเทอมินอลเลย
+\nสำหรับการใช้งานขั้นสูงของ yt-dlp. VRClip ให้คุณสามารถสร้าง, บันทึก และใช้เทมเพลตคำสั่งที่กำเองได้โดยตรง เหมือนเทอมินอลเลย
 \n
 \nเมื่อคุณกำลังใช้คำสั่งที่กำหนดเอง ตัวเลือกและฟีเจอร์ที่เกี่ยวข้องกับส่วนติดต่อผู้ใช้งานจะถูกปิดใช้งานด้วย</string>
     <string name="general_settings_desc">เวอร์ชั่นของ Yt-dlp, การแจ้งเตือน, เพลย์ลิสต์</string>

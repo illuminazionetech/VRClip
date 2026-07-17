@@ -1,3 +1,12 @@
+/**
+ * Build-time versioning source of truth. Mirrors the runtime `Version` parser in
+ * `UpdateUtil.kt` (`app/src/main/java/com/illuminazionetech/vrclip/util/UpdateUtil.kt`) — the
+ * versionCode formula, variant ordering (Alpha < Beta < RC < Stable) and tag format
+ * (`vMAJOR.MINOR.PATCH[-alpha|beta|rc.BUILD]`) must stay identical between the two, since one
+ * builds the APK's version and the other compares it against GitHub release tags to detect
+ * updates. `VersionParityTest` in `app/src/test` asserts both parse the same sample strings
+ * identically — update both together and keep that test green.
+ */
 sealed class Version(val major: Int, val minor: Int, val patch: Int, val build: Int = 0) {
     abstract val name: String
     abstract val code: Long
@@ -56,4 +65,4 @@ private const val ALPHA = VARIANT * 1
 private const val BETA = VARIANT * 2
 private const val RELEASE_CANDIDATE = VARIANT * 3
 
-val currentVersion: Version = Version.Stable(versionMajor = 0, versionMinor = 0, versionPatch = 4)
+val currentVersion: Version = Version.Stable(versionMajor = 1, versionMinor = 0, versionPatch = 0)

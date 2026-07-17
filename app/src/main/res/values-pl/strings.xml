@@ -128,7 +128,7 @@
     <string name="permission_issue_desc">Foldery poza Download/ i Documents/ nie są wspierane</string>
     <string name="battery_configuration">Ustawienia baterii</string>
     <string name="battery_configuration_desc">Ignoruj optymalizację baterii dla tej aplikacji, aby pobierać w tle</string>
-    <string name="service_title">XRClip pobiera…</string>
+    <string name="service_title">VRClip pobiera…</string>
     <string name="download_range_desc">Określ zakres filmów z playlisty „%3$s”, które chcesz pobrać (od %1$d do %2$d).</string>
     <string name="prefix">Szablon folderu wyjściowego</string>
     <string name="audio_format_preference">Preferowany format audio</string>
@@ -182,8 +182,6 @@
     <string name="private_mode">Tryb prywatny</string>
     <string name="matrix_space">Kanał Matrix</string>
     <string name="abs_hint">Większość platform do strumieniowego przesyłania wideo dostarcza osobno audio i wideo, możesz wybrać i połączyć format audio z formatem wideo w jeden film.</string>
-    <string name="msg_from_developer">Wiadomość od twórcy</string>
-    <string name="sponsor_msg2">Dziękuję bardzo!</string>
     <string name="status_error">Błąd</string>
     <string name="switch_to_github_builds">przejście na kompilacje z GitHub</string>
     <string name="okay">Ok</string>
@@ -242,14 +240,12 @@
     <string name="enable_experimental_feature">Włączyć funkcje eksperymentalne\?</string>
     <string name="feature_unavailable">Funkcja niedostępna</string>
     <string name="clip_video_dialog_msg">Pobieranie przy użyciu tej funkcji będzie delegowane do FFmpeg w celu pobrania wybranych fragmentów wideo, ta funkcja jest nadal w fazie eksperymentalnej, a przycinanie nie będzie całkowicie dokładne, nie wszystkie formaty obsługują tę funkcję i możesz doświadczać wolniejszych prędkości pobierania.</string>
-    <string name="auto_update_disabled_msg">Automatyczna aktualizacja nie jest dostępna dla %1$s kompilacji. Jeżeli nie masz %1$s zainstalowanej na telefonie lub chciałbyś zobaczyć nadchodzące nowe funkcje w XRClip, rozważ %2$s.</string>
+    <string name="auto_update_disabled_msg">Automatyczna aktualizacja nie jest dostępna dla %1$s kompilacji. Jeżeli nie masz %1$s zainstalowanej na telefonie lub chciałbyś zobaczyć nadchodzące nowe funkcje w VRClip, rozważ %2$s.</string>
     <string name="no_custom_command_tasks">Brak niestandardowych rozkazów poleceń</string>
     <string name="export_to_clipboard">Eksportuj do schowka</string>
     <string name="update">Aktualizacja</string>
     <string name="sponsorblock_desc">Usuń lub oznacz segmenty filmów za pomocą API SponsorBlock</string>
     <string name="dynamic_color_desc">Zastosuj kolory z tapety do motywu aplikacji</string>
-    <string name="sponsor">Sponsor</string>
-    <string name="sponsor_desc">Wesprzyj aplikację poprzez wsparcie na GitHub</string>
     <string name="download_with_cellular">Pobierz przy pomocy sieci komórkowej</string>
     <string name="network">Sieć</string>
     <string name="rate_limit">Ograniczenie prędkości</string>
@@ -280,8 +276,6 @@
     <string name="temporary_directory_desc">Przechowuj pliki tymczasowe w katalogu wewnętrznym</string>
     <string name="running_tasks">Uruchomione zadania</string>
     <string name="show_logs">Pokaż logi</string>
-    <string name="sponsors">Sponsorzy</string>
-    <string name="sponsor_msg">XRClip zawsze będzie darmowy i z otwartym kodem źródłowym. Jeśli Ci się spodoba, rozważ wsparcie mnie na GitHub!</string>
     <string name="feedback">Informacja zwrotna</string>
     <string name="subtitle_sponsorblock">Podczas usuwania segmentów SponsorBlock napisy mogą wyświetlać się w niewłaściwym czasie.</string>
     <string name="filesize_mb">%.2f MB</string>
@@ -361,9 +355,9 @@
     <string name="proxy_desc">Użyj serwer proxy do połączenia z internetem</string>
     <string name="enable_notifications_desc">Aplikacja potrzebuje Twojej zgody, by wyświetlać powiadomienia o statusie i postępie pobierania.</string>
     <string name="show_all_items">Pokaż wszystkie %1$d elementów</string>
-    <string name="custom_command_usage_msg">yt-dlp to potężne narzędzie wiersza poleceń do pobierania plików wideo. XRClip ułatwia korzystanie z yt-dlp, zapewniając intuicyjny graficzny interfejs użytkownika, gotowe presety dla często używanych poleceń i inne dodatkowe funkcje.
+    <string name="custom_command_usage_msg">yt-dlp to potężne narzędzie wiersza poleceń do pobierania plików wideo. VRClip ułatwia korzystanie z yt-dlp, zapewniając intuicyjny graficzny interfejs użytkownika, gotowe presety dla często używanych poleceń i inne dodatkowe funkcje.
 \n
-\nW celu zaawansowanego korzystania z yt-dlp XRClip umożliwia tworzenie, zapisywanie i wykonywanie niestandardowych szablonów poleceń tak jak w terminalu.
+\nW celu zaawansowanego korzystania z yt-dlp VRClip umożliwia tworzenie, zapisywanie i wykonywanie niestandardowych szablonów poleceń tak jak w terminalu.
 \n
 \nPodczas korzystania z niestandardowych poleceń większość opcji i funkcji GUI będzie wyłączona.</string>
     <string name="set_directory_desc">Kliknij, aby wybrać katalog</string>

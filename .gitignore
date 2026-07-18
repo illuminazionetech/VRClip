@@ -17,3 +17,6 @@
 local.properties
 /keystore.properties
 .kotlin
+# Local agent settings
+.claude/
+.Jules/

@@ -109,7 +109,7 @@ data class FixedColorRoles(
     }
 }
 
-/** VR Blue (Meta Quest primary blue) — seed color for the whole VRClip HCT/Monet palette. */
+/** VR Blue (Meta Quest primary blue), seed color for the whole VRClip HCT/Monet palette. */
 const val DEFAULT_SEED_COLOR: Int = 0xFF0064E0.toInt()
 
 /**

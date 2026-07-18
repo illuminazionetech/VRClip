@@ -1,10 +1,11 @@
 <b>Features</b>
-Download videos and audio files from video platforms supported by yt-dlp
-Embed metadata and video thumbnail into extracted audio files
-Download all videos in the playlist with one click
-Use embedded aria2c as external downloader for all your downloads
-Embed subtitles into downloaded videos
+Download videos and audio from the platforms supported by yt-dlp
+Watch downloads in the built-in player with automatic flat/360/180/3D detection
+Fully immersive playback on Meta Quest through the Meta Spatial SDK
+OpenGL sphere rendering with touch and gyroscope panning on phones and tablets
+Embed metadata, subtitles, and thumbnails into downloaded files
+Download whole playlists with one click
+Use the embedded aria2c as external downloader
 Execute custom yt-dlp commands with templates
-Manage in-app downloads and custom command templates
-Easy to use and user-friendly
-Material Design 3 style UI, with dynamic color theme
+Material 3 Expressive UI with dynamic color theming
+No ads, no tracking, no accounts

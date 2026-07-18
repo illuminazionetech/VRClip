@@ -1,0 +1,1 @@
+Fixed downloads failing on fresh installs: current yt-dlp engine, eager first-run update, and a guided setup for storage and notification permissions. Fixed the in-app auto-updater never running. Material 3 Expressive theme with animated navigation. Modernized toolchain (SDK 36).

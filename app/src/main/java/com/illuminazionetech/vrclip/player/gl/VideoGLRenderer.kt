@@ -25,7 +25,7 @@ internal enum class StereoEye {
 
 /** How stereo content is presented on a flat (non-headset) display. */
 enum class StereoOutputMode {
-    /** Full-screen using a single chosen eye — normal viewing on a phone/tablet screen. */
+    /** Full-screen using a single chosen eye, normal viewing on a phone/tablet screen. */
     SingleEye,
 
     /** Left/right halves of the viewport rendered separately, for a Cardboard-style holder. */
@@ -34,7 +34,7 @@ enum class StereoOutputMode {
 
 /**
  * Renders decoded video frames (delivered via [SurfaceTexture] from ExoPlayer) either as a flat
- * textured quad, or — for 360/180/stereo-3D [ProjectionMode]s — projected onto an inward-facing
+ * textured quad, or, for 360/180/stereo-3D [ProjectionMode]s, projected onto an inward-facing
  * [SphereMesh] (equirect) or a cropped flat quad (SBS/OU), with yaw/pitch driven by touch drag
  * and/or the device gyroscope. This is the phone/tablet rendering path; Quest uses the Meta
  * Spatial SDK scene instead (see `player.quest`).
@@ -283,7 +283,7 @@ internal class VideoGLRenderer(
             """
 
         private fun buildQuadBuffer(): FloatBuffer {
-            // x, y, z, u, v — a full-screen triangle strip; V flipped (SurfaceTexture is
+            // x, y, z, u, v, a full-screen triangle strip; V flipped (SurfaceTexture is
             // top-down while GL texture space is bottom-up) is handled via uTexMatrix instead.
             val data =
                 floatArrayOf(

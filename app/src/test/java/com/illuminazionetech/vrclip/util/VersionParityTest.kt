@@ -9,7 +9,7 @@ import org.junit.Test
  * Guards the versioning contract between [UpdateUtil]'s runtime tag parser (used to compare the
  * installed app against GitHub release tags) and `buildSrc/src/main/kotlin/Version.kt` (used to
  * generate `versionCode`/`versionName` at build time). buildSrc isn't on this module's classpath,
- * so the two can't share one implementation — this test instead pins the expected versionCode for
+ * so the two can't share one implementation, this test instead pins the expected versionCode for
  * a set of sample tags using the same formula buildSrc uses
  * (`major*1e8 + minor*1e6 + patch*1e4 + build*10 + variant`, variant Alpha=100/Beta=200/RC=300/
  * Stable=400). If this formula changes in one file, change it in the other and update this test.

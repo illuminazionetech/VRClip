@@ -213,7 +213,7 @@ class App : Application() {
                 }
             // YT_DLP_VERSION is only populated once our own update flow has completed
             // successfully at least once, so it reads blank on installs that never ran (or
-            // failed) that update — even though a yt-dlp binary (bundled or previously updated)
+            // failed) that update, even though a yt-dlp binary (bundled or previously updated)
             // is actually present and in use. Query the library directly for the version that's
             // really running, which is what this field is meant to help diagnose.
             val ytDlpVersion =

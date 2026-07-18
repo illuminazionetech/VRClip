@@ -5,7 +5,7 @@ package com.illuminazionetech.vrclip.player
  * carries embedded spherical-video metadata (the `spherical-video-v2` MP4 box), so this relies on
  * filename conventions (the de facto standard used by 360/VR camera vendors and video sites) with
  * aspect ratio as a secondary, confirmatory signal. When signals disagree or are absent, this
- * defaults to [ProjectionMode.FLAT] — the UI always offers a manual override for cases the
+ * defaults to [ProjectionMode.FLAT], the UI always offers a manual override for cases the
  * heuristic gets wrong.
  */
 object ProjectionDetector {

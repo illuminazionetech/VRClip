@@ -3,18 +3,18 @@
 This document tracks what VRClip needs for a Meta Horizon Store submission, and is
 honest about a real policy risk before anything else.
 
-## ⚠️ Policy risk — read this first
+## ⚠️ Policy risk, read this first
 
 Meta's Horizon Store content policy restricts apps whose primary function is to
 download content from third-party services without the rights-holder's
-authorization. **VRClip is a yt-dlp-based universal downloader** — that is its
+authorization. **VRClip is a yt-dlp-based universal downloader**, that is its
 core, advertised function. This means a submission carries real, material risk of
 rejection or later removal, regardless of how polished the app is technically.
 
 This document prepares the submission package anyway, per the project's decision
 to proceed with eyes open. It does **not** guarantee store acceptance. VRClip
 remains fully installable and usable via sideloading (SideQuest, `adb install`)
-on Quest 2/3/Pro independent of any store outcome — that path has no such policy
+on Quest 2/3/Pro independent of any store outcome, that path has no such policy
 gate.
 
 If you want to reduce (not eliminate) this risk before submitting, consider
@@ -48,18 +48,18 @@ dashboard, can't be verified from source alone):
 
 ## Icon / screenshot assets required by the Horizon Store
 
-Not yet produced — placeholders to fill before submission:
+Not yet produced, placeholders to fill before submission:
 
 - App icon: 512×512 PNG
 - Store hero/banner image: 1920×1080 (16:9)
 - At least 3 in-headset screenshots, 1280×720 or larger, showing real UI (not
-  mockups) — should include the immersive player in use
+  mockups), should include the immersive player in use
 - Optional: a short (15–30s) capture/trailer video
 
 ## Privacy policy (draft)
 
 > VRClip does not collect, store, or transmit any personal data to VRClip's own
-> servers — VRClip has no backend servers. Network access is limited to: (1)
+> servers, VRClip has no backend servers. Network access is limited to: (1)
 > fetching media the user explicitly requests from a URL they provide, sent
 > directly to the source site; (2) an optional check for `yt-dlp` engine updates.
 > No analytics, advertising, or tracking SDKs are included. No account or sign-in
@@ -75,7 +75,7 @@ developer dashboard requires a privacy policy URL.
 - Data collected: **None**.
 - Data shared with third parties: **None**, other than the destination site the
   user's browser/app traffic goes to directly when downloading a user-provided
-  URL — VRClip's own servers never see this traffic, because VRClip has none.
+  URL, VRClip's own servers never see this traffic, because VRClip has none.
 - Data deletion: uninstalling the app removes all local data; there is no
   server-side account to delete.
 
@@ -92,13 +92,13 @@ questionnaire conservatively rather than claiming an "Everyone" rating:
 | Profanity | Possible via user-downloaded content, outside the app's control |
 | Controlled substances | Not depicted by the app itself; possible in downloaded content |
 | Gambling | None |
-| User-generated content shared with others | None — downloads are local-only, not shared through VRClip |
-| Location sharing | None — VRClip does not access or share location |
+| User-generated content shared with others | None, downloads are local-only, not shared through VRClip |
+| Location sharing | None, VRClip does not access or share location |
 | Personal information sharing | None |
-| Digital purchases | None — VRClip has no in-app purchases |
+| Digital purchases | None, VRClip has no in-app purchases |
 
 Misrepresenting this (e.g. claiming a low rating despite the unrestricted
-download capability) is itself a policy risk — answer honestly.
+download capability) is itself a policy risk, answer honestly.
 
 ## Legal / support URLs required by the dashboard
 
@@ -121,7 +121,7 @@ keyPassword=...
 
 Without it, release builds fall back to the debug signing key, which **cannot**
 be used for a store submission or to update an existing installed release build.
-Generate and securely back up a real keystore before the first submission — Meta,
+Generate and securely back up a real keystore before the first submission, Meta,
 like Google Play, requires signing-key consistency across app updates, and losing
 the key means you can never update the app under the same listing again.
 
@@ -129,5 +129,5 @@ the key means you can never update the app under the same listing again.
 
 Code/manifest/CI readiness: mostly done. Store submission itself (developer
 account, real assets, hosted privacy policy, a real signing key, and the actual
-review) is outside what this repository can do — it requires the account owner's
+review) is outside what this repository can do, it requires the account owner's
 action, and carries the policy risk flagged at the top of this document.

@@ -37,7 +37,7 @@ private fun TextStyle.applyTextDirection(): TextStyle =
     this.copy(textDirection = TextDirection.Content)
 
 /**
- * Scales every text style's font size by [factor] — used to bump type size up on the Meta Quest
+ * Scales every text style's font size by [factor], used to bump type size up on the Meta Quest
  * spatial panel, where text is read from roughly 10 feet away instead of held in the hand.
  */
 fun Typography.scaled(factor: Float): Typography =

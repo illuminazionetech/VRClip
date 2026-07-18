@@ -31,7 +31,7 @@ spatial {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     if (keystorePropertiesFile.exists()) {
         val keystoreProperties = Properties()
@@ -51,7 +51,7 @@ android {
     defaultConfig {
         applicationId = "com.illuminazionetech.vrclip"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 100_020_400
         check(versionCode == currentVersionCode)
 

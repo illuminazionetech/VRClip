@@ -99,6 +99,7 @@ import com.illuminazionetech.vrclip.ui.component.DrawerSheetSubtitle
 import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheetM2Variant
+import com.illuminazionetech.vrclip.ui.component.rememberExpandedSheetState
 import com.illuminazionetech.vrclip.ui.component.SingleChoiceChip
 import com.illuminazionetech.vrclip.ui.component.SingleChoiceSegmentedButton
 import com.illuminazionetech.vrclip.ui.component.VideoFilterChip
@@ -426,12 +427,7 @@ private fun DownloadDialogContent(
 private fun ErrorPreview() {
     VRClipModalBottomSheet(
         onDismissRequest = {},
-        sheetState =
-            SheetState(
-                skipPartiallyExpanded = true,
-                density = LocalDensity.current,
-                initialValue = SheetValue.Expanded,
-            ),
+        sheetState = rememberExpandedSheetState(),
     ) {
         ErrorPage(
             state =
@@ -483,12 +479,7 @@ fun FormatPage(
 private fun ConfigurePagePreview() {
     VRClipTheme() {
         VRClipModalBottomSheet(
-            sheetState =
-                SheetState(
-                    skipPartiallyExpanded = true,
-                    density = LocalDensity.current,
-                    initialValue = SheetValue.Expanded,
-                ),
+            sheetState = rememberExpandedSheetState(),
             onDismissRequest = {},
             contentPadding = PaddingValues(),
         ) {

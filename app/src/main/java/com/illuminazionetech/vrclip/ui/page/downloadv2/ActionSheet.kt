@@ -65,6 +65,7 @@ import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
 import com.illuminazionetech.vrclip.ui.component.ActionSheetItem
 import com.illuminazionetech.vrclip.ui.component.ActionSheetPrimaryButton
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
+import com.illuminazionetech.vrclip.ui.component.rememberExpandedSheetState
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.PreferencesMock
 import com.illuminazionetech.vrclip.ui.theme.ErrorTonalPalettes
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
@@ -358,12 +359,7 @@ fun LazyListScope.ActionButtons(
 @Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SheetPreview() {
-    val sheetState =
-        SheetState(
-            skipPartiallyExpanded = true,
-            density = LocalDensity.current,
-            initialValue = SheetValue.Expanded,
-        )
+    val sheetState = rememberExpandedSheetState()
 
     var downloadState: DownloadState by remember { mutableStateOf(Running(Job(), "", 0.58f)) }
 

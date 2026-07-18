@@ -10,21 +10,36 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
+/**
+ * A [SheetState] that starts expanded, for sheets whose visibility is driven by composition
+ * instead of a show animation. Mirrors the positional and velocity thresholds that
+ * [androidx.compose.material3.rememberModalBottomSheetState] applies internally.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun rememberExpandedSheetState(): SheetState {
+    val density = LocalDensity.current
+    return remember(density) {
+        SheetState(
+            skipPartiallyExpanded = true,
+            positionalThreshold = { with(density) { 56.dp.toPx() } },
+            velocityThreshold = { with(density) { 125.dp.toPx() } },
+            initialValue = SheetValue.Expanded,
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VRClipModalBottomSheet(
     modifier: Modifier = Modifier,
-    sheetState: SheetState =
-        SheetState(
-            skipPartiallyExpanded = true,
-            density = LocalDensity.current,
-            initialValue = SheetValue.Expanded,
-        ),
+    sheetState: SheetState = rememberExpandedSheetState(),
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = 28.dp),
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,

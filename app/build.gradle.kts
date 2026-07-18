@@ -52,7 +52,7 @@ android {
         applicationId = "com.illuminazionetech.vrclip"
         minSdk = 28
         targetSdk = 36
-        versionCode = 100_020_400
+        versionCode = 101_000_400
         check(versionCode == currentVersionCode)
 
         versionName = baseVersionName

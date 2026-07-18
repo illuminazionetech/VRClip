@@ -288,6 +288,7 @@ body {
   font-size: 1.15rem;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
   transition:
     transform 0.25s var(--spring),
     box-shadow 0.25s var(--standard),
@@ -304,10 +305,11 @@ body {
   transform: scale(0.98);
 }
 
-.download-btn:disabled {
+.download-btn[aria-disabled="true"] {
   opacity: 0.6;
   cursor: wait;
   transform: none;
+  pointer-events: none;
 }
 
 .download-btn.started {

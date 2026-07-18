@@ -100,7 +100,7 @@ import com.illuminazionetech.vrclip.util.SPONSORBLOCK
 import com.illuminazionetech.vrclip.util.SUBTITLE
 import com.illuminazionetech.vrclip.util.THUMBNAIL
 import com.illuminazionetech.vrclip.util.makeToast
-import com.illuminazionetech.vrclip.util.UpdateUtil
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.illuminazionetech.vrclip.util.YT_DLP_VERSION
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
@@ -198,21 +198,22 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                         },
                         onClick = {
                             scope.launch {
-                                runCatching {
-                                        isUpdating = true
-                                        UpdateUtil.updateYtDlp()
+                                isUpdating = true
+                                when (val result = YtDlpEngine.update()) {
+                                    is YtDlpEngine.UpdateResult.Updated,
+                                    YtDlpEngine.UpdateResult.UpToDate -> {
                                         ytdlpVersion = YT_DLP_VERSION.getString()
-                                    }
-                                    .onFailure { th ->
-                                        th.printStackTrace()
-                                        makeToast(App.context.getString(R.string.yt_dlp_update_fail))
-                                    }
-                                    .onSuccess {
                                         makeToast(
                                             context.getString(R.string.yt_dlp_up_to_date) +
                                                 " (${YT_DLP_VERSION.getString()})"
                                         )
                                     }
+                                    is YtDlpEngine.UpdateResult.Failed -> {
+                                        result.throwable.printStackTrace()
+                                        makeToast(App.context.getString(R.string.yt_dlp_update_fail))
+                                    }
+                                    else -> {}
+                                }
                                 isUpdating = false
                             }
                         },

@@ -49,9 +49,6 @@ object UpdateUtil {
     private val requestForReleases =
         Request.Builder().url("https://api.github.com/repos/${OWNER}/${REPO}/releases").build()
 
-    private const val ytdlpNightlyBuildRelease =
-        "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest"
-
     private val jsonFormat = Json { ignoreUnknownKeys = true }
 
     suspend fun updateYtDlp(): YoutubeDL.UpdateStatus? =

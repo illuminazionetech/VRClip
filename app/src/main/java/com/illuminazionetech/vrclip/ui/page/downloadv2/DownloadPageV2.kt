@@ -6,11 +6,13 @@ import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.animateTo
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -41,10 +43,12 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
+import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingActionButton
@@ -130,6 +134,7 @@ import com.illuminazionetech.vrclip.util.DownloadUtil
 import com.illuminazionetech.vrclip.util.FileUtil
 import com.illuminazionetech.vrclip.util.getErrorReport
 import com.illuminazionetech.vrclip.util.makeToast
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -429,6 +434,9 @@ fun DownloadPageImplV2(
                             }
                         }
                     }
+                    EngineStatusRow(
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
+                    )
                     Spacer(Modifier.height(8.dp))
                     if (headerOffset <= 0.1f && spacerHeight > 0f) {
                         HorizontalDivider(thickness = Dp.Hairline)
@@ -551,6 +559,63 @@ fun DownloadPageImplV2(
                 },
                 onActionPost = onActionPost,
             )
+        }
+    }
+}
+
+/**
+ * A slim status row shown while the yt-dlp engine is initializing or updating, so the first
+ * download after install does not look stuck. Hidden as soon as the engine is ready.
+ */
+@Composable
+private fun EngineStatusRow(modifier: Modifier = Modifier) {
+    val engineState by YtDlpEngine.state.collectAsStateWithLifecycle()
+    AnimatedVisibility(
+        visible = engineState !is YtDlpEngine.State.Ready,
+        enter = expandVertically() + fadeIn(),
+        exit = shrinkVertically() + fadeOut(),
+    ) {
+        Row(
+            modifier =
+                modifier.fillMaxWidth().tonalSurface(shape = MaterialTheme.shapes.medium).padding(
+                    horizontal = 16.dp,
+                    vertical = 10.dp,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            when (engineState) {
+                is YtDlpEngine.State.InitFailed -> {
+                    Icon(
+                        imageVector = Icons.Rounded.ErrorOutline,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Text(
+                        text = stringResource(R.string.engine_init_failed),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+                else -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.5.dp,
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Text(
+                        text =
+                            stringResource(
+                                if (engineState is YtDlpEngine.State.Updating)
+                                    R.string.engine_updating
+                                else R.string.engine_preparing
+                            ),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ import com.illuminazionetech.vrclip.util.FileUtil
 import com.illuminazionetech.vrclip.util.NotificationUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.VideoInfo
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -251,6 +252,7 @@ class DownloaderV2Impl(private val appContext: Context) : DownloaderV2, KoinComp
         val playlistIndex = if (taskInfo is TypeInfo.Playlist) taskInfo.index else null
         scope
             .launch(Dispatchers.Default) {
+                YtDlpEngine.awaitReady()
                 DownloadUtil.fetchVideoInfoFromUrl(
                         url = url,
                         playlistIndex = playlistIndex,
@@ -286,6 +288,7 @@ class DownloaderV2Impl(private val appContext: Context) : DownloaderV2, KoinComp
         }
         scope
             .launch(Dispatchers.Default) {
+                YtDlpEngine.awaitReady()
                 DownloadUtil.downloadVideo(
                         videoInfo = info,
                         taskId = id,
@@ -402,6 +405,7 @@ class DownloaderV2Impl(private val appContext: Context) : DownloaderV2, KoinComp
         val template = type.template
         scope
             .launch {
+                YtDlpEngine.awaitReady()
                 DownloadUtil.executeCustomCommandTask(url, id, template, preferences) {
                         progressPercentage,
                         _,

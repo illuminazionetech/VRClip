@@ -31,7 +31,7 @@ spatial {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     if (keystorePropertiesFile.exists()) {
         val keystoreProperties = Properties()
@@ -51,8 +51,8 @@ android {
     defaultConfig {
         applicationId = "com.illuminazionetech.vrclip"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 100_020_400
+        targetSdk = 36
+        versionCode = 101_000_400
         check(versionCode == currentVersionCode)
 
         versionName = baseVersionName
@@ -143,7 +143,11 @@ android {
         }
     }
 
-    lint { disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity")) }
+    lint {
+        disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity"))
+        // Print findings to stdout so CI logs show every issue, not just the first failure.
+        textReport = true
+    }
 
 
     kotlinOptions { freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn" }

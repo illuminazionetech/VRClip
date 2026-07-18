@@ -1,5 +1,11 @@
 package com.illuminazionetech.vrclip.ui.page
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,25 +23,25 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.automirrored.rounded.List
-import androidx.compose.material.icons.rounded.Download
-import androidx.compose.material.icons.rounded.Folder
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Cookie
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Terminal
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.rounded.BugReport
+import androidx.compose.material.icons.rounded.Cookie
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Terminal
-import androidx.compose.material.icons.rounded.VolunteerActivism
-import androidx.compose.material.icons.rounded.BugReport
-import androidx.compose.material.icons.rounded.Cookie
-import androidx.compose.material.icons.rounded.Folder
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.SettingsApplications
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -63,6 +69,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,9 +80,111 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
 import com.illuminazionetech.vrclip.ui.common.Route
+import com.illuminazionetech.vrclip.ui.common.motion.ExpressiveMotion
 import com.illuminazionetech.vrclip.ui.common.tonalSurface
 import com.illuminazionetech.vrclip.ui.page.downloadv2.DownloadPageImplV2
 import kotlinx.coroutines.launch
+
+/**
+ * A navigation destination with a proper selected (filled, rounded) and unselected (outlined)
+ * icon pair, so the selection state reads at a glance everywhere the destination appears: the
+ * drawer, the rail, and the VR side navigation.
+ */
+private class NavDestination(
+    val route: String,
+    val labelId: Int,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val navigateTo: String = route,
+)
+
+private val TopLevelDestinations: List<NavDestination>
+    get() =
+        listOf(
+            NavDestination(
+                route = Route.HOME,
+                labelId = R.string.download_queue,
+                selectedIcon = Icons.Rounded.Download,
+                unselectedIcon = Icons.Outlined.Download,
+            ),
+            NavDestination(
+                route = Route.DOWNLOADS,
+                labelId = R.string.downloads_history,
+                selectedIcon = Icons.AutoMirrored.Rounded.List,
+                unselectedIcon = Icons.AutoMirrored.Outlined.List,
+            ),
+            NavDestination(
+                route = Route.TASK_LIST,
+                labelId = R.string.custom_command,
+                selectedIcon = Icons.Rounded.Terminal,
+                unselectedIcon = Icons.Outlined.Terminal,
+            ),
+            NavDestination(
+                route = Route.SETTINGS_PAGE,
+                labelId = R.string.settings,
+                selectedIcon = Icons.Rounded.Settings,
+                unselectedIcon = Icons.Outlined.Settings,
+                navigateTo = Route.SETTINGS,
+            ),
+        )
+
+private val QuickSettingsDestinations: List<NavDestination>
+    get() =
+        listOf(
+            NavDestination(
+                route = Route.GENERAL_DOWNLOAD_PREFERENCES,
+                labelId = R.string.general_settings,
+                selectedIcon = Icons.Rounded.Tune,
+                unselectedIcon = Icons.Outlined.Tune,
+            ),
+            NavDestination(
+                route = Route.DOWNLOAD_DIRECTORY,
+                labelId = R.string.download_directory,
+                selectedIcon = Icons.Rounded.Folder,
+                unselectedIcon = Icons.Outlined.Folder,
+            ),
+            NavDestination(
+                route = Route.COOKIE_PROFILE,
+                labelId = R.string.cookies,
+                selectedIcon = Icons.Rounded.Cookie,
+                unselectedIcon = Icons.Outlined.Cookie,
+            ),
+            NavDestination(
+                route = Route.TROUBLESHOOTING,
+                labelId = R.string.trouble_shooting,
+                selectedIcon = Icons.Rounded.BugReport,
+                unselectedIcon = Icons.Outlined.BugReport,
+            ),
+            NavDestination(
+                route = Route.ABOUT,
+                labelId = R.string.about,
+                selectedIcon = Icons.Rounded.Info,
+                unselectedIcon = Icons.Outlined.Info,
+            ),
+        )
+
+/** Crossfades and springs between the selected and unselected icon of a destination. */
+@Composable
+private fun AnimatedNavIcon(
+    destination: NavDestination,
+    selected: Boolean,
+    contentDescription: String? = null,
+) {
+    AnimatedContent(
+        targetState = selected,
+        transitionSpec = {
+            (fadeIn(ExpressiveMotion.effects()) +
+                    scaleIn(ExpressiveMotion.spatial(), initialScale = 0.7f))
+                .togetherWith(fadeOut(ExpressiveMotion.effects()))
+        },
+        label = "navIcon",
+    ) { isSelected ->
+        Icon(
+            imageVector = if (isSelected) destination.selectedIcon else destination.unselectedIcon,
+            contentDescription = contentDescription,
+        )
+    }
+}
 
 @Composable
 fun NavigationDrawer(
@@ -160,7 +269,8 @@ fun NavigationDrawer(
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.Menu,
-                                    contentDescription = stringResource(R.string.show_navigation_drawer)
+                                    contentDescription =
+                                        stringResource(R.string.show_navigation_drawer),
                                 )
                             }
                             Spacer(Modifier.weight(1f))
@@ -189,6 +299,26 @@ fun NavigationDrawerSheetContent(
     footer: @Composable (() -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
+
+    @Composable
+    fun DrawerItem(destination: NavDestination) {
+        val selected = currentRoute == destination.route
+        NavigationDrawerItem(
+            label = { Text(stringResource(destination.labelId)) },
+            icon = { AnimatedNavIcon(destination = destination, selected = selected) },
+            onClick = {
+                scope
+                    .launch { onDismissRequest() }
+                    .invokeOnCompletion { onNavigateToRoute(destination.navigateTo) }
+            },
+            selected = selected,
+            colors =
+                NavigationDrawerItemDefaults.colors(
+                    unselectedContainerColor = Color.Transparent
+                ),
+        )
+    }
+
     Column(
         modifier =
             modifier
@@ -199,56 +329,14 @@ fun NavigationDrawerSheetContent(
     ) {
         Spacer(Modifier.height(72.dp))
         ProvideTextStyle(MaterialTheme.typography.titleSmall) {
-            NavigationDrawerItem(
-                label = { Text(stringResource(R.string.download_queue)) },
-                icon = { Icon(if (currentRoute == Route.HOME) Icons.Rounded.Download else Icons.Rounded.Download, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.HOME) }
-                },
-                selected = currentRoute == Route.HOME,
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-            )
-            NavigationDrawerItem(
-                label = { Text(stringResource(R.string.downloads_history)) },
-                icon = { Icon(if (currentRoute == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List else Icons.AutoMirrored.Rounded.List, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.DOWNLOADS) }
-                },
-                selected = currentRoute == Route.DOWNLOADS,
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-            )
-            NavigationDrawerItem(
-                label = { Text(stringResource(R.string.custom_command)) },
-                icon = { Icon(if (currentRoute == Route.TASK_LIST) Icons.Rounded.Terminal else Icons.Rounded.Terminal, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.TASK_LIST) }
-                },
-                selected = currentRoute == Route.TASK_LIST,
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-            )
-            NavigationDrawerItem(
-                label = { Text(stringResource(R.string.settings)) },
-                icon = { Icon(if (currentRoute == Route.SETTINGS_PAGE) Icons.Rounded.Settings else Icons.Rounded.Settings, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.SETTINGS) }
-                },
-                selected = currentRoute == Route.SETTINGS_PAGE,
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-            )
+            TopLevelDestinations.forEach { destination -> DrawerItem(destination) }
 
             if (showQuickSettings) {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
                 Column(
-                    modifier = Modifier.padding(start = 16.dp).padding(top = 16.dp, bottom = 12.dp),
+                    modifier =
+                        Modifier.padding(start = 16.dp).padding(top = 16.dp, bottom = 12.dp),
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
@@ -259,67 +347,7 @@ fun NavigationDrawerSheetContent(
                     )
                 }
 
-                NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.general_settings)) },
-                    icon = { Icon(if (currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES) Icons.Rounded.Settings else Icons.Rounded.Settings, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion {
-                                onNavigateToRoute(Route.GENERAL_DOWNLOAD_PREFERENCES)
-                            }
-                    },
-                    selected = currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES,
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.download_directory)) },
-                    icon = { Icon(if (currentRoute == Route.DOWNLOAD_DIRECTORY) Icons.Rounded.Folder else Icons.Rounded.Folder, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.DOWNLOAD_DIRECTORY) }
-                    },
-                    selected = currentRoute == Route.DOWNLOAD_DIRECTORY,
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.cookies)) },
-                    icon = { Icon(Icons.Rounded.Cookie, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.COOKIE_PROFILE) }
-                    },
-                    selected = currentRoute == Route.COOKIE_PROFILE,
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.trouble_shooting)) },
-                    icon = { Icon(Icons.Rounded.BugReport, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.TROUBLESHOOTING) }
-                    },
-                    selected = currentRoute == Route.TROUBLESHOOTING,
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.about)) },
-                    icon = { Icon(if (currentRoute == Route.ABOUT) Icons.Rounded.Info else Icons.Rounded.Info, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.ABOUT) }
-                    },
-                    selected = currentRoute == Route.ABOUT,
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
+                QuickSettingsDestinations.forEach { destination -> DrawerItem(destination) }
             }
         }
         Spacer(Modifier.weight(1f))
@@ -334,25 +362,31 @@ fun NavigationRailItemVariant(
     selected: Boolean,
     onClick: () -> Unit,
 ) {
+    val containerColor by
+        animateColorAsState(
+            targetValue =
+                if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
+            animationSpec = ExpressiveMotion.effects(),
+            label = "railItemContainer",
+        )
+    val contentColor by
+        animateColorAsState(
+            targetValue =
+                if (selected) MaterialTheme.colorScheme.onSecondaryContainer
+                else MaterialTheme.colorScheme.onSurfaceVariant,
+            animationSpec = ExpressiveMotion.effects(),
+            label = "railItemContent",
+        )
     Box(
         modifier =
             modifier
                 .size(56.dp)
                 .clip(MaterialTheme.shapes.large)
-                .background(
-                    if (selected) MaterialTheme.colorScheme.secondaryContainer
-                    else Color.Transparent
-                )
+                .background(containerColor)
                 .selectable(selected = selected, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        CompositionLocalProvider(
-            LocalContentColor provides
-                if (selected) MaterialTheme.colorScheme.onSecondaryContainer
-                else MaterialTheme.colorScheme.onSurfaceVariant
-        ) {
-            icon()
-        }
+        CompositionLocalProvider(LocalContentColor provides contentColor) { icon() }
     }
 }
 
@@ -368,57 +402,15 @@ fun NavigationRailContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            SpatialSideNavItem(
-                primaryLabel = stringResource(R.string.download_queue),
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.HOME) Icons.Rounded.Download
-                        else Icons.Rounded.Download,
-                        null,
-                    )
-                },
-                selected = currentTopDestination == Route.HOME,
-                onClick = { onNavigateToRoute(Route.HOME) },
-            )
-
-            SpatialSideNavItem(
-                primaryLabel = stringResource(R.string.downloads_history),
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
-                        else Icons.AutoMirrored.Rounded.List,
-                        null,
-                    )
-                },
-                selected = currentTopDestination == Route.DOWNLOADS,
-                onClick = { onNavigateToRoute(Route.DOWNLOADS) },
-            )
-
-            SpatialSideNavItem(
-                primaryLabel = stringResource(R.string.custom_command),
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.TASK_LIST) Icons.Rounded.Terminal
-                        else Icons.Rounded.Terminal,
-                        null,
-                    )
-                },
-                selected = currentTopDestination == Route.TASK_LIST,
-                onClick = { onNavigateToRoute(Route.TASK_LIST) },
-            )
-
-            SpatialSideNavItem(
-                primaryLabel = stringResource(R.string.settings),
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Rounded.Settings
-                        else Icons.Rounded.Settings,
-                        null,
-                    )
-                },
-                selected = currentTopDestination == Route.SETTINGS_PAGE,
-                onClick = { onNavigateToRoute(Route.SETTINGS_PAGE) },
-            )
+            TopLevelDestinations.forEach { destination ->
+                val selected = currentTopDestination == destination.route
+                SpatialSideNavItem(
+                    primaryLabel = stringResource(destination.labelId),
+                    icon = { AnimatedNavIcon(destination = destination, selected = selected) },
+                    selected = selected,
+                    onClick = { onNavigateToRoute(destination.route) },
+                )
+            }
         }
     } else {
         Column(
@@ -434,58 +426,21 @@ fun NavigationRailContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            val scope = rememberCoroutineScope()
-            NavigationRailItemVariant(
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.HOME) Icons.Rounded.Download
-                        else Icons.Rounded.Download,
-                        stringResource(R.string.download_queue),
-                    )
-                },
-                modifier = Modifier,
-                selected = currentTopDestination == Route.HOME,
-                onClick = { onNavigateToRoute(Route.HOME) },
-            )
-
-            NavigationRailItemVariant(
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.DOWNLOADS) Icons.AutoMirrored.Filled.List
-                        else Icons.AutoMirrored.Rounded.List,
-                        stringResource(R.string.downloads_history),
-                    )
-                },
-                modifier = Modifier,
-                selected = currentTopDestination == Route.DOWNLOADS,
-                onClick = { onNavigateToRoute(Route.DOWNLOADS) },
-            )
-
-            NavigationRailItemVariant(
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.TASK_LIST) Icons.Rounded.Terminal
-                        else Icons.Rounded.Terminal,
-                        stringResource(R.string.custom_command),
-                    )
-                },
-                modifier = Modifier,
-                selected = currentTopDestination == Route.TASK_LIST,
-                onClick = { onNavigateToRoute(Route.TASK_LIST) },
-            )
-
-            NavigationRailItemVariant(
-                icon = {
-                    Icon(
-                        if (currentTopDestination == Route.SETTINGS_PAGE) Icons.Rounded.Settings
-                        else Icons.Rounded.Settings,
-                        stringResource(R.string.settings),
-                    )
-                },
-                modifier = Modifier,
-                selected = currentTopDestination == Route.SETTINGS_PAGE,
-                onClick = { onNavigateToRoute(Route.SETTINGS_PAGE) },
-            )
+            TopLevelDestinations.forEach { destination ->
+                val selected = currentTopDestination == destination.route
+                NavigationRailItemVariant(
+                    icon = {
+                        AnimatedNavIcon(
+                            destination = destination,
+                            selected = selected,
+                            contentDescription = stringResource(destination.labelId),
+                        )
+                    },
+                    modifier = Modifier,
+                    selected = selected,
+                    onClick = { onNavigateToRoute(destination.route) },
+                )
+            }
         }
     }
 }

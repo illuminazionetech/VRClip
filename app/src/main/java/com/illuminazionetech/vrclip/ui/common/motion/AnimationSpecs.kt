@@ -34,7 +34,7 @@ private val tweenSpec = tween<Float>(durationMillis = DURATION_ENTER, easing = E
 
 /**
  * Material 3 Expressive motion tokens. Springs are the default for anything that changes size,
- * shape or position (cards expanding, sheets appearing, FAB morphing) — durations aren't fixed,
+ * shape or position (cards expanding, sheets appearing, FAB morphing), durations aren't fixed,
  * the physics-based settle is what reads as "expressive" rather than a mechanical ease curve.
  * Reserve [EmphasizeEasing]/duration-based tweens for cases springs don't fit well, such as
  * cross-fades on video/ExoPlayer surfaces.

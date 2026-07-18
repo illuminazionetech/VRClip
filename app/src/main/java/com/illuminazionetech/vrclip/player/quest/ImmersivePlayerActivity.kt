@@ -22,7 +22,7 @@ import com.illuminazionetech.vrclip.player.ProjectionDetector
 import com.illuminazionetech.vrclip.player.ProjectionMode
 
 /**
- * Full immersive Meta Spatial SDK scene for 360°/180°/stereo-3D/flat video playback on Quest —
+ * Full immersive Meta Spatial SDK scene for 360°/180°/stereo-3D/flat video playback on Quest,
  * launched by [com.illuminazionetech.vrclip.player.PlayerLauncher] instead of the flat-panel [com.illuminazionetech.vrclip.player.PlayerScreen]
  * whenever the app is running on a Quest headset. A [VideoSurfacePanelRegistration] projects the
  * decoded ExoPlayer frames onto an equirectangular/half-dome/flat mesh sized and stereo-configured

@@ -37,6 +37,7 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.updateString
 import com.illuminazionetech.vrclip.util.SDCARD_URI
 import com.illuminazionetech.vrclip.util.UpdateUtil
 import com.illuminazionetech.vrclip.util.VIDEO_DIRECTORY
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.illuminazionetech.vrclip.util.YT_DLP_VERSION
 import com.tencent.mmkv.MMKV
 import com.yausername.aria2c.Aria2c
@@ -91,11 +92,13 @@ class App : Application() {
                 YoutubeDL.init(this@App)
                 FFmpeg.init(this@App)
                 Aria2c.init(this@App)
+                YtDlpEngine.notifyInitialized()
                 DownloadUtil.getCookiesContentFromDatabase().getOrNull()?.let {
                     FileUtil.writeContentToFile(it, getCookiesFile())
                 }
                 UpdateUtil.deleteOutdatedApk()
             } catch (th: Throwable) {
+                YtDlpEngine.notifyInitFailed(th)
                 withContext(Dispatchers.Main) { startCrashReportActivity(th) }
             }
         }
@@ -210,7 +213,7 @@ class App : Application() {
                 }
             // YT_DLP_VERSION is only populated once our own update flow has completed
             // successfully at least once, so it reads blank on installs that never ran (or
-            // failed) that update — even though a yt-dlp binary (bundled or previously updated)
+            // failed) that update, even though a yt-dlp binary (bundled or previously updated)
             // is actually present and in use. Query the library directly for the version that's
             // really running, which is what this field is meant to help diagnose.
             val ytDlpVersion =

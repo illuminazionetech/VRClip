@@ -4,65 +4,75 @@
 [![Release](https://img.shields.io/github/v/release/illuminazionetech/VRClip)](https://github.com/illuminazionetech/VRClip/releases/latest)
 [![License: GPL v3](https://img.shields.io/github/license/illuminazionetech/VRClip)](LICENSE)
 
-**Downloader video/audio universale + player immersivo 3D/360°/XR, per Android e Meta Quest.**
+**Universal video and audio downloader with an immersive 3D/360/XR player, for Android and Meta Quest.**
 
-VRClip scarica video e audio da centinaia di piattaforme (tramite yt-dlp) e li riproduce in-app con un player che riconosce automaticamente i contenuti flat, 360°, 180° e stereoscopici 3D — con un'esperienza completamente immersiva su Meta Quest tramite Meta Spatial SDK, e un player con rendering GL dedicato (pan touch/giroscopio, modalità split-screen per visori da telefono) su smartphone e tablet Android. L'interfaccia segue le linee guida Material Design 3 Expressive di Google (colore dinamico, forme e tipografia espansive, animazioni a molla), adattata automaticamente alla densità e alle interazioni a controller quando gira su Quest.
+VRClip downloads video and audio from hundreds of platforms (powered by yt-dlp) and plays them in-app with a player that automatically recognizes flat, 360, 180, and stereoscopic 3D content. On Meta Quest it delivers a fully immersive experience through the Meta Spatial SDK; on Android phones and tablets it uses a dedicated OpenGL renderer with touch and gyroscope panning, plus a Cardboard-style split-screen mode. The interface follows Google's Material 3 Expressive guidelines, with dynamic color, expressive shapes and typography, and spring-based motion, and adapts automatically to controller-driven interaction on Quest.
 
-## ✨ Funzionalità principali
+## Features
 
-- **Download universale**: tutti i siti supportati da yt-dlp, con multi-thread e aria2c integrato per la massima velocità.
-- **Player immersivo integrato**: riconoscimento automatico di video flat / 360° mono / 360° 3D (top-bottom o side-by-side) / 180° / 3D side-by-side / 3D top-bottom, con possibilità di forzare manualmente la proiezione per ogni video.
-- **Rendering dedicato per piattaforma**:
-  - **Android (telefono/tablet)**: rendering OpenGL per sfera equirettangolare (360°/180°) con pan touch/giroscopio, e modalità split-screen in stile Cardboard per i video 3D.
-  - **Meta Quest (2, 3, Pro)**: scena immersiva reale tramite Meta Spatial SDK, con pannello video posizionato nello spazio e stereo corretto per occhio.
-- **Gestione metadati**: incorpora automaticamente metadati, sottotitoli e miniature nei file scaricati.
-- **UI Material Design 3 Expressive**: colore dinamico (Material You), forme e tipografia espansive, motion a molla, adattate automaticamente per l'uso a 10 piedi con controller su Meta Quest.
-- **Privacy-first**: nessun tracciamento, nessuna pubblicità, nessuna sezione donazioni. Tutti i download avvengono localmente.
+- Universal downloads: every site supported by yt-dlp, with multi-threading and bundled aria2c for maximum speed.
+- Built-in immersive player: automatic detection of flat, 360 mono, 360 3D (top-bottom or side-by-side), 180, and 3D content, with a manual projection override per video.
+- Platform-tuned rendering:
+  - Android phones and tablets: OpenGL equirectangular sphere rendering (360/180) with touch and gyroscope panning, and a Cardboard-style split-screen mode for 3D video.
+  - Meta Quest (2, 3, Pro): a real immersive scene through the Meta Spatial SDK, with a spatially placed video panel and correct per-eye stereo.
+- Guided first run: the app walks you through storage access, notifications, and the download engine setup, so downloads work out of the box.
+- Self-updating engine: yt-dlp updates itself automatically so extraction keeps working as sites change.
+- Metadata handling: embeds metadata, subtitles, and thumbnails into downloaded files.
+- Material 3 Expressive UI: dynamic color (Material You), expressive shapes and typography, spring motion, automatically scaled for 10-foot controller use on Quest.
+- Privacy first: no tracking, no ads, no accounts. Every download happens locally.
 
-## 📱 Installazione
+## Installation
 
-### Su Android (telefono/tablet)
-1. Scarica l'APK dalla sezione [Release](https://github.com/illuminazionetech/VRClip/releases/latest) — vedi la tabella sotto per capire quale scegliere.
-2. Abilita "Origini sconosciute" nelle impostazioni del tuo dispositivo per installare l'APK.
+### Android (phone or tablet)
+1. Download the APK from the [latest release](https://github.com/illuminazionetech/VRClip/releases/latest). See the table below for which file to pick.
+2. Allow installs from unknown sources in your device settings, then install the APK.
 
-### Su Meta Quest (2 / 3 / Pro)
-1. Scarica lo stesso APK (`generic` consigliato) dalla sezione Release — è un'unica app universale, non serve un file separato per Quest.
-2. Installalo sul visore con [SideQuest](https://sidequestvr.com/) o con `adb install`.
-3. L'app rileva automaticamente l'esecuzione su Quest e attiva l'interfaccia e il player dedicati.
+### Meta Quest (2 / 3 / Pro)
+1. Download the same APK (`generic` recommended). It is a single universal app; there is no separate Quest file.
+2. Install it on the headset with [SideQuest](https://sidequestvr.com/) or `adb install`.
+3. The app detects that it is running on Quest and enables the dedicated interface and player.
 
-## ⬇️ Quale file scaricare
+## Which file to download
 
-Ogni build della CI produce un APK per architettura, molto più leggero di un pacchetto universale (vedi [Release](https://github.com/illuminazionetech/VRClip/releases/latest)), oppure puoi scaricare il file giusto in automatico dal [sito di download](https://illuminazionetech.github.io/VRClip/):
+Every CI build produces one APK per architecture, much lighter than a universal package, or you can let the [download site](https://illuminazionetech.github.io/VRClip/) pick the right file for you:
 
-| File | Piattaforma | Quando usarlo |
+| File | Platform | When to use it |
 |---|---|---|
-| `app-generic-arm64-v8a-release.apk` | Android e Meta Quest | **Consigliato** — copre tutti i visori Meta Quest e la quasi totalità degli smartphone Android recenti. |
-| `app-generic-armeabi-v7a-release.apk` | Android | Solo per dispositivi Android a 32 bit molto datati. |
-| `app-generic-x86_64-release.apk` / `app-generic-x86-release.apk` | Android | Solo per emulatori o dispositivi Android con CPU Intel/AMD. |
-| `app-generic-universal-release.apk` | Android e Meta Quest | Contiene tutte le architetture: usalo solo se non sei sicuro di quale scegliere (file più pesante). |
-| `app-githubPreview-*-release.apk` | Android e Meta Quest | Canale beta/anteprima (ID app separato, si installa insieme alla build stabile senza sovrascriverla). |
+| `app-generic-arm64-v8a-release.apk` | Android and Meta Quest | Recommended. Covers all Meta Quest headsets and nearly all recent Android phones. |
+| `app-generic-armeabi-v7a-release.apk` | Android | Only for very old 32-bit Android devices. |
+| `app-generic-x86_64-release.apk` / `app-generic-x86-release.apk` | Android | Only for emulators or devices with Intel/AMD CPUs. |
+| `app-generic-universal-release.apk` | Android and Meta Quest | Contains every architecture. Use it only if you are unsure which one to pick (larger file). |
+| `app-githubPreview-*-release.apk` | Android and Meta Quest | Beta/preview channel (separate app ID, installs alongside the stable build). |
 
-Non esiste un file separato "per Quest": la stessa app gira su entrambe le piattaforme e adatta automaticamente interfaccia e player.
+## Usage
 
-## 🕹️ Utilizzo
+1. Copy the link of the video or audio you want to download.
+2. Open VRClip and paste the link, or share it directly from the source app.
+3. Pick the format you want.
+4. When the download finishes, tap the video in the list to open it in the built-in player. The projection (flat/360/3D) is detected automatically and can be overridden from the menu if needed.
 
-1. Copia il link del video/audio che vuoi scaricare.
-2. Apri VRClip e incolla il link (o condividilo direttamente dall'app sorgente).
-3. Seleziona il formato desiderato.
-4. Al termine del download, tocca il video nella lista per aprirlo nel player integrato — la proiezione (flat/360°/3D) viene rilevata automaticamente; puoi forzarla manualmente dal menu ⋮ se la rilevazione sbaglia.
+## First-run permissions
 
-## 🥽 Preparazione per il Meta Quest Store
+VRClip saves downloads to the public `Download/VRClip` folder, which on Android 11 and newer requires the All files access permission. The first-run setup requests it (and the notification permission on Android 13+) with clear explanations; every step can be skipped and granted later from Settings. Without storage access, downloads cannot be written and the home screen shows a shortcut to the grant screen.
 
-VRClip è tecnicamente pronto per Quest 2/3/Pro, ma essendo un downloader universale rientra in un'area grigia delle policy di contenuto di Meta (che restringono le app la cui funzione principale è scaricare contenuti di terzi). Il materiale di submission (manifest, privacy policy, checklist) è documentato in [`docs/META_QUEST_STORE_SUBMISSION.md`](docs/META_QUEST_STORE_SUBMISSION.md), incluso questo rischio — l'app resta comunque pienamente utilizzabile via sideload indipendentemente dall'esito di un'eventuale submission.
+## Store distribution notes
 
-## 🔐 Sicurezza e Privacy
+VRClip is technically ready for Quest 2/3/Pro; submission material (manifest checklist, privacy policy, data safety text) is documented in [`docs/META_QUEST_STORE_SUBMISSION.md`](docs/META_QUEST_STORE_SUBMISSION.md). Note that as a universal downloader the app sits in a gray area of both the Meta and Google Play content policies, and its use of the All files access and install-packages permissions requires per-store declarations that may not be approved for this app category. Sideloading is fully supported regardless of any store outcome. A Play-compatible build would additionally need a scoped-storage download mode and a flavor without the in-app self-updater.
 
-Tutti i download avvengono localmente sul dispositivo. Non vengono raccolti dati personali, non ci sono SDK di tracciamento/pubblicità, non ci sono account. L'unico traffico di rete è verso i siti sorgente che l'utente sceglie esplicitamente, più un controllo opzionale di aggiornamento di yt-dlp. Per segnalazioni di sicurezza vedi [`SECURITY.md`](SECURITY.md).
+## Security and privacy
 
-## 🤝 Contribuire
+All downloads happen locally on the device. No personal data is collected, there are no tracking or advertising SDKs, and there are no accounts. The only network traffic goes to the source sites you explicitly choose, plus optional update checks for yt-dlp and the app itself. See [`SECURITY.md`](SECURITY.md) for how to report security issues. The privacy policy is published at [illuminazionetech.github.io/VRClip/privacy](https://illuminazionetech.github.io/VRClip/privacy.html).
 
-Vedi [`CONTRIBUTING.md`](CONTRIBUTING.md) per build locale, stile del codice e linee guida per le PR.
+## Building
 
-## 📜 Licenza e crediti
+```
+git clone https://github.com/illuminazionetech/VRClip.git
+cd VRClip
+./gradlew assembleGenericRelease
+```
 
-VRClip è **GPLv3** (vedi [`LICENSE`](LICENSE)) ed è un fork di [Seal](https://github.com/JunkFood02/Seal) di JunkFood02, a cui si aggiungono il supporto Meta Quest, il player immersivo 3D/360°/XR e il restyling completo in Material Design 3 Expressive. Usa [yt-dlp](https://github.com/yt-dlp/yt-dlp), [ffmpeg](https://ffmpeg.org/) e [aria2c](https://aria2.github.io/) tramite [youtubedl-android](https://github.com/JunkFood02/youtubedl-android). Dettagli completi in [`NOTICE`](NOTICE).
+Requires JDK 21 and the Android SDK (compileSdk 36). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for code style and pull request guidelines.
+
+## License and credits
+
+VRClip is licensed under the **GPLv3** (see [`LICENSE`](LICENSE)) and is a fork of [Seal](https://github.com/JunkFood02/Seal) by JunkFood02, extended with Meta Quest support, the immersive 3D/360/XR player, and a full Material 3 Expressive redesign. It uses [yt-dlp](https://github.com/yt-dlp/yt-dlp), [ffmpeg](https://ffmpeg.org/), and [aria2c](https://aria2.github.io/) through [youtubedl-android](https://github.com/JunkFood02/youtubedl-android). Full attribution is in [`NOTICE`](NOTICE).

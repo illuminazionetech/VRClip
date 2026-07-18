@@ -40,7 +40,7 @@ fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
 /**
- * Forces true-black surfaces on top of a derived dark scheme — a deliberate OLED-friendly
+ * Forces true-black surfaces on top of a derived dark scheme: a deliberate OLED-friendly
  * option (real battery savings and higher contrast on Quest's/phones' OLED panels), applied only
  * when the app is deriving its own HCT/Monet scheme rather than the system's Android 12+ dynamic
  * (wallpaper-based) colors, since forcing pure black would fight the whole point of following the
@@ -111,6 +111,10 @@ fun VRClipTheme(
         LocalFixedColorRoles provides fixedColorRoles,
         LocalTextStyle provides textStyle,
     ) {
+        // The Material 3 Expressive theme wrapper (MaterialExpressiveTheme + MotionScheme) is
+        // still internal in material3 1.4.0 stable; the app applies its expressive look through
+        // its own shape scale, typography, and the ExpressiveMotion spring tokens instead of
+        // depending on 1.5.0 alpha APIs.
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography.scaled(density.typeScale),

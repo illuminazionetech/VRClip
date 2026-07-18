@@ -202,6 +202,7 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
                 )
             }
 
+            OnboardingFlow()
             AppUpdater()
             YtdlpUpdater()
         }

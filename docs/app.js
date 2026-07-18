@@ -29,8 +29,8 @@
   const downloadBtn = document.getElementById("download-btn");
   // download-btn is a real <a> so the actual download always goes through the browser's native
   // link-following (the single most reliably supported way to trigger a download, more so than
-  // any scripted click()). While we're still fetching the release, its href is "#" and disabled
-  // — block that placeholder click from jumping to the top of the page.
+  // any scripted click()). While we're still fetching the release, its href is "#" and disabled,
+  // so block that placeholder click from jumping to the top of the page.
   downloadBtn.addEventListener("click", (event) => {
     if (downloadBtn.getAttribute("aria-disabled") === "true") event.preventDefault();
   });
@@ -46,12 +46,12 @@
   }
 
   function friendlyArchLabel(name) {
-    if (/universal/i.test(name)) return "Universale (tutte le architetture)";
-    if (/arm64-v8a/i.test(name)) return "ARM 64-bit (consigliato)";
-    if (/armeabi-v7a/i.test(name)) return "ARM 32-bit (dispositivi datati)";
+    if (/universal/i.test(name)) return "Universal (all architectures)";
+    if (/arm64-v8a/i.test(name)) return "ARM 64-bit (recommended)";
+    if (/armeabi-v7a/i.test(name)) return "ARM 32-bit (older devices)";
     if (/x86_64/i.test(name)) return "x86_64 (Intel/AMD 64-bit)";
     if (/(?<!_64)x86(?!_64)/i.test(name)) return "x86 (Intel/AMD 32-bit)";
-    if (/preview/i.test(name) || /githubPreview/i.test(name)) return "Anteprima";
+    if (/preview/i.test(name) || /githubPreview/i.test(name)) return "Preview";
     return name;
   }
 
@@ -68,8 +68,8 @@
   }
 
   // Captured lazily the first time the button is actually clicked, when the label is still
-  // guaranteed to be the real "Scarica VRClip x.y.z" text (not a stale "Download avviato ✓" left
-  // over from a previous click) — reused on every later click so rapid/repeated clicks can't
+  // guaranteed to be the real "Download VRClip x.y.z" text (not a stale "Download started" left
+  // over from a previous click), and reused on every later click so rapid/repeated clicks can't
   // clobber it into permanently showing the transient confirmation text instead of reverting.
   let originalDownloadLabel = null;
   let confirmDownloadTimeoutId = null;
@@ -78,7 +78,7 @@
     if (originalDownloadLabel === null) originalDownloadLabel = downloadLabel.textContent;
     window.clearTimeout(confirmDownloadTimeoutId);
     downloadBtn.classList.add("started");
-    downloadLabel.textContent = "Download avviato ✓";
+    downloadLabel.textContent = "Download started";
     confirmDownloadTimeoutId = window.setTimeout(() => {
       downloadBtn.classList.remove("started");
       downloadLabel.textContent = originalDownloadLabel;
@@ -90,7 +90,7 @@
     downloadBtn.target = "_blank";
     downloadBtn.rel = "noopener";
     downloadBtn.removeAttribute("aria-disabled");
-    downloadLabel.textContent = "Vai alla pagina delle release";
+    downloadLabel.textContent = "Go to the releases page";
     downloadMeta.innerHTML = message;
   }
 
@@ -104,8 +104,8 @@
       release = await res.json();
     } catch (err) {
       setFallbackToReleasesPage(
-        "Impossibile recuperare automaticamente l'ultima versione. " +
-          `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">Apri la pagina delle release</a>.`
+        "Could not fetch the latest version automatically. " +
+          `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">Open the releases page</a>.`
       );
       return;
     }
@@ -113,8 +113,8 @@
     const apkAssets = (release.assets || []).filter((a) => a.name.endsWith(".apk"));
     if (apkAssets.length === 0) {
       setFallbackToReleasesPage(
-        `Nessun APK trovato in ${release.tag_name || "l'ultima release"}. ` +
-          `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">Apri la pagina delle release</a>.`
+        `No APK found in ${release.tag_name || "the latest release"}. ` +
+          `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">Open the releases page</a>.`
       );
       return;
     }
@@ -125,11 +125,11 @@
     downloadBtn.href = recommended.browser_download_url;
     downloadBtn.rel = "noopener";
     downloadBtn.removeAttribute("aria-disabled");
-    downloadLabel.textContent = `Scarica VRClip ${version}`.trim();
+    downloadLabel.textContent = `Download VRClip ${version}`.trim();
     downloadMeta.innerHTML =
-      `${friendlyArchLabel(recommended.name)} · ${formatSize(recommended.size)} — ` +
-      `<a href="${recommended.browser_download_url}" rel="noopener">link diretto</a> · ` +
-      `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">tutte le release</a>`;
+      `${friendlyArchLabel(recommended.name)} · ${formatSize(recommended.size)} · ` +
+      `<a href="${recommended.browser_download_url}" rel="noopener">direct link</a> · ` +
+      `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">all releases</a>`;
     downloadBtn.addEventListener("click", confirmDownloadStarted);
 
     const others = apkAssets.filter((a) => a.name !== recommended.name);

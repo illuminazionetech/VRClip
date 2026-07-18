@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - main
+      - 'claude/**'
     tags:
       - 'v*'
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -40,6 +42,14 @@ jobs:
       - name: Run Android Lint
         run: ./gradlew lintGenericDebug
 
+      - name: Upload lint report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-*.html
+          if-no-files-found: ignore
+
   build:
     name: Build APK
     runs-on: ubuntu-latest
@@ -59,16 +69,46 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Set up release signing when secrets are configured
+        # Writes keystore.properties from repository secrets so release builds are signed with
+        # the real key. When the secrets are absent (forks, or before they are configured) this
+        # is a no-op and the build falls back to the debug key, so releases never block on it.
+        if: github.event_name != 'pull_request'
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "No signing secrets configured; release builds will use the debug key."
+            exit 0
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          {
+            echo "storeFile=$RUNNER_TEMP/release.keystore"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > keystore.properties
+          echo "Release signing configured from secrets."
+
       - name: Run Tests
         run: ./gradlew test
 
       - name: Build Release APKs
         run: ./gradlew assembleRelease --stacktrace
 
+      - name: Build Release App Bundle
+        # The bundle task is incompatible with the per-ABI APK splits config (it fails with
+        # "Sequence contains more than one matching element"), so the AAB is built with splits
+        # disabled; an App Bundle carries every ABI by design.
+        run: ./gradlew :app:bundleGenericRelease -PnoSplits --stacktrace
+
       - name: Build Debug APKs
         # Debug APKs are only a convenience CI artifact for manual QA, not required to publish
-        # the release (only the release APKs below are attached to it) — don't let a debug-only
-        # packaging issue block the release.
+        # the release (only the release APKs below are attached to it), so a debug-only
+        # packaging issue must not block the release.
         continue-on-error: true
         run: ./gradlew assembleDebug --stacktrace
 
@@ -77,6 +117,12 @@ jobs:
         with:
           name: VRClip-Release-APKs
           path: app/build/outputs/apk/*/release/*.apk
+
+      - name: Upload Release App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: VRClip-Release-AAB
+          path: app/build/outputs/bundle/genericRelease/*.aab
 
       - name: Upload Debug APKs
         uses: actions/upload-artifact@v4
@@ -95,6 +141,7 @@ jobs:
           files: |
             app/build/outputs/apk/generic/release/*.apk
             app/build/outputs/apk/githubPreview/release/*.apk
+            app/build/outputs/bundle/genericRelease/*.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -103,7 +150,7 @@ jobs:
     # Runs only right after a plain push to main (not for PRs). Gated on lint+build already
     # succeeding, so a version bump is only ever tagged/released off a commit that's known to
     # build cleanly. Publishes directly in this same job (reusing the APKs "build" just produced)
-    # instead of pushing a tag and waiting for that to retrigger the workflow — a push made with
+    # instead of pushing a tag and waiting for that to retrigger the workflow: a push made with
     # the default GITHUB_TOKEN does NOT retrigger workflows (GitHub blocks that to avoid
     # recursion), so relying on a second run here would silently never fire.
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -130,7 +177,7 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
           if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
-            echo "$TAG already exists on origin — this version was already released, nothing to do."
+            echo "$TAG already exists on origin, this version was already released, nothing to do."
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -142,6 +189,13 @@ jobs:
         with:
           name: VRClip-Release-APKs
           path: release-apks
+
+      - name: Download release App Bundle built by the build job
+        if: steps.version.outputs.exists == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: VRClip-Release-AAB
+          path: release-aab
 
       - name: Tag this version
         if: steps.version.outputs.exists == 'false'
@@ -157,6 +211,8 @@ jobs:
           name: VRClip ${{ steps.version.outputs.tag }}
           draft: false
           prerelease: false
-          files: release-apks/**/*.apk
+          files: |
+            release-apks/**/*.apk
+            release-aab/**/*.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

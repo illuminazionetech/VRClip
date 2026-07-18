@@ -415,7 +415,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
 
                         withContext(Dispatchers.Main) {
                             snackbarHostState.showSnackbar(
-                                context.getString(R.string.clear_temp_files_count).format(count)
+                                App.context.getString(R.string.clear_temp_files_count).format(count)
                             )
                         }
                     }

@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Shape
 import com.illuminazionetech.vrclip.ui.common.motion.ExpressiveMotion
 
 /**
- * Flat Material 3 tonal-surface modifier — replaces the old "Liquid Glass" `glassEffect()`
+ * Flat Material 3 tonal-surface modifier, replaces the old "Liquid Glass" `glassEffect()`
  * (GPU blur + translucent gradient border). No blur, no border: a clipped shape filled with a
  * real M3 surface-container tone, animating in with an expressive spring rather than popping in
  * instantly when the color changes (e.g. scroll-driven app bar tone shifts).

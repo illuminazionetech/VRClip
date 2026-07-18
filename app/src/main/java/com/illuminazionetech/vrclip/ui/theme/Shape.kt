@@ -21,7 +21,7 @@ val Shapes =
 
 /**
  * Expressive accent shape reserved for hero/emphasis surfaces (e.g. a primary FAB or the brand
- * mark on the About screen) — an asymmetric cut-corner shape, distinct from the rounded-rect
+ * mark on the About screen), an asymmetric cut-corner shape, distinct from the rounded-rect
  * vocabulary used everywhere else, per M3 Expressive's varied-shape guidance for a small number
  * of high-emphasis elements.
  */
@@ -33,7 +33,7 @@ val ExpressiveAccentShape =
         bottomRight = 28.dp,
     )
 
-/** Scales a [Shapes] set by [factor] — used to enlarge corner radii for the Quest spatial panel. */
+/** Scales a [Shapes] set by [factor], used to enlarge corner radii for the Quest spatial panel. */
 fun Shapes.scaled(factor: Float): Shapes =
     if (factor == 1f) this
     else

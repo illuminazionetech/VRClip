@@ -20,7 +20,7 @@ import com.illuminazionetech.vrclip.util.DarkThemePreference
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 
 /**
- * Spatial density (Quest vs. phone) touch-target/type-scale profile — the successor of the old
+ * Spatial density (Quest vs. phone) touch-target/type-scale profile, the successor of the old
  * glass system's `GlassDensity`, now consumed directly by M3 components instead of a blur effect.
  */
 enum class SpatialDensity(val minTouchTarget: Dp, val typeScale: Float, val shapeScale: Float) {

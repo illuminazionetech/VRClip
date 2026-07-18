@@ -39,10 +39,16 @@ object NotificationUtil {
     const val SERVICE_NOTIFICATION_ID = 123
     private lateinit var serviceNotification: Notification
 
-    //    private var builder =
-    //        NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.ic_stat_vrclip)
-    private val commandNotificationBuilder =
-        NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.ic_stat_vrclip)
+    /**
+     * Posts a notification only when the user has notifications enabled at the system level,
+     * swallowing the SecurityException some OEM builds throw when the POST_NOTIFICATIONS
+     * permission has been revoked mid-session.
+     */
+    private fun safeNotify(notificationId: Int, notification: Notification) {
+        if (!areNotificationsEnabled()) return
+        runCatching { notificationManager.notify(notificationId, notification) }
+            .onFailure { Log.w(TAG, "Could not post notification", it) }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel() {
@@ -101,7 +107,7 @@ object NotificationUtil {
                 pendingIntent?.let {
                     addAction(R.drawable.outline_cancel_24, context.getString(R.string.cancel), it)
                 }
-                notificationManager.notify(notificationId, build())
+                safeNotify(notificationId, build())
             }
     }
 
@@ -123,7 +129,7 @@ object NotificationUtil {
                 .setAutoCancel(true)
         title?.let { builder.setContentTitle(title) }
         intent?.let { builder.setContentIntent(intent) }
-        notificationManager.notify(notificationId, builder.build())
+        safeNotify(notificationId, builder.build())
     }
 
     fun finishNotificationForCustomCommands(
@@ -142,7 +148,7 @@ object NotificationUtil {
                 .setStyle(null)
         title?.let { builder.setContentTitle(title) }
 
-        notificationManager.notify(notificationId, builder.build())
+        safeNotify(notificationId, builder.build())
     }
 
     fun makeServiceNotification(intent: PendingIntent, text: String? = null): Notification {
@@ -163,7 +169,7 @@ object NotificationUtil {
             NotificationCompat.Builder(context, serviceNotification)
                 .setContentTitle(context.getString(R.string.service_title) + " ($index/$itemCount)")
                 .build()
-        notificationManager.notify(SERVICE_NOTIFICATION_ID, serviceNotification)
+        safeNotify(SERVICE_NOTIFICATION_ID, serviceNotification)
     }
 
     fun cancelNotification(notificationId: Int) {
@@ -206,7 +212,7 @@ object NotificationUtil {
             )
             .run {
                 notificationManager.cancel(notificationId)
-                notificationManager.notify(notificationId, build())
+                safeNotify(notificationId, build())
             }
     }
 
@@ -248,7 +254,7 @@ object NotificationUtil {
                 context.getString(R.string.cancel),
                 pendingIntent,
             )
-            .run { notificationManager.notify(notificationId, build()) }
+            .run { safeNotify(notificationId, build()) }
     }
 
     fun cancelAllNotifications() {

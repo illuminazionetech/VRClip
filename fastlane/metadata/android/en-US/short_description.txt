@@ -1,1 +1,1 @@
-Video/Audio downloader designed and themed with Material You
+Video/audio downloader with an immersive 3D/360 player, for Android and Quest

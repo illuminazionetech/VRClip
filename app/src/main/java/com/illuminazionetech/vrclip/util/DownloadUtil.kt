@@ -925,6 +925,7 @@ object DownloadUtil {
         template: CommandTemplate = PreferenceUtil.getTemplate(),
         downloadPreferences: DownloadPreferences = DownloadPreferences.createFromPreferences(),
     ) {
+        YtDlpEngine.awaitReady()
         downloadPreferences.run {
             val taskId = CommandTaskManager.makeKey(url = url, templateName = template.name)
             val notificationId = taskId.toNotificationId()

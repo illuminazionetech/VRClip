@@ -100,7 +100,10 @@ jobs:
         run: ./gradlew assembleRelease --stacktrace
 
       - name: Build Release App Bundle
-        run: ./gradlew :app:bundleGenericRelease --stacktrace
+        # The bundle task is incompatible with the per-ABI APK splits config (it fails with
+        # "Sequence contains more than one matching element"), so the AAB is built with splits
+        # disabled; an App Bundle carries every ABI by design.
+        run: ./gradlew :app:bundleGenericRelease -PnoSplits --stacktrace
 
       - name: Build Debug APKs
         # Debug APKs are only a convenience CI artifact for manual QA, not required to publish

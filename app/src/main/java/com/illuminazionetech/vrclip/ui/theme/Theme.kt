@@ -4,11 +4,8 @@ import android.os.Build
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -58,7 +55,6 @@ private fun ColorScheme.withOledBlack(): ColorScheme =
         surfaceContainer = Color.Black,
     )
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun VRClipTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -115,11 +111,14 @@ fun VRClipTheme(
         LocalFixedColorRoles provides fixedColorRoles,
         LocalTextStyle provides textStyle,
     ) {
-        MaterialExpressiveTheme(
+        // The Material 3 Expressive theme wrapper (MaterialExpressiveTheme + MotionScheme) is
+        // still internal in material3 1.4.0 stable; the app applies its expressive look through
+        // its own shape scale, typography, and the ExpressiveMotion spring tokens instead of
+        // depending on 1.5.0 alpha APIs.
+        MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography.scaled(density.typeScale),
             shapes = Shapes.scaled(density.shapeScale),
-            motionScheme = MotionScheme.expressive(),
         ) {
             if (darkTheme) {
                 SpatialTheme { content() }

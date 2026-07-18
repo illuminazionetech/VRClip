@@ -18,9 +18,8 @@ import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.RocketLaunch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -244,7 +243,6 @@ fun OnboardingFlow() {
     )
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun EngineStepContent() {
     val engineState by YtDlpEngine.state.collectAsStateWithLifecycle()
@@ -284,7 +282,10 @@ private fun EngineStepContent() {
                     )
                 }
                 else -> {
-                    LoadingIndicator(modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.5.dp,
+                    )
                     Spacer(Modifier.width(8.dp))
                     Text(
                         text =

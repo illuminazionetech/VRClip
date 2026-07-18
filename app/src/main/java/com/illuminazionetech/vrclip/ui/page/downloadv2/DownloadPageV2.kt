@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2
 
+import android.Manifest
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
@@ -45,6 +46,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.FolderOff
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.MoreVert
@@ -59,10 +61,12 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.derivedStateOf
@@ -100,7 +104,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.Task
@@ -132,6 +141,7 @@ import com.illuminazionetech.vrclip.ui.svg.drawablevectors.download
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.util.DownloadUtil
 import com.illuminazionetech.vrclip.util.FileUtil
+import com.illuminazionetech.vrclip.util.StorageUtil
 import com.illuminazionetech.vrclip.util.getErrorReport
 import com.illuminazionetech.vrclip.util.makeToast
 import com.illuminazionetech.vrclip.util.YtDlpEngine
@@ -434,6 +444,9 @@ fun DownloadPageImplV2(
                             }
                         }
                     }
+                    StorageAccessRow(
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
+                    )
                     EngineStatusRow(
                         modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
                     )
@@ -559,6 +572,78 @@ fun DownloadPageImplV2(
                 },
                 onActionPost = onActionPost,
             )
+        }
+    }
+}
+
+/**
+ * A call-to-action row shown while the app lacks the storage access it needs to save downloads,
+ * with a direct link to the system grant screen. Downloads fail with an opaque yt-dlp error
+ * without this permission, so surfacing it here beats letting the user find out the hard way.
+ */
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun StorageAccessRow(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var granted by remember { mutableStateOf(StorageUtil.isStorageAccessGranted(context)) }
+
+    val legacyStoragePermission =
+        if (Build.VERSION.SDK_INT < 30) {
+            rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                granted = StorageUtil.isStorageAccessGranted(context)
+            }
+        } else {
+            null
+        }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                granted = StorageUtil.isStorageAccessGranted(context)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
+    AnimatedVisibility(
+        visible = !granted,
+        enter = expandVertically() + fadeIn(),
+        exit = shrinkVertically() + fadeOut(),
+    ) {
+        Row(
+            modifier =
+                modifier.fillMaxWidth().tonalSurface(shape = MaterialTheme.shapes.medium).padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.FolderOff,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(18.dp),
+            )
+            Spacer(Modifier.width(12.dp))
+            Text(
+                text = stringResource(R.string.storage_access_needed),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
+            )
+            TextButton(
+                onClick = {
+                    if (Build.VERSION.SDK_INT >= 30) {
+                        StorageUtil.launchAllFilesAccessSettings(context)
+                    } else {
+                        legacyStoragePermission?.launchPermissionRequest()
+                    }
+                }
+            ) {
+                Text(stringResource(R.string.grant_access))
+            }
         }
     }
 }

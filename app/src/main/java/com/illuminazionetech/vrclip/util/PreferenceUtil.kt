@@ -47,7 +47,7 @@ const val VIDEO_QUALITY = "quality"
 const val FORMAT_SORTING = "format_sorting"
 const val SORTING_FIELDS = "sorting_fields"
 
-const val WELCOME_DIALOG = "welcome_dialog"
+const val ONBOARDING_COMPLETED = "onboarding_completed"
 const val VIDEO_DIRECTORY = "download_dir"
 const val AUDIO_DIRECTORY = "audio_dir"
 const val COMMAND_DIRECTORY = "command_directory"
@@ -214,7 +214,6 @@ private val IntPreferenceDefaults =
         LANGUAGE to SYSTEM_DEFAULT,
         PALETTE_STYLE to 0,
         DARK_THEME_VALUE to DarkThemePreference.FOLLOW_SYSTEM,
-        WELCOME_DIALOG to 1,
         AUDIO_CONVERSION_FORMAT to NOT_SPECIFIED,
         VIDEO_QUALITY to NOT_SPECIFIED,
         VIDEO_FORMAT to FORMAT_QUALITY,

@@ -34,7 +34,7 @@ const val initialOffset = 0.10f
 
 private fun <T> enterTween() = tween<T>(durationMillis = DURATION_ENTER, easing = EmphasizeEasing)
 
-private fun <T> exitTween() = tween<T>(durationMillis = DURATION_ENTER, easing = EmphasizeEasing)
+private fun <T> exitTween() = tween<T>(durationMillis = DURATION_EXIT, easing = EmphasizeEasing)
 
 private val fadeSpring =
     spring<Float>(dampingRatio = Spring.DampingRatioNoBouncy, stiffness = Spring.StiffnessMedium)

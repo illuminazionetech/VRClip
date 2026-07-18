@@ -49,10 +49,10 @@ import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.FolderOff
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -477,7 +477,6 @@ fun DownloadPageImplV2(
                                 audioCount = filteredMap.size - videoCount,
                                 isGridView = isGridView,
                                 onToggleView = { isGridView = !isGridView },
-                                onShowMenu = { context.makeToast("Not implemented yet!") },
                             )
                         }
                     }
@@ -652,6 +651,7 @@ private fun StorageAccessRow(modifier: Modifier = Modifier) {
  * A slim status row shown while the yt-dlp engine is initializing or updating, so the first
  * download after install does not look stuck. Hidden as soon as the engine is ready.
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun EngineStatusRow(modifier: Modifier = Modifier) {
     val engineState by YtDlpEngine.state.collectAsStateWithLifecycle()
@@ -684,10 +684,7 @@ private fun EngineStatusRow(modifier: Modifier = Modifier) {
                     )
                 }
                 else -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp),
-                        strokeWidth = 2.5.dp,
-                    )
+                    LoadingIndicator(modifier = Modifier.size(24.dp))
                     Spacer(Modifier.width(12.dp))
                     Text(
                         text =
@@ -863,7 +860,6 @@ fun SubHeader(
     audioCount: Int = 0,
     isGridView: Boolean = true,
     onToggleView: () -> Unit,
-    onShowMenu: () -> Unit,
 ) {
     val text = buildString {
         if (videoCount > 0) {
@@ -911,19 +907,6 @@ fun SubHeader(
             )
         }
 
-        Spacer(Modifier.width(4.dp))
-
-        FilledIconButton(
-            onClick = onShowMenu,
-            modifier = Modifier.size(32.dp),
-            colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.MoreVert,
-                contentDescription = stringResource(id = R.string.show_more_actions),
-                modifier = Modifier.size(16.dp),
-            )
-        }
     }
 }
 

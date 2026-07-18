@@ -4,8 +4,11 @@ import android.os.Build
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -40,7 +43,7 @@ fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
 /**
- * Forces true-black surfaces on top of a derived dark scheme — a deliberate OLED-friendly
+ * Forces true-black surfaces on top of a derived dark scheme: a deliberate OLED-friendly
  * option (real battery savings and higher contrast on Quest's/phones' OLED panels), applied only
  * when the app is deriving its own HCT/Monet scheme rather than the system's Android 12+ dynamic
  * (wallpaper-based) colors, since forcing pure black would fight the whole point of following the
@@ -55,6 +58,7 @@ private fun ColorScheme.withOledBlack(): ColorScheme =
         surfaceContainer = Color.Black,
     )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun VRClipTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -111,10 +115,11 @@ fun VRClipTheme(
         LocalFixedColorRoles provides fixedColorRoles,
         LocalTextStyle provides textStyle,
     ) {
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = colorScheme,
             typography = Typography.scaled(density.typeScale),
             shapes = Shapes.scaled(density.shapeScale),
+            motionScheme = MotionScheme.expressive(),
         ) {
             if (darkTheme) {
                 SpatialTheme { content() }

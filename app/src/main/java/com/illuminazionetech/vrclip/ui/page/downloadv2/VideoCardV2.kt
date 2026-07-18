@@ -43,7 +43,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.meta.spatial.uiset.card.PrimaryCard
 import com.meta.spatial.uiset.card.SecondaryCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

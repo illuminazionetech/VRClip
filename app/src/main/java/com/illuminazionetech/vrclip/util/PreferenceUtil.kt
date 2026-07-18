@@ -200,6 +200,7 @@ private val BooleanPreferenceDefaults =
         CONFIGURE to true,
         CELLULAR_DOWNLOAD to false,
         YT_DLP_AUTO_UPDATE to true,
+        AUTO_UPDATE to true,
         NOTIFICATION to true,
         EMBED_METADATA to true,
         USE_CUSTOM_AUDIO_PRESET to false,

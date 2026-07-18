@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -24,6 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+private const val TAG = "AppUpdater"
 
 @Composable
 fun AppUpdater() {
@@ -60,10 +63,9 @@ fun AppUpdater() {
         }
 
     LaunchedEffect(Unit) {
-        if (
-            !PreferenceUtil.isNetworkAvailableForDownload() || !PreferenceUtil.isAutoUpdateEnabled()
-        )
-            return@LaunchedEffect
+        // The update check is a tiny API call, so it is not gated on metered networks; the
+        // download itself only starts after the user confirms it in the dialog.
+        if (!PreferenceUtil.isAutoUpdateEnabled()) return@LaunchedEffect
         withContext(Dispatchers.IO) {
             runCatching {
                     UpdateUtil.checkForUpdate()?.let {
@@ -71,7 +73,7 @@ fun AppUpdater() {
                         showUpdateDialog = true
                     }
                 }
-                .onFailure { it.printStackTrace() }
+                .onFailure { Log.w(TAG, "Update check failed", it) }
         }
     }
 

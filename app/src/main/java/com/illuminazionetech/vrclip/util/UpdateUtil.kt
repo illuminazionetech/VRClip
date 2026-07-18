@@ -156,16 +156,18 @@ object UpdateUtil {
                 }
             }
 
-            val abiList = Build.SUPPORTED_ABIS
-            val preferredArch = abiList.firstOrNull() ?: return@withContext emptyFlow()
+            // Try each supported ABI in preference order, then fall back to the universal APK.
+            val candidates = Build.SUPPORTED_ABIS.toList() + "universal"
 
             val targetUrl =
-                release.assets
-                    ?.find {
-                        val name = it.name ?: return@find false
-                        name.contains(preferredArch) && name.contains(BuildConfig.FLAVOR)
-                    }
-                    ?.browserDownloadUrl ?: return@withContext emptyFlow()
+                candidates.firstNotNullOfOrNull { abi ->
+                    release.assets
+                        ?.find {
+                            val name = it.name ?: return@find false
+                            name.contains(BuildConfig.FLAVOR) && assetMatchesAbi(name, abi)
+                        }
+                        ?.browserDownloadUrl
+                } ?: return@withContext emptyFlow()
             val request = Request.Builder().url(targetUrl).build()
             try {
                 val response = client.newCall(request).execute()
@@ -176,6 +178,15 @@ object UpdateUtil {
             }
             emptyFlow()
         }
+
+    /**
+     * Matches [abi] as a delimited token inside [assetName], so that "x86" does not match an
+     * "x86_64" asset name (both appear in the same release).
+     */
+    internal fun assetMatchesAbi(assetName: String, abi: String): Boolean {
+        val regex = Regex("(?<![A-Za-z0-9_])${Regex.escape(abi)}(?![A-Za-z0-9_])")
+        return regex.containsMatchIn(assetName)
+    }
 
     private fun ResponseBody.downloadFileWithProgress(saveFile: File): Flow<DownloadStatus> =
         flow {

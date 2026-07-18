@@ -208,11 +208,20 @@ class App : Application() {
                 } else {
                     Build.VERSION.RELEASE
                 }
+            // YT_DLP_VERSION is only populated once our own update flow has completed
+            // successfully at least once, so it reads blank on installs that never ran (or
+            // failed) that update — even though a yt-dlp binary (bundled or previously updated)
+            // is actually present and in use. Query the library directly for the version that's
+            // really running, which is what this field is meant to help diagnose.
+            val ytDlpVersion =
+                runCatching { YoutubeDL.getInstance().version(context) }
+                    .getOrNull()
+                    ?.takeIf { it.isNotEmpty() } ?: YT_DLP_VERSION.getString().ifEmpty { "unknown" }
             return StringBuilder()
                 .append("App version: $versionName ($versionCode)\n")
                 .append("Device information: Android $release (API ${Build.VERSION.SDK_INT})\n")
                 .append("Supported ABIs: ${Build.SUPPORTED_ABIS.contentToString()}\n")
-                .append("Yt-dlp version: ${YT_DLP_VERSION.getString()}\n")
+                .append("Yt-dlp version: $ytDlpVersion\n")
                 .toString()
         }
 

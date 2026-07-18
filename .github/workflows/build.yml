@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - main
+      - 'claude/**'
     tags:
       - 'v*'
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -67,8 +69,8 @@ jobs:
 
       - name: Build Debug APKs
         # Debug APKs are only a convenience CI artifact for manual QA, not required to publish
-        # the release (only the release APKs below are attached to it) — don't let a debug-only
-        # packaging issue block the release.
+        # the release (only the release APKs below are attached to it), so a debug-only
+        # packaging issue must not block the release.
         continue-on-error: true
         run: ./gradlew assembleDebug --stacktrace
 
@@ -103,7 +105,7 @@ jobs:
     # Runs only right after a plain push to main (not for PRs). Gated on lint+build already
     # succeeding, so a version bump is only ever tagged/released off a commit that's known to
     # build cleanly. Publishes directly in this same job (reusing the APKs "build" just produced)
-    # instead of pushing a tag and waiting for that to retrigger the workflow — a push made with
+    # instead of pushing a tag and waiting for that to retrigger the workflow: a push made with
     # the default GITHUB_TOKEN does NOT retrigger workflows (GitHub blocks that to avoid
     # recursion), so relying on a second run here would silently never fire.
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -130,7 +132,7 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
           if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
-            echo "$TAG already exists on origin — this version was already released, nothing to do."
+            echo "$TAG already exists on origin, this version was already released, nothing to do."
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"

@@ -27,6 +27,13 @@
 
   // ---- Release / APK fetch --------------------------------------------
   const downloadBtn = document.getElementById("download-btn");
+  // download-btn is a real <a> so the actual download always goes through the browser's native
+  // link-following (the single most reliably supported way to trigger a download, more so than
+  // any scripted click()). While we're still fetching the release, its href is "#" and disabled
+  // — block that placeholder click from jumping to the top of the page.
+  downloadBtn.addEventListener("click", (event) => {
+    if (downloadBtn.getAttribute("aria-disabled") === "true") event.preventDefault();
+  });
   const downloadLabel = document.getElementById("download-btn-label");
   const downloadMeta = document.getElementById("download-meta");
   const otherArch = document.getElementById("other-arch");
@@ -60,36 +67,31 @@
     );
   }
 
-  function triggerDownload(url) {
-    // Deliberately not `window.location.href = url`: reassigning the current document's
-    // location to a large binary (70-180MB release APK) makes the tab's own loading spinner
-    // spin for the whole transfer on several mobile/Quest browsers, since the browser treats it
-    // as an in-flight navigation until the attachment headers redirect it into download mode —
-    // it looks stuck even though the file is downloading fine in the background. A detached
-    // anchor click starts the same download without touching the page's navigation state.
-    const a = document.createElement("a");
-    a.href = url;
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  }
+  // Captured lazily the first time the button is actually clicked, when the label is still
+  // guaranteed to be the real "Scarica VRClip x.y.z" text (not a stale "Download avviato ✓" left
+  // over from a previous click) — reused on every later click so rapid/repeated clicks can't
+  // clobber it into permanently showing the transient confirmation text instead of reverting.
+  let originalDownloadLabel = null;
+  let confirmDownloadTimeoutId = null;
 
   function confirmDownloadStarted() {
-    const originalLabel = downloadLabel.textContent;
+    if (originalDownloadLabel === null) originalDownloadLabel = downloadLabel.textContent;
+    window.clearTimeout(confirmDownloadTimeoutId);
     downloadBtn.classList.add("started");
     downloadLabel.textContent = "Download avviato ✓";
-    window.setTimeout(() => {
+    confirmDownloadTimeoutId = window.setTimeout(() => {
       downloadBtn.classList.remove("started");
-      downloadLabel.textContent = originalLabel;
+      downloadLabel.textContent = originalDownloadLabel;
     }, 2500);
   }
 
   function setFallbackToReleasesPage(message) {
-    downloadBtn.disabled = false;
+    downloadBtn.href = RELEASES_PAGE;
+    downloadBtn.target = "_blank";
+    downloadBtn.rel = "noopener";
+    downloadBtn.removeAttribute("aria-disabled");
     downloadLabel.textContent = "Vai alla pagina delle release";
     downloadMeta.innerHTML = message;
-    downloadBtn.onclick = () => window.open(RELEASES_PAGE, "_blank", "noopener");
   }
 
   async function loadLatestRelease() {
@@ -120,15 +122,15 @@
     const recommended = pickRecommendedAsset(apkAssets);
     const version = release.tag_name || release.name || "";
 
-    downloadBtn.disabled = false;
+    downloadBtn.href = recommended.browser_download_url;
+    downloadBtn.rel = "noopener";
+    downloadBtn.removeAttribute("aria-disabled");
     downloadLabel.textContent = `Scarica VRClip ${version}`.trim();
     downloadMeta.innerHTML =
       `${friendlyArchLabel(recommended.name)} · ${formatSize(recommended.size)} — ` +
+      `<a href="${recommended.browser_download_url}" rel="noopener">link diretto</a> · ` +
       `<a href="${RELEASES_PAGE}" target="_blank" rel="noopener">tutte le release</a>`;
-    downloadBtn.onclick = () => {
-      triggerDownload(recommended.browser_download_url);
-      confirmDownloadStarted();
-    };
+    downloadBtn.addEventListener("click", confirmDownloadStarted);
 
     const others = apkAssets.filter((a) => a.name !== recommended.name);
     if (others.length > 0) {
@@ -138,6 +140,7 @@
         .forEach((asset) => {
           const a = document.createElement("a");
           a.href = asset.browser_download_url;
+          a.rel = "noopener";
           a.innerHTML =
             `<span>${friendlyArchLabel(asset.name)}</span>` +
             `<span class="size">${formatSize(asset.size)}</span>`;

@@ -1,3 +1,10 @@
+## 1.0.2 — Download site fixes
+- 🐛 Fixed the download button on the website appearing stuck/unresponsive on some mobile and
+  Meta Quest browsers, and made it a real link instead of a scripted click for maximum browser
+  compatibility, with an always-visible direct-download fallback link.
+- 🐛 Fixed the "Yt-dlp version" field coming back blank in copied error reports on installs where
+  the in-app yt-dlp updater hadn't completed yet, even though a working yt-dlp was present.
+
 ## 1.0.1 — Release pipeline fix
 - 🛠️ Fixed a CI packaging failure that prevented 1.0.0's release build from completing, and made
   release publishing fully automatic: pushing a version bump to `main` now tags, builds, and

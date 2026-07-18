@@ -143,7 +143,11 @@ android {
         }
     }
 
-    lint { disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity")) }
+    lint {
+        disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity"))
+        // Print findings to stdout so CI logs show every issue, not just the first failure.
+        textReport = true
+    }
 
 
     kotlinOptions { freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn" }

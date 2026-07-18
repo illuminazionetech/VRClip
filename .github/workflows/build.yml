@@ -42,6 +42,14 @@ jobs:
       - name: Run Android Lint
         run: ./gradlew lintGenericDebug
 
+      - name: Upload lint report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-*.html
+          if-no-files-found: ignore
+
   build:
     name: Build APK
     runs-on: ubuntu-latest

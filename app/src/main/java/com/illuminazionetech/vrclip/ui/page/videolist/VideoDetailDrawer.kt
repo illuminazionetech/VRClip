@@ -125,7 +125,7 @@ fun VideoDetailDrawer(
             onOpenExternally = {
                 view.slightHapticFeedback()
                 FileUtil.openFile(path = videoPath) {
-                    makeToast(context.getString(R.string.file_unavailable))
+                    makeToast(R.string.file_unavailable)
                 }
             },
             onShowProjectionMenu = { showProjectionMenu = true },

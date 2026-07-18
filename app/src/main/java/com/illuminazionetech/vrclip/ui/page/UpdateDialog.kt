@@ -59,7 +59,7 @@ fun UpdateDialog(onDismissRequest: () -> Unit, release: UpdateUtil.Release) {
                     .onFailure {
                         it.printStackTrace()
                         currentDownloadStatus = UpdateUtil.DownloadStatus.NotYet
-                        makeToast(context.getString(R.string.app_update_failed))
+                        makeToast(R.string.app_update_failed)
                         return@launch
                     }
             }

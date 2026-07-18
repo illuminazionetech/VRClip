@@ -135,7 +135,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
     val notificationPermission =
         if (Build.VERSION.SDK_INT >= 33)
             rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { status ->
-                if (!status) makeToast(context.getString(R.string.permission_denied))
+                if (!status) makeToast(R.string.permission_denied)
                 else isNotificationPermissionGranted = true
             }
         else null
@@ -178,7 +178,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                     var ytdlpVersion by remember {
                         mutableStateOf(
                             YoutubeDL.getInstance().version(context.applicationContext)
-                                ?: context.getString(R.string.ytdlp_update)
+                                ?: App.context.getString(R.string.ytdlp_update)
                         )
                     }
                     PreferenceItem(
@@ -204,7 +204,7 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                                     YtDlpEngine.UpdateResult.UpToDate -> {
                                         ytdlpVersion = YT_DLP_VERSION.getString()
                                         makeToast(
-                                            context.getString(R.string.yt_dlp_up_to_date) +
+                                            App.context.getString(R.string.yt_dlp_up_to_date) +
                                                 " (${YT_DLP_VERSION.getString()})"
                                         )
                                     }

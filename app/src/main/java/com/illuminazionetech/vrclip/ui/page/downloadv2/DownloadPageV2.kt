@@ -110,6 +110,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
+import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.Task
@@ -267,7 +268,7 @@ fun DownloadPageV2(
                 uriHandler.openUri(action.url)
             }
             is UiAction.ShareFile -> {
-                val shareTitle = context.getString(R.string.share)
+                val shareTitle = App.context.getString(R.string.share)
                 FileUtil.createIntentForSharingFile(action.filePath)?.let {
                     context.startActivity(Intent.createChooser(it, shareTitle))
                 }

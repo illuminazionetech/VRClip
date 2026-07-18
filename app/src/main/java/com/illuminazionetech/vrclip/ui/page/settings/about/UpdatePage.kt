@@ -145,13 +145,13 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                                                     release = it
                                                     showUpdateDialog = true
                                                 }
-                                                    ?: makeToast(context.getString(R.string.app_up_to_date))
+                                                    ?: makeToast(R.string.app_up_to_date)
                                             }
                                             isLoading = false
                                         }
                                         .onFailure {
                                             it.printStackTrace()
-                                            makeToast(context.getString(R.string.app_update_failed))
+                                            makeToast(R.string.app_update_failed)
                                             isLoading = false
                                         }
                                 }

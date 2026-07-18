@@ -64,6 +64,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.database.backup.BackupUtil
 import com.illuminazionetech.vrclip.database.objects.CommandTemplate
@@ -172,7 +173,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                     onClick = {
                                         scope.launch {
                                             snackbarHostState.showSnackbar(
-                                                context
+                                                App.context
                                                     .getString(R.string.template_exported)
                                                     .format(templates.size)
                                             )
@@ -196,7 +197,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                                     val res =
                                                         DatabaseUtil.importTemplatesFromJson(it)
                                                     snackbarHostState.showSnackbar(
-                                                        context
+                                                        App.context
                                                             .getString(R.string.template_imported)
                                                             .format(res)
                                                     )
@@ -262,7 +263,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                 view.slightHapticFeedback()
                                 scope.launch {
                                     snackbarHostState.showSnackbar(
-                                        context
+                                        App.context
                                             .getString(R.string.template_exported)
                                             .format(selectedTemplates.size)
                                     )

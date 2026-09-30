@@ -39,6 +39,18 @@ interface VideoInfoDao {
     @Query("UPDATE DownloadedVideoInfo SET projectionOverride = :projection WHERE videoPath = :path")
     suspend fun updateProjectionOverride(path: String, projection: String?)
 
+    @Query(
+        "UPDATE DownloadedVideoInfo SET playbackPositionMs = :positionMs, " +
+            "playbackDurationMs = :durationMs WHERE id = :id"
+    )
+    suspend fun updatePlaybackPosition(id: Int, positionMs: Long, durationMs: Long)
+
+    @Query(
+        "UPDATE DownloadedVideoInfo SET videoPath = :newPath, projectionOverride = :projection, " +
+            "playbackPositionMs = 0, playbackDurationMs = 0 WHERE id = :id"
+    )
+    suspend fun replaceVideoFile(id: Int, newPath: String, projection: String?)
+
     @Transaction
     suspend fun insertInfoDistinctByPath(
         videoInfo: DownloadedVideoInfo,

@@ -88,6 +88,8 @@ fun MediaListItem(
     videoPath: String = "",
     projectionOverride: String? = null,
     videoFileSize: Long = 0L,
+    /** Fraction of the video already watched, 0 to hide the bar. */
+    watchedFraction: Float = 0f,
     isSelectEnabled: () -> Boolean = { false },
     isSelected: () -> Boolean = { false },
     onSelect: () -> Unit = {},
@@ -114,11 +116,16 @@ fun MediaListItem(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box {
+            // Clipped like the thumbnail so the watched bar follows its rounded corners.
+            Box(Modifier.clip(MaterialTheme.shapes.medium)) {
                 MediaImage(
                     modifier = Modifier,
                     imageModel = thumbnailUrl,
                     isAudio = isAudio,
+                )
+                WatchedBar(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    fraction = watchedFraction,
                 )
                 ProjectionBadge(
                     modifier = Modifier.align(Alignment.TopStart),
@@ -162,6 +169,8 @@ fun MediaGridItem(
     videoPath: String = "",
     projectionOverride: String? = null,
     videoFileSize: Long = 0L,
+    /** Fraction of the video already watched, 0 to hide the bar. */
+    watchedFraction: Float = 0f,
     isSelectEnabled: () -> Boolean = { false },
     isSelected: () -> Boolean = { false },
     onSelect: () -> Unit = {},
@@ -203,6 +212,10 @@ fun MediaGridItem(
                         contentScale = ContentScale.Crop,
                     )
                 }
+                WatchedBar(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    fraction = watchedFraction,
+                )
                 ProjectionBadge(
                     modifier = Modifier.align(Alignment.TopStart),
                     text = rememberProjectionBadge(videoPath, projectionOverride),
@@ -234,6 +247,21 @@ fun MediaGridItem(
                 }
             }
         }
+    }
+}
+
+/** Thin bar along the bottom of a thumbnail showing how much of the video was watched. */
+@Composable
+private fun WatchedBar(modifier: Modifier, fraction: Float) {
+    if (fraction <= 0f) return
+    Box(
+        modifier = modifier.fillMaxWidth().height(4.dp).background(Color.Black.copy(alpha = 0.45f))
+    ) {
+        Box(
+            Modifier.fillMaxWidth(fraction.coerceIn(0.02f, 1f))
+                .height(4.dp)
+                .background(MaterialTheme.colorScheme.primary)
+        )
     }
 }
 

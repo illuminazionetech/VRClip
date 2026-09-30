@@ -8,9 +8,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import com.illuminazionetech.vrclip.App.Companion.context
@@ -40,6 +38,7 @@ object NotificationUtil {
     const val SERVICE_NOTIFICATION_ID = 123
     private const val UPDATE_CHANNEL_ID = "app_update"
     private const val UPDATE_NOTIFICATION_ID = 124
+    const val STEREO_CHANNEL_ID = "stereo_conversion"
     private lateinit var serviceNotification: Notification
 
     /**
@@ -53,7 +52,6 @@ object NotificationUtil {
             .onFailure { Log.w(TAG, "Could not post notification", it) }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel() {
         val name = context.getString(R.string.channel_name)
         val descriptionText = context.getString(R.string.channel_description)
@@ -77,11 +75,24 @@ object NotificationUtil {
                     NotificationManager.IMPORTANCE_DEFAULT,
                 )
                 .apply { description = context.getString(R.string.update_channel_description) }
+        val stereoChannel =
+            NotificationChannel(
+                    STEREO_CHANNEL_ID,
+                    context.getString(R.string.stereo_channel_name),
+                    NotificationManager.IMPORTANCE_LOW,
+                )
+                .apply { description = context.getString(R.string.stereo_channel_description) }
         notificationManager.createNotificationChannelGroup(channelGroup)
         notificationManager.createNotificationChannel(channel)
         notificationManager.createNotificationChannel(serviceChannel)
         notificationManager.createNotificationChannel(updateChannel)
+        notificationManager.createNotificationChannel(stereoChannel)
     }
+
+    /** Posts [notification] under [id] if the user allows notifications. */
+    fun post(id: Int, notification: Notification) = safeNotify(id, notification)
+
+    fun cancel(id: Int) = notificationManager.cancel(id)
 
     /** "A new version is available", opening the app where the update dialog takes over. */
     fun notifyUpdateAvailable(versionName: String) {
@@ -295,8 +306,5 @@ object NotificationUtil {
         notificationManager.cancelAll()
     }
 
-    fun areNotificationsEnabled(): Boolean {
-        return if (Build.VERSION.SDK_INT <= 24) true
-        else notificationManager.areNotificationsEnabled()
-    }
+    fun areNotificationsEnabled(): Boolean = notificationManager.areNotificationsEnabled()
 }

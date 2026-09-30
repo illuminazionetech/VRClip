@@ -42,6 +42,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -423,7 +424,7 @@ fun PreviewFormat() {
     MaterialTheme(
         colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()
     ) {
-        var selected by remember { mutableStateOf(-1) }
+        var selected by remember { mutableIntStateOf(-1) }
         Surface {
             Column() {
                 //                FormatSubtitle(text = stringResource(R.string.video_only))

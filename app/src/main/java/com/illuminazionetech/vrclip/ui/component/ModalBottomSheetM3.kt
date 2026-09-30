@@ -53,6 +53,7 @@ fun VRClipModalBottomSheet(
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = 28.dp),
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     content: @Composable ColumnScope.() -> Unit = {},
 ) {
     ModalBottomSheet(
@@ -60,7 +61,7 @@ fun VRClipModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         properties = properties,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        containerColor = containerColor,
         tonalElevation = 0.dp,
         // Only the top corners are rounded: the sheet is docked to the bottom edge.
         shape = BottomSheetDefaults.ExpandedShape,

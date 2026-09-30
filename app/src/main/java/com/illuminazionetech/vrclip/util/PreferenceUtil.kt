@@ -107,6 +107,10 @@ const val VR_MODE = "vr_mode"
 const val PLAYER_QUEST_IMMERSIVE = "player_quest_immersive"
 const val PLAYER_QUEST_PASSTHROUGH_DEFAULT = "player_quest_passthrough_default"
 const val PLAYER_CARDBOARD_DEFAULT = "player_cardboard_default"
+const val PLAYER_SPEED = "player_speed"
+const val PLAYER_GYRO = "player_gyro"
+const val STEREO_STRENGTH = "stereo_strength"
+const val STEREO_POP_OUT = "stereo_pop_out"
 
 const val DOWNLOAD_TYPE_INITIALIZATION = "download_type_init"
 private const val DOWNLOAD_TYPE = "download_type"
@@ -256,6 +260,10 @@ object PreferenceUtil {
     fun String.updateLong(newLong: Long) = kv.encode(this, newLong)
 
     fun String.updateBoolean(newValue: Boolean) = kv.encode(this, newValue)
+
+    fun String.getFloat(default: Float): Float = kv.decodeFloat(this, default)
+
+    fun encodeFloat(key: String, value: Float) = kv.encode(key, value)
 
     fun updateValue(key: String, b: Boolean) = key.updateBoolean(b)
 

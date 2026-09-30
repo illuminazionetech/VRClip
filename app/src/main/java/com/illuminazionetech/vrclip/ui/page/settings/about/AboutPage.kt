@@ -85,7 +85,7 @@ fun AboutPage(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.vrclip_mark),
+                            painter = painterResource(id = R.drawable.vrclip_seal),
                             contentDescription = null,
                             modifier = Modifier.size(96.dp),
                         )

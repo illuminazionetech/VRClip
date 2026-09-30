@@ -1,7 +1,8 @@
 package com.illuminazionetech.vrclip
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
+import androidx.core.graphics.drawable.toDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -76,13 +77,11 @@ class QuickDownloadActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         window.run {
-            setBackgroundDrawable(ColorDrawable(0))
+            setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
             setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
             )
-            // minSdk is 28 (API O = 26), so TYPE_APPLICATION_OVERLAY is always available.
-            setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
         }
 
         if (Build.VERSION.SDK_INT < 33) {

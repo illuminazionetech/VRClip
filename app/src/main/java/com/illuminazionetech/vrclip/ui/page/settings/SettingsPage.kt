@@ -1,6 +1,7 @@
 package com.illuminazionetech.vrclip.ui.page.settings
 
 import androidx.annotation.StringRes
+import androidx.core.net.toUri
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyListScope
@@ -12,7 +13,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
@@ -74,25 +74,15 @@ fun SettingsPage(onNavigateTo: (String) -> Unit) {
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
     var showBatteryHint by remember {
-        mutableStateOf(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                !pm.isIgnoringBatteryOptimizations(context.packageName)
-            } else {
-                false
-            }
-        )
+        mutableStateOf(!pm.isIgnoringBatteryOptimizations(context.packageName))
     }
-    val intent =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                data = Uri.parse("package:${context.packageName}")
-            }
-        } else {
-            Intent()
+    val intent = remember {
+        Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+            data = "package:${context.packageName}".toUri()
         }
-    val isActivityAvailable: Boolean =
-        if (Build.VERSION.SDK_INT < 23) false
-        else if (Build.VERSION.SDK_INT < 33)
+    }
+    val isActivityAvailable: Boolean = remember {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
             context.packageManager
                 .queryIntentActivities(intent, PackageManager.MATCH_ALL)
                 .isNotEmpty()
@@ -103,12 +93,11 @@ fun SettingsPage(onNavigateTo: (String) -> Unit) {
                     PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_SYSTEM_ONLY.toLong()),
                 )
                 .isNotEmpty()
+    }
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                showBatteryHint = !pm.isIgnoringBatteryOptimizations(context.packageName)
-            }
+            showBatteryHint = !pm.isIgnoringBatteryOptimizations(context.packageName)
         }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -128,21 +117,19 @@ fun SettingsPage(onNavigateTo: (String) -> Unit) {
         },
     ) {
         LazyColumn(modifier = Modifier, contentPadding = it) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                item {
-                    AnimatedVisibility(
-                        visible = showBatteryHint && isActivityAvailable,
-                        exit = shrinkVertically() + fadeOut(),
+            item {
+                AnimatedVisibility(
+                    visible = showBatteryHint && isActivityAvailable,
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    PreferencesHintCard(
+                        title = stringResource(R.string.battery_configuration),
+                        icon = Icons.Rounded.EnergySavingsLeaf,
+                        description = stringResource(R.string.battery_configuration_desc),
                     ) {
-                        PreferencesHintCard(
-                            title = stringResource(R.string.battery_configuration),
-                            icon = Icons.Rounded.EnergySavingsLeaf,
-                            description = stringResource(R.string.battery_configuration_desc),
-                        ) {
-                            launcher.launch(intent)
-                            showBatteryHint =
-                                !pm.isIgnoringBatteryOptimizations(context.packageName)
-                        }
+                        launcher.launch(intent)
+                        showBatteryHint =
+                            !pm.isIgnoringBatteryOptimizations(context.packageName)
                     }
                 }
             }

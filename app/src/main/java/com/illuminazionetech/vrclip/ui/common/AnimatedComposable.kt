@@ -127,25 +127,3 @@ fun NavGraphBuilder.slideInVerticallyComposable(
         },
         content = content,
     )
-
-/** A destination that zooms in from the item that opened it, used for the video player. */
-fun NavGraphBuilder.zoomComposable(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit,
-) =
-    composable(
-        route = route,
-        arguments = arguments,
-        enterTransition = {
-            scaleIn(tween(SHARED_AXIS_DURATION, easing = EmphasizedDecelerate), 0.88f) +
-                fadeIn(tween(FADE_THROUGH_DURATION))
-        },
-        exitTransition = { fadeOut(tween(FADE_THROUGH_OUT)) },
-        popEnterTransition = { fadeIn(tween(FADE_THROUGH_DURATION)) },
-        popExitTransition = {
-            scaleOut(tween(SHARED_AXIS_EXIT_DURATION, easing = EmphasizedAccelerate), 0.88f) +
-                fadeOut(tween(SHARED_AXIS_EXIT_DURATION))
-        },
-        content = content,
-    )

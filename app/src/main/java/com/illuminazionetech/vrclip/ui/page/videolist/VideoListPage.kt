@@ -1,5 +1,7 @@
 package com.illuminazionetech.vrclip.ui.page.videolist
 
+import com.illuminazionetech.vrclip.database.objects.watchedFraction
+import com.illuminazionetech.vrclip.player.stereo.ConvertTo3dDialog
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -189,6 +191,7 @@ fun VideoListPage(
     var showImportDialog by remember { mutableStateOf(false) }
     var showRemoveDialog by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
+    var convertVideoId by remember { mutableStateOf<Int?>(null) }
     val sheetState = rememberHiddenSheetState()
 
     LaunchedEffect(isSelectEnabled) { if (!isSelectEnabled) selectedItemIds.clear() }
@@ -412,6 +415,7 @@ fun VideoListPage(
                         videoPath = info.videoPath,
                         projectionOverride = info.projectionOverride,
                         videoFileSize = fileSizeMap.getOrElse(info.id) { 0L },
+                        watchedFraction = info.watchedFraction,
                         isSelectEnabled = { isSelectEnabled },
                         isSelected = { selectedItemIds.contains(info.id) },
                         onSelect = onSelect,
@@ -428,6 +432,7 @@ fun VideoListPage(
                         videoPath = info.videoPath,
                         projectionOverride = info.projectionOverride,
                         videoFileSize = fileSizeMap.getOrElse(info.id) { 0L },
+                        watchedFraction = info.watchedFraction,
                         isSelectEnabled = { isSelectEnabled },
                         isSelected = { selectedItemIds.contains(info.id) },
                         onSelect = onSelect,
@@ -447,12 +452,15 @@ fun VideoListPage(
             info = currentVideoInfo,
             isFileAvailable = fileSizeMap[currentVideoInfo.id] != 0L,
             onPlay = { onNavigateToPlayer(currentVideoInfo) },
+            onConvertTo3D = { convertVideoId = currentVideoInfo.id },
             onDismissRequest = {
                 scope.launch { sheetState.hide() }.invokeOnCompletion { showBottomSheet = false }
             },
             onDelete = { showRemoveDialog = true },
         )
     }
+
+    convertVideoId?.let { id -> ConvertTo3dDialog(videoId = id, onDismiss = { convertVideoId = null }) }
 
     var deleteFile by remember { mutableStateOf(false) }
 

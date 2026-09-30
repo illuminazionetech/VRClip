@@ -21,7 +21,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.illuminazionetech.vrclip.player.PlayerLauncher
-import com.illuminazionetech.vrclip.player.PlayerScreen
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
 import com.illuminazionetech.vrclip.ui.common.NavTransitions
@@ -30,7 +29,6 @@ import com.illuminazionetech.vrclip.ui.common.animatedComposable
 import com.illuminazionetech.vrclip.ui.common.arg
 import com.illuminazionetech.vrclip.ui.common.id
 import com.illuminazionetech.vrclip.ui.common.slideInVerticallyComposable
-import com.illuminazionetech.vrclip.ui.common.zoomComposable
 import com.illuminazionetech.vrclip.ui.page.command.TaskListPage
 import com.illuminazionetech.vrclip.ui.page.command.TaskLogPage
 import com.illuminazionetech.vrclip.ui.page.downloadv2.DownloadPageV2
@@ -112,19 +110,10 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
                             context = context,
                             videoId = info.id,
                             videoPath = info.videoPath,
+                            title = info.videoTitle,
                             projectionOverride = info.projectionOverride,
-                            onNavigateToPlayer = { id -> navController.navigate(Route.PLAYER id id) },
                         )
                     }
-                )
-            }
-            zoomComposable(
-                Route.PLAYER arg Route.VIDEO_ID,
-                arguments = listOf(navArgument(Route.VIDEO_ID) { type = NavType.IntType }),
-            ) {
-                PlayerScreen(
-                    videoId = it.arguments?.getInt(Route.VIDEO_ID) ?: -1,
-                    onNavigateBack = onNavigateBack,
                 )
             }
             animatedComposable(Route.TASK_LIST) {

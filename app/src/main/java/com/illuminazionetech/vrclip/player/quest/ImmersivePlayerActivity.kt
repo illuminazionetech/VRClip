@@ -98,5 +98,6 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         const val EXTRA_VIDEO_ID = "com.illuminazionetech.vrclip.player.quest.EXTRA_VIDEO_ID"
         const val EXTRA_VIDEO_PATH = "com.illuminazionetech.vrclip.player.quest.EXTRA_VIDEO_PATH"
         const val EXTRA_PROJECTION = "com.illuminazionetech.vrclip.player.quest.EXTRA_PROJECTION"
+        const val EXTRA_TITLE = "com.illuminazionetech.vrclip.player.quest.EXTRA_TITLE"
     }
 }

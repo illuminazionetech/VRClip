@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaScannerConnection
 import android.net.Uri
+import androidx.core.net.toUri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
@@ -45,7 +46,7 @@ object FileUtil {
         val uri =
             path
                 .runCatching {
-                    DocumentFile.fromSingleUri(context, Uri.parse(path)).run {
+                    DocumentFile.fromSingleUri(context, path.toUri()).run {
                         if (this?.exists() == true) {
                             this.uri
                         } else if (File(this@runCatching).exists()) {
@@ -87,20 +88,20 @@ object FileUtil {
     fun String.getFileSize(): Long =
         this.run {
             val length = File(this).length()
-            if (length == 0L) DocumentFile.fromSingleUri(context, Uri.parse(this))?.length() ?: 0L
+            if (length == 0L) DocumentFile.fromSingleUri(context, toUri())?.length() ?: 0L
             else length
         }
 
     fun String.getFileName(): String =
         this.run {
             File(this).nameWithoutExtension.ifEmpty {
-                DocumentFile.fromSingleUri(context, Uri.parse(this))?.name ?: "video"
+                DocumentFile.fromSingleUri(context, toUri())?.name ?: "video"
             }
         }
 
     fun deleteFile(path: String) =
         path.runCatching {
-            if (!File(path).delete()) DocumentFile.fromSingleUri(context, Uri.parse(this))?.delete()
+            if (!File(path).delete()) DocumentFile.fromSingleUri(context, toUri())?.delete()
         }
 
     @CheckResult
@@ -130,7 +131,7 @@ object FileUtil {
     fun moveFilesToSdcard(tempPath: File, sdcardUri: String): Result<List<String>> {
         val uriList = mutableListOf<String>()
         val destDir =
-            Uri.parse(sdcardUri).run {
+            sdcardUri.toUri().run {
                 DocumentsContract.buildDocumentUriUsingTree(
                     this,
                     DocumentsContract.getTreeDocumentId(this),

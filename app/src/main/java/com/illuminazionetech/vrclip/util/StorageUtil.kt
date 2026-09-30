@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
+import androidx.core.net.toUri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
@@ -37,10 +37,10 @@ object StorageUtil {
         val candidates =
             listOf(
                 Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    .setData(Uri.parse("package:${context.packageName}")),
+                    .setData("package:${context.packageName}".toUri()),
                 Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION),
                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    .setData(Uri.parse("package:${context.packageName}")),
+                    .setData("package:${context.packageName}".toUri()),
             )
         // Launch directly instead of probing with resolveActivity(): with package visibility
         // filtering (API 30+) the probe can return null for the Settings app even though the

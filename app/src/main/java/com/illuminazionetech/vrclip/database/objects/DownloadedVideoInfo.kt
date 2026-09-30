@@ -21,6 +21,10 @@ data class DownloadedVideoInfo(
      * detection for this specific file. `null` means "auto-detect".
      */
     @ColumnInfo(defaultValue = "NULL") val projectionOverride: String? = null,
+    /** Where playback stopped last time, so the player can pick up from there. */
+    @ColumnInfo(defaultValue = "0") val playbackPositionMs: Long = 0L,
+    /** Duration seen by the player, used to draw the "watched" bar in lists. */
+    @ColumnInfo(defaultValue = "0") val playbackDurationMs: Long = 0L,
 ) {
     @Ignore
     constructor() :
@@ -35,3 +39,10 @@ data class DownloadedVideoInfo(
             projectionOverride = null,
         )
 }
+
+/** Fraction watched, or 0 when the video was never played or was finished. */
+val DownloadedVideoInfo.watchedFraction: Float
+    get() =
+        if (playbackDurationMs > 0 && playbackPositionMs > 0)
+            (playbackPositionMs.toFloat() / playbackDurationMs).coerceIn(0f, 1f)
+        else 0f

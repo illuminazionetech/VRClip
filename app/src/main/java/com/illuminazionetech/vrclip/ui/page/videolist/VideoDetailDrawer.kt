@@ -1,5 +1,11 @@
 package com.illuminazionetech.vrclip.ui.page.videolist
 
+import com.illuminazionetech.vrclip.player.stereo.StereoConversionWorker
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.LinearWavyProgressIndicator
+import androidx.compose.animation.AnimatedVisibility
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -93,6 +99,10 @@ fun VideoDetailDrawer(
                 ?: ProjectionDetector.detectProjection(info.videoPath)
         }
     val shareTitle = stringResource(id = R.string.share)
+    val conversion by
+        remember(info.id) { StereoConversionWorker.status(context, info.id) }
+            .collectAsStateWithLifecycle(initialValue = StereoConversionWorker.Status.None)
+    val converting = conversion is StereoConversionWorker.Status.Running
 
     VRClipModalBottomSheet(
         sheetState = sheetState,
@@ -155,6 +165,8 @@ fun VideoDetailDrawer(
             )
         }
 
+        ConversionStatus(status = conversion, onCancel = { StereoConversionWorker.cancel(context, info.id) })
+
         Spacer(Modifier.height(20.dp))
 
         if (isFileAvailable) {
@@ -204,7 +216,10 @@ fun VideoDetailDrawer(
                 DetailAction(Icons.Rounded.Public, stringResource(R.string.player_projection)) {
                     showProjectionMenu = true
                 }
-                if (onConvertTo3D != null && projection == ProjectionMode.FLAT) {
+                if (onConvertTo3D != null &&
+                    projection == ProjectionMode.FLAT &&
+                    !converting &&
+                    !info.videoPath.startsWith("content://")) {
                     DetailAction(Icons.Rounded.ViewInAr, stringResource(R.string.convert_to_3d)) {
                         onDismissRequest()
                         onConvertTo3D()
@@ -276,6 +291,73 @@ private fun DetailAction(
             Icon(icon, contentDescription = null, Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
             Text(label)
+        }
+    }
+}
+
+/** Progress (with a stop button) or the outcome of a 2D to 3D conversion of this video. */
+@Composable
+private fun ConversionStatus(status: StereoConversionWorker.Status, onCancel: () -> Unit) {
+    AnimatedVisibility(
+        visible = status is StereoConversionWorker.Status.Running ||
+            status is StereoConversionWorker.Status.Failed
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            shape = MaterialTheme.shapes.large,
+            color =
+                if (status is StereoConversionWorker.Status.Failed)
+                    MaterialTheme.colorScheme.errorContainer
+                else MaterialTheme.colorScheme.secondaryContainer,
+        ) {
+            Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+                when (status) {
+                    is StereoConversionWorker.Status.Running -> {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text =
+                                    if (status.progress >= 0f)
+                                        stringResource(
+                                            R.string.stereo_status_running,
+                                            (status.progress * 100).toInt(),
+                                        )
+                                    else stringResource(R.string.stereo_status_queued),
+                                style = MaterialTheme.typography.labelLarge,
+                                modifier = Modifier.weight(1f),
+                            )
+                            TextButton(onClick = onCancel) {
+                                Text(stringResource(R.string.stereo_convert_cancel))
+                            }
+                        }
+                        if (status.progress >= 0f) {
+                            LinearWavyProgressIndicator(
+                                progress = { status.progress },
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                        } else {
+                            LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
+                        }
+                    }
+                    is StereoConversionWorker.Status.Failed ->
+                        Text(
+                            text =
+                                stringResource(
+                                    when (status.reason) {
+                                        StereoConversionWorker.Failure.Missing -> R.string.stereo_error_missing
+                                        StereoConversionWorker.Failure.NotWritable ->
+                                            R.string.stereo_error_not_writable
+                                        StereoConversionWorker.Failure.NoSpace -> R.string.stereo_error_space
+                                        StereoConversionWorker.Failure.Model -> R.string.stereo_model_failed
+                                        StereoConversionWorker.Failure.Encoder -> R.string.stereo_error_encoder
+                                        StereoConversionWorker.Failure.Failed -> R.string.stereo_error_failed
+                                    }
+                                ),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                    else -> Unit
+                }
+            }
         }
     }
 }

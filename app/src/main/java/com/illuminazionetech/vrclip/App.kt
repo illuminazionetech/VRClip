@@ -24,7 +24,6 @@ import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.DownloaderV2Impl
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.illuminazionetech.vrclip.ui.page.settings.directory.Directory
-import com.illuminazionetech.vrclip.player.PlayerEngine
 import com.illuminazionetech.vrclip.ui.page.settings.network.CookiesViewModel
 import com.illuminazionetech.vrclip.ui.page.videolist.VideoListViewModel
 import com.illuminazionetech.vrclip.util.AUDIO_DIRECTORY
@@ -73,7 +72,6 @@ class App : Application(), SingletonImageLoader.Factory {
             modules(
                 module {
                     single<DownloaderV2> { DownloaderV2Impl(androidContext()) }
-                    single { PlayerEngine(androidContext()) }
                     viewModel { DownloadDialogViewModel(downloader = get()) }
                     viewModel { CookiesViewModel() }
                     viewModel { VideoListViewModel() }
@@ -116,7 +114,7 @@ class App : Application(), SingletonImageLoader.Factory {
         if (!PreferenceUtil.containsKey(COMMAND_DIRECTORY)) {
             COMMAND_DIRECTORY.updateString(videoDownloadDir)
         }
-        if (Build.VERSION.SDK_INT >= 26) NotificationUtil.createNotificationChannel()
+        NotificationUtil.createNotificationChannel()
         UpdateCheckWorker.schedule(this, PreferenceUtil.isAutoUpdateEnabled())
 
         val systemHandler = Thread.getDefaultUncaughtExceptionHandler()

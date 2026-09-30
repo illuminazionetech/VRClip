@@ -270,7 +270,7 @@ private fun PlayerBottomSheet(onDismiss: () -> Unit, content: @Composable () -> 
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
-        Box(modifier = Modifier.heightIn(max = 560.dp).verticalScroll(rememberScrollState())) {
+        Column(modifier = Modifier.heightIn(max = 560.dp).verticalScroll(rememberScrollState())) {
             content()
         }
     }

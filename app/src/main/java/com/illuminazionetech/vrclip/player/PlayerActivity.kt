@@ -22,6 +22,8 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -34,6 +36,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.player.quest.ImmersivePlayerActivity
+import com.illuminazionetech.vrclip.ui.common.SettingsProvider
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.util.PLAYER_QUEST_IMMERSIVE
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
@@ -65,6 +68,7 @@ class PlayerActivity : ComponentActivity() {
             }
         }
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
@@ -82,15 +86,17 @@ class PlayerActivity : ComponentActivity() {
         viewModel.load(source)
 
         setContent {
-            VRClipTheme(darkTheme = true) {
-                PlayerScreen(
-                    viewModel = viewModel,
-                    isInPictureInPicture = isInPip,
-                    canEnterPictureInPicture = supportsPip(),
-                    onEnterPictureInPicture = ::enterPip,
-                    onNavigateBack = ::finishAfterTransitionWithAnimation,
-                    onRequestOrientation = { requestedOrientation = it },
-                )
+            SettingsProvider(calculateWindowSizeClass(this).widthSizeClass) {
+                VRClipTheme(darkTheme = true) {
+                    PlayerScreen(
+                        viewModel = viewModel,
+                        isInPictureInPicture = isInPip,
+                        canEnterPictureInPicture = supportsPip(),
+                        onEnterPictureInPicture = ::enterPip,
+                        onNavigateBack = ::finishAfterTransitionWithAnimation,
+                        onRequestOrientation = { requestedOrientation = it },
+                    )
+                }
             }
         }
 
@@ -304,6 +310,8 @@ class PlayerActivity : ComponentActivity() {
         val uri = intent.data ?: return false
         startActivity(
             Intent(this, ImmersivePlayerActivity::class.java)
+                .setAction(Intent.ACTION_MAIN)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(ImmersivePlayerActivity.EXTRA_VIDEO_PATH, uri.toString())
                 .putExtra(ImmersivePlayerActivity.EXTRA_TITLE, displayName(uri))
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

@@ -16,7 +16,9 @@ import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -161,6 +163,8 @@ fun PlayerScreen(
     val volume = remember { VolumeController(context) }
     DisposableEffect(Unit) { onDispose { brightness.restore() } }
 
+    // Controls sit on video, not on a surface: give them light content explicitly.
+    CompositionLocalProvider(LocalContentColor provides Color.White) {
     Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         VideoLayer(
             viewModel = viewModel,
@@ -292,6 +296,7 @@ fun PlayerScreen(
 
             Live3dMessages(state = state, viewModel = viewModel)
         }
+    }
     }
 }
 

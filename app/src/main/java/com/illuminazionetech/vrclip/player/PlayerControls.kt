@@ -77,7 +77,9 @@ import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -140,6 +142,7 @@ internal fun PlayerControls(
     onRetry: () -> Unit,
     onOpenExternally: () -> Unit,
 ) {
+    CompositionLocalProvider(LocalContentColor provides Color.White) {
     Box(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(
             visible = visible && !locked,
@@ -229,6 +232,7 @@ internal fun PlayerControls(
                 onOpenExternally = onOpenExternally,
             )
         }
+    }
     }
 }
 
@@ -461,7 +465,7 @@ private fun BottomBar(
                 Text(
                     text = formatTime(state.durationMs),
                     style = MaterialTheme.typography.labelLarge.copy(fontFeatureSettings = tabular),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = Color.White.copy(alpha = 0.75f),
                 )
             }
             Slider(

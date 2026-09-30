@@ -150,8 +150,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="com.oculus.intent.category.VR" />
+                <!-- On Meta Quest the library opens as a 2D panel; the player goes immersive. -->
+                <category android:name="com.oculus.intent.category.2D" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -173,13 +175,26 @@
             </intent-filter>
         </activity>
 
+        <!-- Immersive (OpenXR) activity of the hybrid Quest app, declared as Meta's samples do. -->
         <activity
             android:name=".player.quest.ImmersivePlayerActivity"
             android:configChanges="screenSize|screenLayout|orientation|keyboardHidden|keyboard|navigation|uiMode"
             android:excludeFromRecents="false"
-            android:exported="false"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.oculus.intent.category.VR" />
+            </intent-filter>
+        </activity>
+
+        <!-- Horizon OS library used by the Spatial SDK; absent (and not needed) on phones. -->
+        <uses-native-library
+            android:name="libossdk.oculus.so"
+            android:required="false" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

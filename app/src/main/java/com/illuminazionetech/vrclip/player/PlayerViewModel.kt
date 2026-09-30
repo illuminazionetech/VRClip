@@ -144,7 +144,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
             .build()
 
     private val session: MediaSession =
-        MediaSession.Builder(application, player).setId("vrclip-player").build()
+        // Session IDs must be unique per process, and two players can briefly coexist (the phone
+        // player handing over to the immersive one, or an old instance not yet cleared).
+        MediaSession.Builder(application, player)
+            .setId("vrclip-player-${sessionCounter.incrementAndGet()}")
+            .build()
 
     private val mutableState = MutableStateFlow(PlayerUiState())
     val state: StateFlow<PlayerUiState> = mutableState.asStateFlow()
@@ -664,6 +668,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     companion object {
+        private val sessionCounter = java.util.concurrent.atomic.AtomicInteger()
         const val SEEK_STEP_MS = 10_000L
         private const val TICK_MS = 250L
         private const val SAVE_INTERVAL_MS = 5_000L

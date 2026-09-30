@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.ServiceInfo
 import android.media.MediaScannerConnection
 import android.os.Build
+import android.os.storage.StorageManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
@@ -73,7 +74,7 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
             val source = StereoConverter.probe(input)
             val plan = StereoConverter.plan(source)
             val needed = plan.estimatedBytes(source.durationUs) + SPACE_MARGIN_BYTES
-            if (directory.usableSpace < needed) return failure(Failure.NoSpace)
+            if (freeBytes(directory) < needed) return failure(Failure.NoSpace)
 
             StereoConverter.convert(
                 context = applicationContext,
@@ -141,6 +142,13 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
             temp.delete()
             return failure(Failure.Failed)
         }
+    }
+
+    /** Space the system can give us, counting cached data it would clear to make room. */
+    private fun freeBytes(directory: File): Long {
+        val storage = applicationContext.getSystemService(StorageManager::class.java)
+        return runCatching { storage.getAllocatableBytes(storage.getUuidForPath(directory)) }
+            .getOrElse { directory.usableSpace }
     }
 
     private fun reportProgress(progress: Float) {

@@ -1,5 +1,9 @@
+@file:OptIn(UnstableApi::class)
+
 package com.illuminazionetech.vrclip.player
 
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent

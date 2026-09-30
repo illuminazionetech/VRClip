@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2.configure
 
+import androidx.compose.ui.res.pluralStringResource
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -244,8 +245,11 @@ fun PlaylistSelectionPageImpl(
                             if (selectedItems.isEmpty())
                                 stringResource(id = R.string.download_playlist)
                             else
-                                stringResource(id = R.string.selected_item_count)
-                                    .format(selectedItems.size),
+                                pluralStringResource(
+                                    R.plurals.selected_item_count,
+                                    selectedItems.size,
+                                    selectedItems.size,
+                                ),
                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                     )
                 },

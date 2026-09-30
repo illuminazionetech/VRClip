@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.ui.page.settings.network
 
+import androidx.compose.ui.res.pluralStringResource
 import android.content.res.Configuration
 import android.webkit.CookieManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -275,7 +276,7 @@ fun CookieProfilePage(
                 val cookiesCount = cookieList.size
                 val siteCount = cookieList.distinctBy { it.domain }.size
                 Text(
-                    text = stringResource(R.string.cookies_in_database, cookiesCount, siteCount),
+                    text = pluralStringResource(R.plurals.cookies_in_database, cookiesCount, cookiesCount, siteCount),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,

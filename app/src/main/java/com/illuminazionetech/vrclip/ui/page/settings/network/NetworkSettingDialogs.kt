@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.ui.page.settings.network
 
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -133,7 +134,7 @@ fun ConcurrentDownloadDialog(onDismissRequest: () -> Unit) {
         text = {
             Column {
                 val interactionSource = remember { MutableInteractionSource() }
-                Text(text = stringResource(R.string.concurrent_download_num, count))
+                Text(text = pluralStringResource(R.plurals.concurrent_download_num, count, count))
 
                 Spacer(modifier = Modifier.height(8.dp))
 

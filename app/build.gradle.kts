@@ -77,6 +77,8 @@ android {
     defaultConfig {
         applicationId = "com.illuminazionetech.vrclip"
         minSdk = 28
+        // Stays at 36 until downloads (Python, FFmpeg and aria2c run from nativeLibraryDir) are
+        // verified against the Android 17 behavior changes that come with targeting 37.
         targetSdk = 36
         versionCode = baseVersionCode
         versionName = appVersion.name

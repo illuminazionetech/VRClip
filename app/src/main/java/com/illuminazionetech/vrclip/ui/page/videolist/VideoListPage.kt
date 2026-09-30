@@ -486,8 +486,11 @@ fun VideoListPage(
                     Text(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
                         text =
-                            stringResource(R.string.delete_multiple_items_msg)
-                                .format(selectedItemIds.size),
+                            pluralStringResource(
+                                R.plurals.delete_multiple_items_msg,
+                                selectedItemIds.size,
+                                selectedItemIds.size,
+                            ),
                     )
                     CheckBoxItem(
                         modifier = Modifier.padding(horizontal = 12.dp),

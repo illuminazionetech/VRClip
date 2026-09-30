@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fetching_info">Mengambil informasi video…</string>
     <string name="permission_denied">Izin ditolak</string>
     <string name="download_error_msg">Tidak dapat mengunduh berkas</string>
-    <string name="download_start_msg">Mengunduh \"%1$s\"</string>
     <string name="fetch_info_error_msg">Tidak dapat mengambil informasi video</string>
-    <string name="language_settings">Atur bahasa tampilan</string>
-    <string name="task_running">Tugas pengunduhan yang ada sudah berjalan</string>
     <string name="paste_msg">Tempel URL</string>
     <string name="paste_fail_msg">Tidak dapat mencocokkan URL di papan klip</string>
-    <string name="ytdlp_version">Versi yt-dlp</string>
     <string name="delete_info">Singkirkan?</string>
     <string name="confirm">Konfirmasi</string>
     <string name="dismiss">Batalkan</string>
-    <string name="downloads_history">Unduhan</string>
     <string name="audio">Audio</string>
     <string name="open_url">Buka tautan</string>
     <string name="remove">Singkirkan</string>
@@ -29,7 +23,6 @@
     <string name="print_details">Keluaran terperinci</string>
     <string name="print_details_desc">Cetak pesan terperinci saat mengunduh</string>
     <string name="on">Nyala</string>
-    <string name="settings_before_download_text">Sesuaikan unduhan ini</string>
     <string name="error_copied">Laporan kesalahan disalin ke papan klip</string>
     <string name="thumbnail">Gambar mini</string>
     <string name="paste">Tempel</string>
@@ -40,30 +33,24 @@
     <string name="video_quality">Kualitas video</string>
     <string name="best_quality">Kualitas terbaik</string>
     <string name="preferred_format_desc">Format pilihan ketika beberapa disediakan</string>
-    <string name="video_format">Format video</string>
-    <string name="convert_audio">Ubah</string>
     <string name="start_download">Unduh</string>
-    <string name="user_guide">Panduan pengguna</string>
     <string name="open_settings">Buka pengaturan</string>
-    <string name="download_history_desc">Periksa dan kelola unduhan dalam aplikasi, termasuk video dan berkas audio.</string>
     <string name="download_playlist">Unduh daftar putar</string>
     <string name="download_playlist_desc">Unduh beberapa video dari daftar putar</string>
-    <string name="defaults">Bawaan</string>
     <string name="channel_name">Unduhan</string>
     <string name="video_url">Tautan video</string>
     <string name="download_finish_notification">Unduhan selesai. Ketuk untuk membuka.</string>
     <string name="execute_command_notification">Menjalankan perintah khusus…</string>
-    <string name="battery_settings_desc">Harap atur penggunaan baterai aplikasi ini ke \"Tidak dibatasi\" di pengaturan sistem untuk mengunduh di latar belakang.</string>
     <string name="concurrent_download_desc">Unduh lebih banyak bagian video dari M3U8/MPD secara paralel</string>
-    <string name="concurrent_download_num">%d bagian akan digunakan untuk mengunduh video asli DASH/HLS secara bersamaan.</string>
-    <string name="options">Pilihan</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="other">%d bagian akan digunakan untuk mengunduh video asli DASH/HLS secara bersamaan.</item>
+    </plurals>
     <string name="channel_description">Beritahu berkas yang diunduh dan kemajuannya</string>
     <string name="show_more_actions">Tampilkan lebih banyak tindakan</string>
     <string name="download_notification_desc">Beritahu berkas yang diunduh dan kemajuannya</string>
     <string name="download_range_selection">Pilihan daftar putar</string>
     <string name="from">Mulai</string>
     <string name="invalid_index_range">Rentang indeks tidak sah</string>
-    <string name="playlist_indicator_text">Mengunduh daftar putar (%1$d/%2$d)…</string>
     <string name="download_directory_desc">Pilih tempat untuk menyimpan berkas video dan audio</string>
     <string name="subdirectory">Simpan ke subdirektori</string>
     <string name="subdirectory_desc">Simpan berkas dalam folder yang diberi nama sesuai bidang masing-masing</string>
@@ -72,7 +59,6 @@
     <string name="video_directory">Folder video</string>
     <string name="yt_dlp_up_to_date">Menggunakan versi yt-dlp terbaru</string>
     <string name="yt_dlp_update_fail">Tidak dapat memasang yt-dlp versi terbaru. Pastikan Anda terhubung ke internet.</string>
-    <string name="download_success_msg">Unduhan selesai</string>
     <string name="general_settings">Umum</string>
     <string name="language">Bahasa tampilan</string>
     <string name="custom_command">Perintah khusus</string>
@@ -84,10 +70,8 @@
     <string name="delete_info_msg">Singkirkan \"%1$s\" dari riwayat unduhan Anda untuk selamanya?</string>
     <string name="delete_file">Hapus berkas</string>
     <string name="video">Video</string>
-    <string name="checked">Sudah diperiksa</string>
     <string name="credits">Kredit</string>
     <string name="custom_command_desc">Jalankan perintah yt-dlp menggunakan templat khusus</string>
-    <string name="display">Tampilan</string>
     <string name="release_desc">Lihat log perubahan dan versi baru</string>
     <string name="edit">Sunting</string>
     <string name="settings_before_download">Atur sebelum unduh</string>
@@ -101,14 +85,9 @@
     <string name="convert_to">Ubah ke %1$s</string>
     <string name="video_quality_desc">Batasi kualitas video ketika ada beberapa yang tersedia</string>
     <string name="not_specified">Tidak ditentukan (bawaan)</string>
-    <string name="close_never_show_again">Jangan tampilkan lagi</string>
-    <string name="paste_desc">Tekan \"Tempel\" untuk mendapatkan link video dari papan klip Anda.</string>
-    <string name="download_desc">Kemudian tekan \"Unduh\" setelah menyesuaikan pengaturannya.</string>
-    <string name="check_download_settings_desc">Lihat pengaturan unduhan dan pastikan Anda memiliki yt-dlp versi terbaru sebelum menggunakannya.</string>
     <string name="concurrent_download">Unduhan multi-utas</string>
     <string name="additional_settings">Pengaturan tambahan</string>
     <string name="share_fail_msg">Tidak dapat mencocokkan URL dari konten yang dibagikan</string>
-    <string name="share_success_msg">Membaca tautan video dari konten yang dibagikan…</string>
     <string name="download_notification">Pemberitahuan unduhan</string>
     <string name="fetching_playlist_info">Mengambil informasi daftar putar…</string>
     <string name="to">Akhir</string>
@@ -118,9 +97,7 @@
     <string name="extract_audio">Simpan sebagai audio</string>
     <string name="create_thumbnail">Simpan thumbnail</string>
     <string name="settings">Pengaturan</string>
-    <string name="download_settings_desc">Umum, format, perintah khusus</string>
     <string name="download">Unduhan</string>
-    <string name="url_empty">Tautan tidak boleh kosong</string>
     <string name="extract_audio_summary">Unduh dan simpan audio, daripada video</string>
     <string name="create_thumbnail_summary">Simpan thumbnail video sebagai berkas</string>
     <string name="link_copied">Tautan disalin ke papan klip</string>
@@ -128,21 +105,13 @@
     <string name="download_directory">Direktori unduhan</string>
     <string name="permission_issue_desc">Direktori di luar Unduhan/ dan Dokumen/ tidak didukung</string>
     <string name="service_title">VRClip sedang mengunduh…</string>
-    <string name="unknown_error">Kesalahan tidak diketahui</string>
     <string name="translate_desc">Bantu terjemahkan aplikasi ini pada Hosted Weblate</string>
-    <string name="prefix">Awalan</string>
     <string name="embed_subtitles">Sematkan terjemahan</string>
     <string name="embed_subtitles_desc">Sematkan soft-sub ke dalam video jika tersedia</string>
     <string name="new_template">Templat baru</string>
     <string name="template_label">Label</string>
     <string name="template_selection">Pilihan templat</string>
     <string name="remove_template">Singkirkan?</string>
-    <string name="remove_template_desc">Singkirkan \"%1$s\" dari templat perintah untuk selamanya?</string>
-    <string name="custom_command_template_desc">Edit dan kelola templat perintah</string>
-    <string name="downloading_indicator_text">Sedang dalam proses pengunduhan…</string>
-    <string name="task_canceled">Tugas unduhan dibatalkan</string>
-    <string name="github_issue">Masalah GitHub</string>
-    <string name="github_issue_desc">Kirimkan masalah untuk pelaporan bug atau permintaan fitur</string>
     <string name="info_copied">Info disalin ke papan klip</string>
     <string name="status_fetching_video_info">Mengambil info</string>
     <string name="open_file">Buka berkas</string>
@@ -154,13 +123,15 @@
     <string name="copy_error_report">Salin laporan</string>
     <string name="status_error">Kesalahan</string>
     <string name="copy_link">Salin tautan</string>
-    <string name="video_file_size">Ukuran berkas video</string>
     <string name="video_resolution">Resolusi video</string>
     <string name="export_to_clipboard">Ekspor ke papan klip</string>
     <string name="import_from_clipboard">Impor dari papan klip</string>
-    <string name="download_task_count">%1$d Tugas unduhan</string>
-    <string name="template_imported">%1$d Template yang telah diimpor</string>
-    <string name="template_exported">%1$d Template yang telah diekspor</string>
+    <plurals name="template_imported">
+        <item quantity="other">%1$d Template yang telah diimpor</item>
+    </plurals>
+    <plurals name="template_exported">
+        <item quantity="other">%1$d Template yang telah diekspor</item>
+    </plurals>
     <string name="check_for_updates">Periksa pembaruan</string>
     <string name="check_for_updates_desc">Periksa otomatis untuk versi terbaru di GitHub</string>
     <string name="app_up_to_date">Versi saat ini adalah yang terbaru</string>
@@ -169,14 +140,16 @@
     <string name="aria2_desc">Gunakan aria2c sebagai pengunduh eksternal</string>
     <string name="cookies_desc">Gunakan cookie berformat Netscape untuk pengunduhan</string>
     <string name="clear_temp_files">Bersihkan berkas sementara</string>
-    <string name="clear_temp_files_count">%1$d berkas sementara telah dihapus</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="other">%1$d berkas sementara telah dihapus</item>
+    </plurals>
     <string name="clear_temp_files_desc">Hapus semua berkas sementara dari direktori sementara</string>
     <string name="clear_temp_files_info">Berkas sementara dapat digunakan untuk melanjutkan unduhan yang dibatalkan. Apakah Anda yakin akan menghapus semua berkas sementara?
 \n
 \nAnda dapat mengakses berkas ini di %1$s</string>
-    <string name="recently_added">Baru Ditambahkan</string>
-    <string name="multiselect_item_count">%1$d video, %2$d berkas audio</string>
-    <string name="delete_multiple_items_msg">Singkirkan %1$d item dari riwayat unduhan Anda untuk selamanya?</string>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="other">Singkirkan %1$d item dari riwayat unduhan Anda untuk selamanya?</item>
+    </plurals>
     <string name="sponsorblock_desc">Singkirkan atau tandai bagian dalam video dengan API SponsorBlock</string>
     <string name="sponsorblock_categories">Kategori SponsorBlock</string>
     <string name="sponsorblock_categories_desc">Tentukan kategori SponsorBlock yang akan disingkirkan atau ditandai dalam berkas video</string>
@@ -190,10 +163,8 @@
     <string name="dynamic_color_desc">Terapkan warna dari wallpaper ke tema aplikasi</string>
     <string name="download_with_cellular">Unduh menggunakan seluler</string>
     <string name="download_with_cellular_desc">Perbolehkan mengunduh media saat terhubung ke jaringan terukur</string>
-    <string name="download_disabled_with_cellular">Mengunduh dengan jaringan seluler dimatikan berdasarkan pengaturan Anda</string>
     <string name="file_unavailable">Berkas ini tidak lagi tersedia</string>
     <string name="rate_limit_desc">Batasi kecepatan unduh maksimum</string>
-    <string name="high_contrast">Tema gelap kontras tinggi</string>
     <string name="invalid_input">Masukan tidak sah</string>
     <string name="lowest_quality">Kualitas paling rendah</string>
     <string name="unavailable">Tidak tersedia</string>
@@ -210,7 +181,9 @@
     <string name="private_directory_desc">Menyimpan unduhan di dalam direktori tersembunyi</string>
     <string name="select_all">Pilih semua</string>
     <string name="download_selection_desc">Pilih video untuk diunduh dari daftar putar \"%1$s\"</string>
-    <string name="selected_item_count">%1$d dipilih</string>
+    <plurals name="selected_item_count">
+        <item quantity="other">%1$d dipilih</item>
+    </plurals>
     <string name="suggested">Disarankan</string>
     <string name="format_selection">Pemilihan format</string>
     <string name="video_only">Video (tanpa audio)</string>
@@ -221,8 +194,6 @@
     <string name="how_does_it_work">Bagaimana cara kerjanya\?</string>
     <string name="remove_cookie_profile_desc">Singkirkan entri untuk \"%1$s\"? Perhatikan bahwa kuki yang disimpan untuk situs ini tidak akan dihapus.</string>
     <string name="cookies_usage_msg">Mengunduh dari beberapa situs memerlukan informasi autentikasi akun. Klik \"Hasilkan kuki baru\", masukkan URL situs web dan kemudian masuk dengan akun Anda di halaman browser, aplikasi akan membuatnya untuk Anda.</string>
-    <string name="telegram_channel">Saluran Telegram</string>
-    <string name="matrix_space">Space Matrix</string>
     <string name="cookies">Kuki</string>
     <string name="abs_hint">Sebagian besar platform streaming video mengirimkan audio dan video secara terpisah, Anda dapat memilih dan menggabungkan format audio saja dengan format video saja menjadi satu video.</string>
     <string name="auto_subtitle_desc">Unduh keterangan yang dibuat secara otomatis</string>
@@ -232,7 +203,6 @@
     <string name="subtitle_desc">Bahasa, terjemahan tersemat, keterangan otomatis</string>
     <string name="copy_log">Salin catatan</string>
     <string name="clear">Hapus</string>
-    <string name="running_tasks">Tugas yang berjalan</string>
     <string name="show_logs">Tampilkan catatan</string>
     <string name="logs">Catatan</string>
     <string name="auto_subtitle">Keterangan otomatis</string>
@@ -261,10 +231,8 @@
     <string name="clip_video">Klip video</string>
     <string name="clip_end">Akhir</string>
     <string name="clip_start">Awal</string>
-    <string name="apply">Terapkan</string>
     <string name="lowest_bitrate">Kecepatan bit terendah</string>
     <string name="audio_format_preference">Format audio yang disukai</string>
-    <string name="unlimited">Tidak terbatas</string>
     <string name="audio_quality">Kualitas audio</string>
     <string name="format_sorting">Urutan format</string>
     <string name="format_sorting_desc">Mengurutkan format dengan pilihan -S dari yt-dlp</string>
@@ -276,26 +244,20 @@
     <string name="import_from_preferences">Impor</string>
     <string name="clear_all_cookies">Hapus semua kuki</string>
     <string name="minute">menit</string>
-    <string name="temporary_directory_desc">Simpan berkas sementara di direktori internal</string>
-    <string name="feedback">Masukan</string>
     <string name="no_downloaded_media">Tidak ada media yang terunduh</string>
-    <string name="beta_features">Beta</string>
     <string name="enable_experimental_feature">Nyalakan fitur percobaan?</string>
     <string name="audio_format">Format audio</string>
     <string name="clip_video_desc">Buat klip video dalam halaman pemilihan format</string>
     <string name="clip_video_dialog_msg">Pengunduhan menggunakan fitur ini akan didelegasikan ke FFmpeg untuk mengunduh bagian video yang dipilih, fitur ini masih tahap percobaan dan pemotongan tidak akan sepenuhnya akurat, tidak semua format mendukung fitur ini dan Anda mungkin mengalami kecepatan pengunduhan yang lebih lambat.</string>
     <string name="got_it">Mengerti</string>
-    <string name="feature_unavailable">Fitur tidak tersedia</string>
-    <string name="auto_update_disabled_msg">Pembaruan otomatis tidak tersedia untuk versi %1$s. Jika Anda belum memasang %1$s di perangkat Anda, atau ingin melihat pratinjau fitur-fitur baru yang akan datang di VRClip, silahkan pertimbangkan %2$s.</string>
-    <string name="switch_to_github_builds">beralih ke versi GitHub</string>
     <string name="okay">Oke</string>
-    <string name="no_custom_command_tasks">Tidak ada tugas perintah khusus</string>
-    <string name="download_video_desc">Unduh video dari URL</string>
     <string name="convert_subtitle">Ubah terjemahan</string>
     <string name="split_video">Pisahkan video</string>
     <string name="unknown_error_title">Aduh! Ada yang salah</string>
     <string name="copy_and_exit">Salin dan keluar</string>
-    <string name="split_video_msg">Video akan dipisahkan menjadi %1$d bagian</string>
+    <plurals name="split_video_msg">
+        <item quantity="other">Video akan dipisahkan menjadi %1$d bagian</item>
+    </plurals>
     <string name="convert_subtitle_desc">Ubah terjemahan ke format lainnya</string>
     <string name="expand">Perluas</string>
     <string name="start">Mulai</string>
@@ -318,11 +280,9 @@
     <string name="prefer_quality_desc">Lebih suka format AV1, VP9, atau H.265 untuk ditonton dalam aplikasi yang kompatibel</string>
     <string name="download_type">Jenis unduhan</string>
     <string name="custom">Khusus</string>
-    <string name="auto">Otomatis</string>
     <string name="learn_more">Pelajari lebih lanjut</string>
     <string name="unknown">Tidak diketahui</string>
     <string name="commands">Perintah</string>
-    <string name="format_preference">Preferensi format</string>
     <string name="refresh_cookies_desc">Ketuk untuk membuka laman web untuk menghasilkan kuki baru:</string>
     <string name="remove_multiple_templates_msg">Singkirkan %1$s dari templat perintah selamanya?</string>
     <plurals name="item_count">
@@ -338,16 +298,15 @@
     <string name="presets">Prasetel</string>
     <string name="output_template">Templat keluaran</string>
     <string name="output_template_desc">Tentukan templat untuk nama berkas keluaran</string>
-    <string name="clear_download_archive">Hapus arsip unduhan\?</string>
-    <string name="clear_download_archive_desc">Singkirkan %1$s dari berkas arsip selamanya?</string>
     <string name="download_archive_desc">Rekam ID video yang telah diunduh dalam arsip untuk menghindari unduhan ganda</string>
     <string name="download_archive">Unduh arsip</string>
     <string name="save">Simpan</string>
     <string name="embed_metadata">Sematkan metadata</string>
     <string name="use_format_sorting">Gunakan penyortiran format</string>
     <string name="restrict_filenames_desc">Batasi nama berkas pada karakter tertentu untuk memastikan kompatibilitas</string>
-    <string name="required">Diperlukan</string>
-    <string name="show_all_items">Tampilkan semua %1$d item</string>
+    <plurals name="show_all_items">
+        <item quantity="other">Tampilkan semua %1$d item</item>
+    </plurals>
     <string name="restrict_filenames">Batasi nama berkas</string>
     <string name="edit_file">Sunting berkas</string>
     <string name="embed_metadata_desc">Sematkan metadata dan thumbnail video ke dalam berkas audio</string>
@@ -361,14 +320,12 @@
     <string name="allow_once">Ijinkan sekali</string>
     <string name="allow_always">Selalu ijinkan</string>
     <string name="dont_allow">Jangan ijinkan</string>
-    <string name="download_with_cellular_request">Ijinkan mengunduh dengan data seluler?</string>
     <string name="merge_audiostream">Gabungkan beberapa aliran audio</string>
     <string name="merge_audiostream_desc">Izinkan beberapa aliran audio untuk digabungkan menjadi satu berkas</string>
     <string name="search_in_downloads">Cari di unduhan</string>
     <string name="search">Cari</string>
     <string name="auto_translated_subtitles">Terjemahan otomatis</string>
     <string name="auto_translated_subtitles_msg">Terjemahan otomatis untuk semua bahasa akan tersedia dalam unduhan. Terjemahan ini mungkin tidak akurat dan sulit dipahami.</string>
-    <string name="remember_for_next_download">Ingat untuk unduhan berikutnya</string>
     <string name="look_and_feel"><![CDATA[Tampilan & nuansa]]></string>
     <string name="use_previous_selection">Gunakan pilihan sebelumnya</string>
     <string name="none">Tidak ada</string>
@@ -391,22 +348,19 @@
     <string name="export_download_history_msg">Mengekspor %1$s dari riwayat pengunduhan. Berkas yang terunduh dan preferensi tidak akan dicadangkan.</string>
     <string name="import_download_history_msg">Berkas yang terunduh tidak akan diimpor. Anda harus mengunduhnya lagi secara manual</string>
     <string name="interface_and_interaction"><![CDATA[Antarmuka & interaksi]]></string>
-    <string name="download_history">Riwayat pengunduhan</string>
     <string name="download_history_imported">%1$s telah diimpor ke riwayat unduhan</string>
     <string name="redownload">Unduh ulang</string>
     <string name="download_archive_error">Video sudah diunduh. Jika ini bukan perilaku yang diharapkan, silakan periksa arsip unduhan Anda.</string>
     <string name="remux_container_mkv">Wadah video mux ulang</string>
     <string name="remux_container_mkv_desc">Mux ulang video ke dalam wadah MKV untuk kompatibilitas yang lebih baik</string>
-    <string name="cookies_in_database">%1$d kuki dari %2$d situs web keseluruhan</string>
+    <plurals name="cookies_in_database">
+        <item quantity="other">%1$d kuki dari %2$d situs web keseluruhan</item>
+    </plurals>
     <string name="every_week">Setiap minggu</string>
     <string name="every_month">Setiap bulan</string>
     <string name="every_day">Setiap hari</string>
     <string name="playlist">Daftar putar</string>
     <string name="edit_preset">Sunting prasetel</string>
-    <plurals name="video_count">
-        <item quantity="other">%d video</item>
-    </plurals>
-    <string name="task_added">Tugas ditambahkan ke antrean</string>
     <string name="status_downloaded">Diunduh</string>
     <string name="all_languages">Semua bahasa</string>
     <string name="preset">Prasetel</string>
@@ -415,15 +369,13 @@
     <string name="you_ll_find_your_downloads_here">Anda dapat menemukan unduhan Anda di sini</string>
     <string name="download_hint">Ketuk tombol unduh atau bagikan tautan video ke aplikasi ini untuk memulai pengunduhan</string>
     <string name="all">Semua</string>
-    <plurals name="audio_count">
-        <item quantity="other">%d suara</item>
+    <plurals name="select_multiple_link">
+        <item quantity="other">Pilih dari %1$d tautan</item>
     </plurals>
-    <string name="select_multiple_link">Pilih dari %1$d tautan</string>
     <string name="custom_format_selection_desc">Pilih dari format, terjemahan, dan sesuaikan lebih lanjut</string>
     <string name="preset_format_selection_desc">Unduh secara otomatis menggunakan preferensi format Anda</string>
     <string name="proceed">Lanjutkan</string>
     <string name="download_queue">Antrean unduhan</string>
-    <string name="show_navigation_drawer">Tampilkan laci navigasi</string>
     <string name="resume">Lanjutkan</string>
     <string name="delete">Hapus</string>
     <string name="media_info">Info media</string>
@@ -432,6 +384,5 @@
     <string name="issue_tracker">Pelacak isu</string>
     <string name="trouble_shooting_desc">Perbaiki kesalahan umum dan periksa isu yang diketahui</string>
     <string name="saved_urls">Tautan tersimpan</string>
-    <string name="add_new_url">Tambahkan tautan baru</string>
     <string name="add_to">Tambahkan ke %1$s</string>
 </resources>

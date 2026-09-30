@@ -4,32 +4,23 @@
     <string name="extract_audio">Зберігати як аудiо</string>
     <string name="create_thumbnail">Зберігати обкладинку</string>
     <string name="settings">Налаштування</string>
-    <string name="download_settings_desc">Загальні налаштування, формат, власна команда</string>
     <string name="download">Завантаження</string>
-    <string name="url_empty">Посилання не може бути порожнім</string>
     <string name="extract_audio_summary">Завантажувати та зберігати аудiо, а не вiдео</string>
     <string name="create_thumbnail_summary">Зберігати обкладинку відео як файл</string>
     <string name="yt_dlp_up_to_date">Використовується остання версія yt-dlp</string>
     <string name="yt_dlp_update_fail">Не вдалося встановити останню версію yt-dlp. Переконайтеся, що ви підключені до інтернету.</string>
-    <string name="fetching_info">Отримання інформації про відео…</string>
     <string name="permission_denied">Недостатньо повноважень</string>
-    <string name="download_success_msg">Завантаження завершено</string>
     <string name="download_error_msg">Не вдалося завантажити файл</string>
-    <string name="download_start_msg">Завантаження \"%1$s\"</string>
     <string name="fetch_info_error_msg">Не вдалося отримати інформацію про відео</string>
     <string name="general_settings">Загальні</string>
     <string name="language">Мова застосунку</string>
-    <string name="language_settings">Встановіть мову відображення</string>
-    <string name="task_running">Завдання на завантаження вже запущено</string>
     <string name="paste_msg">Вставити посилання</string>
     <string name="paste_fail_msg">Не вдалося знайти посилання в буфері обміну</string>
-    <string name="ytdlp_version">Версiя yt-dlp</string>
     <string name="ytdlp_update">Натисніть, щоб встановити останню версію yt-dlp</string>
     <string name="delete_info">Вилучити\?</string>
     <string name="delete_info_msg">Вилучити \"%1$s\" з вашої історії завантажень\?</string>
     <string name="confirm">Підтвердити</string>
     <string name="dismiss">Скасувати</string>
-    <string name="downloads_history">Завантаження</string>
     <string name="audio">Аудiо</string>
     <string name="link_copied">Посилання скопiйовано до буфера обмiну</string>
     <string name="open_url">Відкрити посилання</string>
@@ -43,7 +34,6 @@
     <string name="release">Остання версія</string>
     <string name="readme_desc">Перевірте репозиторій на GitHub та README</string>
     <string name="video">Вiдео</string>
-    <string name="checked">Перевірено</string>
     <string name="credits">Подяки</string>
     <string name="credits_desc">Подяки та вільне програмне забезпечення</string>
     <string name="custom_command">Власна команда</string>
@@ -54,7 +44,6 @@
     <string name="advanced_settings">Розширені</string>
     <string name="print_details">Детальний вивід</string>
     <string name="print_details_desc">Виводити докладні повідомлення під час завантаження</string>
-    <string name="display">Зовнішній вигляд</string>
     <string name="display_settings">Темна тема, динамічні кольори та мови</string>
     <string name="dark_theme">Темна тема</string>
     <string name="follow_system">Як у системі</string>
@@ -63,7 +52,6 @@
     <string name="cancel">Скасувати</string>
     <string name="settings_before_download">Налаштуйте перед завантаженням</string>
     <string name="settings_before_download_desc">Налаштуйте завантаження перед його початком</string>
-    <string name="settings_before_download_text">Параметри завантаження</string>
     <string name="error_copied">Звіт про помилку скопійовано до буфера обміну</string>
     <string name="thumbnail">Обкладинка</string>
     <string name="paste">Вставити</string>
@@ -80,33 +68,23 @@
     <string name="not_specified">Не вказано (типово)</string>
     <string name="video_format_preference">Бажаний формат відео</string>
     <string name="preferred_format_desc">Вибирати цей формат по можливості</string>
-    <string name="video_format">Формат вiдео</string>
-    <string name="convert_audio">Конвертувати</string>
     <string name="start_download">Завантажити</string>
     <string name="close">Закрити</string>
-    <string name="close_never_show_again">Не показувати знову</string>
-    <string name="user_guide">Інструкція</string>
     <string name="open_settings">Вiдкрити налаштування</string>
-    <string name="paste_desc">Натисніть \"Вставити\", щоб отримати посилання на відео з буфера обміну.</string>
-    <string name="download_desc">Після чого натисніть \"Завантажити\", щоб почати завантаження.</string>
-    <string name="download_history_desc">Перевіряйте та керуйте завантаженнями в застосунку, включаючи відео та аудіо.</string>
-    <string name="check_download_settings_desc">Спочатку ознайомтеся з налаштуваннями завантажень та переконайтеся, що у вас встановлена остання версія yt-dlp.</string>
     <string name="download_playlist">Завантажувати плейлисти</string>
     <string name="download_playlist_desc">Завантажувати декілька відео з плейлиста</string>
-    <string name="defaults">Типово</string>
     <string name="channel_name">Завантаження</string>
     <string name="channel_description">Повідомляти про прогрес та закінчення завантажень</string>
     <string name="video_url">Посилання на вiдео</string>
     <string name="download_finish_notification">Завантаження завершено. Натисніть, щоб відкрити.</string>
     <string name="execute_command_notification">Виконання користувацьких команд…</string>
-    <string name="battery_settings_desc">Встановіть у налаштуваннях системи режим використання батареї \"Необмежений\" для цього застосунка, щоб завантажувати ваші відео та аудіо у фоновому режимі.</string>
     <string name="concurrent_download">Багатопотокове завантаження</string>
     <string name="concurrent_download_desc">Завантажувати більше частин M3U8/MPD відео паралельно</string>
-    <string name="concurrent_download_num">%d потоків буде використано для завантаження DASH/HLS вiдео.</string>
-    <string name="options">Опції</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="other">%d потоків буде використано для завантаження DASH/HLS вiдео.</item>
+    </plurals>
     <string name="additional_settings">Додаткові налаштування</string>
     <string name="share_fail_msg">Неможливо знайти посилання</string>
-    <string name="share_success_msg">Читаю посилання…</string>
     <string name="show_more_actions">Більше дій</string>
     <string name="download_notification">Повідомлення про завантаження</string>
     <string name="download_notification_desc">"Повідомляти про завантаження"</string>
@@ -116,7 +94,6 @@
     <string name="from">Початок</string>
     <string name="to">Кінець</string>
     <string name="invalid_index_range">Неіснуючий діапазон індексу</string>
-    <string name="playlist_indicator_text">Завантаження плейлиста (%1$d/%2$d)…</string>
     <string name="audio_directory">Тека для аудiо</string>
     <string name="download_directory">Тека для завантажень</string>
     <string name="download_directory_desc">Оберіть, де зберігати файли</string>
@@ -127,22 +104,14 @@
     <string name="battery_configuration">Налаштування батареї</string>
     <string name="battery_configuration_desc">Ігнорувати оптимізації батареї для фонових завантажень</string>
     <string name="service_title">VRClip завантажує…</string>
-    <string name="unknown_error">Невідома помилка</string>
     <string name="translate">Перекласти</string>
     <string name="translate_desc">Допоможіть перекласти VRClip на Weblate</string>
-    <string name="prefix">Шаблон шляху</string>
     <string name="embed_subtitles">Вбудовані субтитри</string>
     <string name="embed_subtitles_desc">Вставляти м\'які субтитри у відео, якщо вони доступні</string>
     <string name="new_template">Новий шаблон</string>
     <string name="template_label">Назва</string>
     <string name="remove_template">Видалити\?</string>
-    <string name="remove_template_desc">Назавжди видалити \"%1$s\" з шаблонів команд\?</string>
     <string name="template_selection">Вибрати шаблони</string>
-    <string name="custom_command_template_desc">Керувати шаблонами команд</string>
-    <string name="downloading_indicator_text">Завантаження в процесі…</string>
-    <string name="task_canceled">Завантаження скасовано</string>
-    <string name="github_issue">Повідомити про проблему (GitHub)</string>
-    <string name="github_issue_desc">Надіслати звіт про помилку або запропонувати нову функцію</string>
     <string name="info_copied">Інформація скопійована в буфер обміну</string>
     <string name="open_file">Відкрити файл</string>
     <string name="status_enqueued">Поставлено в чергу</string>
@@ -154,10 +123,11 @@
     <string name="status_error">Помилка</string>
     <string name="copy_link">Скопіювати посилання</string>
     <string name="copy_error_report">Скопіювати помилку</string>
-    <string name="video_file_size">Розмір відео</string>
     <string name="video_resolution">Роздільна здатність</string>
     <string name="clear_temp_files_desc">Видалити усі тимчасові файли з тимчасової теки</string>
-    <string name="clear_temp_files_count">Видалено %1$d тимчасовий(і/их) файл(и/ів)</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="other">Видалено %1$d тимчасовий(і/их) файл(и/ів)</item>
+    </plurals>
     <string name="sponsorblock_categories_desc">Вкажіть категорії SponsorBlock, що будуть видалені або позначені у відеофайлі</string>
     <string name="check_for_updates">Перевірити наявність оновлень</string>
     <string name="app_up_to_date">Поточна версія актуальна</string>
@@ -172,15 +142,17 @@
     <string name="clear_temp_files">Видалити тимчасові файли</string>
     <string name="export_to_clipboard">Експортувати в буфер обміну</string>
     <string name="import_from_clipboard">Імпортувати з буфера обміну</string>
-    <string name="template_exported">Експортовано %1$d шаблон(и/ів)</string>
-    <string name="template_imported">Імпортовано %1$d шаблон(и/ів)</string>
-    <string name="download_task_count">%1$d Завдань для завантаження</string>
-    <string name="recently_added">Нещодавно додані</string>
-    <string name="multiselect_item_count">%1$d відеофайл(и/ів), %2$d аудіофайл(и/ів)</string>
-    <string name="delete_multiple_items_msg">Видалити %1$d елемент(и/ів) з історії завантажень назавжди\?</string>
+    <plurals name="template_exported">
+        <item quantity="other">Експортовано %1$d шаблон(и/ів)</item>
+    </plurals>
+    <plurals name="template_imported">
+        <item quantity="other">Імпортовано %1$d шаблон(и/ів)</item>
+    </plurals>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="other">Видалити %1$d елемент(и/ів) з історії завантажень назавжди\?</item>
+    </plurals>
     <string name="sponsorblock_desc">Видаляти або позначати сегменти у відео за допомогою SponsorBlock API</string>
     <string name="sponsorblock_categories">Категорії SponsorBlock</string>
-    <string name="high_contrast">Темна тема з високим контрастом</string>
     <string name="invalid_input">Неправильні дані</string>
     <string name="lowest_quality">Найгірша якість</string>
     <string name="multiselect_mode">Режим множинного вибору</string>
@@ -193,10 +165,11 @@
     <string name="rate_limit">Ліміт швидкості</string>
     <string name="max_rate">Максимальна швидкість</string>
     <string name="download_with_cellular_desc">Дозволяти завантаження медіа під час підключення до мобільних мереж</string>
-    <string name="download_disabled_with_cellular">Завантаження через мобільну мережу вимкнено відповідно до ваших налаштувань</string>
     <string name="download_with_cellular">Завантажувати через мобільну мережу</string>
     <string name="rate_limit_desc">Обмежте максимальну швидкість завантаження</string>
-    <string name="selected_item_count">%1$d вибрано</string>
+    <plurals name="selected_item_count">
+        <item quantity="other">%1$d вибрано</item>
+    </plurals>
     <string name="general_settings_desc">Yt-dlp версія, сповіщення, список відтворення</string>
     <string name="network_settings_desc">Обмеження швидкості, завантажувач та cookies</string>
     <string name="disable_preview_desc">Не відображати обкладинки під час завантаження</string>
@@ -216,13 +189,11 @@
     <string name="unavailable">Недоступно</string>
     <string name="format_settings_desc">Формат файлу, якість відео та субтитри</string>
     <string name="disable_preview">Вимкнути попередній перегляд</string>
-    <string name="telegram_channel">Telegram канал</string>
     <string name="how_does_it_work">Як це працює\?</string>
     <string name="use_cookies">Використовувати cookies</string>
     <string name="remove_cookie_profile_desc">Видалити цей запис для \"%1$s\"? Зверніть увагу, що файли cookies, збережені для цього сайту, не будуть видалені.</string>
     <string name="custom_command_enabled_hint">Деякі параметри недоступні при використанні користувацької команди</string>
     <string name="cookies_usage_msg">Завантаження з деяких сайтів вимагає інформації про автентифікацію облікового запису. Натисніть «Згенерувати нові cookies», введіть URL-адресу вебсайту, а потім увійдіть за допомогою свого облікового запису на сторінці браузера, застосунок згенерує його для вас.</string>
-    <string name="matrix_space">Кімната Matrix</string>
     <string name="cookies">Cookies</string>
     <string name="abs_hint">Більшість платформ надають аудіо та відео окремо, але ви можете об\'єднати формати \"лише відео\" та \"лише аудіо\" у єдине відео.</string>
     <string name="video_creator_sample_text">Приклад автора відео</string>
@@ -239,7 +210,6 @@
     <string name="download_subtitles">Завантажувати субтитри</string>
     <string name="subtitle_desc">Мови, вбудовані субтитри, автоматичні субтитри</string>
     <string name="add">Додати</string>
-    <string name="running_tasks">Запущені завдання</string>
     <string name="edit_shortcuts">Редагувати комбінації клавіш</string>
     <string name="shortcuts">Комбінації клавіш</string>
     <string name="edit_shortcuts_desc">Відредагуйте власні комбінації клавіш, які можна використовувати для створення шаблонів команд.</string>
@@ -257,7 +227,6 @@
 \n
 \nУ цих версіях буде спостерігатися деяка нестабільність, тому, будь ласка, не соромтеся повідомляти нам про будь-які проблеми, щоб допомогти нам покращити застосунок у майбутньому.</string>
     <string name="enable_auto_update">Увімкнути оновлення</string>
-    <string name="apply">Застосувати</string>
     <string name="clip_video">Відеокліп</string>
     <string name="clip_start">Початок</string>
     <string name="clip_end">Кінець</string>
@@ -274,28 +243,21 @@
     <string name="second">секунди</string>
     <string name="minute">хвилини</string>
     <string name="clear_all_cookies">Очистити всі файли cookie</string>
-    <string name="unlimited">Без обмежень</string>
     <string name="clear_all_cookies_desc">Назавжди видалити всі файли cookie, які зберігаються у застосунку\?</string>
-    <string name="temporary_directory_desc">Зберігати тимчасові файли у внутрішній теці</string>
-    <string name="feedback">Зворотний зв\'язок</string>
     <string name="no_downloaded_media">Немає завантажених медіа</string>
-    <string name="beta_features">Бета</string>
     <string name="clip_video_desc">Створюйте відеокліпи на сторінці вибору формату</string>
     <string name="audio_format">Аудіо формат</string>
     <string name="enable_experimental_feature">Увімкнути експериментальну функцію\?</string>
     <string name="clip_video_dialog_msg">Завантаження за допомогою цієї функції буде делеговано FFmpeg для завантаження вибраних фрагментів відео, ця функція все ще експериментальна і розрізання не буде повністю точним, не всі формати підтримують цю функцію, і ви можете відчути повільну швидкість завантаження.</string>
-    <string name="auto_update_disabled_msg">Автоматичне оновлення недоступне для %1$s збірок. Якщо на вашому пристрої не встановлено %1$s або ви хочете переглянути майбутні нові функції в VRClip, розгляньте %2$s.</string>
-    <string name="switch_to_github_builds">перехід на збірки GitHub</string>
     <string name="okay">Ок</string>
     <string name="got_it">Зрозумів</string>
-    <string name="feature_unavailable">Функція недоступна</string>
-    <string name="no_custom_command_tasks">Немає спеціальних командних завдань</string>
-    <string name="download_video_desc">Завантажити відео з URL-адреси</string>
     <string name="convert_subtitle">Конвертувати субтитри</string>
     <string name="convert_subtitle_desc">Конвертуйте субтитри в інший формат</string>
     <string name="split_video">Розділити відео</string>
     <string name="copy_and_exit">Скопіювати та вийти</string>
-    <string name="split_video_msg">Відео буде розділене на %1$d частини</string>
+    <plurals name="split_video_msg">
+        <item quantity="other">Відео буде розділене на %1$d частини</item>
+    </plurals>
     <string name="unknown_error_title">Ой! Щось пішло не так</string>
     <string name="expand">Розгорнути</string>
     <string name="new_task">Нове завдання на завантаження</string>
@@ -318,9 +280,7 @@
     <string name="custom_command_directory_desc">Вкажіть вихідну теку для власних команд</string>
     <string name="download_type">Тип завантаження</string>
     <string name="custom">Власний</string>
-    <string name="format_preference">Налаштування формату</string>
     <string name="unknown">Невідомо</string>
-    <string name="auto">Авто</string>
     <string name="learn_more">Дізнатися більше</string>
     <string name="commands">Команди</string>
     <string name="refresh_cookies_desc">Натисніть, щоб відкрити вебсторінку для створення нових файлів cookie:</string>
@@ -341,14 +301,13 @@
     <string name="presets">Пресети</string>
     <string name="output_template">Шаблон виводу</string>
     <string name="output_template_desc">Вкажіть шаблон для назв вихідних файлів</string>
-    <string name="clear_download_archive">Очистити архів завантажень\?</string>
-    <string name="clear_download_archive_desc">Видалити %1$s з файлу архіву назавжди\?</string>
     <string name="download_archive_desc">Записувати ID завантажених відео в архів, щоб уникнути дублікатів</string>
     <string name="download_archive">Архів завантажень</string>
     <string name="embed_metadata">Вставити метадані</string>
-    <string name="required">Обов\'язковий</string>
     <string name="embed_metadata_desc">Вставляти метадані та обкладинку відео до аудіофайлу</string>
-    <string name="show_all_items">Показати всі елементи (%1$d)</string>
+    <plurals name="show_all_items">
+        <item quantity="other">Показати всі елементи (%1$d)</item>
+    </plurals>
     <string name="save">Зберегти</string>
     <string name="use_format_sorting">Використовуйте сортування за форматом</string>
     <string name="restrict_filenames_desc">Обмежте назви файлів певними символами, щоб забезпечити сумісність</string>
@@ -364,14 +323,12 @@
     <string name="allow_once">Дозволити один раз</string>
     <string name="allow_always">Завжди дозволяти</string>
     <string name="dont_allow">Не дозволяти</string>
-    <string name="download_with_cellular_request">Дозволити завантаження через мобільні дані?</string>
     <string name="merge_audiostream">Об\'єднувати кілька аудіопотоків</string>
     <string name="merge_audiostream_desc">Дозволяє об\'єднувати кілька аудіопотоків в один файл</string>
     <string name="search_in_downloads">Пошук у завантаженнях</string>
     <string name="search">Пошук</string>
     <string name="auto_translated_subtitles_msg">У завантаженнях можна буде вибрати субтитри, створені автоматично для кожної мови. Вони можуть бути неточними та важкими для розуміння.</string>
     <string name="auto_translated_subtitles">Субтитри з автоперекладом</string>
-    <string name="remember_for_next_download">Запам\'ятати для майбутнього завантаження</string>
     <string name="look_and_feel"><![CDATA[Вигляд та відчуття]]></string>
     <string name="subtitle_language_desc">Мова субтитрів для завантаження в автоматичному виборі формату, розділених комами.</string>
     <string name="backup_type">Тип резервного копіювання</string>
@@ -392,7 +349,6 @@
     <string name="import_from">Імпортувати з</string>
     <string name="export_download_history">Експортувати історію завантажень?</string>
     <string name="import_download_history">Імпортувати історію завантажень?</string>
-    <string name="download_history">Історія завантажень</string>
     <string name="download_history_imported">Імпортований %1$s до історії завантажень</string>
     <string name="redownload">Завантажити повторно</string>
     <string name="full_backup">Повне резервне копіювання</string>
@@ -402,37 +358,27 @@
     <string name="every_week">Щотижня</string>
     <string name="every_month">Щомісяця</string>
     <string name="remux_container_mkv_desc">Remux відео в контейнер MKV для кращої сумісності</string>
-    <string name="cookies_in_database">Всього %1$d файлів cookie з %2$d вебсайтів</string>
+    <plurals name="cookies_in_database">
+        <item quantity="other">Всього %1$d файлів cookie з %2$d вебсайтів</item>
+    </plurals>
     <string name="every_day">Щодня</string>
     <string name="all_languages">Всі мови</string>
     <string name="playlist">Список відтворення</string>
     <string name="prefer_placeholder">Надаю перевагу %1$s</string>
-    <plurals name="video_count">
-        <item quantity="one">%d відео</item>
-        <item quantity="few">%d відео</item>
-        <item quantity="many">%d відео</item>
-        <item quantity="other">%d відео</item>
-    </plurals>
-    <plurals name="audio_count">
-        <item quantity="one">%d аудіо</item>
-        <item quantity="few">%d аудіо</item>
-        <item quantity="many">%d аудіо</item>
-        <item quantity="other">%d аудіо</item>
-    </plurals>
     <string name="proceed">Продовжити</string>
     <string name="preset">Передустановка</string>
     <string name="custom_format_selection_desc">Вибирайте формати, субтитри та налаштовуйте далі</string>
     <string name="preset_format_selection_desc">Завантажуйте автоматично відповідно до ваших налаштувань формату</string>
     <string name="edit_preset">Редагувати передустановку</string>
     <string name="best_quality_desc">Завантажте найкращий доступний формат</string>
-    <string name="task_added">Задачу додано до черги</string>
     <string name="you_ll_find_your_downloads_here">Ви знайдете свої завантаження тут</string>
     <string name="download_hint">Натисніть на кнопку завантаження або поділіться відео посиланням на цей застосунок, щоби почати завантаження</string>
     <string name="status_downloaded">Завантажено</string>
     <string name="all">Все</string>
     <string name="download_queue">Завантаження у черзі</string>
-    <string name="select_multiple_link">Виберіть з %1$d посилань</string>
-    <string name="show_navigation_drawer">Показати панель навігації</string>
+    <plurals name="select_multiple_link">
+        <item quantity="other">Виберіть з %1$d посилань</item>
+    </plurals>
     <string name="resume">Відновити</string>
     <string name="delete">Видалити</string>
     <string name="media_info">Інформація про медіа</string>
@@ -441,6 +387,5 @@
     <string name="trouble_shooting">Усунення несправностей</string>
     <string name="issue_tracker">Відстежування проблем</string>
     <string name="saved_urls">Збережені посилання</string>
-    <string name="add_new_url">Додати нове посилання</string>
     <string name="add_to">Додати до %1$s</string>
 </resources>

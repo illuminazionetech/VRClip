@@ -3,7 +3,6 @@
     <string name="settings">설정</string>
     <string name="download_error_msg">파일을 다운로드할 수 없습니다</string>
     <string name="yt_dlp_update_fail">최신 yt-dlp 버전을 설치할 수 없습니다. 인터넷에 연결되어 있는지 확인해주세요.</string>
-    <string name="download_start_msg">\"%1$s\" 다운로드</string>
     <string name="fetch_info_error_msg">동영상 정보를 가져올 수 없습니다</string>
     <string name="language">언어</string>
     <string name="paste_msg">URL 붙여넣기</string>
@@ -12,20 +11,16 @@
     <string name="yt_dlp_up_to_date">최신 버전의 yt-dlp 사용 중</string>
     <string name="create_thumbnail_summary">동영상 썸네일을 파일로 저장</string>
     <string name="extract_audio_summary">동영상 대신 오디오 다운로드 및 저장</string>
-    <string name="language_settings">언어 설정</string>
     <string name="delete_info">삭제하실 건가요\?</string>
-    <string name="downloads_history">다운로드</string>
     <string name="delete_file">파일 삭제</string>
     <string name="about">정보</string>
     <string name="ytdlp_update">yt-dlp의 최신버전을 설치하려면 클릭하세요</string>
     <string name="paste_fail_msg">클립보드의 URL을 일치시킬 수 없습니다</string>
-    <string name="ytdlp_version">Yt-dlp 버전</string>
     <string name="confirm">확인</string>
     <string name="dismiss">취소</string>
     <string name="open_url">링크 열기</string>
     <string name="remove">목록에서 제거</string>
     <string name="release">최신 릴리스</string>
-    <string name="checked">체크됨</string>
     <string name="advanced_settings">고급 옵션</string>
     <string name="about_page">버전, 피드백, 자동 업데이트</string>
     <string name="version">버전</string>
@@ -41,17 +36,12 @@
     <string name="custom_command_desc">맞춤 템플릿으로 yt-dlp 명령어 실행</string>
     <string name="general_settings">일반</string>
     <string name="link_copied">클립보드에 복사된 링크</string>
-    <string name="task_running">다운로드 작업이 이미 실행 중입니다</string>
     <string name="extract_audio">오디오로 저장</string>
     <string name="create_thumbnail">썸네일 저장</string>
-    <string name="download_settings_desc">일반, 서식, 사용자 지정 명령</string>
     <string name="video_directory">동영상 폴더</string>
     <string name="custom_command_template">명령 템플릿</string>
     <string name="download">다운로드</string>
-    <string name="url_empty">링크는 비워둘 수 없습니다</string>
-    <string name="fetching_info">동영상 정보를 가져오는 중…</string>
     <string name="permission_denied">권한이 거부되었습니다</string>
-    <string name="download_success_msg">다운로드가 완료되었습니다</string>
     <string name="convert_audio_format">오디오 형식 변환</string>
     <string name="preferred_format_desc">여러 개가 제공될 때 선호하는 형식</string>
     <string name="video_quality">비디오 품질</string>
@@ -64,7 +54,6 @@
     <string name="download_directory">다운로드 디렉터리</string>
     <string name="battery_configuration">배터리 구성</string>
     <string name="embed_subtitles_desc">동영상에 제공되는 자막 포함 (사용 가능한 경우)</string>
-    <string name="paste_desc">클립보드에서 비디오 링크를 가져오려면 \"붙여넣기\"를 클릭하세요.</string>
     <string name="not_convert">변환되지 않은</string>
     <string name="on">켜짐</string>
     <string name="dark_theme">어두운 테마</string>
@@ -73,50 +62,37 @@
     <string name="paste">붙여넣기</string>
     <string name="yt_dlp_docs">Yt-dlp 사용 참조</string>
     <string name="edit_template_desc">출력 경로와 URL은 앱에서 추가됩니다.</string>
-    <string name="video_format">비디오 형식</string>
-    <string name="convert_audio">변환</string>
     <string name="start_download">다운로드</string>
-    <string name="user_guide">사용자 설명서</string>
     <string name="close">닫음</string>
-    <string name="close_never_show_again">다시 표시하지 않음</string>
-    <string name="download_desc">설정을 조정한 후 \"다운로드\"를 클릭하세요.</string>
-    <string name="download_history_desc">비디오 및 오디오 파일을 포함한 앱 내 다운로드를 확인하고 관리합니다.</string>
-    <string name="check_download_settings_desc">다운로드 설정을 살펴보고 yt-dlp의 최신 버전이 있는지 확인한 후 사용하십시오.</string>
     <string name="concurrent_download_desc">더 많은 M3U8/MPD 비디오 부분들을 동시에 다운로드</string>
-    <string name="concurrent_download_num">%d 스레드는 DASH/HLS 기본 비디오를 동시에 다운로드하는 데 사용됩니다.</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="other">%d 스레드는 DASH/HLS 기본 비디오를 동시에 다운로드하는 데 사용됩니다.</item>
+    </plurals>
     <string name="embed_subtitles">자막 포함</string>
     <string name="new_template">새 템플릿</string>
     <string name="template_label">라벨</string>
     <string name="remove_template">제거\?</string>
-    <string name="remove_template_desc">명령 템플릿에서 %1$s을(를) 제거하시겠습니까\?</string>
     <string name="download_notification">다운로드 알림</string>
     <string name="invalid_index_range">잘못된 인덱스 범위</string>
     <string name="audio_directory">오디오 폴더</string>
-    <string name="unknown_error">알수없는 오류</string>
     <string name="print_details">상세 출럭</string>
     <string name="print_details_desc">다운로드 시 자세한 메시지 출력</string>
-    <string name="display">디스플레이</string>
     <string name="display_settings">어두운 테마, 동적 색상, 언어</string>
     <string name="cancel">취소</string>
     <string name="settings_before_download">다운로드하기 전 설정하기</string>
     <string name="settings_before_download_desc">다운로드 전에 설정 변경하기</string>
-    <string name="settings_before_download_text">이 다운로드 조정</string>
     <string name="error_copied">클립보드에 오류 보고서가 복사됨</string>
     <string name="convert_to">%1$s 로 변환</string>
     <string name="format">형식</string>
     <string name="not_specified">지정되지 않음 (기본값)</string>
     <string name="video_format_preference">선호하는 비디오 형식</string>
     <string name="download_playlist">재생 목록 다운로드</string>
-    <string name="defaults">기본</string>
     <string name="channel_name">다운로드</string>
     <string name="channel_description">다운로드한 파일 및 진행 상황 알림</string>
     <string name="download_finish_notification">다운로드가 완료되었습니다. 열려면 탭하세요.</string>
     <string name="execute_command_notification">사용자 지정 명령 실행 중…</string>
-    <string name="battery_settings_desc">백그라운드에서 다운로드하려면 시스템 설정에서 이 앱의 배터리 항목을 \"제한없음\"으로 설정하세요.</string>
-    <string name="options">옵션</string>
     <string name="additional_settings">추가 설정</string>
     <string name="share_fail_msg">공유 콘텐츠의 URL을 일치시킬 수 없습니다</string>
-    <string name="share_success_msg">공유 콘텐츠에서 비디오 링크를 읽는 중…</string>
     <string name="show_more_actions">추가 작업 표시</string>
     <string name="download_notification_desc">다운로드한 파일 및 진행 상황 알림</string>
     <string name="fetching_playlist_info">재생목록 정보를 가져오는 중…</string>
@@ -127,7 +103,6 @@
     <string name="service_title">VRClip 다운로드 중…</string>
     <string name="translate">번역</string>
     <string name="translate_desc">Hosted Weblate에서 이 앱의 번역을 도울수 있습니다</string>
-    <string name="prefix">접두사</string>
     <string name="to">끝</string>
     <string name="follow_system">시스템</string>
     <string name="convert_audio_format_desc">오디오 파일을 다시 인코딩하면 오디오 품질이 저하되고 파일 크기가 커집니다.</string>
@@ -135,7 +110,6 @@
     <string name="download_playlist_desc">재생 목록에서 여러 비디오 다운로드</string>
     <string name="download_range_desc">재생 목록 \"%3$s\" (%1$d ~ %2$d)에서 다운로드할 비디오 범위를 지정하십시오.</string>
     <string name="from">시작</string>
-    <string name="playlist_indicator_text">재생 목록(%1$d/%2$d)을 다운로드하는 중입니다…</string>
     <string name="battery_configuration_desc">이 앱이 백그라운드에서 다운로드하려면 배터리 최적화를 해제하세요</string>
     <string name="video_only">비디오 (오디오 없음)</string>
     <string name="suggested">제안</string>
@@ -144,7 +118,9 @@
     <string name="dynamic_color">동적 색상</string>
     <string name="network_settings_desc">속도 제한, 다운로더, 쿠키</string>
     <string name="download_selection_desc">재생목록 \"%1$s\"에서 다운로드할 동영상을 선택</string>
-    <string name="selected_item_count">%1$d 선택됨</string>
+    <plurals name="selected_item_count">
+        <item quantity="other">%1$d 선택됨</item>
+    </plurals>
     <string name="crop_artwork_desc">포함된 이미지를 정사각형으로 자르기</string>
     <string name="select_all">모두 선택</string>
     <string name="cookies_desc">다운로드에 Netscape 형식의 쿠키 사용</string>
@@ -152,15 +128,13 @@
     <string name="rate_limit">속도 제한</string>
     <string name="status_completed">완료</string>
     <string name="multiselect_mode">다중 선택 모드</string>
-    <string name="clear_temp_files_count">%1$d개의 임시 파일 삭제</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="other">%1$d개의 임시 파일 삭제</item>
+    </plurals>
     <string name="lowest_quality">최저 품질</string>
     <string name="cookies">쿠키</string>
     <string name="disable_preview_desc">다운로드 중 미리 보기 표시 안 함</string>
     <string name="privacy">프라이버시</string>
-    <string name="downloading_indicator_text">다운로드가 진행 중입니다…</string>
-    <string name="task_canceled">다운로드 작업이 취소됨</string>
-    <string name="github_issue">깃허브 이슈</string>
-    <string name="github_issue_desc">버그 보고서 또는 기능 요청을 위해 문제 제출</string>
     <string name="info_copied">클립보드에 복사된 정보</string>
     <string name="status_enqueued">대기 중</string>
     <string name="aria2_desc">aria2c를 외부 다운로더로 사용</string>
@@ -172,20 +146,14 @@
 \n%1$s에서 이 파일들을 접근할 수 있습니다</string>
     <string name="private_mode">시크릿 모드</string>
     <string name="private_mode_desc">다운로드 기록 사용 안 함</string>
-    <string name="high_contrast">고대비 어두운 테마</string>
     <string name="invalid_input">잘못된 입력</string>
     <string name="format_settings_desc">파일 형식, 비디오 품질, 자막</string>
     <string name="unavailable">사용할수 없음</string>
     <string name="crop_artwork">아트웍 자르기</string>
-    <string name="custom_command_template_desc">명령 템플릿 편집 및 관리</string>
-    <string name="download_task_count">%1$d 다운로드 작업</string>
-    <string name="recently_added">최근에 추가됨</string>
-    <string name="multiselect_item_count">비디오 파일 %1$d개, 오디오 파일 %2$d개</string>
     <string name="sponsorblock_categories">SponsorBlock 범주</string>
     <string name="check_for_updates">업데이트 확인</string>
     <string name="check_for_updates_desc">GitHub에서 최신 버전 자동 확인</string>
     <string name="download_with_cellular_desc">데이터 통신 네트워크에 연결된 경우 미디어 다운로드 허용</string>
-    <string name="download_disabled_with_cellular">설정에 따라 모바일 데이터로 다운로드할 수 없습니다</string>
     <string name="file_unavailable">이 파일은 더 이상 사용할 수 없습니다</string>
     <string name="network">네트워크</string>
     <string name="disable_preview">미리보기 비활성화</string>
@@ -193,9 +161,15 @@
     <string name="use_custom_command">사용자 지정 명령 사용</string>
     <string name="private_directory_desc">숨겨진 디렉터리에 다운로드</string>
     <string name="status_canceled">취소 됨</string>
-    <string name="template_exported">%1$d개의 템플릿을 내보냈습니다</string>
-    <string name="template_imported">%1$d개의 템플릿을 가져왔습니다</string>
-    <string name="delete_multiple_items_msg">다운로드 기록에서 %1$d 항목을 제거하시겠습니까\?</string>
+    <plurals name="template_exported">
+        <item quantity="other">%1$d개의 템플릿을 내보냈습니다</item>
+    </plurals>
+    <plurals name="template_imported">
+        <item quantity="other">%1$d개의 템플릿을 가져왔습니다</item>
+    </plurals>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="other">다운로드 기록에서 %1$d 항목을 제거하시겠습니까\?</item>
+    </plurals>
     <string name="download_with_cellular">모바일 데이터를 사용하여 다운로드</string>
     <string name="rate_limit_desc">다운로드 최대 속도 제한</string>
     <string name="status_downloading">다운로드 중</string>
@@ -205,7 +179,6 @@
     <string name="copy_link">링크 복사</string>
     <string name="copy_error_report">보고서 복사하기</string>
     <string name="video_resolution">비디오 해상도</string>
-    <string name="video_file_size">비디오 파일 크기</string>
     <string name="export_to_clipboard">클립보드로 내보내기</string>
     <string name="import_from_clipboard">클립보드에서 가져오기</string>
     <string name="sponsorblock_desc">SponsorBlock API를 사용하여 비디오에서 세그먼트를 제거하거나 마킹</string>
@@ -214,7 +187,6 @@
     <string name="app_update_failed">최신 버전으로 업데이트하지 못했습니다</string>
     <string name="max_rate">최대 비율</string>
     <string name="general_settings_desc">Yt-dlp 버전, 알림, 재생목록</string>
-    <string name="unlimited">무제한</string>
     <string name="audio_quality">오디오 품질</string>
     <string name="audio_format_preference">선호하는 오디오 형식</string>
     <string name="lowest_bitrate">최저 전송률</string>
@@ -223,7 +195,6 @@
     <string name="format_sorting">형식 정렬</string>
     <string name="audio_format">오디오 형식</string>
     <string name="no_downloaded_media">다운로드한 미디어 없음</string>
-    <string name="beta_features">베타</string>
     <string name="enable_experimental_feature">실험 기능을 사용하시겠습니까\?</string>
     <string name="clip_video_dialog_msg">이 기능을 사용하는 다운로드는 비디오의 선택된 섹션을 다운로드할때 FFmpeg에게 위임됩니다. 이 기능은 아직 실험적이며 자르기가 완전히 정확하지 않습니다. 또한 모든 형식이 이 기능을 지원하는 것은 아니며 다운로드 속도가 느려질 수 있습니다.</string>
     <string name="clip_video_desc">형식 선택 페이지에서 비디오 클립 만들기</string>
@@ -235,18 +206,13 @@
     <string name="update_channel">채널 업데이트</string>
     <string name="auto_update">자동 업데이트</string>
     <string name="enable_auto_update">자동 업데이트 사용</string>
-    <string name="switch_to_github_builds">GitHub 빌드로 전환</string>
     <string name="okay">좋아요</string>
     <string name="got_it">알겠어요</string>
-    <string name="feature_unavailable">사용할 수 없는 기능입니다</string>
     <string name="discard">버림</string>
     <string name="clip_video">동영상 클립</string>
     <string name="clip_start">시작</string>
     <string name="clip_end">끝</string>
-    <string name="apply">적용</string>
     <string name="generate_new_cookies">새 쿠키 생성</string>
-    <string name="telegram_channel">텔레그램 채널</string>
-    <string name="matrix_space">행렬 공간</string>
     <string name="use_cookies">쿠키 사용</string>
     <string name="remove_cookie_profile_desc">\"%1$s\"의 항목를 제거하시겠습니까? 이 사이트를 위해 저장된 쿠키는 삭제되지 않습니다.</string>
     <string name="how_does_it_work">어떻게 작동합니까\?</string>
@@ -266,7 +232,6 @@
     <string name="copy_log">로그 복사</string>
     <string name="shortcuts">바로 가기</string>
     <string name="edit_shortcuts">바로 가기 편집</string>
-    <string name="running_tasks">작업 실행</string>
     <string name="show_logs">로그 표시</string>
     <string name="add">추가</string>
     <string name="edit_shortcuts_desc">명령 템플릿을 작성하는 데 사용할 수 있는 사용자 지정 바로 가기를 편집합니다.</string>
@@ -277,10 +242,7 @@
     <string name="update_channel_desc">새로운 기능과 변경 사항을 미리 보기위해 시험판 빌드를 설치합니다.
 \n
 \n이러한 버전에는 약간의 불안정성이 있을 수 있으므로, 향후 앱을 개선하는 데 도움이 되도록 문제가 발생하면 주저하지 말고 피드백을 보내주세요.</string>
-    <string name="auto_update_disabled_msg">%1$s 빌드에는 자동 업데이트를 사용할 수 없습니다. 장치에 %1$s이(가) 설치되어 있지 않거나 VRClip의 향후 새 기능을 미리 보려면 %2$s를 고려하세요.</string>
-    <string name="no_custom_command_tasks">사용자 지정 명령 작업 없음</string>
     <string name="title">제목</string>
-    <string name="download_video_desc">URL에서 동영상 다운로드</string>
     <string name="second">초</string>
     <string name="clear_all_cookies_desc">앱에 저장된 모든 쿠키를 완전히 삭제하시겠습니까\?</string>
     <string name="logs">로그</string>
@@ -289,9 +251,9 @@
     <string name="rename">이름 바꾸기</string>
     <string name="minute">분</string>
     <string name="clear_all_cookies">모든 쿠키 지우기</string>
-    <string name="feedback">피드백</string>
-    <string name="temporary_directory_desc">내부 디렉토리에 임시 파일 저장</string>
-    <string name="split_video_msg">영상은 %1$d개의 장으로 분할됩니다</string>
+    <plurals name="split_video_msg">
+        <item quantity="other">영상은 %1$d개의 장으로 분할됩니다</item>
+    </plurals>
     <string name="split_video">동영상 분할</string>
     <string name="convert_subtitle_desc">자막을 다른 포맷으로 변환</string>
     <string name="convert_subtitle">자막 변환</string>
@@ -321,11 +283,9 @@
 \nyt-dlp의 고급 사용을 위해 VRClip은 커스텀 명령어 템플릿을 제작과 저장, 터미널에서처럼 직접 실행할 수도 있습니다.
 \n
 \n커스텀 명령어 사용 시, 대부분의 GUI 옵션과 기능들이 비활성화될 것입니다.</string>
-    <string name="clear_download_archive">다운로드 아카이브를 비울까요?</string>
     <string name="save">저장</string>
     <string name="export_to_file">파일로 내보내기</string>
     <string name="commands">명령어</string>
-    <string name="clear_download_archive_desc">정말로 %1$s를 아카이브 파일에서 삭제할까요?</string>
     <string name="website">웹사이트</string>
     <string name="learn_more">더 알아보기</string>
     <string name="download_type">다운로드 유형</string>
@@ -333,10 +293,10 @@
     <string name="presets">프리셋</string>
     <string name="ua_header">User-Agent 헤더</string>
     <string name="restrict_filenames_desc">호환성을 위해 파일명에 사용 가능한 문자를 제한합니다</string>
-    <string name="required">필수</string>
-    <string name="show_all_items">%1$d개의 항목 모두 표시</string>
+    <plurals name="show_all_items">
+        <item quantity="other">%1$d개의 항목 모두 표시</item>
+    </plurals>
     <string name="output_template">출력 템플릿</string>
-    <string name="auto">자동</string>
     <plurals name="item_count">
         <item quantity="other">항목 %d개</item>
     </plurals>
@@ -349,7 +309,6 @@
     <string name="playlist_title">플레이리스트 제목</string>
     <string name="download_archive">다운로드 아카이브</string>
     <string name="remove_multiple_templates_msg">정말로 커스텀 템플릿에서 %1$s를 삭제할까요?</string>
-    <string name="download_with_cellular_request">모바일 네트워크로 다운로드하는 것을 허용할까요?</string>
     <string name="merge_audiostream_desc">한 파일에 여러 오디오 스트림들을 합칠 수 있게 합니다</string>
     <string name="unknown">알 수 없음</string>
     <string name="output_template_desc">출력 파일명들을 위한 템플릿 지정</string>
@@ -360,14 +319,12 @@
     <string name="merge_audiostream">여러 오디오 스트림 합치기</string>
     <string name="subdirectory_hint">다음과 같이 다운로드가 저장됩니다:</string>
     <string name="keep_subtitle_files">자막 파일 유지하기</string>
-    <string name="format_preference">형식 선호 설정</string>
     <string name="system_settings">시스템 설정</string>
     <string name="force_ipv4">강제 IPv4</string>
     <string name="force_ipv4_desc">모든 연결을 IPv4로 연결합니다</string>
     <string name="search_in_downloads">다운로드 검색</string>
     <string name="search">검색</string>
     <string name="auto_translated_subtitles">자동 번역 자막</string>
-    <string name="remember_for_next_download">다음 다운로드에도 적용하기</string>
     <string name="look_and_feel">보기 &amp; 느낌</string>
     <string name="use_previous_selection">이전 선택 사용하기</string>
     <string name="none">없음</string>
@@ -390,7 +347,6 @@
     <string name="clipboard">클립보드</string>
     <string name="export_download_history">다운로드 기록을 내보낼까요?</string>
     <string name="export_download_history_msg">다운로드 기록에서 %1$s를 내보내는 중입니다. 다운로드된 파일들과 설정은 백업되지 않습니다.</string>
-    <string name="download_history">다운로드 기록</string>
     <string name="update_language_msg">다음 언어들이 미래의 다운로드들을 위한 설정에 추가됩니다:</string>
     <string name="update_subtitle_languages">자막 언어를 업데이트할까요?</string>
     <string name="download_history_imported">다운로드 기록에 %1$s를 불러옴</string>
@@ -400,20 +356,15 @@
     <string name="every_week">매주</string>
     <string name="every_month">매월</string>
     <string name="every_day">매일</string>
-    <string name="cookies_in_database">%2$d개의 웹사이트의 총 %1$d개의 쿠키 저장 중</string>
+    <plurals name="cookies_in_database">
+        <item quantity="other">%2$d개의 웹사이트의 총 %1$d개의 쿠키 저장 중</item>
+    </plurals>
     <string name="all_languages">모든 언어</string>
     <string name="playlist">재생목록</string>
     <string name="proceed">계속하기</string>
     <string name="preset_format_selection_desc">형식 설정을 사용하여 자동으로 다운로드합니다</string>
     <string name="edit_preset">프리셋 편집</string>
     <string name="best_quality_desc">가능한 최고 품질을 다운로드</string>
-    <string name="task_added">대기열에 추가됨</string>
-    <plurals name="video_count">
-        <item quantity="other">영상 %d개</item>
-    </plurals>
-    <plurals name="audio_count">
-        <item quantity="other">오디오 %d개</item>
-    </plurals>
     <string name="preset">프리셋</string>
     <string name="custom_format_selection_desc">형식과 자막 등을 설정합니다</string>
     <string name="prefer_placeholder">%1$s 선호</string>
@@ -421,9 +372,10 @@
     <string name="download_hint">다운로드 버튼을 누르거나 영상 링크를 이 앱으로 공유하여 다운로드를 시작해 보세요</string>
     <string name="status_downloaded">다운로드 완료</string>
     <string name="all">전체</string>
-    <string name="select_multiple_link">링크 %1$d개에서 선택</string>
+    <plurals name="select_multiple_link">
+        <item quantity="other">링크 %1$d개에서 선택</item>
+    </plurals>
     <string name="download_queue">다운로드 대기열</string>
-    <string name="show_navigation_drawer">내비게이션 드로어 표시</string>
     <string name="resume">재개</string>
     <string name="delete">삭제</string>
     <string name="media_info">미디어 정보</string>

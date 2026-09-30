@@ -1,5 +1,9 @@
+@file:OptIn(UnstableApi::class)
+
 package com.illuminazionetech.vrclip.player.stereo
 
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import android.content.Context
 import android.opengl.GLES20
 import android.util.Log

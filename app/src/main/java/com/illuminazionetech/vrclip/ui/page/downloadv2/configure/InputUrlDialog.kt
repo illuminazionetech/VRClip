@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2.configure
 
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.LocalIndication
@@ -187,8 +188,9 @@ private fun InputUrlPageImpl(
                         onClick = { showPasteDialog = true },
                         label = {
                             Text(
-                                stringResource(
-                                    R.string.select_multiple_link,
+                                pluralStringResource(
+                                    R.plurals.select_multiple_link,
+                                    urlListFromClipboard.size,
                                     urlListFromClipboard.size,
                                 )
                             )
@@ -294,7 +296,7 @@ private fun URLSelectionDialog(
     VRClipDialog(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-        title = { Text(stringResource(R.string.select_multiple_link, urlListFromClipboard.size)) },
+        title = { Text(pluralStringResource(R.plurals.select_multiple_link, urlListFromClipboard.size, urlListFromClipboard.size)) },
         icon = { Icon(Icons.Rounded.AddLink, null) },
         confirmButton = {
             FilledButtonWithIcon(

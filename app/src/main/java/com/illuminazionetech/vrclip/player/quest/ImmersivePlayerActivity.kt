@@ -1,11 +1,14 @@
 package com.illuminazionetech.vrclip.player.quest
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.window.OnBackInvokedDispatcher
 import android.view.KeyEvent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
@@ -98,6 +101,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         passthrough = PLAYER_QUEST_PASSTHROUGH_DEFAULT.getBoolean(false)
+        registerBackHandler()
         load(intent)
         scope.launch {
             viewModel.state
@@ -340,6 +344,25 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         runCatching { scene.enablePassthrough(passthrough && !spherical) }
     }
 
+    /** Back leaves the player for the library (predictive back callback on Android 13+). */
+    private fun registerBackHandler() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT
+            ) {
+                returnToLibrary()
+            }
+        }
+    }
+
+    // VrActivity is a plain Activity (no OnBackPressedDispatcher): below Android 13 this is the
+    // only way to see Back, and from 13 on the callback above takes over.
+    @SuppressLint("GestureBackNavigation")
+    @Deprecated("Only reached below Android 13; newer versions use the back callback.")
+    override fun onBackPressed() {
+        returnToLibrary()
+    }
+
     /**
      * Leaves the immersive player and brings the VRClip library back as a panel in the Horizon
      * home environment (the way Meta's hybrid sample hands over from immersive to 2D).
@@ -374,10 +397,6 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             when (event.keyCode) {
                 KeyEvent.KEYCODE_BUTTON_A,
                 KeyEvent.KEYCODE_BUTTON_X -> controlsEntity?.setComponent(Visible(true))
-                KeyEvent.KEYCODE_BACK -> {
-                    returnToLibrary()
-                    return true
-                }
             }
         }
         return super.dispatchKeyEvent(event)

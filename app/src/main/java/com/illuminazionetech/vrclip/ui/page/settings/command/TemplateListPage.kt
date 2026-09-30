@@ -173,9 +173,11 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                     onClick = {
                                         scope.launch {
                                             snackbarHostState.showSnackbar(
-                                                App.context
-                                                    .getString(R.string.template_exported)
-                                                    .format(templates.size)
+                                                App.context.resources.getQuantityString(
+                                                    R.plurals.template_exported,
+                                                    templates.size,
+                                                    templates.size,
+                                                )
                                             )
                                         }
                                         scope.launch {
@@ -197,9 +199,11 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                                     val res =
                                                         DatabaseUtil.importTemplatesFromJson(it)
                                                     snackbarHostState.showSnackbar(
-                                                        App.context
-                                                            .getString(R.string.template_imported)
-                                                            .format(res)
+                                                        App.context.resources.getQuantityString(
+                                                            R.plurals.template_imported,
+                                                            res,
+                                                            res,
+                                                        )
                                                     )
                                                 }
                                             }
@@ -250,8 +254,9 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
 
                         Text(
                             text =
-                                stringResource(
-                                    id = R.string.selected_item_count,
+                                pluralStringResource(
+                                    R.plurals.selected_item_count,
+                                    selectedTemplates.size,
                                     selectedTemplates.size,
                                 ),
                             style = MaterialTheme.typography.labelLarge,
@@ -263,9 +268,11 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                 view.slightHapticFeedback()
                                 scope.launch {
                                     snackbarHostState.showSnackbar(
-                                        App.context
-                                            .getString(R.string.template_exported)
-                                            .format(selectedTemplates.size)
+                                        App.context.resources.getQuantityString(
+                                            R.plurals.template_exported,
+                                            selectedTemplates.size,
+                                            selectedTemplates.size,
+                                        )
                                     )
                                 }
                                 scope.launch {

@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2.configure
 
+import androidx.compose.ui.res.pluralStringResource
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
@@ -505,10 +506,13 @@ private fun FormatPageImpl(
                             ) {
                                 Text(
                                     text =
-                                        stringResource(
-                                            id = R.string.split_video_msg,
-                                            videoInfo.chapters?.size ?: 0,
-                                        ),
+                                        (videoInfo.chapters?.size ?: 0).let { chapters ->
+                                            pluralStringResource(
+                                                R.plurals.split_video_msg,
+                                                chapters,
+                                                chapters,
+                                            )
+                                        },
                                     style = MaterialTheme.typography.labelMedium,
                                     modifier = Modifier.padding(horizontal = 12.dp),
                                 )
@@ -619,7 +623,7 @@ private fun FormatPageImpl(
 
                         ClickableTextAction(
                             visible = audioOnlyItemLimit < audioOnlyFormats.size,
-                            text = stringResource(R.string.show_all_items, audioOnlyFormats.size),
+                            text = pluralStringResource(R.plurals.show_all_items, audioOnlyFormats.size, audioOnlyFormats.size),
                         ) {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             audioOnlyItemLimit = Int.MAX_VALUE
@@ -669,7 +673,7 @@ private fun FormatPageImpl(
                             ClickableTextAction(
                                 visible = videoOnlyItemLimit < videoOnlyFormats.size,
                                 text =
-                                    stringResource(R.string.show_all_items, videoOnlyFormats.size),
+                                    pluralStringResource(R.plurals.show_all_items, videoOnlyFormats.size, videoOnlyFormats.size),
                             ) {
                                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                                 videoOnlyItemLimit = Int.MAX_VALUE
@@ -709,7 +713,7 @@ private fun FormatPageImpl(
                         )
                         ClickableTextAction(
                             visible = videoAudioItemLimit < videoAudioFormats.size,
-                            text = stringResource(R.string.show_all_items, videoAudioFormats.size),
+                            text = pluralStringResource(R.plurals.show_all_items, videoAudioFormats.size, videoAudioFormats.size),
                         ) {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             videoAudioItemLimit = Int.MAX_VALUE

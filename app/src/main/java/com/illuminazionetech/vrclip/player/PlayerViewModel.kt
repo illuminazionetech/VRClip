@@ -1,5 +1,9 @@
+@file:OptIn(UnstableApi::class)
+
 package com.illuminazionetech.vrclip.player
 
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import android.app.Application
 import android.net.Uri
 import android.view.Surface
@@ -664,7 +668,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         player.removeListener(listener)
         session.release()
         player.release()
-        super.onCleared()
     }
 
     companion object {

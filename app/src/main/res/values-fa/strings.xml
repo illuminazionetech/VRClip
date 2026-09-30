@@ -3,15 +3,10 @@
     <string name="download">بارگیری</string>
     <string name="video_directory">پوشه ویدئو</string>
     <string name="yt_dlp_up_to_date">استفاده از آخرین نسخه yt-dlp</string>
-    <string name="fetching_info">در حال دریافت اطلاعات ویدئو…</string>
     <string name="permission_denied">دسترسی رد شد</string>
-    <string name="download_success_msg">بارگیری به اتمام رسید</string>
     <string name="download_error_msg">فایل بارگیری نشد</string>
     <string name="language">نمایش زبان</string>
-    <string name="language_settings">تنظیم زبان</string>
-    <string name="task_running">یک عملیات بارگیری در حال انجام می باشد</string>
     <string name="paste_msg">جای‌گذاری پیوند</string>
-    <string name="ytdlp_version">نسخه Yt-dlp</string>
     <string name="ytdlp_update">برای نصب آخرین نسخه yt-dlp کلیک کنید</string>
     <string name="delete_info">حذف ؟</string>
     <string name="delete_info_msg">برای همیشه \"%1$s\" از سابقه دانلود شما حذف شود؟</string>
@@ -25,13 +20,11 @@
     <string name="release">آخرین نسخه</string>
     <string name="readme_desc">به مخزن برنامه در گیتهاب سر بزنید و دستورالعمل ها را مطالعه کنید</string>
     <string name="video">ویدئو</string>
-    <string name="checked">بررسی شد</string>
     <string name="custom_command">دستور سفارشی</string>
     <string name="custom_command_template">قالب دستور</string>
     <string name="start_execute">اجرای دستور را شروع کنید</string>
     <string name="advanced_settings">پیشرفته</string>
     <string name="print_details_desc">هنگام دانلود ، پیام اطلاعات را نمایش دهد</string>
-    <string name="display">نمایش</string>
     <string name="display_settings">تم سیاه، رنگ داینامیک ، زبان ها</string>
     <string name="dark_theme">تم تاریک</string>
     <string name="follow_system">سیستم</string>
@@ -40,15 +33,12 @@
     <string name="extract_audio">ذخیره به عنوان صدا</string>
     <string name="create_thumbnail">ذخیره تصویر شاخص</string>
     <string name="settings">تنظیمات</string>
-    <string name="url_empty">پیوند نمی تواند خالی باشد</string>
     <string name="create_thumbnail_summary">دخیره تصویر شاخص ویدئو به عنوان یک فایل</string>
     <string name="extract_audio_summary">بارگیری و ذخیره صدای ویدئو</string>
     <string name="yt_dlp_update_fail">آخرین نسخه yt-dlp نصب نشد ، لطفا از اتصال دستگاه خود به اینترنت اطمینان حاصل فرمایید.</string>
-    <string name="download_start_msg">\"%1$s\" بارگیری</string>
     <string name="fetch_info_error_msg">اطلاعات ویدئو دریافت نشد</string>
     <string name="general_settings">عمومی</string>
     <string name="paste_fail_msg">با پیوند موجود در کلیپ بورد مطابقت ندارد</string>
-    <string name="downloads_history">بارگیری‌ها</string>
     <string name="dismiss">انصراف</string>
     <string name="audio">صدا</string>
     <string name="open_url">باز کردن پیوند</string>
@@ -58,10 +48,8 @@
     <string name="credits_desc">سازندگان و کتابخانه نرم افزار</string>
     <string name="edit">ویرایش</string>
     <string name="off">خاموش</string>
-    <string name="download_settings_desc">عمومی، فرمت، دستور سفارشی</string>
     <string name="release_desc">مشاهده تغییرات و نسخه جدید</string>
     <string name="print_details">خروجی انتخابی</string>
-    <string name="settings_before_download_text">تنظیم دانلود</string>
     <string name="error_copied">کپی گزارش خطا در کلیپ بورد</string>
     <string name="thumbnail">پیش‌نمایش</string>
     <string name="paste">چسباندن</string>
@@ -72,19 +60,13 @@
     <string name="convert_audio_format_desc">صدا با فرمت MP3 یا M4A در اکثر دستگاه ها کار می کند.</string>
     <string name="preferred_format_desc">فرمت ترجیحی زمانی که چندین مورد دسترس باشند</string>
     <string name="close">بستن</string>
-    <string name="close_never_show_again">دوباره نمایش نده</string>
     <string name="open_settings">باز کردن تنظیمات</string>
     <string name="video_format_preference">فرمت ویدئو انتخابی</string>
-    <string name="download_desc">پس از تنظیم تنظیمات آن، روی \"دانلود\" کلیک کنید.</string>
-    <string name="download_history_desc">دانلودهای درون برنامه ای، از جمله فیلم ها و فایل های صوتی را بررسی و مدیریت کنید.</string>
     <string name="download_playlist">دانلود لیست پخش</string>
     <string name="download_playlist_desc">چندین ویدیو را از یک لیست پخش دانلود کنید</string>
-    <string name="defaults">پیش‌فرض</string>
     <string name="channel_name">دانلود</string>
-    <string name="battery_settings_desc">لطفاً برای بارگیری در پس‌زمینه، بهینه ساز باتری این برنامه را در تنظیمات سیستم روی \"بدون محدودیت\" تنظیم کنید.</string>
     <string name="concurrent_download">دانلود چند قسمتی</string>
     <string name="concurrent_download_desc">قسمت های بیشتری از ویدیوهای M3U8/MPD را به صورت موازی دانلود کنید</string>
-    <string name="share_success_msg">خواندن پیوند ویدیو از محتوای اشتراک‌گذاری شده…</string>
     <string name="show_more_actions">نمایش اقدامات بیشتر</string>
     <string name="download_notification">اعلان دانلود</string>
     <string name="fetching_playlist_info">در حال دریافت اطلاعات لیست پخش…</string>
@@ -92,7 +74,6 @@
     <string name="download_range_desc">محدوده ی ویدیوها را برای دانلود از لیست \"%3$s\" پخش مشخص کنید (از %1$d تا %2$d).</string>
     <string name="from">شروع از</string>
     <string name="to">پایان از</string>
-    <string name="playlist_indicator_text">در حال دانلود لیست پخش (%1$d/%2$d)…</string>
     <string name="audio_directory">پوشه صدا</string>
     <string name="subdirectory_desc">فایل‌ها را در پوشه‌هایی با نام حیطه مربوطه ذخیره کنید</string>
     <string name="permission_issue">مشکل در مجوز ذخیره سازی</string>
@@ -106,32 +87,26 @@
     <string name="video_quality">کیفیت ویدئو</string>
     <string name="video_quality_desc">در صورت وجود چندگانه، کیفیت فرمت ویدئو و اندازه فایل را محدود کنید</string>
     <string name="not_specified">مشخص نشده (پیش فرض)</string>
-    <string name="convert_audio">تبدیل</string>
     <string name="battery_configuration_desc">بهینه سازی باتری را برای دانلود در پس زمینه این برنامه نادیده بگیرید</string>
     <string name="translate">ترجمه</string>
-    <string name="video_format">فرمت ویدئو</string>
     <string name="download_notification_desc">اطلاع از فایل های دانلود شده و پیشرفت</string>
-    <string name="unknown_error">خطای ناشناخته</string>
     <string name="start_download">بارگیری</string>
-    <string name="user_guide">راهنمای کاربر</string>
     <string name="share_fail_msg">مطابقت پیوند از محتوای مشترک ممکن نیست</string>
     <string name="translate_desc">به ترجمه این برنامه در Weblate میزبانی شده کمک کنید</string>
-    <string name="paste_desc">برای دریافت پیوند ویدیو از کلیپ‌بورد، روی \"جای‌گذاری\" کلیک کنید.</string>
-    <string name="check_download_settings_desc">به تنظیمات دانلود نگاهی بیندازید و قبل از استفاده مطمئن شوید که آخرین نسخه yt-dlp را دارید.</string>
     <string name="channel_description">اطلاع از فایل های دانلود شده و پیشرفت دانلود</string>
     <string name="video_url">پیوند ویدئو</string>
     <string name="download_finish_notification">دانلود تمام شد. برای باز کردن ضربه بزنید.</string>
     <string name="execute_command_notification">در حال اجرای دستور سفارشی …</string>
-    <string name="concurrent_download_num">ا ز%d شته(های) برای دانلود همزمان ویدیوی بومی DASH/HLS استفاده می شود.</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="other">ا ز%d شته(های) برای دانلود همزمان ویدیوی بومی DASH/HLS استفاده می شود.</item>
+    </plurals>
     <string name="download_directory">پوشه دانلود</string>
-    <string name="options">گزینه ها</string>
     <string name="additional_settings">تنظیمات اضافی</string>
     <string name="download_directory_desc">محل ذخیره فیلم ها و فایل های صوتی را انتخاب کنید</string>
     <string name="subdirectory">ذخیره در زیر شاخه پوشه</string>
     <string name="invalid_index_range">محدوده شاخص نامعتبر است</string>
     <string name="battery_configuration">پیکربندی باتری</string>
     <string name="audio_format_preference">فرمت صوتی ترجیحی</string>
-    <string name="unlimited">نامحدود</string>
     <string name="lowest_bitrate">کمترین میزان بیت ریت</string>
     <string name="audio_quality">کیفیت صدا</string>
     <string name="audio_quality_desc">وقتی کیفیت های متعدد وجود دارد، میزان بیت ریت صدا را محدود کنید</string>
@@ -156,7 +131,9 @@
     <string name="update_channel">به روز رسانی کانال</string>
     <string name="auto_update">بروزرسانی خودکار</string>
     <string name="enable_auto_update">فعال سازی بروزرسانی خودکار</string>
-    <string name="delete_multiple_items_msg">%1$d مورد(ها) از سابقه بارگیری شما برای همیشه حذف شود؟</string>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="other">%1$d مورد(ها) از سابقه بارگیری شما برای همیشه حذف شود؟</item>
+    </plurals>
     <string name="show_logs">نمایش گزارش</string>
     <string name="logs">گزارش</string>
     <string name="status_enqueued">در صف قرار گرفته است</string>
@@ -181,20 +158,17 @@
     <string name="rename">ویرایش نام</string>
     <string name="download_with_cellular">دانلود با استفاده از اینترنت سیم کارت</string>
     <string name="download_with_cellular_desc">هنگامی که به شبکه‌های اندازه‌گیری شده متصل می‌شوید، بارگیری رسانه را مجاز کنید</string>
-    <string name="download_disabled_with_cellular">دانلود با شبکه تلفن همراه با توجه به تنظیمات شما غیرفعال است</string>
     <string name="discard">رد کردن</string>
-    <string name="apply">اعمال</string>
     <string name="clip_video">کلیپ ویدیو</string>
     <string name="clip_start">شروع</string>
     <string name="clip_end">پایان</string>
     <string name="check_for_updates">بررسی بروزرسانی</string>
     <string name="clear_temp_files">فایل های موقت را پاک کنید</string>
-    <string name="telegram_channel">کاناال تلگرام</string>
-    <string name="task_canceled">عملیات دانلود لغو شد</string>
     <string name="dynamic_color_desc">رنگ ها را از والپیپرها به تم برنامه اعمال کنید</string>
-    <string name="clear_temp_files_count">%1$d فایل(های) موقت حذف شد</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="other">%1$d فایل(های) موقت حذف شد</item>
+    </plurals>
     <string name="format_selection_desc">قبل از شروع دانلود، فرمت مورد نظر را برای دانلود انتخاب کنید</string>
-    <string name="downloading_indicator_text">دانلود در حال انجام است…</string>
     <string name="private_directory">دایرکتوری خصوصی</string>
     <string name="embed_subtitles">چسباندن زیرنویس</string>
     <string name="new_template">ساخت الگو جدید</string>
@@ -218,28 +192,23 @@
     <string name="embed_subtitles_desc">در صورت موجود، زیرنویس‌‌های جداگانه بر روی ویدیوها نصب شوند</string>
     <string name="template_label">عنوان</string>
     <string name="remove_template">آیا حذف شود؟</string>
-    <string name="remove_template_desc">برای همیشه \"%1$s\" از الگوهای خوب حذف شود؟</string>
     <string name="template_selection">انتخاب الگو</string>
-    <string name="custom_command_template_desc">الگو های فرمان را ویرایش و مدیریت کنید</string>
-    <string name="github_issue_desc">یک درخواست برای گزارش اشکال یا درخواست ویژگی ارسال کنید</string>
     <string name="info_copied">اطلاعات در کلیپ بورد کپی شد</string>
-    <string name="github_issue">ارسال مشکل در گیتهاب</string>
     <string name="status_canceled">لغو شد</string>
     <string name="status_fetching_video_info">در حال دریافت اطلاعات</string>
     <string name="open_file">باز کردن فایل</string>
     <string name="export_to_clipboard">استخراج به کلیپ برد</string>
-    <string name="download_task_count">%1$d عملیات در حال دانلود</string>
     <string name="use_cookies">انتخاب کوکی ها</string>
     <string name="remove_cookie_profile_desc">این ورودی به ازای «%1$s» حذف شود؟ لطفا بخاطر داشته باشید که کوکی‌های ذخیره شده در این سایت پاک نمی‌شوند.</string>
     <string name="how_does_it_work">چگونه کار می کند؟</string>
-    <string name="matrix_space">فضای ماتریس</string>
-    <string name="recently_added">به تازگی اضافه شده</string>
     <string name="status_downloading">در حال دانلود</string>
-    <string name="video_file_size">اندازه فایل ویدیویی</string>
     <string name="import_from_clipboard">وارد کردن از کلیپ برد</string>
-    <string name="template_exported">%1$d الگو(های) صادر شد</string>
-    <string name="template_imported">%1$d الگو(های) وارد شد</string>
-    <string name="multiselect_item_count">%1$d ویدیو، %2$d فایل صوتی</string>
+    <plurals name="template_exported">
+        <item quantity="other">%1$d الگو(های) صادر شد</item>
+    </plurals>
+    <plurals name="template_imported">
+        <item quantity="other">%1$d الگو(های) وارد شد</item>
+    </plurals>
     <string name="sponsorblock_categories_desc">دسته‌بندی‌های SponsorBlock را برای حذف از فایل ویدئو یا علامت‌گذاری در آن مشخص کنید</string>
     <string name="sponsorblock_categories">دسته های SponsorBlock</string>
     <string name="aria2_desc">از aria2c به عنوان دانلودر خارجی استفاده کنید</string>
@@ -250,13 +219,14 @@
     <string name="network">شبکه</string>
     <string name="rate_limit_desc">حداکثر سرعت بارگیری را مشخص کنید</string>
     <string name="max_rate">حداکثر تعداد</string>
-    <string name="high_contrast">تم تیره با کنتراست بالا</string>
     <string name="lowest_quality">پایین ترین کیفیت</string>
     <string name="unavailable">در دسترس نیست</string>
     <string name="format_settings_desc">فرمت فایل، کیفیت ویدئو، زیرنویس</string>
     <string name="general_settings_desc">نسخه Yt-dlp، اعلان، لیست پخش</string>
     <string name="download_selection_desc">ویدیوها را برای بارگیری از لیست پخش \"%1$s\" انتخاب کنید</string>
-    <string name="selected_item_count">%1$d مورد انتخاب شد</string>
+    <plurals name="selected_item_count">
+        <item quantity="other">%1$d مورد انتخاب شد</item>
+    </plurals>
     <string name="sdcard_directory">پوشه حافظه خارجی</string>
     <string name="auto_subtitle">زیرنویس های خودکار</string>
     <string name="title_activity_share">دانلود سریع</string>
@@ -273,33 +243,23 @@
     <string name="add">افزودن</string>
     <string name="shortcuts">شورتکات ها</string>
     <string name="edit_shortcuts_desc">میانبرهای سفارشی را ویرایش کنید که می توان از آنها برای نوشتن الگوهای فرمان استفاده کرد.</string>
-    <string name="running_tasks">عملیات های در حال اجرا</string>
     <string name="embed_subtitles_mkv_msg">برای جاسازی زیرنویس‌ها، فیلم‌ها به فرمتmkv تبدیل می‌شوند. شما می‌توانید از VLC Media Player یا سایر برنامه‌های سازگار برای تماشای فیلم‌ها با زیرنویس نچسبیده استفاده کنید.</string>
-    <string name="beta_features">آزمایشی</string>
     <string name="enable_experimental_feature">ویژگی آزمایشی فعال شود؟</string>
     <string name="clip_video_desc">در صفحه انتخاب فرمت کلیپ های ویدیویی بسازید</string>
     <string name="audio_format">فرمت صوتی</string>
     <string name="no_downloaded_media">رسانه دانلود شده ای وجود ندارد</string>
-    <string name="auto_update_disabled_msg">به‌روزرسانی خودکار برای ساخت‌های %1$s در دسترس نیست. اگر %1$s را روی دستگاه خود نصب نکرده‌اید، یا می‌خواهید ویژگی‌های جدید آینده را در VRClip پیش‌نمایش کنید، لطفاً %2$s را در نظر بگیرید.</string>
     <string name="clip_video_dialog_msg">دانلودهایی که از این ویژگی استفاده می کنند به FFmpeg واگذار می شود تا بخش های انتخابی ویدیو را دانلود کند، این ویژگی همچنان آزمایشی است و برش کاملاً دقیق نخواهد بود، همه فرمت ها از این ویژگی پشتیبانی نمی کنند و ممکن است سرعت دانلود پایین تری را تجربه کنید.</string>
-    <string name="switch_to_github_builds">تغییر به نسخه گیتهاب</string>
     <string name="okay">بسیار خب</string>
     <string name="got_it">فهمیدم</string>
-    <string name="feature_unavailable">ویژگی در دسترس نیست</string>
-    <string name="prefix">پیشوند</string>
-    <string name="no_custom_command_tasks">بدون وظایف دستوری سفارشی</string>
-    <string name="feedback">بازخورد</string>
-    <string name="temporary_directory_desc">دخیره فایل های موقت را در دایرکتوری داخلی</string>
-    <string name="clear_download_archive">خالی کردن بایگانی دانلود؟</string>
     <string name="save">ذخیره</string>
-    <string name="split_video_msg">ویدیو به %1$d قسمت تقسیم خواهد شد</string>
+    <plurals name="split_video_msg">
+        <item quantity="other">ویدیو به %1$d قسمت تقسیم خواهد شد</item>
+    </plurals>
     <string name="export_to_file">خروجی به فایل</string>
     <string name="enable_notifications_desc">برای ارسال اعلان در مورد وضعیت دانلودها، اپ به اجازهٔ شما نیاز دارد.</string>
     <string name="folder_picker">انتخاب پوشه</string>
     <string name="split_video">تقسیم ویدیو</string>
     <string name="prefer_compatibility_desc">ترجیح فرمت MP4 (H.264) هنگامی که با اپ‌های دیگر به اشتراک گذاشته می‌شود</string>
-    <string name="download_video_desc">دانلود ویدیو از نشانی</string>
-    <string name="clear_download_archive_desc">حذف همیشگی %1$s از بایگانی؟</string>
     <string name="edit_template">ویرایش «%1$s»</string>
     <string name="website">وب‌سایت</string>
     <string name="unknown">ناشناخته</string>
@@ -314,13 +274,13 @@
     <string name="restrict_filenames_desc">نام فایل‌ها رو محدود به کاراکترهای خاصی کنید تا از همگام بودن مطمئن شوید</string>
     <string name="new_task">دانلود جدید</string>
     <string name="copy_and_exit">کپی کن و خارج شو</string>
-    <string name="required">ضروری</string>
     <string name="convert_subtitle_desc">تبدیل زیرنویس‌ها به فرمتی دیگر</string>
-    <string name="show_all_items">نمایش همهٔ %1$d مورد</string>
+    <plurals name="show_all_items">
+        <item quantity="other">نمایش همهٔ %1$d مورد</item>
+    </plurals>
     <string name="output_template">قالب خروجی</string>
     <string name="disabled">غیرفعال</string>
     <string name="disable">غیرفعال</string>
-    <string name="auto">خودکار</string>
     <plurals name="item_count">
         <item quantity="one">%d مورد</item>
         <item quantity="other">%d مورد</item>
@@ -344,7 +304,6 @@
 \n
 \nهنگام استفاده از دستورات، اکثر تنظیمات و قابلیت‌ها غیرفعال می‌شوند.</string>
     <string name="commands">دستورات</string>
-    <string name="format_preference">فرمت ترجیحی</string>
     <string name="presets">تنظیمات پیش‌فرض</string>
     <string name="embed_metadata_desc">جاسازی مِتا دیتا و پیش‌نمایش ویدئو در فایل صوتی</string>
     <string name="embed_metadata">جاسازی مِتا دیتا</string>
@@ -352,12 +311,10 @@
     <string name="use_format_sorting">از مرتب‌سازی فرمت استفاده شود</string>
     <string name="allow_always">اجازه همیشگی</string>
     <string name="dont_allow">اجازه نده</string>
-    <string name="download_with_cellular_request">دانلود با دیتا گوشی اجازه داده شود؟</string>
     <string name="subdirectory_hint">دانلود شما ذخیره می‌شود در:</string>
     <string name="keep_subtitle_files">فایل‌های زیرنویس نگهداری شوند</string>
     <string name="output_template_desc">قالب را برای نام‌های فایل خروجی مشخص کنید</string>
     <string name="use_previous_selection">انتخاب قبلی استفاده شود</string>
-    <string name="remember_for_next_download">برای دانلود بعدی بخاطر داشته باش</string>
     <string name="system_settings">تنظیمات سیستم</string>
     <string name="reset">ریست</string>
     <string name="search_in_subtitles">جستجو در زیرنویس‌ها</string>
@@ -372,7 +329,6 @@
     <string name="backup_type">نوع بَک‌آپ</string>
     <string name="full_backup">بَک‌آپ کامل</string>
     <string name="none">هیچ‌ یک</string>
-    <string name="download_history">تاریخچه دانلود</string>
     <string name="every_month">هر ماه</string>
     <string name="every_week">هر هفته</string>
     <string name="every_day">هر روز</string>
@@ -392,19 +348,10 @@
     <string name="preset_format_selection_desc">دانلود اتوماتیک با استفاده از تنظیمات فرمت</string>
     <string name="edit_preset">تغییر تنظیمات پیش فرض</string>
     <string name="best_quality_desc">دانلود بهترین فرمت موجود</string>
-    <plurals name="audio_count">
-        <item quantity="one">%d صدا</item>
-        <item quantity="other">%d صدا</item>
-    </plurals>
-    <string name="task_added">عملیات به صف اضافه شد</string>
     <string name="force_ipv4_desc">اتصال همه از طریق IPv4</string>
     <string name="remove_multiple_templates_msg">برای همیشه %1$s از قالب های دستورات پاک شود؟</string>
     <string name="custom_format_selection_desc">از فرمت ها و زیرنویس ها انتخاب کنید و به دلخواه تنظیم کنید</string>
     <string name="search">جستجو</string>
-    <plurals name="video_count">
-        <item quantity="one">%d ویدئو</item>
-        <item quantity="other">%d ویدئو</item>
-    </plurals>
     <string name="merge_audiostream">ترکیب چند صدا</string>
     <string name="merge_audiostream_desc">اجازه برای ترکیب کردن چند صدا به یک فایل</string>
     <string name="ua_header">سرصفحه کاربر</string>
@@ -412,7 +359,9 @@
     <string name="remux_container_mkv_desc">ورود ویدئو های ریموکس به مخزن MKV برای پشتیبانی بهتر</string>
     <string name="download_archive_error">این ویدئو دانلود شد. اگر این غیر منتظره است، لطفا بایگانی دانلودتان را چک کنید.</string>
     <string name="export_download_history_msg">در حال استخراج %1$s از تاریخچه دانلود. فایل های دانلود شده و تنظیمات نسخه پشتیبانی نخواهند داشت.</string>
-    <string name="cookies_in_database">%1$d کوکی از %2$d وبسایت در کل</string>
+    <plurals name="cookies_in_database">
+        <item quantity="other">%1$d کوکی از %2$d وبسایت در کل</item>
+    </plurals>
     <string name="auto_translated_subtitles">ترجمه زیرنویس اتوماتیک</string>
     <string name="auto_translated_subtitles_msg">زیرنویس با ترجمه اتوماتیک برای همه ی زبان ها در دسترس خواهند بود. این زیرنویس ها ممکن است اشتباه یا درک کردنشان دشوار باشد.</string>
     <string name="subtitle_language_desc">زبان زیرنویس های فرمت اتوماتیک برای دانلود، جدا شده با ویرگول.</string>
@@ -424,12 +373,13 @@
     <string name="status_downloaded">بارگذاری شد</string>
     <string name="download_hint">بر روی گزینه بارگذاری کلیک کنید یا لینک یک ویدئو را با این نرم‌افزار اشتراک گذاری فرمایید تا یک بارگذاری شروع شود</string>
     <string name="all">همه</string>
-    <string name="select_multiple_link">از پیوندهای %1$d انتخاب فرمایید</string>
+    <plurals name="select_multiple_link">
+        <item quantity="other">از پیوندهای %1$d انتخاب فرمایید</item>
+    </plurals>
     <string name="download_queue">صف بارگذاری</string>
     <string name="trouble_shooting">رفع اشکال</string>
     <string name="issue_tracker">ردیاب مشکل</string>
     <string name="trouble_shooting_desc">خطاهای رایج را حل و مشکلات شناخته شده را بررسی کنید</string>
-    <string name="show_navigation_drawer">نمایش نوار ناوبری</string>
     <string name="delete">پاک کن</string>
     <string name="resume">ادامه بده</string>
     <string name="media_info">اطلاعات رسانه</string>

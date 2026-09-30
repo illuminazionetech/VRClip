@@ -50,7 +50,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -337,7 +336,6 @@ private fun detectionSourceLabel(source: DetectionSource): String =
 /** Model download prompt and the "live 3D unavailable" notice. */
 @Composable
 internal fun Live3dMessages(state: PlayerUiState, viewModel: PlayerViewModel) {
-    val context = LocalContext.current
     if (state.live3d == Live3dState.NeedsModel) {
         DepthModelDialog(
             onDismiss = viewModel::dismissLive3dMessage,
@@ -374,7 +372,7 @@ internal fun Live3dMessages(state: PlayerUiState, viewModel: PlayerViewModel) {
                     Icon(Icons.Rounded.ViewInAr, contentDescription = null)
                     Spacer(Modifier.width(12.dp))
                     Text(
-                        text = context.getString(R.string.player_live_3d_failed),
+                        text = stringResource(R.string.player_live_3d_failed),
                         color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }

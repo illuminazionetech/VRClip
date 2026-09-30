@@ -4,9 +4,7 @@
     <string name="extract_audio">Save as audio</string>
     <string name="create_thumbnail">Save thumbnail</string>
     <string name="settings">Settings</string>
-    <string name="download_settings_desc">General, format, custom command</string>
     <string name="download">Download</string>
-    <string name="url_empty">The link cannot be empty</string>
     <string name="extract_audio_summary">Download and save audio, instead of video</string>
     <string name="create_thumbnail_summary">Save video thumbnail as a file</string>
     <string name="yt_dlp_up_to_date">Using the latest version of yt-dlp</string>
@@ -23,29 +21,22 @@
     <string name="onboarding_engine_title">Download engine</string>
     <string name="onboarding_engine_desc">VRClip uses yt-dlp to fetch videos and keeps it updated automatically so sites like YouTube keep working.</string>
     <string name="storage_access_needed">Storage access needed</string>
-    <string name="storage_access_needed_desc">Grant All files access so downloads can be saved to your Download folder.</string>
     <string name="grant_access">Grant access</string>
     <string name="onboarding_continue">Continue</string>
     <string name="get_started">Get started</string>
     <string name="skip">Skip</string>
     <string name="done">Done</string>
     <string name="retry">Retry</string>
-    <string name="fetching_info">Fetching video info…</string>
     <string name="permission_denied">Permission denied</string>
-    <string name="download_success_msg">Download finished</string>
     <string name="download_error_msg">Could not download file</string>
-    <string name="download_start_msg">Download \"%1$s\"</string>
     <string name="fetch_info_error_msg">Could not fetch video info</string>
     <string name="general_settings">General</string>
     <string name="vr_mode">VR Mode</string>
     <string name="vr_mode_desc">Optimize downloads for Meta Quest 3 and 3D videos</string>
     <string name="vr_and_3d">VR &amp; 3D</string>
     <string name="language">Display language</string>
-    <string name="language_settings">Set display language</string>
-    <string name="task_running">An existing download task is already running</string>
     <string name="paste_msg">Paste URL</string>
     <string name="paste_fail_msg">Could not match the URL in the clipboard</string>
-    <string name="ytdlp_version">Yt-dlp version</string>
     <string name="ytdlp_update">Click to install the latest yt-dlp version</string>
     <string name="ytdlp_update_action">Update yt-dlp</string>
     <string name="delete_info">Remove?</string>
@@ -53,7 +44,6 @@
     </string>
     <string name="confirm">Confirm</string>
     <string name="dismiss">Cancel</string>
-    <string name="downloads_history">Downloads</string>
     <string name="audio">Audio</string>
     <string name="link_copied">Link copied to clipboard</string>
     <string name="open_url">Open link</string>
@@ -69,7 +59,6 @@
     <string name="readme_desc">Check the GitHub repository and the README</string>
     <string name="readme" translatable="false">README</string>
     <string name="video">Video</string>
-    <string name="checked">Checked</string>
     <string name="credits">Credits</string>
     <string name="credits_desc">Credits and libre software</string>
     <string name="custom_command">Custom command</string>
@@ -80,7 +69,6 @@
     <string name="advanced_settings">Advanced</string>
     <string name="print_details">Detailed output</string>
     <string name="print_details_desc">Print detailed messages when downloading</string>
-    <string name="display">Display</string>
     <string name="display_settings">Dark theme, dynamic color, languages</string>
     <string name="dark_theme">Dark theme</string>
     <string name="follow_system">System</string>
@@ -89,7 +77,6 @@
     <string name="cancel">Cancel</string>
     <string name="settings_before_download">Configure before download</string>
     <string name="settings_before_download_desc">Configure preferences before downloading</string>
-    <string name="settings_before_download_text">Adjust this download</string>
     <string name="error_copied">Error report copied to clipboard</string>
     <string name="thumbnail">Thumbnail</string>
     <string name="paste">Paste</string>
@@ -106,37 +93,24 @@
     <string name="not_specified">Not specified (default)</string>
     <string name="video_format_preference">Preferred video format</string>
     <string name="preferred_format_desc">Preferred format when multiple are provided</string>
-    <string name="video_format">Video format</string>
-    <string name="convert_audio">Convert</string>
     <string name="start_download">Download</string>
     <string name="close">Close</string>
-    <string name="close_never_show_again">Don\'t show up again</string>
-    <string name="user_guide">User guide</string>
     <string name="open_settings">Open settings</string>
-    <string name="paste_desc">Click \"Paste\" to get video link from your clipboard.</string>
-    <string name="download_desc">Then click \"Download\" after adjusting its settings.
-    </string>
-    <string name="download_history_desc">Check and manage in-app downloads, including videos and audio files.</string>
-    <string name="check_download_settings_desc">Take a look at the download settings and make sure
-        you have the latest version of yt-dlp before using it.
-    </string>
     <string name="download_playlist">Download playlist</string>
     <string name="download_playlist_desc">Download multiple videos from a playlist</string>
-    <string name="defaults">Default</string>
     <string name="channel_name">Download</string>
     <string name="channel_description">Notify of downloaded files and progress</string>
     <string name="video_url">Video link</string>
     <string name="download_finish_notification">Download finished. Tap to open.</string>
     <string name="execute_command_notification">Running custom commands…</string>
-    <string name="battery_settings_desc">"Please set battery usage of this app to \"Unrestricted\" in the system settings to download in the background."
-    </string>
     <string name="concurrent_download">Multi-threaded download</string>
     <string name="concurrent_download_desc">Download more parts of M3U8/MPD videos in parallel</string>
-    <string name="concurrent_download_num">%d thread(s) would be used to download DASH/HLS native video concurrently.</string>
-    <string name="options">Options</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="one">%d thread will download DASH/HLS video fragments in parallel.</item>
+        <item quantity="other">%d threads will download DASH/HLS video fragments in parallel.</item>
+    </plurals>
     <string name="additional_settings">Additional settings</string>
     <string name="share_fail_msg">Unable to match URL from shared content</string>
-    <string name="share_success_msg">Reading video link from shared content…</string>
     <string name="show_more_actions">Show more actions</string>
     <string name="download_notification">Download notification</string>
     <string name="download_notification_desc">"Notify of downloaded files and progress"</string>
@@ -146,7 +120,6 @@
     <string name="from">Start</string>
     <string name="to">End</string>
     <string name="invalid_index_range">Invalid index range</string>
-    <string name="playlist_indicator_text">Downloading playlist (%1$d/%2$d)…</string>
     <string name="audio_directory">Audio folder</string>
     <string name="download_directory">Download directory</string>
     <string name="download_directory_desc">Select where to store videos and audio files</string>
@@ -157,22 +130,14 @@
     <string name="battery_configuration">Battery configuration</string>
     <string name="battery_configuration_desc">Ignore battery optimization for this app to download in the background</string>
     <string name="service_title">VRClip is downloading…</string>
-    <string name="unknown_error">Unknown error</string>
     <string name="translate">Translate</string>
     <string name="translate_desc">Help translate this app on Hosted Weblate</string>
-    <string name="prefix">Prefix</string>
     <string name="embed_subtitles">Embed subtitles</string>
     <string name="embed_subtitles_desc">Embed soft-subs into videos if available</string>
     <string name="new_template">New template</string>
     <string name="template_label">Label</string>
     <string name="remove_template">Remove?</string>
-    <string name="remove_template_desc">Remove \"%1$s\" from command templates for good?</string>
     <string name="template_selection">Template selection</string>
-    <string name="custom_command_template_desc">Edit and manage command templates</string>
-    <string name="downloading_indicator_text">Download in progress…</string>
-    <string name="task_canceled">Download task canceled</string>
-    <string name="github_issue">GitHub issue</string>
-    <string name="github_issue_desc">Submit an issue for bug report or feature request</string>
     <string name="info_copied">Info copied to clipboard</string>
 
     <string name="status_enqueued">Enqueued</string>
@@ -186,15 +151,20 @@
     <string name="copy_link">Copy link</string>
     <string name="copy_error_report">Copy report</string>
     <string name="video_resolution">Video resolution</string>
-    <string name="video_file_size">Video file size</string>
     <string name="export_to_clipboard">Export to clipboard</string>
     <string name="import_from_clipboard">Import from clipboard</string>
-    <string name="template_exported">Exported %1$d template(s)</string>
-    <string name="template_imported">Imported %1$d template(s)</string>
-    <string name="download_task_count">%1$d Download tasks</string>
-    <string name="recently_added">Recently Added</string>
-    <string name="multiselect_item_count">%1$d video(s), %2$d audio file(s)</string>
-    <string name="delete_multiple_items_msg">Remove %1$d item(s) from your download history for good?</string>
+    <plurals name="template_exported">
+        <item quantity="one">Exported %1$d template</item>
+        <item quantity="other">Exported %1$d templates</item>
+    </plurals>
+    <plurals name="template_imported">
+        <item quantity="one">Imported %1$d template</item>
+        <item quantity="other">Imported %1$d templates</item>
+    </plurals>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="one">Remove %1$d item from your download history for good?</item>
+        <item quantity="other">Remove %1$d items from your download history for good?</item>
+    </plurals>
     <string name="sponsorblock" translatable="false">SponsorBlock</string>
     <string name="sponsorblock_desc">Remove or mark segments in videos with SponsorBlock API</string>
     <string name="sponsorblock_categories_desc">Specify the SponsorBlock categories to remove or mark in the video file</string>
@@ -208,10 +178,12 @@
     <string name="aria2_desc">Use aria2c as the external downloader</string>
     <string name="cookies">Cookies</string>
     <string name="cookies_desc">Use Netscape formatted cookies for downloads</string>
-    <string name="cookies_file_name" translatable="false">cookies.txt</string>
     <string name="clear_temp_files">Clear temporary files</string>
     <string name="clear_temp_files_desc">Delete all temporary files from the temporary directory</string>
-    <string name="clear_temp_files_count">Deleted %1$d temporary file(s)</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="one">Deleted %1$d temporary file</item>
+        <item quantity="other">Deleted %1$d temporary files</item>
+    </plurals>
     <string name="clear_temp_files_info">Temporary files can be used to resume cancelled downloads. Are you sure to delete all of these files?\n\nYou can access these files in %1$s</string>
     <string name="multiselect_mode">Multiselect mode</string>
     <string name="private_mode">Incognito</string>
@@ -220,13 +192,11 @@
     <string name="dynamic_color_desc">Apply colors from wallpapers to the app theme</string>
     <string name="download_with_cellular">Download using cellular</string>
     <string name="download_with_cellular_desc">Allow downloading media when connected to metered networks</string>
-    <string name="download_disabled_with_cellular">Downloading with cellular network is disabled according to your settings</string>
     <string name="file_unavailable">This file is no longer available</string>
     <string name="network">Network</string>
     <string name="rate_limit">Rate limit</string>
     <string name="rate_limit_desc">Limit the maximum download speed</string>
     <string name="max_rate">Maximum rate</string>
-    <string name="high_contrast">High contrast dark theme</string>
     <string name="invalid_input">Invalid input</string>
     <string name="lowest_quality">Lowest quality</string>
     <string name="download_queue">Download queue</string>
@@ -244,7 +214,10 @@
     <string name="crop_artwork_desc">Crop embedded image into square</string>
     <string name="download_selection_desc">Select videos to download from the playlist \"%1$s\"</string>
     <string name="select_all">Select all</string>
-    <string name="selected_item_count">%1$d selected</string>
+    <plurals name="selected_item_count">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
     <string name="video_only">Video (no audio)</string>
     <string name="suggested">Suggested</string>
     <string name="format_selection">Format selection</string>
@@ -256,8 +229,6 @@
     <string name="how_does_it_work">How does it work?</string>
     <string name="cookies_usage_msg">Downloading from some sites requires account authentication information. Click \"Generate new cookies\", enter the URL of the website and then log in with your account in the browser page, the app will generate it for you.</string>
     <string name="custom_command_usage_msg">yt-dlp is a powerful command-line tool for downloading videos. VRClip makes it easier to use yt-dlp by providing an intuitive GUI, presets for common commands, and other additional features.\n\nFor advanced usage of yt-dlp, VRClip allows you to create, save and execute custom command templates directly, just like in a terminal.\n\nWhen using custom commands, most of the GUI options and features would be disabled.</string>
-    <string name="telegram_channel">Telegram channel</string>
-    <string name="matrix_space">Matrix space</string>
     <string name="sdcard_directory">SD card folder</string>
     <string name="auto_subtitle">Automatic captions</string>
     <string name="auto_subtitle_desc">Download auto-generated captions</string>
@@ -275,7 +246,6 @@
     <string name="add">Add</string>
     <string name="shortcuts">Shortcuts</string>
     <string name="edit_shortcuts_desc">Edit the custom shortcuts that can be used to compose command templates.</string>
-    <string name="running_tasks">Running tasks</string>
     <string name="show_logs">Show log</string>
     <string name="logs">Log</string>
     <string name="subtitle_sponsorblock">Subtitles may be mistimed when removing SponsorBlock segments.</string>
@@ -290,12 +260,10 @@
     <string name="auto_update">Auto update</string>
     <string name="enable_auto_update">Enable auto update</string>
     <string name="discard">Discard</string>
-    <string name="apply">Apply</string>
     <string name="clip_video">Clip video</string>
     <string name="clip_start">Start</string>
     <string name="clip_end">End</string>
     <string name="audio_format_preference">Preferred audio format</string>
-    <string name="unlimited">Unlimited</string>
     <string name="lowest_bitrate">Lowest bitrate</string>
     <string name="audio_quality">Audio quality</string>
     <string name="audio_quality_desc">Limit audio bitrate when multiple qualities are present</string>
@@ -308,27 +276,22 @@
     <string name="minute">minute</string>
     <string name="clear_all_cookies">Clear all cookies</string>
     <string name="clear_all_cookies_desc">Delete all the cookies stored in the app for good?</string>
-    <string name="temporary_directory_desc">Store temporary files in the internal directory</string>
-    <string name="feedback">Feedback</string>
     <string name="audio_format">Audio format</string>
     <string name="no_downloaded_media">No downloaded media</string>
-    <string name="beta_features">Beta</string>
     <string name="enable_experimental_feature">Enable experimental feature?</string>
     <string name="clip_video_dialog_msg">Downloads using this feature will be delegated to FFmpeg to download selected sections of the video, this feature is still experimental and the cutting will not be completely accurate, not all formats support this feature and you may experience slower download speeds.</string>
     <string name="clip_video_desc">Make video clips in the format selection page</string>
     <string name="embed_thumbnail" translatable="false">Embed thumbnail</string>
     <string name="embed_thumbnail_desc" translatable="false">Embed thumbnails into videos</string>
-    <string name="auto_update_disabled_msg">Auto-update is not available for %1$s builds. If you don\'t have %1$s installed on your device, or would like to preview upcoming new features in VRClip, please consider %2$s.</string>
-    <string name="switch_to_github_builds">switching to GitHub builds</string>
     <string name="okay">Okay</string>
     <string name="got_it">Got it</string>
-    <string name="feature_unavailable">Feature not available</string>
-    <string name="no_custom_command_tasks">No custom command tasks</string>
-    <string name="download_video_desc">Download videos from the URL</string>
     <string name="convert_subtitle">Convert subtitles</string>
     <string name="convert_subtitle_desc">Convert the subtitles to another format</string>
     <string name="split_video">Split video</string>
-    <string name="split_video_msg">Video will be split into %1$d chapters</string>
+    <plurals name="split_video_msg">
+        <item quantity="one">The video will be split into %1$d chapter</item>
+        <item quantity="other">The video will be split into %1$d chapters</item>
+    </plurals>
     <string name="unknown_error_title">Oops! Something went wrong</string>
     <string name="copy_and_exit">Copy and exit</string>
     <string name="expand">Expand</string>
@@ -351,9 +314,7 @@
     <string name="prefer_quality_desc">Prefer AV1, VP9 or H.265 formats for watching in compatible apps</string>
     <string name="download_type">Download type</string>
     <string name="custom">Custom</string>
-    <string name="auto">Auto</string>
     <string name="commands">Commands</string>
-    <string name="format_preference">Format preference</string>
     <string name="learn_more">Learn more</string>
     <string name="unknown">Unknown</string>
     <string name="refresh_cookies_desc">Tap to open webpage for generating new cookies:</string>
@@ -365,12 +326,12 @@
     <string name="output_template_desc">Specify the template for output file names</string>
     <string name="download_archive">Download archive</string>
     <string name="download_archive_desc">Record downloaded video IDs in an archive to avoid duplicate downloads</string>
-    <string name="clear_download_archive">Clear download archive?</string>
-    <string name="clear_download_archive_desc">Remove %1$s in the archive file for good?</string>
     <string name="embed_metadata">Embed metadata</string>
     <string name="embed_metadata_desc">Embed metadata and video thumbnail into the audio file</string>
-    <string name="required">Required</string>
-    <string name="show_all_items">Show all %1$d items</string>
+    <plurals name="show_all_items">
+        <item quantity="one">Show %1$d item</item>
+        <item quantity="other">Show all %1$d items</item>
+    </plurals>
     <string name="edit_file">Edit file</string>
     <string name="save">Save</string>
     <string name="use_format_sorting">Use format sorting</string>
@@ -386,7 +347,6 @@
     <string name="allow_once">Allow once</string>
     <string name="allow_always">Allow always</string>
     <string name="dont_allow">Don\'t allow</string>
-    <string name="download_with_cellular_request">Allow downloading with cellular?</string>
     <string name="merge_audiostream">Merge multiple audio stream</string>
     <string name="merge_audiostream_desc">Allow multiple audio streams to be merged into a single file</string>
     <string name="search_in_downloads">Search in downloads</string>
@@ -394,7 +354,6 @@
     <string name="auto_translated_subtitles">Auto-translated subtitles</string>
     <string name="auto_translated_subtitles_msg">Auto-translated subtitles for all languages will be available in downloads. These subtitles may be inaccurate and difficult to understand.</string>
     <string name="subtitle_language_desc">Language of the subtitles to download in Auto format selection, separated by commas.</string>
-    <string name="remember_for_next_download">Remember for next download</string>
     <string name="look_and_feel"><![CDATA[Look & feel]]></string>
     <string name="interface_and_interaction"><![CDATA[Interface & interaction]]></string>
 
@@ -419,13 +378,15 @@
     <string name="import_download_history">Import download history?</string>
     <string name="import_download_history_msg">Downloaded files won\'t be imported. You\'ll need to download them back manually</string>
     <string name="export_download_history_msg">Exporting %1$s from download history. Downloaded files and preferences won\'t be backed up.</string>
-    <string name="download_history">Download history</string>
     <string name="download_history_imported">Imported %1$s to download history</string>
     <string name="redownload">Redownload</string>
     <string name="download_archive_error">The video has been downloaded. If this is not the expected behavior, please check your download archive.</string>
     <string name="remux_container_mkv">Remux video container</string>
     <string name="remux_container_mkv_desc">Remux videos into MKV container for better compatibility</string>
-    <string name="cookies_in_database">%1$d cookies from %2$d websites in total</string>
+    <plurals name="cookies_in_database">
+        <item quantity="one">%1$d cookie saved (sites: %2$d)</item>
+        <item quantity="other">%1$d cookies saved (sites: %2$d)</item>
+    </plurals>
     <string name="every_day">Every day</string>
     <string name="every_week">Every week</string>
     <string name="every_month">Every month</string>
@@ -438,13 +399,14 @@
     <string name="preset_format_selection_desc">Download automatically using your format preferences</string>
     <string name="edit_preset">Edit preset</string>
     <string name="best_quality_desc">Download the best available format</string>
-    <string name="task_added">Task added to queue</string>
     <string name="you_ll_find_your_downloads_here">You\'ll find your downloads here</string>
     <string name="download_hint">Tap on the download button or share a video link to this app to start a download</string>
     <string name="status_downloaded">Downloaded</string>
     <string name="all">All</string>
-    <string name="select_multiple_link">Select from %1$d links</string>
-    <string name="show_navigation_drawer">Show navigation drawer</string>
+    <plurals name="select_multiple_link">
+        <item quantity="one">Select from %1$d link</item>
+        <item quantity="other">Select from %1$d links</item>
+    </plurals>
     <string name="resume">Resume</string>
     <string name="delete">Delete</string>
     <string name="media_info">Media info</string>
@@ -454,19 +416,10 @@
     <string name="issue_tracker_hint">Encountered an error? Before reporting a new issue, please search our issue tracker. Many common problems have already been addressed and documented there.</string>
     <string name="ytdlp_issue_tracker">yt-dlp issue tracker</string>
     <string name="saved_urls">Saved links</string>
-    <string name="add_new_url">Add new link</string>
     <string name="add_to">Add to %1$s</string>
     <plurals name="item_count">
         <item quantity="one">%d item</item>
         <item quantity="other">%d items</item>
-    </plurals>
-    <plurals name="video_count">
-        <item quantity="one">%d video</item>
-        <item quantity="other">%d videos</item>
-    </plurals>
-    <plurals name="audio_count">
-        <item quantity="one">%d audio</item>
-        <item quantity="other">%d audios</item>
     </plurals>
     <string name="switch_to_grid_view">Switch to grid view</string>
     <string name="switch_to_list_view">Switch to list view</string>
@@ -485,7 +438,6 @@
     <string name="player_stereo_output">3D display mode</string>
     <string name="player_stereo_output_single">Single eye (normal viewing)</string>
     <string name="player_stereo_output_split">Split screen (Cardboard-style headset)</string>
-    <string name="player_error">Playback error: %1$s</string>
     <string name="player_settings_title">Player</string>
     <string name="player_settings_subtitle">3D, 360° and Meta Quest playback</string>
     <string name="player_default_immersive_quest">Immersive playback on Meta Quest</string>

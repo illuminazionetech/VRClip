@@ -4,32 +4,23 @@
     <string name="release">Versão mais recente</string>
     <string name="readme_desc">Verifique o repositório GitHub e o README</string>
     <string name="video">Vídeo</string>
-    <string name="checked">Verificado</string>
     <string name="credits">Créditos</string>
     <string name="video_directory">Pasta de vídeo</string>
     <string name="extract_audio">Guardar como áudio</string>
     <string name="create_thumbnail">Guardar a miniatura</string>
     <string name="settings">Definições</string>
-    <string name="download_settings_desc">Geral, formato, comando personalizado</string>
     <string name="download">Descarregar</string>
-    <string name="url_empty">A ligação não pode estar vazia</string>
     <string name="extract_audio_summary">Descarregar e guardar áudio, em vez de vídeo</string>
     <string name="create_thumbnail_summary">Guardar a miniatura do vídeo como um ficheiro</string>
     <string name="yt_dlp_up_to_date">Usando a versão mais recente do yt-dlp</string>
     <string name="yt_dlp_update_fail">Não foi possível instalar a versão mais recente do yt-dlp. Certifique-se de que está ligado à Internet.</string>
-    <string name="fetching_info">Obtenção de informações sobre o vídeo…</string>
     <string name="permission_denied">Permissão negada</string>
-    <string name="download_success_msg">Descarga concluída</string>
     <string name="download_error_msg">Não foi possível descarregar o ficheiro</string>
-    <string name="download_start_msg">Descarregar \"%1$s\"</string>
-    <string name="task_running">Uma tarefa de descarga existente já está em execução</string>
     <string name="fetch_info_error_msg">Não foi possível obter informações sobre o vídeo</string>
     <string name="general_settings">Geral</string>
     <string name="language">Língua de visualização</string>
-    <string name="language_settings">Definir a língua do ecrã</string>
     <string name="paste_msg">Colar URL</string>
     <string name="paste_fail_msg">Não foi possível fazer corresponder o URL na área de transferência</string>
-    <string name="ytdlp_version">Versão Yt-dlp</string>
     <string name="ytdlp_update">Clique para instalar a versão mais recente do yt-dlp</string>
     <string name="ytdlp_update_action">Atualizar yt-dlp</string>
     <string name="delete_info">Remover\?</string>
@@ -39,7 +30,6 @@
     <string name="delete_file">Eliminar ficheiro</string>
     <string name="about_page">Versão, feedback, atualização automática</string>
     <string name="dismiss">Cancelar</string>
-    <string name="downloads_history">Descargas</string>
     <string name="remove">Remover</string>
     <string name="about">Acerca</string>
     <string name="audio">Áudio</string>
@@ -55,8 +45,6 @@
     <string name="advanced_settings">Avançado</string>
     <string name="print_details">Saída detalhada</string>
     <string name="print_details_desc">Imprimir mensagens detalhadas durante a descarga</string>
-    <string name="settings_before_download_text">Ajustar esta descarga</string>
-    <string name="display">Ecrã</string>
     <string name="display_settings">Tema escuro, cor dinâmica, línguas</string>
     <string name="dark_theme">Tema escuro</string>
     <string name="off">Desligado</string>
@@ -81,34 +69,27 @@
     <string name="not_specified">Não especificado (predefinição)</string>
     <string name="video_format_preference">Formato de vídeo preferido</string>
     <string name="preferred_format_desc">Formato preferido quando são fornecidos vários</string>
-    <string name="video_format">Formato de vídeo</string>
     <string name="start_download">Descarregar</string>
     <string name="close">Fechar</string>
-    <string name="close_never_show_again">Não voltar a aparecer</string>
-    <string name="user_guide">Guia do utilizador</string>
     <string name="open_settings">Abrir definições</string>
-    <string name="paste_desc">Clique em \"Colar\" para obter a ligação do vídeo da sua área de transferência.</string>
-    <string name="download_desc">Em seguida, clique em \"Descarregar\" depois de ajustar as definições.</string>
-    <string name="download_history_desc">Verificar e gerir as descargas na aplicação, incluindo vídeos e ficheiros de áudio.</string>
-    <string name="check_download_settings_desc">Consulte as definições de descarga e certifique-se de que tem a versão mais recente do yt-dlp antes de o utilizar.</string>
     <string name="download_playlist">Descarregar lista de reprodução</string>
     <string name="download_playlist_desc">Descarregar vários vídeos de uma lista de reprodução</string>
-    <string name="defaults">Predefinição</string>
     <string name="channel_name">Descarregar</string>
-    <string name="convert_audio">Converter</string>
     <string name="channel_description">Notificação dos ficheiros descarregados e do seu progresso</string>
     <string name="video_url">Ligação vídeo</string>
     <string name="download_finish_notification">Descarga concluída. Toque para abrir.</string>
     <string name="execute_command_notification">Executar comandos personalizados…</string>
-    <string name="battery_settings_desc">Defina a utilização da bateria desta aplicação como \"Sem restrições\" nas definições do sistema para descarregar em segundo plano.</string>
     <string name="concurrent_download">Descarga multi-tarefa</string>
     <string name="concurrent_download_desc">Descarregar mais partes de vídeos M3U8/MPD em paralelo</string>
-    <string name="concurrent_download_num">%d thread(s) seria(m) utilizado(s) para descarregar vídeo nativo DASH/HLS em simultâneo.</string>
-    <string name="options">Opções</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="other">%d thread(s) seria(m) utilizado(s) para descarregar vídeo nativo DASH/HLS em simultâneo.</item>
+    </plurals>
     <string name="additional_settings">Definições adicionais</string>
     <string name="use_custom_command">Utilizar comando personalizado</string>
     <string name="select_all">Selecionar tudo</string>
-    <string name="selected_item_count">%1$d selecionado(s)</string>
+    <plurals name="selected_item_count">
+        <item quantity="other">%1$d selecionado(s)</item>
+    </plurals>
     <string name="video_only">Vídeo (sem áudio)</string>
     <string name="video_creator_sample_text">Texto de exemplo do criador de vídeo</string>
     <string name="subtitle">Legenda</string>
@@ -117,13 +98,10 @@
     <string name="clip_end">Fim</string>
     <string name="clip_start">Início</string>
     <string name="audio_format_preference">Formato áudio preferido</string>
-    <string name="no_custom_command_tasks">Nenhuma tarefa de comando personalizada</string>
-    <string name="download_video_desc">Descarregar vídeos a partir do URL</string>
     <string name="convert_subtitle">Converter legendas</string>
     <string name="convert_subtitle_desc">Converter as legendas para outro formato</string>
     <string name="unknown_error_title">Ops! Algo correu mal</string>
     <string name="share_fail_msg">Não é possível fazer corresponder o URL de um conteúdo partilhado</string>
-    <string name="share_success_msg">Ler a ligação de vídeo de um conteúdo partilhado…</string>
     <string name="show_more_actions">Mostrar mais acções</string>
     <string name="download_notification">Notificação de descarga</string>
     <string name="download_notification_desc">Notificação dos ficheiros descarregados e do seu progresso</string>
@@ -132,7 +110,6 @@
     <string name="download_range_desc">Especifique o intervalo de vídeos a descarregar da lista de reprodução \"%3$s\" (de %1$d a %2$d).</string>
     <string name="to">Terminar</string>
     <string name="invalid_index_range">Intervalo de índices inválido</string>
-    <string name="playlist_indicator_text">A descarregar lista de reprodução (%1$d/%2$d)…</string>
     <string name="audio_directory">Pasta áudio</string>
     <string name="download_directory">Diretório de descarga</string>
     <string name="download_directory_desc">Selecionar onde guardar vídeos e ficheiros de áudio</string>
@@ -144,31 +121,24 @@
     <string name="from">Iniciar</string>
     <string name="battery_configuration_desc">Ignorar a otimização da bateria para que esta aplicação faça descarga em segundo plano</string>
     <string name="service_title">O VRClip está a descarregar…</string>
-    <string name="unknown_error">Erro desconhecido</string>
     <string name="translate">Traduzir</string>
-    <string name="prefix">Prefixo</string>
     <string name="embed_subtitles">Incorporar legendas</string>
     <string name="embed_subtitles_desc">Incorporar legendas fornecidas nos vídeos, se disponíveis</string>
     <string name="new_template">Novo modelo</string>
     <string name="template_label">Rótulos</string>
-    <string name="remove_template_desc">Remover \"%1$s\" dos modelos de comando para sempre\?</string>
     <string name="template_selection">Seleção do modelo</string>
-    <string name="custom_command_template_desc">Editar e gerir modelos de comandos</string>
-    <string name="downloading_indicator_text">Descarga em curso…</string>
-    <string name="task_canceled">Tarefa de descarga cancelada</string>
     <string name="export_to_clipboard">Exportar para a área de transferência</string>
     <string name="translate_desc">Ajuda para traduzir esta aplicação no Hosted Weblate</string>
     <string name="remove_template">Remover\?</string>
-    <string name="video_file_size">Tamanho do ficheiro de vídeo</string>
     <string name="import_from_clipboard">Importar da área de transferência</string>
-    <string name="github_issue_desc">Apresentar um problema para um relatório de erros ou um pedido de funcionalidades</string>
-    <string name="template_imported">Modelo(s) importado(s) %1$d</string>
-    <string name="github_issue">GitHub issue</string>
+    <plurals name="template_imported">
+        <item quantity="other">Modelo(s) importado(s) %1$d</item>
+    </plurals>
     <string name="info_copied">Informação copiada para a área de transferência</string>
-    <string name="template_exported">Modelo(s) exportado(s) %1$d</string>
-    <string name="download_task_count">%1$d tarefas de descarga</string>
+    <plurals name="template_exported">
+        <item quantity="other">Modelo(s) exportado(s) %1$d</item>
+    </plurals>
     <string name="status_enqueued">Enfileirado</string>
-    <string name="recently_added">Recentemente adicionados</string>
     <string name="cookies_desc">Utilizar cookies formatados pelo Netscape para descargas</string>
     <string name="clear_temp_files">Limpar ficheiros temporários</string>
     <string name="clear_temp_files_desc">Eliminar todos os ficheiros temporários do diretório temporário</string>
@@ -182,15 +152,18 @@
     <string name="multiselect_mode">Modo de seleção múltipla</string>
     <string name="private_mode_desc">Desativar o histórico de descargas</string>
     <string name="lowest_quality">Qualidade mais baixa</string>
-    <string name="clear_temp_files_count">Eliminado %1$d ficheiro(s) temporário(s)</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="other">Eliminado %1$d ficheiro(s) temporário(s)</item>
+    </plurals>
     <string name="dynamic_color">Cor dinâmica</string>
     <string name="general_settings_desc">Versão yt-dlp, notificação, lista de reprodução</string>
     <string name="network_settings_desc">Limite de velocidade, descarregador, cookies</string>
     <string name="disable_preview">Desativar a pré-visualização</string>
     <string name="private_directory_desc">Armazenar descargas num diretório oculto</string>
     <string name="status_downloading">A descarregar</string>
-    <string name="multiselect_item_count">%1$d vídeo(s), %2$d ficheiro(s) áudio</string>
-    <string name="delete_multiple_items_msg">Remover %1$d item(ns) do seu histórico de descargas para sempre?</string>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="other">Remover %1$d item(ns) do seu histórico de descargas para sempre?</item>
+    </plurals>
     <string name="disable_preview_desc">Não exibir miniaturas durante a descarga</string>
     <string name="status_canceled">Cancelado</string>
     <string name="dynamic_color_desc">Aplicar cores dos papéis de parede ao tema da aplicação</string>
@@ -203,7 +176,6 @@
     <string name="download_with_cellular_desc">Permitir descarga de multimédia quando ligado a redes com contador</string>
     <string name="private_directory">Diretório privado</string>
     <string name="crop_artwork">Cortar arte</string>
-    <string name="download_disabled_with_cellular">Descarregar com a rede celular está desativado de acordo com as suas definições</string>
     <string name="sponsorblock_desc">Remover ou marcar segmentos em vídeos com a API SponsorBlock</string>
     <string name="crop_artwork_desc">Cortar imagem incorporada num quadrado</string>
     <string name="restart">Reiniciar</string>
@@ -220,7 +192,6 @@
     <string name="video_resolution">Resolução de vídeo</string>
     <string name="check_for_updates">Verificar se há actualizações</string>
     <string name="max_rate">Taxa máxima</string>
-    <string name="high_contrast">Tema escuro de alto contraste</string>
     <string name="check_for_updates_desc">Verificar automaticamente a versão mais recente no GitHub</string>
     <string name="suggested">Sugerido</string>
     <string name="format_selection">Seleção do formato</string>
@@ -232,10 +203,8 @@
     <string name="remove_cookie_profile_desc">Remover esta entrada para \"%1$s\"? Observe que os cookies armazenados neste site não serão apagados.</string>
     <string name="custom_command_enabled_hint">Algumas opções não estão disponíveis quando se utiliza o comando personalizado</string>
     <string name="how_does_it_work">Como funciona\?</string>
-    <string name="telegram_channel">Canal do Telegram</string>
     <string name="update">Atualização</string>
     <string name="cookies_usage_msg">A descarga de alguns sites requer informações de autenticação da conta. Clique em \"Gerar novos cookies\", introduza o URL do sítio Web e, em seguida, inicie sessão com a sua conta na página do browser; a aplicação irá gerá-los para si.</string>
-    <string name="matrix_space">Espaço no Matrix</string>
     <string name="aria2_desc">Utilizar aria2c como descarregador externo</string>
     <string name="sdcard_directory">Pasta do cartão SD</string>
     <string name="title_activity_share">Descarga rápida</string>
@@ -251,7 +220,6 @@
     <string name="add">Adicionar</string>
     <string name="shortcuts">Atalhos</string>
     <string name="edit_shortcuts_desc">Editar os atalhos personalizados que podem ser utilizados para compor modelos de comandos.</string>
-    <string name="running_tasks">Tarefas em curso</string>
     <string name="show_logs">Mostrar registo</string>
     <string name="logs">Registo</string>
     <string name="subtitle_sponsorblock">As legendas podem ser desfasadas no tempo ao remover segmentos SponsorBlock.</string>
@@ -266,12 +234,9 @@
     <string name="discard">Descartar</string>
     <string name="share">Partilhar</string>
     <string name="update_channel">Canal de atualização</string>
-    <string name="apply">Aplicar</string>
-    <string name="unlimited">Ilimitado</string>
     <string name="lowest_bitrate">Taxa de bits mais baixa</string>
     <string name="audio_quality">Qualidade do áudio</string>
     <string name="audio_quality_desc">Limitar a taxa de bits de áudio quando estão presentes várias qualidades</string>
-    <string name="feedback">Feedback</string>
     <string name="stable_channel">Estável</string>
     <string name="auto_update">Atualização automática</string>
     <string name="format_sorting">Ordenação de formatos</string>
@@ -280,23 +245,20 @@
     <string name="import_from_preferences">Importar</string>
     <string name="no_downloaded_media">Nenhuma media descarregada</string>
     <string name="title">Título</string>
-    <string name="beta_features">Beta</string>
     <string name="enable_experimental_feature">Ativar a funcionalidade experimental\?</string>
     <string name="clip_video_dialog_msg">Descargas que utilizem esta funcionalidade serão delegadas ao FFmpeg para descarregar secções seleccionadas do vídeo. Esta funcionalidade ainda é experimental e o corte não será totalmente exato, nem todos os formatos suportam esta funcionalidade e poderá ter velocidades de descarga mais lentas.</string>
     <string name="clip_video_desc">Criar cortes de vídeo na página de seleção de formato</string>
     <string name="okay">Está bem</string>
-    <string name="feature_unavailable">Funcionalidade não disponível</string>
     <string name="rename">Renomear</string>
     <string name="minute">minuto</string>
-    <string name="auto_update_disabled_msg">A atualização automática não está disponível para %1$s compilações. Se não tiver %1$s instalado no seu dispositivo, ou se pretender pré-visualizar as novas funcionalidades do VRClip, considere %2$s.</string>
     <string name="second">segundo</string>
     <string name="got_it">Entendi</string>
     <string name="clear_all_cookies">Limpar todos os cookies</string>
-    <string name="switch_to_github_builds">mudar para compilações do GitHub</string>
     <string name="clear_all_cookies_desc">Eliminar definitivamente todos os cookies armazenados na aplicação\?</string>
-    <string name="temporary_directory_desc">Armazenar ficheiros temporários no diretório interno</string>
     <string name="split_video">Dividir o vídeo</string>
-    <string name="split_video_msg">O vídeo será dividido em %1$d capítulos</string>
+    <plurals name="split_video_msg">
+        <item quantity="other">O vídeo será dividido em %1$d capítulos</item>
+    </plurals>
     <string name="copy_and_exit">Copiar e sair</string>
     <string name="expand">Expandir</string>
     <string name="new_task">Nova tarefa de descarga</string>
@@ -318,9 +280,7 @@
     <string name="prefer_quality_desc">Prefira os formatos AV1, VP9 ou H.265 para ver em aplicações compatíveis</string>
     <string name="download_type">Tipo de descarga</string>
     <string name="custom">Personalizado</string>
-    <string name="auto">Automático</string>
     <string name="commands">Comandos</string>
-    <string name="format_preference">Preferência de formato</string>
     <string name="learn_more">Saiba mais</string>
     <string name="unknown">Desconhecido</string>
     <string name="refresh_cookies_desc">Toque para abrir a página Web para gerar novos cookies:</string>
@@ -340,14 +300,13 @@
     <string name="presets">Predefinições</string>
     <string name="output_template">Modelo de saída</string>
     <string name="output_template_desc">Especificar o modelo para os nomes dos ficheiros de saída</string>
-    <string name="clear_download_archive">Limpar arquivo de descarga?</string>
-    <string name="clear_download_archive_desc">Remover %1$s do arquivo de descarga?</string>
     <string name="download_archive_desc">Registar IDs de vídeos descarregados em um arquivo para evitar descargas duplicadas</string>
     <string name="download_archive">Arquivo de descarga</string>
     <string name="embed_metadata">Incorporar metadados</string>
     <string name="embed_metadata_desc">Incorporar metadados e miniatura de vídeo no ficheiro de áudio</string>
-    <string name="required">Obrigatório</string>
-    <string name="show_all_items">Mostrar todos os %1$d itens</string>
+    <plurals name="show_all_items">
+        <item quantity="other">Mostrar todos os %1$d itens</item>
+    </plurals>
     <string name="save">Guardar</string>
     <string name="use_format_sorting">Utilizar a ordenação de formatos</string>
     <string name="edit_file">Editar ficheiro</string>
@@ -363,13 +322,11 @@
     <string name="allow_once">Permitir uma vez</string>
     <string name="allow_always">Permitir sempre</string>
     <string name="dont_allow">Não permitir</string>
-    <string name="download_with_cellular_request">Permitir a descarga com telemóvel?</string>
     <string name="merge_audiostream">Unir vários fluxos de áudio</string>
     <string name="merge_audiostream_desc">Permitir a fusão de vários fluxos de áudio num único ficheiro</string>
     <string name="search">Pesquisar</string>
     <string name="search_in_downloads">Pesquisar em descargas</string>
     <string name="auto_translated_subtitles">Legendas traduzidas automaticamente</string>
-    <string name="remember_for_next_download">Lembrar para a próxima descarga</string>
     <string name="look_and_feel"><![CDATA[Look & feel]]></string>
     <string name="use_previous_selection">Utilizar a seleção anterior</string>
     <string name="none">Nenhum</string>
@@ -389,7 +346,6 @@
     <string name="clipboard">Área de transferência</string>
     <string name="import_from">Importar de</string>
     <string name="import_download_history_msg">Os ficheiros descarregados não serão importados. Terá de os voltar a descarregar manualmente</string>
-    <string name="download_history">Histórico de descargas</string>
     <string name="interface_and_interaction"><![CDATA[Interface & interaction]]></string>
     <string name="export_to">Exportar para</string>
     <string name="export_download_history">Exportar o histórico de descargas?</string>
@@ -399,7 +355,9 @@
     <string name="download_archive_error">O vídeo foi descarregado. Se este não for o comportamento esperado, verifique o seu arquivo de descarga.</string>
     <string name="remux_container_mkv">Recipiente de vídeo Remux</string>
     <string name="remux_container_mkv_desc">Remuxar vídeos para um recipiente MKV para uma melhor compatibilidade</string>
-    <string name="cookies_in_database">%1$d cookies de %2$d sites no total</string>
+    <plurals name="cookies_in_database">
+        <item quantity="other">%1$d cookies de %2$d sites no total</item>
+    </plurals>
     <string name="every_day">Diariamente</string>
     <string name="every_week">Semanalmente</string>
     <string name="every_month">Mensalmente</string>
@@ -409,27 +367,17 @@
     <string name="preset_format_selection_desc">Descarregar automaticamente utilizando as suas preferências de formato</string>
     <string name="best_quality_desc">Descarregar o melhor formato disponível</string>
     <string name="edit_preset">Editar predefinição</string>
-    <plurals name="video_count">
-        <item quantity="one">%d vídeo</item>
-        <item quantity="many">%d vídeos</item>
-        <item quantity="other">%d vídeos</item>
-    </plurals>
-    <plurals name="audio_count">
-        <item quantity="one">%d áudio</item>
-        <item quantity="many">%d áudios</item>
-        <item quantity="other">%d áudios</item>
-    </plurals>
     <string name="playlist">Lista de reprodução</string>
     <string name="proceed">Continuar</string>
     <string name="prefer_placeholder">Preferir %1$s</string>
-    <string name="task_added">Tarefa adicionada à fila</string>
     <string name="you_ll_find_your_downloads_here">Encontrará as suas descargas aqui</string>
     <string name="download_hint">Toque no botão de descarga ou partilhe uma ligação de vídeo para esta aplicação para iniciar uma descarga</string>
     <string name="status_downloaded">Descarregado</string>
     <string name="all">Tudo</string>
-    <string name="select_multiple_link">Selecionar a partir de %1$d ligações</string>
+    <plurals name="select_multiple_link">
+        <item quantity="other">Selecionar a partir de %1$d ligações</item>
+    </plurals>
     <string name="download_queue">Fila de descargas</string>
-    <string name="show_navigation_drawer">Mostrar gaveta de navegação</string>
     <string name="resume">Retomar</string>
     <string name="delete">Eliminar</string>
     <string name="media_info">Informações da mídia</string>
@@ -438,6 +386,5 @@
     <string name="issue_tracker">Rastreador de problemas</string>
     <string name="trouble_shooting_desc">Correção de erros comuns e verificação de problemas conhecidos</string>
     <string name="saved_urls">Links salvos</string>
-    <string name="add_new_url">Adicionar novo link</string>
     <string name="add_to">Adicionar a %1$s</string>
 </resources>

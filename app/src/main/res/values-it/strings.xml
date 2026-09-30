@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="delete_info_msg">Sei sicuro/a di rimuovere «%1$s» dalla tua cronologia di scaricamento\?</string>
-    <string name="url_empty">Il link non può essere vuoto</string>
     <string name="extract_audio">Salva come audio</string>
     <string name="create_thumbnail">Salva la miniatura</string>
     <string name="download">Download</string>
     <string name="extract_audio_summary">Scarica e salva l\'audio invece del video</string>
     <string name="create_thumbnail_summary">Salva la miniatura del video come un file</string>
     <string name="yt_dlp_update_fail">Non è possible installare l\'ultima versione di yt-dlp. Per favore, verifica di essere connesso ad Internet.</string>
-    <string name="fetching_info">Recupero delle informazioni del video…</string>
     <string name="permission_denied">Permesso negato</string>
-    <string name="download_success_msg">Scaricamento completato</string>
-    <string name="download_start_msg">Scarica «%1$s»</string>
     <string name="fetch_info_error_msg">Impossibile recuperare le informazioni del video</string>
-    <string name="task_running">Uno scaricamento è già in esecuzione</string>
     <string name="paste_msg">Incolla URL</string>
     <string name="paste_fail_msg">Impossibile confrontare l\'URL negli appunti</string>
-    <string name="ytdlp_version">Versione yt-dlp</string>
     <string name="about_page">Versione, commenti, aggiornamento automatico</string>
     <string name="back">Indietro</string>
     <string name="version">Versione</string>
@@ -24,7 +18,6 @@
     <string name="release">Ultima versione</string>
     <string name="readme_desc">Controlla la repository GitHub e il README</string>
     <string name="video">Video</string>
-    <string name="checked">Controllato</string>
     <string name="credits">Crediti</string>
     <string name="custom_command_desc">Esegui il comando yt-dlp con un template personalizzato</string>
     <string name="advanced_settings">Avanzate</string>
@@ -34,7 +27,6 @@
     <string name="cancel">Annulla</string>
     <string name="settings_before_download">Configura prima dello scaricamento</string>
     <string name="settings_before_download_desc">Configura le preferenze prima dello scaricamento</string>
-    <string name="settings_before_download_text">Configura questo scaricamento</string>
     <string name="error_copied">Report dell\'errore copiato negli appunti</string>
     <string name="paste">Incolla</string>
     <string name="yt_dlp_docs">Referenze di uso di yt-dlp</string>
@@ -46,7 +38,6 @@
     <string name="video_format_preference">Formato video preferito</string>
     <string name="video_directory">Cartella video</string>
     <string name="settings">Impostazioni</string>
-    <string name="download_settings_desc">Generale, formato, comando personalizzato</string>
     <string name="yt_dlp_up_to_date">Stai usando l\'ultima versione di yt-dlp</string>
     <string name="download_error_msg">Impossibile scaricare il file</string>
     <string name="about">Informazioni</string>
@@ -54,13 +45,11 @@
     <string name="vr_mode">Modalità VR</string>
     <string name="vr_mode_desc">Ottimizza i download per Meta Quest 3 e video 3D</string>
     <string name="language">Lingua</string>
-    <string name="language_settings">Imposta lingua</string>
     <string name="delete_info">Rimuovere\?</string>
     <string name="ytdlp_update">Clicca per installare l\'ultima versione di yt-dlp</string>
     <string name="confirm">Conferma</string>
     <string name="dismiss">Annulla</string>
     <string name="audio">Audio</string>
-    <string name="downloads_history">Scaricamenti</string>
     <string name="link_copied">Collegamento copiato negli appunti</string>
     <string name="open_url">Apri il collegamento</string>
     <string name="remove">Rimuovi</string>
@@ -71,7 +60,6 @@
     <string name="edit">Modifica</string>
     <string name="start_execute">Inizia l\'esecuzione del comando</string>
     <string name="print_details_desc">Stampa messaggi dettagliati durante lo scaricamento</string>
-    <string name="display">Visualizzazione</string>
     <string name="follow_system">Sistema</string>
     <string name="off">Disattivato</string>
     <string name="on">Attivato</string>
@@ -82,31 +70,19 @@
     <string name="video_quality_desc">Limita la qualità del video quando sono presenti più video</string>
     <string name="thumbnail">Miniatura</string>
     <string name="preferred_format_desc">Formato predefinito quando ne sono forniti molteplici</string>
-    <string name="video_format">Formato video</string>
-    <string name="paste_desc">Clicca «Incolla» per ottenere il collegamento del video dai tuoi appunti.</string>
-    <string name="download_desc">Poi clicca «Scarica» dopo aver aggiustato le sue impostazioni.</string>
     <string name="download_playlist">Scarica playlist</string>
     <string name="download_playlist_desc">Scarica più video da una playlist</string>
-    <string name="defaults">Predefinito</string>
-    <string name="battery_settings_desc">Si consiglia di impostare l\'utilizzo della batteria su «Senza limitazioni» nelle impostazioni di sistema per scaricare in sfondo.</string>
     <string name="concurrent_download_desc">Scarica più parti di video M3U8/MPD in parallelo</string>
     <string name="download_notification">Avviso di scaricamento</string>
     <string name="download_range_selection">Selezione della playlist</string>
     <string name="from">Inizio</string>
     <string name="to">Fine</string>
     <string name="invalid_index_range">Range dell\'indice invalido</string>
-    <string name="playlist_indicator_text">Scaricando playlist (%1$d/%2$d)…</string>
     <string name="channel_description">Notifica il processo di scaricamento e i file scaricati</string>
-    <string name="close_never_show_again">Non mostrare più</string>
-    <string name="convert_audio">Converti</string>
     <string name="start_download">Scarica</string>
-    <string name="user_guide">Guida utente</string>
     <string name="close">Chiudi</string>
     <string name="open_settings">Apri le impostazioni</string>
-    <string name="download_history_desc">Controlla e organizza gli scaricamenti nell\'app, inclusi i file video e audio.</string>
-    <string name="options">Opzioni</string>
     <string name="channel_name">Scarica</string>
-    <string name="check_download_settings_desc">Controlla le impostazioni di scaricamento e assicurati di avere l\'ultima versione di yt-dlp prima di utilizzarlo.</string>
     <string name="download_range_desc">Specifica l\'intervallo di video da scaricare dalla playlist «%3$s» (da %1$d a %2$d).</string>
     <string name="video_url">Link del video</string>
     <string name="execute_command_notification">Esecuzione del comando personalizzato…</string>
@@ -118,7 +94,6 @@
     <string name="download_directory">Directory degli scaricamenti</string>
     <string name="download_directory_desc">Seleziona dove conservare i file video e audio</string>
     <string name="audio_directory">Cartella audio</string>
-    <string name="share_success_msg">Lettura del collegamento video da un contenuto condiviso…</string>
     <string name="share_fail_msg">Impossibile abbinare l\'URL al contenuto condiviso</string>
     <string name="subdirectory">Salva in una sottodirectory</string>
     <string name="battery_configuration">Configurazione della batteria</string>
@@ -126,23 +101,20 @@
     <string name="subdirectory_desc">Salva i file in cartelle chiamate come i rispettivi siti web</string>
     <string name="permission_issue">Problema relativo all\'autorizzazione di archiviazione</string>
     <string name="translate_desc">Contribuisci a tradurre questa applicazione su Hosted Weblate</string>
-    <string name="unknown_error">Errore sconosciuto</string>
     <string name="battery_configuration_desc">Ignora l\'ottimizzazione della batteria per lo scaricamento dell\'app in sfondo</string>
     <string name="translate">Traduci</string>
     <string name="permission_issue_desc">Le directory al di fuori di Download/ e Documenti/ non sono supportate</string>
     <string name="concurrent_download">Download multi-thread</string>
-    <string name="concurrent_download_num">I thread %d sarebbero utilizzati per scaricare video nativi DASH/HLS in parallelo.</string>
-    <string name="prefix">Modello di percorso</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="one">%d thread scaricherà in parallelo i frammenti dei video DASH/HLS.</item>
+        <item quantity="other">%d thread scaricheranno in parallelo i frammenti dei video DASH/HLS.</item>
+    </plurals>
     <string name="embed_subtitles">Incorpora i sottotitoli</string>
     <string name="embed_subtitles_desc">Incorpora i sottotitoli nel video se disponibili</string>
     <string name="new_template">Nuovo modello</string>
     <string name="template_label">Etichetta</string>
     <string name="remove_template">Rimuovere\?</string>
-    <string name="remove_template_desc">Rimuovere «%1$s» dai modelli dei comandi\?</string>
     <string name="template_selection">Selezione del modello</string>
-    <string name="custom_command_template_desc">Modifica e gestisci i modelli di comando</string>
-    <string name="downloading_indicator_text">Download in corso…</string>
-    <string name="task_canceled">Scaricamento annullato</string>
     <string name="status_enqueued">In coda</string>
     <string name="status_completed">Finito</string>
     <string name="status_downloading">Scaricamento</string>
@@ -151,21 +123,28 @@
     <string name="open_file">Apri il file</string>
     <string name="restart">Riavvia</string>
     <string name="info_copied">Informazioni copiate negli appunti</string>
-    <string name="github_issue_desc">Invia una segnalazione di bug o una richiesta per nuove funzioni</string>
-    <string name="github_issue">Segnala un problema su GitHub</string>
     <string name="copy_link">Copia il collegamento</string>
     <string name="status_error">Errore</string>
     <string name="copy_error_report">Copia il rapporto</string>
     <string name="video_resolution">Risoluzione video</string>
-    <string name="video_file_size">Dimensione del file video</string>
     <string name="export_to_clipboard">Esporta negli appunti</string>
-    <string name="multiselect_item_count">%1$d file video, %2$d file audio</string>
     <string name="import_from_clipboard">Importa dagli appunti</string>
-    <string name="template_exported">Modello(i) %1$d esportato(i)</string>
-    <string name="template_imported">Modello(i) %1$d importato(i)</string>
-    <string name="recently_added">Aggiunto di recente</string>
-    <string name="delete_multiple_items_msg">Sei sicuro/sicura di rimuovere %1$d elemento(i) dalla tua cronologia di scaricamento\?</string>
-    <string name="clear_temp_files_count">%1$d file temporanei eliminati</string>
+    <plurals name="template_exported">
+        <item quantity="one">%1$d modello esportato</item>
+        <item quantity="other">%1$d modelli esportati</item>
+    </plurals>
+    <plurals name="template_imported">
+        <item quantity="one">%1$d modello importato</item>
+        <item quantity="other">%1$d modelli importati</item>
+    </plurals>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="one">Rimuovere definitivamente %1$d elemento dalla cronologia dei download?</item>
+        <item quantity="other">Rimuovere definitivamente %1$d elementi dalla cronologia dei download?</item>
+    </plurals>
+    <plurals name="clear_temp_files_count">
+        <item quantity="one">%1$d file temporaneo eliminato</item>
+        <item quantity="other">%1$d file temporanei eliminati</item>
+    </plurals>
     <string name="aria2_desc">Usa aria2c come downloader esterno</string>
     <string name="check_for_updates">Controlla gli aggiornamenti</string>
     <string name="check_for_updates_desc">Verifica automatica la versione più recente su GitHub</string>
@@ -178,7 +157,6 @@
     <string name="app_update_failed">Impossibile eseguire l\'aggiornamento alla versione più recente</string>
     <string name="update">Aggiorna</string>
     <string name="sponsorblock_categories">Categorie SponsorBlock</string>
-    <string name="download_task_count">%1$d attività di scaricamento</string>
     <string name="sponsorblock_desc">Rimuovi o segna i segmenti dei video con l\'API SponsorBlock</string>
     <string name="sponsorblock_categories_desc">Specifica le categorie SponsorBlock da rimuovere o segnare nel file video</string>
     <string name="cookies_desc">Utilizzare i cookie formattati Netscape per i download</string>
@@ -189,13 +167,11 @@
     <string name="dynamic_color_desc">Applica i colori degli sfondi al tema dell\'applicazione</string>
     <string name="download_with_cellular">Scarica con dati mobili</string>
     <string name="download_with_cellular_desc">Consenti lo scaricamento di contenuti multimediali quando si è connessi alle reti a pagamento</string>
-    <string name="download_disabled_with_cellular">Lo scaricamento con la rete mobile è disabilitato in base alle impostazioni</string>
     <string name="file_unavailable">Il file non è più disponibile</string>
     <string name="network">Rete</string>
     <string name="rate_limit">Limite di velocità</string>
     <string name="rate_limit_desc">Limita la velocità massima degli scaricamenti</string>
     <string name="max_rate">Velocità massima</string>
-    <string name="high_contrast">Tema scuro ad alto contrasto</string>
     <string name="invalid_input">Inserimento non valido</string>
     <string name="lowest_quality">Qualità più bassa</string>
     <string name="unavailable">Non disponibile</string>
@@ -211,20 +187,21 @@
     <string name="private_directory">Directory privata</string>
     <string name="private_directory_desc">Memorizza gli scaricamenti in una directory nascosta</string>
     <string name="select_all">Seleziona tutto</string>
-    <string name="selected_item_count">%1$d selezionato/i</string>
+    <plurals name="selected_item_count">
+        <item quantity="one">%1$d selezionato</item>
+        <item quantity="other">%1$d selezionati</item>
+    </plurals>
     <string name="download_selection_desc">Seleziona i video da scaricare dalla playlist «%1$s»</string>
     <string name="video_only">Video (senza audio)</string>
     <string name="format_selection_desc">Seleziona il formato da scaricare prima di avviare lo scaricamento</string>
     <string name="suggested">Suggerito</string>
     <string name="format_selection">Selezione del formato</string>
     <string name="generate_new_cookies">Genera nuovi cookie</string>
-    <string name="matrix_space">Spazio Matrix</string>
     <string name="cookies">Cookie</string>
     <string name="use_cookies">Usa i cookie</string>
     <string name="remove_cookie_profile_desc">Rimuovere i cookie per «%1$s»? Nota che i cookie salvati per questo sito non saranno rimossi.</string>
     <string name="custom_command_enabled_hint">Alcune opzioni non sono disponibili quando si utilizza un comando personalizzato</string>
     <string name="how_does_it_work">Come funziona\?</string>
-    <string name="telegram_channel">Canale Telegram</string>
     <string name="cookies_usage_msg">La scaricamento da alcuni siti richiede le informazioni di autenticazione dell\'account. Clicca su „Genera nuovi cookie“, inserisci l\'URL del sito web e poi accedi con il tuo account nella pagina del browser: l\'applicazione lo genererà per te.</string>
     <string name="abs_hint">La maggior parte delle piattaforme di streaming video fornisce audio e video separatamente; è possibile selezionare e unire un formato solo audio con un formato solo video in un unico video.</string>
     <string name="add">Aggiungi</string>
@@ -237,7 +214,6 @@
     <string name="copy_log">Copia il registro</string>
     <string name="edit_shortcuts">Modifica le scorciatoie</string>
     <string name="shortcuts">Scorciatoie</string>
-    <string name="running_tasks">Attività in esecuzione</string>
     <string name="sdcard_directory">Cartella della scheda SD</string>
     <string name="auto_subtitle_desc">Scarica i sottotitoli autogenerati</string>
     <string name="download_subtitles">Scarica i sottotitoli</string>
@@ -254,7 +230,6 @@
     <string name="format_sorting">Assortimento formato</string>
     <string name="audio_format">Formato audio</string>
     <string name="no_downloaded_media">Nessun media scaricato</string>
-    <string name="beta_features">Beta</string>
     <string name="enable_experimental_feature">Attivare la funzione sperimentale\?</string>
     <string name="clip_video_dialog_msg">I download che utilizzano questa funzione saranno delegati a FFmpeg per scaricare sezioni selezionate del video; questa funzione è ancora sperimentale e il taglio non sarà completamente accurato, non tutti i formati supportano questa funzione e si potrebbero verificare velocità di scaricamento più basse.</string>
     <string name="update_channel">Canale aggiornamento</string>
@@ -271,7 +246,6 @@
     <string name="stable_channel">Stabile</string>
     <string name="pre_release_channel">Anteprima</string>
     <string name="clip_end">Fine</string>
-    <string name="unlimited">Illimitato</string>
     <string name="audio_quality_desc">Limita bitrate audio quando multiple qualità sono presenti</string>
     <string name="audio_quality">Qualità audio</string>
     <string name="format_sorting_desc">Assortimento formati con la opzione -S di yt-dlp</string>
@@ -279,26 +253,21 @@
     <string name="minute">minuto</string>
     <string name="clear_all_cookies">Cancella tutti i cookie</string>
     <string name="second">secondo</string>
-    <string name="feedback">Commenti</string>
     <string name="clip_video_desc">Crea videoclip nella pagina di selezione del formato</string>
     <string name="discard">Scarta</string>
-    <string name="apply">Applica</string>
     <string name="clip_video">Video clip</string>
     <string name="import_from_preferences">Importa</string>
-    <string name="temporary_directory_desc">Salva file temporanei nella directory interna</string>
-    <string name="auto_update_disabled_msg">L\'aggiornamento automatico non è disponibile per le build %1$s. Se non hai installato %1$s sul dispositivo, o se vorresti provare in anteprima le nuove funzionalità di VRClip, considera %2$s.</string>
     <string name="okay">Va bene</string>
     <string name="got_it">Ho capito</string>
-    <string name="feature_unavailable">Funzione non disponibile</string>
-    <string name="switch_to_github_builds">passando alle build di GitHub</string>
-    <string name="no_custom_command_tasks">Nessuna attività di comando personalizzata</string>
     <string name="convert_subtitle_desc">Convertisci i sottotitoli in un altro formato</string>
     <string name="split_video">Dividi il video</string>
     <string name="convert_subtitle">Converti i sottotitoli</string>
-    <string name="download_video_desc">Scarica i video dall\'URL</string>
     <string name="unknown_error_title">Ops! Qualcosa è andato storto</string>
     <string name="copy_and_exit">Copia ed esci</string>
-    <string name="split_video_msg">Il video sarà diviso in capitoli %1$d</string>
+    <plurals name="split_video_msg">
+        <item quantity="one">Il video verrà diviso in %1$d capitolo</item>
+        <item quantity="other">Il video verrà diviso in %1$d capitoli</item>
+    </plurals>
     <string name="expand">Espandi</string>
     <string name="new_task">Nuova attività di scaricamento</string>
     <string name="start">Inizia</string>
@@ -320,10 +289,8 @@
     <string name="custom_command_directory">Cartella dei comandi personalizzati</string>
     <string name="custom_command_directory_desc">Specifica la cartella di output quando si utilizzano comandi personalizzati</string>
     <string name="set_directory_desc">Clicca per impostare una cartella</string>
-    <string name="format_preference">Formati preferiti</string>
     <string name="disabled">Disabilita</string>
     <string name="disable">Disabilita</string>
-    <string name="auto">Automatico</string>
     <string name="proxy_desc">Usare il proxy per le connessioni internet</string>
     <string name="refresh_cookies_desc">Clicca per aprire una pagina web per generare nuovi cookie:</string>
     <string name="enable_notifications">Abilitare le notifiche\?</string>
@@ -333,7 +300,6 @@
     <string name="download_archive_desc">Registra gli ID video scaricati in un archivio per evitare download duplicati</string>
     <string name="edit_file">Modifica file</string>
     <string name="save">Salva</string>
-    <string name="clear_download_archive_desc">Rimuovere definitivamente %1$s dal file di archivio?</string>
     <string name="embed_metadata_desc">Incorpora metadati e miniatura video nel file audio</string>
     <string name="use_format_sorting">Utilizza l\'ordinamento dei formati</string>
     <string name="force_ipv4">Forza ipv4</string>
@@ -342,14 +308,15 @@
     <string name="allow_once">Consenti solo una volta</string>
     <string name="allow_always">Consenti sempre</string>
     <string name="dont_allow">Non consentire</string>
-    <string name="download_with_cellular_request">Consentire il download con dati mobili?</string>
     <string name="merge_audiostream">Unisci più fonti audio</string>
     <string name="merge_audiostream_desc">Consenti l\'unione di più fonti audio in un unico file</string>
     <string name="subdirectory_hint">I tuoi download verranno salvati come:</string>
     <string name="ua_header">Intestazione agente utente</string>
     <string name="keep_subtitle_files">Conserva i file dei sottotitoli</string>
-    <string name="required">Necessario</string>
-    <string name="show_all_items">Mostra tutti i %1$d elementi</string>
+    <plurals name="show_all_items">
+        <item quantity="one">Mostra %1$d elemento</item>
+        <item quantity="other">Mostra tutti i %1$d elementi</item>
+    </plurals>
     <string name="export_to_file">Esporta su file</string>
     <string name="custom">Personalizzato</string>
     <string name="restrict_filenames">Limita i nomi dei file</string>
@@ -367,13 +334,11 @@
         <item quantity="many">%d oggetti</item>
         <item quantity="other">%d oggetti</item>
     </plurals>
-    <string name="clear_download_archive">Cancellare l\'archivio dei download?</string>
     <string name="download_archive_error">Il video è stato scaricato con successo. Se questo è stato un comportamento inaspettato, controllare l\'archivio dei download.</string>
     <string name="backup_type">Tipo di backup</string>
     <string name="export_to">Esportare in</string>
     <string name="auto_translated_subtitles">Sottotitoli tradotti automaticamente</string>
     <string name="auto_translated_subtitles_msg">I sottotitoli automaticamente tradotti saranno disponibili nei download. I sottotitoli possono essere inaccurati e difficile da capire.</string>
-    <string name="remember_for_next_download">Ricorda per i prossimi download</string>
     <string name="subtitle_language_desc">Lingua dei sottotitoli da scaricare nella sezione formato automatico, separati da virgole.</string>
     <string name="look_and_feel">Aspetto</string>
     <string name="interface_and_interaction">Interfaccia ed interrogazioni</string>
@@ -393,7 +358,6 @@
     <string name="import_download_history">Importare la cronologia dei download?</string>
     <string name="import_download_history_msg">I file scaricati non saranno importati. Dovrai scaricarli di nuovo manualmente</string>
     <string name="export_download_history_msg">Esportazione in corso di %1$s dalla cronologia dei download. I file scaricati e le preferenze non saranno esportate nel backup.</string>
-    <string name="download_history">Cronologia dei download</string>
     <string name="update_subtitle_languages">Aggiornare le lingue dei sottotitoli?</string>
     <string name="download_history_imported">%1$s importato dai download con successo</string>
     <string name="redownload">Riscarica</string>
@@ -404,16 +368,9 @@
     <string name="every_month">Ogni mese</string>
     <string name="all_languages">Tutte le lingue</string>
     <string name="proceed">Continua</string>
-    <string name="cookies_in_database">%1$d cookie da %2$d siti web in totale</string>
-    <plurals name="video_count">
-        <item quantity="one">%d video</item>
-        <item quantity="many">%d video</item>
-        <item quantity="other">%d video</item>
-    </plurals>
-    <plurals name="audio_count">
-        <item quantity="one">%d audio</item>
-        <item quantity="many">%d audio</item>
-        <item quantity="other">%d audio</item>
+    <plurals name="cookies_in_database">
+        <item quantity="one">%1$d cookie salvato (siti: %2$d)</item>
+        <item quantity="other">%1$d cookie salvati (siti: %2$d)</item>
     </plurals>
     <string name="playlist">Playlist</string>
     <string name="prefer_placeholder">Preferire %1$s</string>
@@ -422,16 +379,17 @@
     <string name="edit_preset">Modifica preset</string>
     <string name="preset_format_selection_desc">Scarica automaticamente usando le tue preferenze di formattazione</string>
     <string name="best_quality_desc">Scarica nel formato migliore</string>
-    <string name="task_added">Attività aggiunta alla coda</string>
     <string name="remux_container_mkv">Contenitore video Remux</string>
     <string name="remux_container_mkv_desc">Remux dei video in un contenitore MKV per una migliore compatibilità</string>
     <string name="status_downloaded">Scaricato</string>
     <string name="you_ll_find_your_downloads_here">Troverai qui i tuoi download</string>
     <string name="all">Tutto</string>
-    <string name="select_multiple_link">Seleziona da %1$d link</string>
+    <plurals name="select_multiple_link">
+        <item quantity="one">Seleziona tra %1$d link</item>
+        <item quantity="other">Seleziona tra %1$d link</item>
+    </plurals>
     <string name="download_hint">Tocca il pulsante di download o condividi un link video a questa applicazione per avviare il download</string>
     <string name="download_queue">Coda di download</string>
-    <string name="show_navigation_drawer">Mostra il cassetto di navigazione</string>
     <string name="resume">Continuare</string>
     <string name="delete">Cancellare</string>
     <string name="media_info">Info media</string>
@@ -502,7 +460,6 @@
     <string name="onboarding_engine_title">Motore di download</string>
     <string name="onboarding_engine_desc">VRClip usa yt-dlp per scaricare i video e lo tiene aggiornato da solo, così siti come YouTube continuano a funzionare.</string>
     <string name="storage_access_needed">Serve l\'accesso alla memoria</string>
-    <string name="storage_access_needed_desc">Concedi l\'accesso a tutti i file per salvare i download nella cartella Download.</string>
     <string name="grant_access">Concedi accesso</string>
     <string name="onboarding_continue">Continua</string>
     <string name="get_started">Iniziamo</string>
@@ -513,7 +470,6 @@
     <string name="package_name">Nome del pacchetto</string>
     <string name="ytdlp_issue_tracker">Segnalazioni di yt-dlp</string>
     <string name="saved_urls">Link salvati</string>
-    <string name="add_new_url">Aggiungi link</string>
     <string name="add_to">Aggiungi a %1$s</string>
     <string name="switch_to_grid_view">Vista a griglia</string>
     <string name="switch_to_list_view">Vista a elenco</string>
@@ -532,7 +488,6 @@
     <string name="player_stereo_output">Modalità di visione 3D</string>
     <string name="player_stereo_output_single">Un solo occhio (visione normale)</string>
     <string name="player_stereo_output_split">Schermo diviso (visore tipo Cardboard)</string>
-    <string name="player_error">Errore di riproduzione: %1$s</string>
     <string name="player_settings_title">Player</string>
     <string name="player_settings_subtitle">Riproduzione 3D, 360° e Meta Quest</string>
     <string name="player_default_immersive_quest">Riproduzione immersiva su Meta Quest</string>

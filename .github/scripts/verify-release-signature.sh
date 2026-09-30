@@ -20,8 +20,16 @@ status=0
 for file in "$@"; do
     case "$file" in
         *.apk)
-            actual=$("$apksigner" verify --print-certs "$file" |
-                sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -n 1)
+            # apksigner 36 prints "Signer #1 certificate SHA-256 digest: ...", 37 prints
+            # "V2 Signer: certificate SHA-256 digest: ..."; match either.
+            if ! output=$("$apksigner" verify --print-certs "$file" 2>&1); then
+                echo "::error file=$file::apksigner could not verify $(basename "$file"): $output"
+                status=1
+                continue
+            fi
+            actual=$(printf '%s\n' "$output" |
+                sed -n 's/^.*certificate SHA-256 digest:[[:space:]]*//p' | head -n 1 |
+                tr -d ':[:space:]' | tr '[:upper:]' '[:lower:]')
             ;;
         *.aab)
             actual=$(keytool -printcert -jarfile "$file" 2>/dev/null |

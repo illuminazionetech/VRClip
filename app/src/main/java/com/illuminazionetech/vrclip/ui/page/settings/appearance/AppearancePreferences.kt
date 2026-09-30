@@ -80,6 +80,7 @@ fun AppearancePreferences(onNavigateBack: () -> Unit, onNavigateTo: (String) -> 
                     title = stringResource(R.string.video_title_sample_text),
                     uploader = stringResource(R.string.video_creator_sample_text),
                     thumbnailModel = image,
+                    downloadState = downloadState,
                     stateIndicator = {
                         CardStateIndicator(modifier = Modifier, downloadState = downloadState)
                     },

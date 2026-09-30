@@ -1,50 +1,40 @@
 package com.illuminazionetech.vrclip.ui.page
 
 import android.webkit.CookieManager
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.illuminazionetech.vrclip.App
-import com.illuminazionetech.vrclip.R
-import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
+import com.illuminazionetech.vrclip.player.PlayerLauncher
+import com.illuminazionetech.vrclip.player.PlayerScreen
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
+import com.illuminazionetech.vrclip.ui.common.NavTransitions
 import com.illuminazionetech.vrclip.ui.common.Route
 import com.illuminazionetech.vrclip.ui.common.animatedComposable
-import com.illuminazionetech.vrclip.ui.common.animatedComposableVariant
 import com.illuminazionetech.vrclip.ui.common.arg
 import com.illuminazionetech.vrclip.ui.common.id
 import com.illuminazionetech.vrclip.ui.common.slideInVerticallyComposable
+import com.illuminazionetech.vrclip.ui.common.zoomComposable
 import com.illuminazionetech.vrclip.ui.page.command.TaskListPage
 import com.illuminazionetech.vrclip.ui.page.command.TaskLogPage
-import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.illuminazionetech.vrclip.ui.page.downloadv2.DownloadPageV2
+import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.illuminazionetech.vrclip.ui.page.settings.SettingsPage
 import com.illuminazionetech.vrclip.ui.page.settings.about.AboutPage
 import com.illuminazionetech.vrclip.ui.page.settings.about.CreditsPage
@@ -66,146 +56,124 @@ import com.illuminazionetech.vrclip.ui.page.settings.network.WebViewPage
 import com.illuminazionetech.vrclip.ui.page.settings.player.PlayerPreferences
 import com.illuminazionetech.vrclip.ui.page.settings.troubleshooting.TroubleShootingPage
 import com.illuminazionetech.vrclip.ui.page.videolist.VideoListPage
-import com.illuminazionetech.vrclip.player.PlayerLauncher
-import com.illuminazionetech.vrclip.player.PlayerScreen
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
-private const val TAG = "HomeEntry"
-
-private val TopDestinations =
-    listOf(Route.HOME, Route.TASK_LIST, Route.SETTINGS_PAGE, Route.DOWNLOADS)
 
 @Composable
 fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
-
     val navController = rememberNavController()
     val context = LocalContext.current
-    val view = LocalView.current
-    val windowWidth = LocalWindowWidthState.current
     val sheetState by dialogViewModel.sheetStateFlow.collectAsStateWithLifecycle()
     val cookiesViewModel: CookiesViewModel = koinViewModel()
 
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val versionReport = App.packageInfo.versionName.toString()
-    val appName = stringResource(R.string.app_name)
-    val scope = rememberCoroutineScope()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = backStackEntry?.destination
 
     val onNavigateBack: () -> Unit = {
-        with(navController) {
-            if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
-                popBackStack()
-            }
+        if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+            navController.popBackStack()
         }
     }
 
-    if (sheetState is DownloadDialogViewModel.SheetState.Configure) {
-        if (navController.currentDestination?.route != Route.HOME) {
-            navController.popBackStack(route = Route.HOME, inclusive = false, saveState = true)
-        }
-    }
-
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-    var currentTopDestination by rememberSaveable { mutableStateOf(currentRoute) }
-
-    LaunchedEffect(currentRoute) {
-        if (currentRoute in TopDestinations) {
-            currentTopDestination = currentRoute
-        }
-    }
-
-    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        NavigationDrawer(
-            windowWidth = windowWidth,
-            drawerState = drawerState,
-            currentRoute = currentRoute,
-            currentTopDestination = currentTopDestination,
-            showQuickSettings = true,
-            gesturesEnabled = currentRoute == Route.HOME,
-            onDismissRequest = { drawerState.close() },
-            onNavigateToRoute = {
-                if (currentRoute != it) {
-                    navController.navigate(it) {
-                        launchSingleTop = true
-                        popUpTo(route = Route.HOME)
-                    }
-                }
-            },
-            footer = {
-                Text(
-                    "$appName $versionReport",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 12.dp, bottom = 8.dp),
-                )
-            },
+    // A shared link or the download button opens the configuration sheet, which lives on the
+    // queue page: bring that page to the front first.
+    LaunchedEffect(sheetState) {
+        if (
+            sheetState is DownloadDialogViewModel.SheetState.Configure &&
+                navController.currentDestination?.route != Route.HOME
         ) {
-            NavHost(
-                modifier = Modifier.align(Alignment.Center),
-                navController = navController,
-                startDestination = Route.HOME,
-            ) {
-                animatedComposable(Route.HOME) {
-                    DownloadPageV2(
-                        dialogViewModel = dialogViewModel,
-                        onMenuOpen = {
-                            view.slightHapticFeedback()
-                            scope.launch { drawerState.open() }
-                        },
-                    )
-                }
-                animatedComposable(Route.DOWNLOADS) {
-                    VideoListPage(
-                        onNavigateBack = { onNavigateBack() },
-                        onNavigateToPlayer = { info ->
-                            PlayerLauncher.launch(
-                                context = context,
-                                videoId = info.id,
-                                videoPath = info.videoPath,
-                                projectionOverride = info.projectionOverride,
-                                onNavigateToPlayer = { id -> navController.navigate(Route.PLAYER id id) },
-                            )
-                        },
-                    )
-                }
-                animatedComposable(
-                    Route.PLAYER arg Route.VIDEO_ID,
-                    arguments = listOf(navArgument(Route.VIDEO_ID) { type = NavType.IntType }),
-                ) {
-                    PlayerScreen(
-                        videoId = it.arguments?.getInt(Route.VIDEO_ID) ?: -1,
-                        onNavigateBack = onNavigateBack,
-                    )
-                }
-                animatedComposableVariant(Route.TASK_LIST) {
-                    TaskListPage(
-                        onNavigateBack = onNavigateBack,
-                        onNavigateToDetail = { navController.navigate(Route.TASK_LOG id it) },
-                    )
-                }
-                slideInVerticallyComposable(
-                    Route.TASK_LOG arg Route.TASK_HASHCODE,
-                    arguments = listOf(navArgument(Route.TASK_HASHCODE) { type = NavType.IntType }),
-                ) {
-                    TaskLogPage(
-                        onNavigateBack = onNavigateBack,
-                        taskHashCode = it.arguments?.getInt(Route.TASK_HASHCODE) ?: -1,
-                    )
-                }
+            navController.navigateToTopLevel(TopLevelDestination.Queue)
+        }
+    }
 
-                settingsGraph(
+    val transitions = remember { NavTransitions(isTopLevel = { it.destination.isTopLevelRoot() }) }
+
+    AppNavigationScaffold(
+        currentDestination = currentDestination,
+        navigationSuiteType =
+            navigationSuiteTypeFor(LocalWindowWidthState.current, LocalIsVRMode.current),
+        onNavigate = { navController.navigateToTopLevel(it) },
+        onNewDownload = {
+            dialogViewModel.postAction(DownloadDialogViewModel.Action.ShowSheet())
+        },
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = Route.HOME,
+            enterTransition = transitions.enter,
+            exitTransition = transitions.exit,
+            popEnterTransition = transitions.popEnter,
+            popExitTransition = transitions.popExit,
+        ) {
+            animatedComposable(Route.HOME) { DownloadPageV2(dialogViewModel = dialogViewModel) }
+            animatedComposable(Route.DOWNLOADS) {
+                VideoListPage(
+                    onNavigateToPlayer = { info ->
+                        PlayerLauncher.launch(
+                            context = context,
+                            videoId = info.id,
+                            videoPath = info.videoPath,
+                            projectionOverride = info.projectionOverride,
+                            onNavigateToPlayer = { id -> navController.navigate(Route.PLAYER id id) },
+                        )
+                    }
+                )
+            }
+            zoomComposable(
+                Route.PLAYER arg Route.VIDEO_ID,
+                arguments = listOf(navArgument(Route.VIDEO_ID) { type = NavType.IntType }),
+            ) {
+                PlayerScreen(
+                    videoId = it.arguments?.getInt(Route.VIDEO_ID) ?: -1,
                     onNavigateBack = onNavigateBack,
-                    onNavigateTo = { route ->
-                        navController.navigate(route = route) { launchSingleTop = true }
-                    },
-                    cookiesViewModel = cookiesViewModel,
+                )
+            }
+            animatedComposable(Route.TASK_LIST) {
+                TaskListPage(onNavigateToDetail = { navController.navigate(Route.TASK_LOG id it) })
+            }
+            slideInVerticallyComposable(
+                Route.TASK_LOG arg Route.TASK_HASHCODE,
+                arguments = listOf(navArgument(Route.TASK_HASHCODE) { type = NavType.IntType }),
+            ) {
+                TaskLogPage(
+                    onNavigateBack = onNavigateBack,
+                    taskHashCode = it.arguments?.getInt(Route.TASK_HASHCODE) ?: -1,
                 )
             }
 
-            OnboardingFlow()
-            AppUpdater()
-            YtdlpUpdater()
+            settingsGraph(
+                onNavigateBack = onNavigateBack,
+                onNavigateTo = { route ->
+                    navController.navigate(route = route) { launchSingleTop = true }
+                },
+                cookiesViewModel = cookiesViewModel,
+            )
         }
+
+        OnboardingFlow()
+        AppUpdater()
+        YtdlpUpdater()
+    }
+}
+
+/** Phones get a bottom bar; tablets, foldables, landscape phones and the Quest panel a rail. */
+private fun navigationSuiteTypeFor(width: WindowWidthSizeClass, isVR: Boolean) =
+    when {
+        isVR -> AppNavigationLayout.WideRailExpanded
+        width == WindowWidthSizeClass.Compact -> AppNavigationLayout.BottomBar
+        else -> AppNavigationLayout.Rail
+    }
+
+/** True for the root screen of each top-level destination (where the navigation is shown). */
+fun NavDestination.isTopLevelRoot(): Boolean = route in TopLevelDestination.rootRoutes
+
+fun NavDestination?.isInHierarchyOf(destination: TopLevelDestination): Boolean =
+    this?.hierarchy?.any { it.route == destination.route } == true
+
+fun NavHostController.navigateToTopLevel(destination: TopLevelDestination) {
+    navigate(destination.route) {
+        popUpTo(graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 
@@ -215,12 +183,7 @@ fun NavGraphBuilder.settingsGraph(
     cookiesViewModel: CookiesViewModel,
 ) {
     navigation(startDestination = Route.SETTINGS_PAGE, route = Route.SETTINGS) {
-        animatedComposable(Route.DOWNLOAD_DIRECTORY) {
-            DownloadDirectoryPreferences(onNavigateBack)
-        }
-        animatedComposable(Route.SETTINGS_PAGE) {
-            SettingsPage(onNavigateBack = onNavigateBack, onNavigateTo = onNavigateTo)
-        }
+        animatedComposable(Route.SETTINGS_PAGE) { SettingsPage(onNavigateTo = onNavigateTo) }
         animatedComposable(Route.GENERAL_DOWNLOAD_PREFERENCES) {
             GeneralDownloadPreferences(onNavigateBack = { onNavigateBack() }) {
                 onNavigateTo(Route.TEMPLATE)

@@ -1,8 +1,6 @@
 package com.illuminazionetech.vrclip.download
 
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import com.illuminazionetech.vrclip.App.Companion.applicationScope
 import com.illuminazionetech.vrclip.App.Companion.context
 import com.illuminazionetech.vrclip.App.Companion.startService
@@ -75,8 +73,8 @@ object CommandTaskManager {
             return true
         }
 
-        fun onCopyLog(clipboardManager: ClipboardManager) {
-            clipboardManager.setText(AnnotatedString(output))
+        fun onCopyLog(copyText: (String) -> Unit) {
+            copyText(output)
         }
 
         fun onRestart() {
@@ -85,8 +83,8 @@ object CommandTaskManager {
             }
         }
 
-        fun onCopyError(clipboardManager: ClipboardManager) {
-            clipboardManager.setText(AnnotatedString(currentLine))
+        fun onCopyError(copyText: (String) -> Unit) {
+            copyText(currentLine)
             makeToast(R.string.error_copied)
         }
 
@@ -174,7 +172,7 @@ object CommandTaskManager {
             get(taskId)?.let { this.put(taskId, it.copy(state = CustomCommandTask.State.Canceled)) }
         }
 
-    fun onTaskError(errorReport: String, template: CommandTemplate, url: String) =
+    fun onTaskError(errorReport: String, template: CommandTemplate, url: String): Unit =
         mutableTaskList.run {
             val key = makeKey(url, template.name)
             NotificationUtil.notifyError(

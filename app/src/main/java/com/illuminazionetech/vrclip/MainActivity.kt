@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.illuminazionetech.vrclip.App.Companion.context
@@ -22,7 +23,6 @@ import com.illuminazionetech.vrclip.util.matchUrlFromSharedText
 import com.illuminazionetech.vrclip.util.setLanguage
 import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.compose.KoinContext
 
 class MainActivity : AppCompatActivity() {
     private val dialogViewModel: DownloadDialogViewModel by viewModel()
@@ -41,29 +41,32 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         setContent {
-            KoinContext {
-                val windowSizeClass = calculateWindowSizeClass(this)
-                val isVR = isQuestDevice()
-                SettingsProvider(windowWidthSizeClass = windowSizeClass.widthSizeClass) {
-                    CompositionLocalProvider(LocalIsVRMode provides isVR) {
-                        VRClipTheme(
-                            darkTheme = LocalDarkTheme.current.isDarkTheme() || isVR,
-                            isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
-                        ) {
-                            AppEntry(dialogViewModel = dialogViewModel)
-                        }
+            val windowSizeClass = calculateWindowSizeClass(this)
+            val isVR = remember { isQuestDevice() }
+            SettingsProvider(windowWidthSizeClass = windowSizeClass.widthSizeClass) {
+                CompositionLocalProvider(LocalIsVRMode provides isVR) {
+                    VRClipTheme(
+                        darkTheme = LocalDarkTheme.current.isDarkTheme() || isVR,
+                        isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
+                    ) {
+                        AppEntry(dialogViewModel = dialogViewModel)
                     }
                 }
             }
         }
+
+        // A link shared to the app while it was not running arrives here, not in onNewIntent.
+        if (savedInstanceState == null) handleSharedIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        val url = intent.getSharedURL()
-        if (url != null) {
-            dialogViewModel.postAction(DownloadDialogViewModel.Action.ShowSheet(listOf(url)))
-        }
+        handleSharedIntent(intent)
+    }
+
+    private fun handleSharedIntent(intent: Intent?) {
+        val url = intent?.getSharedURL()?.takeIf { it.isNotBlank() } ?: return
+        dialogViewModel.postAction(DownloadDialogViewModel.Action.ShowSheet(listOf(url)))
     }
 
     private fun Intent.getSharedURL(): String? {

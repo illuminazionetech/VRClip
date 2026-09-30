@@ -52,7 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
@@ -102,7 +102,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
     val scope = rememberCoroutineScope()
     val hapticFeedback = LocalHapticFeedback.current
     val view = LocalView.current
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = rememberTextClipboard()
     val context = LocalContext.current
     var showHelpDialog by remember { mutableStateOf(false) }
 
@@ -192,7 +192,7 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                     onClick = {
                                         scope.launch {
                                             expanded = false
-                                            clipboardManager.getText()?.text?.let {
+                                            clipboardManager.getText()?.let {
                                                 if (it.isNotEmpty()) {
                                                     val res =
                                                         DatabaseUtil.importTemplatesFromJson(it)

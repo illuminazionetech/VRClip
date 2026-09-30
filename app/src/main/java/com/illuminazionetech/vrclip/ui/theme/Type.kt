@@ -8,6 +8,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 
 val Typography =
@@ -44,19 +45,26 @@ fun Typography.scaled(factor: Float): Typography =
     if (factor == 1f) this
     else
         copy(
-            displayLarge = displayLarge.copy(fontSize = displayLarge.fontSize * factor),
-            displayMedium = displayMedium.copy(fontSize = displayMedium.fontSize * factor),
-            displaySmall = displaySmall.copy(fontSize = displaySmall.fontSize * factor),
-            headlineLarge = headlineLarge.copy(fontSize = headlineLarge.fontSize * factor),
-            headlineMedium = headlineMedium.copy(fontSize = headlineMedium.fontSize * factor),
-            headlineSmall = headlineSmall.copy(fontSize = headlineSmall.fontSize * factor),
-            titleLarge = titleLarge.copy(fontSize = titleLarge.fontSize * factor),
-            titleMedium = titleMedium.copy(fontSize = titleMedium.fontSize * factor),
-            titleSmall = titleSmall.copy(fontSize = titleSmall.fontSize * factor),
-            bodyLarge = bodyLarge.copy(fontSize = bodyLarge.fontSize * factor),
-            bodyMedium = bodyMedium.copy(fontSize = bodyMedium.fontSize * factor),
-            bodySmall = bodySmall.copy(fontSize = bodySmall.fontSize * factor),
-            labelLarge = labelLarge.copy(fontSize = labelLarge.fontSize * factor),
-            labelMedium = labelMedium.copy(fontSize = labelMedium.fontSize * factor),
-            labelSmall = labelSmall.copy(fontSize = labelSmall.fontSize * factor),
+            displayLarge = displayLarge.scaled(factor),
+            displayMedium = displayMedium.scaled(factor),
+            displaySmall = displaySmall.scaled(factor),
+            headlineLarge = headlineLarge.scaled(factor),
+            headlineMedium = headlineMedium.scaled(factor),
+            headlineSmall = headlineSmall.scaled(factor),
+            titleLarge = titleLarge.scaled(factor),
+            titleMedium = titleMedium.scaled(factor),
+            titleSmall = titleSmall.scaled(factor),
+            bodyLarge = bodyLarge.scaled(factor),
+            bodyMedium = bodyMedium.scaled(factor),
+            bodySmall = bodySmall.scaled(factor),
+            labelLarge = labelLarge.scaled(factor),
+            labelMedium = labelMedium.scaled(factor),
+            labelSmall = labelSmall.scaled(factor),
         )
+
+/** Scales size and line height together: scaling only the size makes lines overlap. */
+private fun TextStyle.scaled(factor: Float): TextStyle =
+    copy(
+        fontSize = fontSize * factor,
+        lineHeight = if (lineHeight.isSpecified) lineHeight * factor else lineHeight,
+    )

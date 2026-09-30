@@ -2,6 +2,7 @@ package com.illuminazionetech.vrclip.ui.page.downloadv2
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,6 +30,7 @@ import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.RestartAlt
@@ -35,6 +38,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,7 +48,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.meta.spatial.uiset.card.SecondaryCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,11 +58,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.illuminazionetech.vrclip.R
@@ -88,16 +95,20 @@ private val ActionButtonContainerColor: Color
     @Composable get() = LocalFixedColorRoles.current.onSecondaryFixed.copy(alpha = 0.68f)
 private val ActionButtonContentColor: Color
     @Composable get() = LocalFixedColorRoles.current.secondaryFixed
-private val LabelContainerColor: Color
-    @Composable get() = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.88f)
+/**
+ * Labels drawn over thumbnails use a dark scrim with white text in both themes, like any video
+ * player overlay: a thumbnail can be any color, so theme surfaces would be unreadable on some.
+ */
+private val LabelContainerColor = Color.Black.copy(alpha = 0.62f)
 
 @Composable
 fun VideoCardV2(
     modifier: Modifier = Modifier,
     viewState: Task.ViewState,
+    downloadState: Task.DownloadState? = null,
     stateIndicator: @Composable (BoxScope.() -> Unit)? = null,
     actionButton: @Composable (BoxScope.() -> Unit)? = null,
-    onButtonClick: () -> Unit,
+    onClick: () -> Unit,
 ) {
     with(viewState) {
         VideoCardV2(
@@ -107,9 +118,10 @@ fun VideoCardV2(
             uploader = uploader,
             duration = duration,
             fileSizeApprox = fileSizeApprox,
+            downloadState = downloadState,
             stateIndicator = stateIndicator,
             actionButton = actionButton,
-            onButtonClick = onButtonClick,
+            onClick = onClick,
         )
     }
 }
@@ -231,6 +243,7 @@ private fun VideoListItemPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun VideoCardV2(
     modifier: Modifier = Modifier,
@@ -239,74 +252,67 @@ fun VideoCardV2(
     uploader: String = "",
     duration: Int = 0,
     fileSizeApprox: Double = .0,
+    downloadState: Task.DownloadState? = null,
     stateIndicator: @Composable (BoxScope.() -> Unit)? = null,
     actionButton: @Composable (BoxScope.() -> Unit)? = null,
-    onButtonClick: () -> Unit,
+    onClick: () -> Unit,
 ) {
-    if (LocalIsVRMode.current) {
-        SecondaryCard(
-            modifier = modifier.fillMaxWidth(),
-            onClick = {},
-        ) {
-            Column {
-                Box(Modifier.fillMaxWidth()) {
-                    CardImage(modifier = Modifier, thumbnailModel = thumbnailModel)
-                    Box(Modifier.align(Alignment.TopStart)) { stateIndicator?.invoke(this) }
-                    Box(Modifier.align(Alignment.Center)) { actionButton?.invoke(this) }
-                    VideoInfoLabel(
-                        modifier = Modifier.align(Alignment.BottomEnd),
-                        duration = duration,
-                        fileSizeApprox = fileSizeApprox,
-                    )
-                }
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    TitleText(modifier = Modifier.weight(1f), title = title, uploader = uploader)
-                    IconButton(
-                        onButtonClick,
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = stringResource(R.string.show_more_actions),
-                            modifier = Modifier.size(20.dp),
+    ElevatedCard(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        colors =
+            CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp),
+    ) {
+        Column {
+            Box(Modifier.fillMaxWidth()) {
+                CardImage(modifier = Modifier, thumbnailModel = thumbnailModel)
+                Box(Modifier.align(Alignment.TopStart)) { stateIndicator?.invoke(this) }
+                Box(Modifier.align(Alignment.Center)) { actionButton?.invoke(this) }
+                VideoInfoLabel(
+                    modifier = Modifier.align(Alignment.BottomEnd),
+                    duration = duration,
+                    fileSizeApprox = fileSizeApprox,
+                )
+            }
+            val running = downloadState as? Running
+            AnimatedVisibility(visible = running != null) {
+                val progress = running?.progress ?: -1f
+                if (progress >= 0f) {
+                    val animatedProgress by
+                        animateFloatAsState(
+                            progress,
+                            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
+                            label = "cardProgress",
                         )
-                    }
+                    LinearWavyProgressIndicator(
+                        progress = { animatedProgress },
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                    )
+                } else {
+                    LinearWavyProgressIndicator(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
+                    )
                 }
             }
-        }
-    } else {
-        ElevatedCard(
-            modifier = modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.large,
-            colors =
-                CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                ),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp),
-        ) {
-            Column {
-                Box(Modifier.fillMaxWidth()) {
-                    CardImage(modifier = Modifier, thumbnailModel = thumbnailModel)
-                    Box(Modifier.align(Alignment.TopStart)) { stateIndicator?.invoke(this) }
-                    Box(Modifier.align(Alignment.Center)) { actionButton?.invoke(this) }
-                    VideoInfoLabel(
-                        modifier = Modifier.align(Alignment.BottomEnd),
-                        duration = duration,
-                        fileSizeApprox = fileSizeApprox,
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                TitleText(
+                    modifier = Modifier.weight(1f),
+                    title = title,
+                    uploader =
+                        (downloadState as? Running)?.progressText?.takeIf { it.isNotBlank() }
+                            ?: uploader,
+                    contentPadding = PaddingValues(start = 16.dp, top = 12.dp, bottom = 14.dp),
+                    minTitleLines = 2,
+                )
+                IconButton(onClick = onClick, modifier = Modifier.padding(top = 4.dp, end = 4.dp)) {
+                    Icon(
+                        imageVector = Icons.Rounded.MoreVert,
+                        contentDescription = stringResource(R.string.show_more_actions),
                     )
-                }
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    TitleText(modifier = Modifier.weight(1f), title = title, uploader = uploader)
-                    IconButton(
-                        onButtonClick,
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = stringResource(R.string.show_more_actions),
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
                 }
             }
         }
@@ -333,26 +339,44 @@ fun VideoCardV2Preview() {
 
 @Composable
 private fun CardImage(modifier: Modifier = Modifier, thumbnailModel: Any? = null) {
+    val imageModifier =
+        modifier.fillMaxWidth().aspectRatio(16f / 9f, matchHeightConstraintsFirst = true)
     if (thumbnailModel != null) {
         AsyncImageImpl(
-            modifier =
-                modifier
-                    .padding()
-                    .fillMaxWidth()
-                    .aspectRatio(16f / 9f, matchHeightConstraintsFirst = true),
+            modifier = imageModifier.background(MaterialTheme.colorScheme.surfaceContainerHighest),
             model = thumbnailModel,
             contentDescription = null,
             contentScale = ContentScale.Crop,
         )
     } else {
-        Surface(
-            modifier =
-                modifier
-                    .padding()
-                    .fillMaxWidth()
-                    .aspectRatio(16f / 9f, matchHeightConstraintsFirst = true),
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-        ) {}
+        ThumbnailPlaceholder(modifier = imageModifier)
+    }
+}
+
+/**
+ * Stand-in for a missing thumbnail: a tonal gradient, with a faint video glyph when [iconSize] is
+ * set (the card leaves it out because its action button already sits in the middle).
+ */
+@Composable
+private fun ThumbnailPlaceholder(modifier: Modifier = Modifier, iconSize: Dp? = null) {
+    val colors = MaterialTheme.colorScheme
+    Box(
+        modifier =
+            modifier.background(
+                Brush.linearGradient(
+                    listOf(colors.primaryContainer, colors.tertiaryContainer)
+                )
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (iconSize != null) {
+            Icon(
+                imageVector = Icons.Rounded.Movie,
+                contentDescription = null,
+                tint = colors.onPrimaryContainer.copy(alpha = 0.35f),
+                modifier = Modifier.size(iconSize),
+            )
+        }
     }
 }
 
@@ -364,19 +388,19 @@ private fun ListItemImage(modifier: Modifier = Modifier, thumbnailModel: Any? = 
             modifier =
                 Modifier.width(160.dp)
                     .aspectRatio(16f / 9f, matchHeightConstraintsFirst = true)
-                    .clip(MaterialTheme.shapes.extraSmall),
+                    .clip(MaterialTheme.shapes.small),
             contentScale = ContentScale.Crop,
             contentDescription = null,
         )
     } else {
-        Box(
+        ThumbnailPlaceholder(
             modifier =
                 modifier
                     .width(160.dp)
                     .aspectRatio(16f / 9f, matchHeightConstraintsFirst = true)
-                    .clip(MaterialTheme.shapes.extraSmall)
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
-        ) {}
+                    .clip(MaterialTheme.shapes.small),
+            iconSize = 28.dp,
+        )
     }
 }
 
@@ -386,9 +410,19 @@ private fun TitleText(
     title: String,
     uploader: String,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    minTitleLines: Int = 1,
 ) {
+    // Reserve room for [minTitleLines] title lines plus the subtitle, so cards in a grid row
+    // line up while a one-line title still sits right above its subtitle.
+    val typography = MaterialTheme.typography
+    val minHeight =
+        with(LocalDensity.current) {
+            (typography.titleSmall.lineHeight * minTitleLines).toDp() +
+                typography.bodySmall.lineHeight.toDp() +
+                3.dp
+        }
     Column(
-        modifier = modifier.padding(contentPadding),
+        modifier = modifier.padding(contentPadding).heightIn(min = minHeight),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -412,16 +446,20 @@ private fun TitleText(
 
 @Composable
 private fun VideoInfoLabel(modifier: Modifier = Modifier, duration: Int, fileSizeApprox: Double) {
+    val parts =
+        listOfNotNull(
+            fileSizeApprox.takeIf { it > 0 }?.toFileSizeText(),
+            duration.takeIf { it > 0 }?.toDurationText(),
+        )
+    if (parts.isEmpty()) return
     Surface(
-        modifier = modifier.padding(4.dp),
+        modifier = modifier.padding(8.dp),
         color = LabelContainerColor,
-        shape = MaterialTheme.shapes.extraSmall,
+        shape = MaterialTheme.shapes.small,
     ) {
-        val fileSizeText = fileSizeApprox.toFileSizeText()
-        val durationText = duration.toDurationText()
         Text(
-            modifier = Modifier.padding(horizontal = 4.dp),
-            text = "$fileSizeText  $durationText",
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+            text = parts.joinToString(" · "),
             style = MaterialTheme.typography.labelSmall,
             color = Color.White,
         )
@@ -431,12 +469,12 @@ private fun VideoInfoLabel(modifier: Modifier = Modifier, duration: Int, fileSiz
 @Composable
 fun CardStateIndicator(modifier: Modifier = Modifier, downloadState: Task.DownloadState) {
     Surface(
-        modifier = modifier.padding(vertical = 12.dp, horizontal = 8.dp),
+        modifier = modifier.padding(8.dp),
         color = LabelContainerColor,
-        shape = MaterialTheme.shapes.extraSmall,
+        shape = MaterialTheme.shapes.small,
     ) {
         CardItemStateText(
-            modifier = Modifier.padding(horizontal = 4.dp),
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
             downloadState = downloadState,
         )
     }
@@ -529,10 +567,7 @@ fun ListItemStateText(
 
 @Composable
 private fun CardItemStateText(modifier: Modifier = Modifier, downloadState: Task.DownloadState) {
-    val errorColor =
-        MaterialTheme.colorScheme.run {
-            if (LocalDarkTheme.current.isDarkTheme()) error else errorContainer
-        }
+    val errorColor = Color(0xFFFFB4AB)
     val textStyle = MaterialTheme.typography.labelSmall
     val contentColor = Color.White
 

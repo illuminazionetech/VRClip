@@ -177,7 +177,13 @@ ktfmt { kotlinLangStyle() }
 
 kotlin {
     jvmToolchain(21)
-    compilerOptions { optIn.add("kotlin.RequiresOptIn") }
+    compilerOptions {
+        optIn.addAll(
+            "kotlin.RequiresOptIn",
+            "androidx.compose.material3.ExperimentalMaterial3Api",
+            "androidx.compose.material3.ExperimentalMaterial3ExpressiveApi",
+        )
+    }
 }
 
 dependencies {
@@ -191,7 +197,6 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidxCompose)
-    implementation(libs.androidx.compose.material) // TEMP-M2
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.bundles.coil)

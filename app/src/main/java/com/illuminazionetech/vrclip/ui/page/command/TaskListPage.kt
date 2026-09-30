@@ -1,5 +1,24 @@
 package com.illuminazionetech.vrclip.ui.page.command
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.MaterialShapes
+import androidx.compose.material3.MediumFlexibleTopAppBar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.toShape
+import androidx.compose.ui.res.pluralStringResource
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
+import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
+import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +38,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Cancel
@@ -48,7 +66,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -72,7 +89,6 @@ import com.illuminazionetech.vrclip.ui.component.OutlinedButtonChip
 import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.PasteFromClipBoardButton
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
-import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheetM2
 import com.illuminazionetech.vrclip.ui.component.TaskStatus
 import com.illuminazionetech.vrclip.ui.page.settings.command.CommandTemplateDialog
 import com.illuminazionetech.vrclip.util.PreferenceUtil
@@ -82,33 +98,41 @@ import com.illuminazionetech.vrclip.util.findURLsFromString
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+/**
+ * Custom yt-dlp commands run from user templates, with their live output. Same page anatomy as
+ * the queue and the library: flexible top bar with a summary, empty state, primary action FAB.
+ */
 @Composable
-fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) {
+fun TaskListPage(onNavigateToDetail: (Int) -> Unit) {
     val scope = rememberCoroutineScope()
     val view = LocalView.current
+    val clipboard = rememberTextClipboard()
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState =
-        androidx.compose.material.rememberModalBottomSheetState(
-            skipHalfExpanded = true,
-            initialValue = ModalBottomSheetValue.Hidden,
-        )
+    val sheetState = rememberHiddenSheetState()
+    val tasks = CommandTaskManager.mutableTaskList.values.toList().sortedBy { it.state.toStatus() }
+    val running = tasks.count { it.state is CommandTaskManager.CustomCommandTask.State.Running }
+
+    val openSheet: () -> Unit = {
+        view.slightHapticFeedback()
+        showBottomSheet = true
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            TopAppBar(
-                title = {
+            MediumFlexibleTopAppBar(
+                title = { Text(stringResource(R.string.nav_commands), maxLines = 1) },
+                subtitle = {
                     Text(
-                        text = stringResource(R.string.running_tasks),
-                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+                        text =
+                            if (tasks.isEmpty()) stringResource(R.string.commands_subtitle)
+                            else pluralStringResource(R.plurals.queue_active, running, running),
+                        maxLines = 1,
                     )
                 },
-                navigationIcon = { BackButton { onNavigateBack() } },
-                actions = {},
                 scrollBehavior = scrollBehavior,
                 colors =
                     TopAppBarDefaults.topAppBarColors(
@@ -118,30 +142,30 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    scope.launch {
-                        showBottomSheet = true
-                        delay(50)
-                        sheetState.show()
-                    }
-                },
-                modifier = Modifier.padding(vertical = 18.dp, horizontal = 6.dp),
-            ) {
-                Icon(Icons.Rounded.Add, stringResource(id = R.string.new_task))
+            if (tasks.isNotEmpty()) {
+                ExtendedFloatingActionButton(
+                    onClick = openSheet,
+                    icon = { Icon(Icons.Rounded.PlayArrow, contentDescription = null) },
+                    text = { Text(stringResource(R.string.new_task)) },
+                )
             }
         },
     ) { paddings ->
-        val clipboardManager = LocalClipboardManager.current
         LazyColumn(
-            modifier = Modifier.padding(paddings),
-            contentPadding = PaddingValues(24.dp),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding =
+                PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = paddings.calculateTopPadding() + 4.dp,
+                    bottom = paddings.calculateBottomPadding() + 104.dp,
+                ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(
-                CommandTaskManager.mutableTaskList.values.toList().sortedBy { it.state.toStatus() },
-                key = { it.toKey() },
-            ) {
+            if (tasks.isEmpty()) {
+                item(key = "empty") { CommandsEmptyState(onRunCommand = openSheet) }
+            }
+            items(tasks, key = { it.toKey() }) {
                 it.run {
                     CustomCommandTaskItem(
                         status = state.toStatus(),
@@ -153,9 +177,9 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
                         url = url,
                         templateName = template.name,
                         onCancel = { onCancel() },
-                        onCopyError = { onCopyError(clipboardManager) },
+                        onCopyError = { onCopyError(clipboard::setText) },
                         onRestart = { onRestart() },
-                        onCopyLog = { onCopyLog(clipboardManager) },
+                        onCopyLog = { onCopyLog(clipboard::setText) },
                         onShowLog = { onNavigateToDetail(hashCode()) },
                         modifier = Modifier.animateItem(),
                     )
@@ -163,91 +187,124 @@ fun TaskListPage(onNavigateBack: () -> Unit, onNavigateToDetail: (Int) -> Unit) 
             }
         }
     }
+
     val onDismissRequest: () -> Unit = {
         scope.launch { sheetState.hide() }.invokeOnCompletion { showBottomSheet = false }
     }
 
-    BackHandler(showBottomSheet) { onDismissRequest() }
+    if (showBottomSheet) {
+        LaunchedEffect(Unit) { sheetState.show() }
+        VRClipModalBottomSheet(sheetState = sheetState, onDismissRequest = onDismissRequest) {
+            var showTemplateSelectionDialog by remember { mutableStateOf(false) }
+            var showTemplateCreatorDialog by remember { mutableStateOf(false) }
+            var showTemplateEditorDialog by remember { mutableStateOf(false) }
 
-    if (showBottomSheet)
-        VRClipModalBottomSheetM2(
-            sheetState = sheetState,
-            sheetContent = {
-                val clipboardManager = LocalClipboardManager.current
-
-                var showTemplateSelectionDialog by remember { mutableStateOf(false) }
-                var showTemplateCreatorDialog by remember { mutableStateOf(false) }
-                var showTemplateEditorDialog by remember { mutableStateOf(false) }
-
-                val template by
-                    remember(
-                        showTemplateCreatorDialog,
-                        showTemplateSelectionDialog,
-                        showTemplateEditorDialog,
-                    ) {
-                        mutableStateOf(PreferenceUtil.getTemplate())
-                    }
-
-                var url by remember { mutableStateOf("") }
-
-                LaunchedEffect(sheetState.targetValue) {
-                    if (sheetState.targetValue == ModalBottomSheetValue.Expanded)
-                        url =
-                            findURLsFromString(clipboardManager.getText()?.text.toString(), false)
-                                .joinToString(separator = "\n")
+            val template by
+                remember(
+                    showTemplateCreatorDialog,
+                    showTemplateSelectionDialog,
+                    showTemplateEditorDialog,
+                ) {
+                    mutableStateOf(PreferenceUtil.getTemplate())
                 }
 
-                Column(Modifier.fillMaxWidth()) {
-                    TaskCreatorDialogContent(
-                        url = url,
-                        onValueChange = { url = it },
-                        template = template,
-                        onTemplateSelectionClicked = { showTemplateSelectionDialog = true },
-                        onNewTemplateClicked = { showTemplateCreatorDialog = true },
-                        onEditClicked = { showTemplateEditorDialog = true },
+            var url by remember { mutableStateOf("") }
+
+            LaunchedEffect(Unit) {
+                url =
+                    findURLsFromString(clipboard.getText().orEmpty(), false)
+                        .joinToString(separator = "\n")
+            }
+
+            Column(Modifier.fillMaxWidth()) {
+                TaskCreatorDialogContent(
+                    url = url,
+                    onValueChange = { url = it },
+                    template = template,
+                    onTemplateSelectionClicked = { showTemplateSelectionDialog = true },
+                    onNewTemplateClicked = { showTemplateCreatorDialog = true },
+                    onEditClicked = { showTemplateEditorDialog = true },
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
+                ) {
+                    OutlinedButtonWithIcon(
+                        onClick = onDismissRequest,
+                        icon = Icons.Rounded.Cancel,
+                        text = stringResource(R.string.cancel),
                     )
-                    LazyRow(
-                        modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
-                        horizontalArrangement = Arrangement.End,
-                    ) {
-                        item {
-                            OutlinedButtonWithIcon(
-                                modifier = Modifier.padding(horizontal = 12.dp),
-                                onClick = onDismissRequest,
-                                icon = Icons.Rounded.Cancel,
-                                text = stringResource(R.string.cancel),
-                            )
-                        }
-                        item {
-                            FilledButtonWithIcon(
-                                onClick = {
-                                    view.slightHapticFeedback()
-                                    CommandTaskManager.executeCommandWithUrl(url)
-                                    onDismissRequest()
-                                },
-                                icon = Icons.Rounded.DownloadDone,
-                                text = stringResource(R.string.start),
-                            )
-                        }
-                    }
-                }
-                if (showTemplateSelectionDialog) {
-                    TemplatePickerDialog() { showTemplateSelectionDialog = false }
-                }
-                if (showTemplateCreatorDialog) {
-                    CommandTemplateDialog(
-                        onDismissRequest = { showTemplateCreatorDialog = false },
-                        confirmationCallback = { scope.launch { TEMPLATE_ID.updateInt(it) } },
+                    FilledButtonWithIcon(
+                        onClick = {
+                            view.slightHapticFeedback()
+                            CommandTaskManager.executeCommandWithUrl(url)
+                            onDismissRequest()
+                        },
+                        icon = Icons.Rounded.DownloadDone,
+                        text = stringResource(R.string.start),
+                        enabled = url.isNotBlank(),
                     )
                 }
-                if (showTemplateEditorDialog) {
-                    CommandTemplateDialog(
-                        commandTemplate = template,
-                        onDismissRequest = { showTemplateEditorDialog = false },
-                    )
-                }
-            },
+            }
+            if (showTemplateSelectionDialog) {
+                TemplatePickerDialog() { showTemplateSelectionDialog = false }
+            }
+            if (showTemplateCreatorDialog) {
+                CommandTemplateDialog(
+                    onDismissRequest = { showTemplateCreatorDialog = false },
+                    confirmationCallback = { scope.launch { TEMPLATE_ID.updateInt(it) } },
+                )
+            }
+            if (showTemplateEditorDialog) {
+                CommandTemplateDialog(
+                    commandTemplate = template,
+                    onDismissRequest = { showTemplateEditorDialog = false },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CommandsEmptyState(onRunCommand: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(top = 56.dp, bottom = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(modifier = Modifier.size(144.dp), contentAlignment = Alignment.Center) {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                shape = MaterialShapes.SoftBurst.toShape(),
+                color = MaterialTheme.colorScheme.secondaryContainer,
+            ) {}
+            Icon(
+                imageVector = Icons.Rounded.Terminal,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier.size(56.dp),
+            )
+        }
+        Spacer(Modifier.height(24.dp))
+        Text(
+            text = stringResource(R.string.commands_empty_title),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 24.dp),
         )
+        Text(
+            text = stringResource(R.string.custom_command_desc),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
+        )
+        Spacer(Modifier.height(24.dp))
+        Button(onClick = onRunCommand) {
+            Icon(Icons.Rounded.PlayArrow, contentDescription = null, Modifier.size(18.dp))
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.new_task))
+        }
+    }
 }
 
 private fun CommandTaskManager.CustomCommandTask.State.toStatus(): TaskStatus =

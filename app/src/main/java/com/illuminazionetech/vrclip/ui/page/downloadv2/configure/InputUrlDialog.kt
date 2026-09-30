@@ -58,7 +58,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalClipboardManager
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -84,14 +84,14 @@ fun InputUrlPage(
     onConfigUpdate: (Config) -> Unit,
     onActionPost: (Action) -> Unit,
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = rememberTextClipboard()
     val urlList = remember { mutableStateListOf<String>() }
     val savedLinks = remember(config) { mutableStateListOf<String>() }
 
     LaunchedEffect(Unit) {
         clipboardManager.getText()?.let {
             urlList.clear()
-            urlList.addAll(findURLsFromString(it.toString()).toSet())
+            urlList.addAll(findURLsFromString(it).toSet())
         }
     }
 

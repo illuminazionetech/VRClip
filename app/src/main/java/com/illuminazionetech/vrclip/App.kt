@@ -160,12 +160,13 @@ class App : Application(), SingletonImageLoader.Factory {
 
         private val connection =
             object : ServiceConnection {
-                override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                    val binder = service as DownloadService.DownloadServiceBinder
+                override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
                     isServiceRunning = true
                 }
 
-                override fun onServiceDisconnected(arg0: ComponentName) {}
+                override fun onServiceDisconnected(className: ComponentName?) {
+                    isServiceRunning = false
+                }
             }
 
         fun startService() {

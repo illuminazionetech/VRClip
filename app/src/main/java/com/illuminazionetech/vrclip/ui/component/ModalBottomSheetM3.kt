@@ -1,7 +1,14 @@
 package com.illuminazionetech.vrclip.ui.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetDefaults
@@ -9,31 +16,34 @@ import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
 /**
  * A [SheetState] that starts expanded, for sheets whose visibility is driven by composition
- * instead of a show animation. Mirrors the positional and velocity thresholds that
- * [androidx.compose.material3.rememberModalBottomSheetState] applies internally.
+ * instead of a show animation.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun rememberExpandedSheetState(): SheetState {
-    val density = LocalDensity.current
-    return remember(density) {
-        SheetState(
-            skipPartiallyExpanded = true,
-            positionalThreshold = { with(density) { 56.dp.toPx() } },
-            velocityThreshold = { with(density) { 125.dp.toPx() } },
-            initialValue = SheetValue.Expanded,
-        )
-    }
-}
+fun rememberExpandedSheetState(): SheetState =
+    rememberBottomSheetState(
+        initialValue = SheetValue.Expanded,
+        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
+    )
+
+/** A hidden [SheetState], optionally with the half-expanded stop. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun rememberHiddenSheetState(skipPartiallyExpanded: Boolean = true): SheetState =
+    rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues =
+            if (skipPartiallyExpanded) setOf(SheetValue.Hidden, SheetValue.Expanded)
+            else setOf(SheetValue.Hidden, SheetValue.PartiallyExpanded, SheetValue.Expanded),
+    )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +62,8 @@ fun VRClipModalBottomSheet(
         properties = properties,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         tonalElevation = 0.dp,
-        shape = MaterialTheme.shapes.extraLarge,
+        // Only the top corners are rounded: the sheet is docked to the bottom edge.
+        shape = BottomSheetDefaults.ExpandedShape,
     ) {
         Column(modifier = Modifier.padding(contentPadding)) {
             content()

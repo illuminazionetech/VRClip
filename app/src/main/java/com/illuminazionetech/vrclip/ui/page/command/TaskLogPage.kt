@@ -40,7 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -57,7 +57,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
     Log.d(TAG, "TaskLogPage: $taskHashCode")
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val task = CommandTaskManager.mutableTaskList.values.find { it.hashCode() == taskHashCode } ?: return
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = rememberTextClipboard()
     var expandLog by remember { mutableStateOf(false) }
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -94,7 +94,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                             icon = Icons.Rounded.ContentCopy,
                             label = stringResource(id = R.string.copy_log),
                         ) {
-                            onCopyLog(clipboardManager)
+                            onCopyLog(clipboardManager::setText)
                         }
                         if (state is CommandTaskManager.CustomCommandTask.State.Error)
                             ButtonChip(
@@ -102,7 +102,7 @@ fun TaskLogPage(onNavigateBack: () -> Unit, taskHashCode: Int) {
                                 label = stringResource(id = R.string.copy_error_report),
                                 iconColor = MaterialTheme.colorScheme.error,
                             ) {
-                                onCopyError(clipboardManager)
+                                onCopyError(clipboardManager::setText)
                             }
                         if (state is CommandTaskManager.CustomCommandTask.State.Running)
                             ButtonChip(

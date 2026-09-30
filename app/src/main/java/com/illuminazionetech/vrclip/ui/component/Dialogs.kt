@@ -261,7 +261,7 @@ fun VRClipDialogVariant(
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
 ) {
-    AlertDialog(onDismissRequest = onDismissRequest, modifier = modifier, properties = properties) {
+    BasicAlertDialog(onDismissRequest = onDismissRequest, modifier = modifier, properties = properties) {
         Surface(
             modifier = modifier,
             shape = shape,

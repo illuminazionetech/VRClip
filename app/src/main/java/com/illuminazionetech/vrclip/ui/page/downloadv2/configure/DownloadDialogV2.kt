@@ -33,7 +33,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.rounded.DownloadDone
@@ -78,7 +77,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalClipboardManager
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -98,7 +97,7 @@ import com.illuminazionetech.vrclip.ui.component.ButtonChip
 import com.illuminazionetech.vrclip.ui.component.DrawerSheetSubtitle
 import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
-import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheetM2Variant
+import com.illuminazionetech.vrclip.ui.component.FullScreenSheet
 import com.illuminazionetech.vrclip.ui.component.rememberExpandedSheetState
 import com.illuminazionetech.vrclip.ui.component.SingleChoiceChip
 import com.illuminazionetech.vrclip.ui.component.SingleChoiceSegmentedButton
@@ -281,7 +280,7 @@ fun DownloadDialog(
 @Composable
 private fun ErrorPage(modifier: Modifier = Modifier, state: Error, onActionPost: (Action) -> Unit) {
     val view = LocalView.current
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = rememberTextClipboard()
     val url =
         state.action.run {
             when (this) {
@@ -451,24 +450,8 @@ fun FormatPage(
     state: SelectionState.FormatSelection,
     onDismissRequest: () -> Unit,
 ) {
-    val sheetState =
-        androidx.compose.material.rememberModalBottomSheetState(
-            initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
-        )
-
-    LaunchedEffect(state) { sheetState.show() }
-    val scope = rememberCoroutineScope()
-    BackHandler { scope.launch { sheetState.hide() }.invokeOnCompletion { onDismissRequest() } }
-
-    VRClipModalBottomSheetM2Variant(sheetState = sheetState, sheetGesturesEnabled = false) {
-        FormatPage(
-            modifier = modifier,
-            videoInfo = state.info,
-            onNavigateBack = {
-                scope.launch { sheetState.hide() }.invokeOnCompletion { onDismissRequest() }
-            },
-        )
+    FullScreenSheet(onDismissRequest = onDismissRequest) { dismiss ->
+        FormatPage(modifier = modifier, videoInfo = state.info, onNavigateBack = dismiss)
     }
 }
 

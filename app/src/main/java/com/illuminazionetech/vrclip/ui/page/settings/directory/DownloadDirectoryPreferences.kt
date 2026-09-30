@@ -61,7 +61,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -91,6 +90,7 @@ import com.illuminazionetech.vrclip.ui.component.PreferenceSwitch
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider
 import com.illuminazionetech.vrclip.ui.component.PreferencesHintCard
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
+import com.illuminazionetech.vrclip.util.StorageUtil
 import com.illuminazionetech.vrclip.util.COMMAND_DIRECTORY
 import com.illuminazionetech.vrclip.util.CUSTOM_COMMAND
 import com.illuminazionetech.vrclip.util.CUSTOM_OUTPUT_TEMPLATE
@@ -137,7 +137,6 @@ enum class Directory {
 fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
 
     val uriHandler = LocalUriHandler.current
-    val clipboardManager = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
@@ -262,15 +261,8 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                         description = stringResource(R.string.permission_issue_desc),
                         icon = Icons.Rounded.SdCardAlert,
                     ) {
-                        if (
-                            Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()
-                        ) {
-                            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                data = Uri.parse("package:" + context.packageName)
-                                if (resolveActivity(context.packageManager) != null)
-                                    context.startActivity(this)
-                            }
+                        if (!StorageUtil.isStorageAccessGranted(context)) {
+                            StorageUtil.launchAllFilesAccessSettings(context)
                         }
                     }
                 }

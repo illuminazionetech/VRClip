@@ -12,10 +12,11 @@ import com.illuminazionetech.vrclip.util.NotificationUtil
 import com.illuminazionetech.vrclip.util.makeToast
 import com.yausername.youtubedl_android.YoutubeDL
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
+import org.koin.core.component.inject
 
 class NotificationActionReceiver : BroadcastReceiver(), KoinComponent {
-    val downloader = get<DownloaderV2>()
+    // Resolved lazily: a receiver can be instantiated before Application.onCreate starts Koin.
+    private val downloader: DownloaderV2 by inject()
 
     companion object {
         private const val TAG = "CancelReceiver"

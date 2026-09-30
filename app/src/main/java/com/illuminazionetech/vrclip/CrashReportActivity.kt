@@ -19,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -42,7 +42,7 @@ class CrashReportActivity : ComponentActivity() {
                     darkTheme = LocalDarkTheme.current.isDarkTheme(),
                     isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
                 ) {
-                    val clipboardManager = LocalClipboardManager.current
+                    val clipboardManager = rememberTextClipboard()
                     CrashReportPage(errorMessage = errorMessage) {
                         clipboardManager.setText(AnnotatedString(errorMessage))
                         this.finishAffinity()

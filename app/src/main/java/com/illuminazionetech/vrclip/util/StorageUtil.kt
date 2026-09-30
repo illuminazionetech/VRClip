@@ -18,7 +18,7 @@ object StorageUtil {
 
     fun isStorageAccessGranted(context: Context): Boolean =
         if (Build.VERSION.SDK_INT >= 30) {
-            Environment.isExternalStorageManager()
+            runCatching { Environment.isExternalStorageManager() }.getOrDefault(false)
         } else {
             ContextCompat.checkSelfPermission(
                 context,
@@ -42,13 +42,12 @@ object StorageUtil {
                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     .setData(Uri.parse("package:${context.packageName}")),
             )
+        // Launch directly instead of probing with resolveActivity(): with package visibility
+        // filtering (API 30+) the probe can return null for the Settings app even though the
+        // screen exists, which left the grant button doing nothing.
         for (intent in candidates) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            if (intent.resolveActivity(context.packageManager) != null) {
-                runCatching { context.startActivity(intent) }.onSuccess {
-                    return
-                }
-            }
+            if (runCatching { context.startActivity(intent) }.isSuccess) return
         }
     }
 }

@@ -1,5 +1,13 @@
 package com.illuminazionetech.vrclip.ui.page.settings
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
+import com.illuminazionetech.vrclip.ui.component.SettingsGroupTitle
+import com.illuminazionetech.vrclip.ui.component.groupPosition
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -62,7 +70,7 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
+fun SettingsPage(onNavigateTo: (String) -> Unit) {
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
     var showBatteryHint by remember {
@@ -110,10 +118,9 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
         topBar = {
             LargeTopAppBar(
                 title = { Text(text = stringResource(id = R.string.settings)) },
-                navigationIcon = { BackButton(onNavigateBack) },
                 scrollBehavior = scrollBehavior,
                 colors =
-                    TopAppBarDefaults.largeTopAppBarColors(
+                    TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                         scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
@@ -139,100 +146,103 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
                     }
                 }
             }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.general_settings),
-                    description = stringResource(id = R.string.general_settings_desc),
-                    icon = Icons.Rounded.SettingsApplications,
-                ) {
-                    onNavigateTo(Route.GENERAL_DOWNLOAD_PREFERENCES)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.download_directory),
-                    description = stringResource(id = R.string.download_directory_desc),
-                    icon = Icons.Rounded.Folder,
-                ) {
-                    onNavigateTo(Route.DOWNLOAD_DIRECTORY)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.format),
-                    description = stringResource(id = R.string.format_settings_desc),
-                    icon =
+            val downloads =
+                listOf(
+                    SettingsEntry(
+                        R.string.general_settings,
+                        R.string.general_settings_desc,
+                        Icons.Rounded.SettingsApplications,
+                        Route.GENERAL_DOWNLOAD_PREFERENCES,
+                    ),
+                    SettingsEntry(
+                        R.string.download_directory,
+                        R.string.download_directory_desc,
+                        Icons.Rounded.Folder,
+                        Route.DOWNLOAD_DIRECTORY,
+                    ),
+                    SettingsEntry(
+                        R.string.format,
+                        R.string.format_settings_desc,
                         if (EXTRACT_AUDIO.getBoolean()) Icons.Rounded.AudioFile
                         else Icons.Rounded.VideoFile,
-                ) {
-                    onNavigateTo(Route.DOWNLOAD_FORMAT)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.network),
-                    description = stringResource(id = R.string.network_settings_desc),
-                    icon =
+                        Route.DOWNLOAD_FORMAT,
+                    ),
+                    SettingsEntry(
+                        R.string.network,
+                        R.string.network_settings_desc,
                         if (App.connectivityManager.isActiveNetworkMetered)
                             Icons.Rounded.SignalCellular4Bar
                         else Icons.Rounded.SignalWifi4Bar,
-                ) {
-                    onNavigateTo(Route.NETWORK_PREFERENCES)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.custom_command),
-                    description = stringResource(id = R.string.custom_command_desc),
-                    icon = Icons.Rounded.Terminal,
-                ) {
-                    onNavigateTo(Route.TEMPLATE)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.player_settings_title),
-                    description = stringResource(id = R.string.player_settings_subtitle),
-                    icon = Icons.Rounded.Vrpano,
-                ) {
-                    onNavigateTo(Route.PLAYER_PREFERENCES)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.look_and_feel),
-                    description = stringResource(id = R.string.display_settings),
-                    icon = Icons.Rounded.Palette,
-                ) {
-                    onNavigateTo(Route.APPEARANCE)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.interface_and_interaction),
-                    description = stringResource(id = R.string.settings_before_download),
-                    icon = Icons.Rounded.ViewComfy,
-                ) {
-                    onNavigateTo(Route.INTERACTION)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(R.string.trouble_shooting),
-                    description = stringResource(R.string.trouble_shooting_desc),
-                    icon = Icons.Rounded.BugReport,
-                ) {
-                    onNavigateTo(Route.TROUBLESHOOTING)
-                }
-            }
-            item {
-                SettingItem(
-                    title = stringResource(id = R.string.about),
-                    description = stringResource(id = R.string.about_page),
-                    icon = Icons.Rounded.Info,
-                ) {
-                    onNavigateTo(Route.ABOUT)
-                }
+                        Route.NETWORK_PREFERENCES,
+                    ),
+                    SettingsEntry(
+                        R.string.custom_command,
+                        R.string.custom_command_desc,
+                        Icons.Rounded.Terminal,
+                        Route.TEMPLATE,
+                    ),
+                )
+            val experience =
+                listOf(
+                    SettingsEntry(
+                        R.string.player_settings_title,
+                        R.string.player_settings_subtitle,
+                        Icons.Rounded.Vrpano,
+                        Route.PLAYER_PREFERENCES,
+                    ),
+                    SettingsEntry(
+                        R.string.look_and_feel,
+                        R.string.display_settings,
+                        Icons.Rounded.Palette,
+                        Route.APPEARANCE,
+                    ),
+                    SettingsEntry(
+                        R.string.interface_and_interaction,
+                        R.string.settings_before_download,
+                        Icons.Rounded.ViewComfy,
+                        Route.INTERACTION,
+                    ),
+                )
+            val support =
+                listOf(
+                    SettingsEntry(
+                        R.string.trouble_shooting,
+                        R.string.trouble_shooting_desc,
+                        Icons.Rounded.BugReport,
+                        Route.TROUBLESHOOTING,
+                    ),
+                    SettingsEntry(R.string.about, R.string.about_page, Icons.Rounded.Info, Route.ABOUT),
+                )
+            settingsGroup(R.string.settings_group_downloads, downloads, onNavigateTo)
+            settingsGroup(R.string.settings_group_experience, experience, onNavigateTo)
+            settingsGroup(R.string.settings_group_support, support, onNavigateTo)
+            item { Spacer(Modifier.height(24.dp)) }
+        }
+    }
+}
+
+private class SettingsEntry(
+    @StringRes val title: Int,
+    @StringRes val description: Int,
+    val icon: ImageVector,
+    val route: String,
+)
+
+private fun LazyListScope.settingsGroup(
+    @StringRes title: Int,
+    entries: List<SettingsEntry>,
+    onNavigateTo: (String) -> Unit,
+) {
+    item(key = "title_$title") { SettingsGroupTitle(stringResource(title)) }
+    entries.forEachIndexed { index, entry ->
+        item(key = entry.route) {
+            SettingItem(
+                title = stringResource(entry.title),
+                description = stringResource(entry.description),
+                icon = entry.icon,
+                position = groupPosition(index, entries.size),
+            ) {
+                onNavigateTo(entry.route)
             }
         }
     }

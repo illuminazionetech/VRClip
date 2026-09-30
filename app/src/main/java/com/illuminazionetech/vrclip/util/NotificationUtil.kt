@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import com.illuminazionetech.vrclip.App.Companion.context
+import com.illuminazionetech.vrclip.MainActivity
 import com.illuminazionetech.vrclip.NotificationActionReceiver
 import com.illuminazionetech.vrclip.NotificationActionReceiver.Companion.ACTION_CANCEL_TASK
 import com.illuminazionetech.vrclip.NotificationActionReceiver.Companion.ACTION_ERROR_REPORT
@@ -37,6 +38,8 @@ object NotificationUtil {
     private const val NOTIFICATION_GROUP_ID = "vrclip.download.notification"
     private const val DEFAULT_NOTIFICATION_ID = 100
     const val SERVICE_NOTIFICATION_ID = 123
+    private const val UPDATE_CHANNEL_ID = "app_update"
+    private const val UPDATE_NOTIFICATION_ID = 124
     private lateinit var serviceNotification: Notification
 
     /**
@@ -67,9 +70,40 @@ object NotificationUtil {
                 description = context.getString(R.string.service_title)
                 group = NOTIFICATION_GROUP_ID
             }
+        val updateChannel =
+            NotificationChannel(
+                    UPDATE_CHANNEL_ID,
+                    context.getString(R.string.update_channel_name),
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                )
+                .apply { description = context.getString(R.string.update_channel_description) }
         notificationManager.createNotificationChannelGroup(channelGroup)
         notificationManager.createNotificationChannel(channel)
         notificationManager.createNotificationChannel(serviceChannel)
+        notificationManager.createNotificationChannel(updateChannel)
+    }
+
+    /** "A new version is available", opening the app where the update dialog takes over. */
+    fun notifyUpdateAvailable(versionName: String) {
+        val intent =
+            Intent(context, MainActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent =
+            PendingIntent.getActivity(
+                context,
+                UPDATE_NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+        val notification =
+            NotificationCompat.Builder(context, UPDATE_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_stat_vrclip)
+                .setContentTitle(context.getString(R.string.update_available_title, versionName))
+                .setContentText(context.getString(R.string.update_notification_text))
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build()
+        safeNotify(UPDATE_NOTIFICATION_ID, notification)
     }
 
     fun notifyProgress(

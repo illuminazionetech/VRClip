@@ -541,4 +541,21 @@
     <string name="player_default_passthrough_desc">Mostra la stanza dietro i video piatti nel player immersivo del Meta Quest</string>
     <string name="player_default_cardboard">Schermo diviso Cardboard predefinito</string>
     <string name="player_default_cardboard_desc">Mostra i video 3D divisi in due metà per i visori VR da telefono</string>
+    <string name="see_all">Vedi tutti</string>
+    <string name="update_available_title">È disponibile VRClip %1$s</string>
+    <string name="update_download_size">Dimensione del download: %1$s</string>
+    <string name="update_installing">Installazione dell\'aggiornamento…</string>
+    <string name="update_key_changed_title">Serve una reinstallazione</string>
+    <string name="update_key_changed_desc">Questa versione è firmata con la nuova chiave definitiva di VRClip, mentre quella installata era firmata con una chiave temporanea, quindi Android non può aggiornarla sopra. Disinstalla VRClip e installa la nuova versione dalla pagina di download. Da quel momento gli aggiornamenti si installano di nuovo direttamente dall\'app.</string>
+    <string name="update_open_download_page">Apri la pagina di download</string>
+    <string name="update_skip_version">Salta questa versione</string>
+    <string name="update_error_network">Impossibile raggiungere GitHub. Controlla la connessione e riprova.</string>
+    <string name="update_error_rate_limited">GitHub sta limitando le richieste da questa rete. Riprova tra qualche minuto.</string>
+    <string name="update_error_no_asset">Questa release non ha ancora un pacchetto per questo dispositivo. Puoi scaricarla a mano dalla pagina di download.</string>
+    <string name="update_error_corrupted">L\'aggiornamento scaricato non ha superato il controllo di integrità ed è stato scartato.</string>
+    <string name="update_error_blocked">Il sistema ha bloccato l\'installazione. Consenti a VRClip di installare app, oppure installa l\'aggiornamento dalla pagina di download.</string>
+    <string name="update_error_install">L\'installazione non è riuscita. Puoi installare l\'aggiornamento dalla pagina di download.</string>
+    <string name="update_channel_name">Aggiornamenti dell\'app</string>
+    <string name="update_channel_description">Nuove versioni di VRClip</string>
+    <string name="update_notification_text">Tocca per vedere le novità e aggiornare</string>
 </resources>

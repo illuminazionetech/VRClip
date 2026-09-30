@@ -40,7 +40,8 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getString
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateString
 import com.illuminazionetech.vrclip.util.SDCARD_URI
-import com.illuminazionetech.vrclip.util.UpdateUtil
+import com.illuminazionetech.vrclip.util.AppUpdateManager
+import com.illuminazionetech.vrclip.util.UpdateCheckWorker
 import com.illuminazionetech.vrclip.util.VIDEO_DIRECTORY
 import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.illuminazionetech.vrclip.util.YT_DLP_VERSION
@@ -102,7 +103,7 @@ class App : Application(), SingletonImageLoader.Factory {
                 DownloadUtil.getCookiesContentFromDatabase().getOrNull()?.let {
                     FileUtil.writeContentToFile(it, getCookiesFile())
                 }
-                UpdateUtil.deleteOutdatedApk()
+                AppUpdateManager.cleanUp()
             } catch (th: Throwable) {
                 YtDlpEngine.notifyInitFailed(th)
                 withContext(Dispatchers.Main) { startCrashReportActivity(th) }
@@ -116,6 +117,7 @@ class App : Application(), SingletonImageLoader.Factory {
             COMMAND_DIRECTORY.updateString(videoDownloadDir)
         }
         if (Build.VERSION.SDK_INT >= 26) NotificationUtil.createNotificationChannel()
+        UpdateCheckWorker.schedule(this, PreferenceUtil.isAutoUpdateEnabled())
 
         val systemHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler { thread, e ->

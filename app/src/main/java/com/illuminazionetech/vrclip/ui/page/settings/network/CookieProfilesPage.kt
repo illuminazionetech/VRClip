@@ -424,7 +424,7 @@ fun CookiesQuickSettingsDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             ConfirmButton(
-                text = stringResource(id = androidx.appcompat.R.string.abc_action_mode_done)
+                text = stringResource(id = R.string.done)
             ) {
                 onDismissRequest()
                 onConfirm()

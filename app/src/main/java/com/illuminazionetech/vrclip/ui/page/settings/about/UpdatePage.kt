@@ -41,7 +41,6 @@ import com.illuminazionetech.vrclip.ui.component.PreferenceInfo
 import com.illuminazionetech.vrclip.ui.component.PreferenceSingleChoiceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithContainer
-import com.illuminazionetech.vrclip.ui.page.UpdateDialog
 import com.illuminazionetech.vrclip.util.AUTO_UPDATE
 import com.illuminazionetech.vrclip.util.PRE_RELEASE
 import com.illuminazionetech.vrclip.util.PreferenceUtil
@@ -50,7 +49,9 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 import com.illuminazionetech.vrclip.util.STABLE
 import com.illuminazionetech.vrclip.util.makeToast
 import com.illuminazionetech.vrclip.util.UPDATE_CHANNEL
-import com.illuminazionetech.vrclip.util.UpdateUtil
+import com.illuminazionetech.vrclip.util.AppUpdateManager
+import com.illuminazionetech.vrclip.util.UpdateCheckWorker
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -68,8 +69,7 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var release by remember { mutableStateOf(UpdateUtil.Release()) }
-    var showUpdateDialog by remember { mutableStateOf(false) }
+    val updateState by AppUpdateManager.state.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -92,6 +92,7 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                     ) {
                         autoUpdate = !autoUpdate
                         AUTO_UPDATE.updateBoolean(autoUpdate)
+                        UpdateCheckWorker.schedule(context, autoUpdate)
                     }
                 }
                 item {
@@ -122,7 +123,6 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                     }
                 }
                 item {
-                    var isLoading by remember { mutableStateOf(false) }
                     Row(
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth(),
@@ -134,27 +134,18 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                                     .padding(bottom = 12.dp),
                             text = stringResource(id = R.string.check_for_updates),
                             icon = Icons.Rounded.Update,
-                            isLoading = isLoading,
+                            isLoading = updateState is AppUpdateManager.State.Checking,
                         ) {
-                            if (!isLoading)
+                            if (updateState !is AppUpdateManager.State.Checking) {
                                 scope.launch {
-                                    runCatching {
-                                            isLoading = true
-                                            withContext(Dispatchers.IO) {
-                                                UpdateUtil.checkForUpdate()?.let {
-                                                    release = it
-                                                    showUpdateDialog = true
-                                                }
-                                                    ?: makeToast(R.string.app_up_to_date)
-                                            }
-                                            isLoading = false
-                                        }
-                                        .onFailure {
-                                            it.printStackTrace()
-                                            makeToast(R.string.app_update_failed)
-                                            isLoading = false
-                                        }
+                                    // Any result other than "up to date" opens the update dialog.
+                                    if (AppUpdateManager.check(manual = true) ==
+                                        AppUpdateManager.State.UpToDate
+                                    ) {
+                                        makeToast(R.string.app_up_to_date)
+                                    }
                                 }
+                            }
                         }
                     }
                     androidx.compose.material3.HorizontalDivider()
@@ -168,8 +159,6 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
             }
         },
     )
-    if (showUpdateDialog)
-        UpdateDialog(onDismissRequest = { showUpdateDialog = false }, release = release)
 }
 
 @Composable

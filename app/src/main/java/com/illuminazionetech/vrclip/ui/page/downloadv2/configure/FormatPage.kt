@@ -545,8 +545,7 @@ private fun FormatPageImpl(
                                 text =
                                     stringResource(
                                         id =
-                                            androidx.appcompat.R.string
-                                                .abc_activity_chooser_view_see_all
+                                            R.string.see_all
                                     ),
                             ) {
                                 showSubtitleSelectionDialog = true

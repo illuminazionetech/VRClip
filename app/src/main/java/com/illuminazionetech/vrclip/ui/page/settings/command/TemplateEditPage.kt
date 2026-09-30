@@ -115,7 +115,7 @@ fun TemplateEditPage(onDismissRequest: () -> Unit, templateId: Int) {
                         enabled = templateName.isNotEmpty(),
                     ) {
                         Text(
-                            text = stringResource(androidx.appcompat.R.string.abc_action_mode_done)
+                            text = stringResource(R.string.done)
                         )
                     }
                 },

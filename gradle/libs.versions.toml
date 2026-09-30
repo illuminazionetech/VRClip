@@ -18,6 +18,7 @@ androidxLifecycle = "2.11.0"
 androidxNavigation = "2.10.2"
 androidxSplashscreen = "1.2.0"
 androidxProfileInstaller = "1.4.1"
+androidxWork = "2.12.0"
 androidMaterial = "1.14.0"
 constraintLayout = "1.1.2"
 documentFile = "1.1.0"
@@ -56,6 +57,7 @@ androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "life
 androidx-lifecycle-viewmodelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "androidxLifecycle" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileInstaller" }
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentFile" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -161,6 +163,7 @@ core = [
     "androidx-core-ktx",
     "androidx-core-splashscreen",
     "androidx-profileinstaller",
+    "androidx-work-runtime",
     "androidx-documentfile",
     "accompanist-permissions",
 ]

@@ -216,7 +216,7 @@ fun OptionChipsDialog(onDismissRequest: () -> Unit = {}) {
         },
         confirmButton = {
             TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(id = androidx.appcompat.R.string.abc_action_mode_done))
+                Text(text = stringResource(id = R.string.done))
             }
         },
     )

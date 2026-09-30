@@ -540,4 +540,21 @@
     <string name="onboarding_allow">Allow notifications</string>
     <string name="onboarding_start_using">Start using VRClip</string>
     <string name="not_now">Not now</string>
+    <string name="see_all">See all</string>
+    <string name="update_available_title">VRClip %1$s is available</string>
+    <string name="update_download_size">Download size: %1$s</string>
+    <string name="update_installing">Installing the update…</string>
+    <string name="update_key_changed_title">Reinstall needed once</string>
+    <string name="update_key_changed_desc">This version is signed with VRClip\'s new permanent release key, while the installed copy was signed with a temporary one, so Android cannot update it in place. Uninstall VRClip and install the new version from the download page. After this, updates install directly from the app again.</string>
+    <string name="update_open_download_page">Open download page</string>
+    <string name="update_skip_version">Skip this version</string>
+    <string name="update_error_network">Could not reach GitHub. Check the connection and try again.</string>
+    <string name="update_error_rate_limited">GitHub is limiting requests from this network right now. Try again in a few minutes.</string>
+    <string name="update_error_no_asset">This release has no package for this device yet. You can download it manually from the download page.</string>
+    <string name="update_error_corrupted">The downloaded update did not pass the integrity check and was discarded.</string>
+    <string name="update_error_blocked">The system blocked the installation. Allow VRClip to install apps, or install the update from the download page.</string>
+    <string name="update_error_install">The installation failed. You can install the update from the download page.</string>
+    <string name="update_channel_name">App updates</string>
+    <string name="update_channel_description">New versions of VRClip</string>
+    <string name="update_notification_text">Tap to see what\'s new and update</string>
 </resources>

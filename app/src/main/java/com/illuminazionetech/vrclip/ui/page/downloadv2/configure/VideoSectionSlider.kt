@@ -72,8 +72,8 @@ fun CustomRangeSlider(
     RangeSlider(
         modifier = modifier,
         state = state,
-        startInteractionSource = startInteractionSource,
-        endInteractionSource = endInteractionSource,
+        startThumbInteractionSource = startInteractionSource,
+        endThumbInteractionSource = endInteractionSource,
         startThumb = {
             Box(modifier = Modifier) {
                 SliderDefaults.Thumb(
@@ -89,7 +89,7 @@ fun CustomRangeSlider(
             Box(modifier = Modifier) {
                 SliderDefaults.Thumb(
                     modifier = Modifier.align(Alignment.Center),
-                    interactionSource = startInteractionSource,
+                    interactionSource = endInteractionSource,
                     colors = colors,
                     enabled = enabled,
                     thumbSize = thumbSize,

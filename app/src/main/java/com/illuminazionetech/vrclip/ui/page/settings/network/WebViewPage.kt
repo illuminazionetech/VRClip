@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.android.material.R
+import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateString
 import com.illuminazionetech.vrclip.util.USER_AGENT_STRING
 import com.illuminazionetech.vrclip.util.connectWithDelimiter
@@ -102,13 +102,13 @@ fun WebViewPage(cookiesViewModel: CookiesViewModel, onDismissRequest: () -> Unit
                     IconButton(onClick = { onDismissRequest() }) {
                         Icon(
                             imageVector = Icons.Rounded.Close,
-                            stringResource(id = androidx.appcompat.R.string.abc_action_mode_done),
+                            stringResource(id = R.string.close),
                         )
                     }
                 },
                 actions = {
                     TextButton(onClick = onDismissRequest) {
-                        Text(text = stringResource(id = R.string.abc_action_mode_done))
+                        Text(text = stringResource(id = R.string.done))
                     }
                 },
             )

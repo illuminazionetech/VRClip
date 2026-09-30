@@ -1,35 +1,24 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-kotlin {
-    jvmToolchain(21)
-}
 android {
-    compileSdk = 36
-    defaultConfig {
-        minSdk = 21
-    }
     namespace = "com.illuminazionetech.vrclip.color"
+    compileSdk = 37
+
+    defaultConfig { minSdk = 28 }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        sourceCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    buildTypes {
-        release {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
-            isMinifyEnabled = true
-        }
-    }
+
+    buildTypes { release { isMinifyEnabled = false } }
 }
+
+kotlin { jvmToolchain(21) }
+
 dependencies {
     api(platform(libs.androidx.compose.bom))
     api(libs.androidx.compose.ui)

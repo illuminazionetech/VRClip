@@ -97,6 +97,8 @@ fun PlayerScreen(
     onRequestOrientation: (Int) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val preview by viewModel.preview.collectAsStateWithLifecycle()
+    val haptics = rememberPlayerHaptics()
     val context = LocalContext.current
     val view = LocalView.current
     val configuration = LocalConfiguration.current
@@ -188,6 +190,7 @@ fun PlayerScreen(
                     },
                     onDoubleTap = { forward ->
                         if (locked) return@GestureLayer
+                        haptics.step()
                         viewModel.seekBy(
                             if (forward) PlayerViewModel.SEEK_STEP_MS
                             else -PlayerViewModel.SEEK_STEP_MS
@@ -201,9 +204,11 @@ fun PlayerScreen(
                     },
                     onLongPress = { pressed ->
                         if (pressed && state.isPlaying) {
+                            haptics.gestureStart()
                             viewModel.setTemporarySpeed(2f)
                             feedback = GestureFeedback.FastForward
                         } else if (!pressed && feedback == GestureFeedback.FastForward) {
+                            haptics.gestureEnd()
                             viewModel.setTemporarySpeed(null)
                             feedback = null
                         }
@@ -211,15 +216,32 @@ fun PlayerScreen(
                     onPan = { delta -> glView?.pan(delta.x, delta.y) },
                     onZoom = { factor ->
                         if (immersive) glView?.zoom(factor)
-                        else if (factor > 1.08f) aspectMode = AspectMode.Fill
-                        else if (factor < 0.92f) aspectMode = AspectMode.Fit
+                        else if (factor > 1.08f && aspectMode != AspectMode.Fill) {
+                            haptics.step()
+                            aspectMode = AspectMode.Fill
+                        } else if (factor < 0.92f && aspectMode != AspectMode.Fit) {
+                            haptics.step()
+                            aspectMode = AspectMode.Fit
+                        }
                     },
                     onVerticalDrag = { left, fraction ->
-                        if (left)
-                            showFeedback(
-                                GestureFeedback.Brightness(brightness.adjust(context, fraction))
-                            )
-                        else showFeedback(GestureFeedback.Volume(volume.adjust(fraction)))
+                        val previous =
+                            when (val current = feedback) {
+                                is GestureFeedback.Brightness -> if (left) current.level else null
+                                is GestureFeedback.Volume -> if (!left) current.level else null
+                                else -> null
+                            }
+                        val level =
+                            if (left) brightness.adjust(context, fraction)
+                            else volume.adjust(fraction)
+                        // A tick when the level reaches either end, the way a dial stops.
+                        val atEdge = level <= 0.011f || level >= 0.999f
+                        if (atEdge && previous != null && previous != level) haptics.step()
+                        if (previous == null) haptics.gestureStart()
+                        showFeedback(
+                            if (left) GestureFeedback.Brightness(level)
+                            else GestureFeedback.Volume(level)
+                        )
                     },
                     onHorizontalDrag = { fraction ->
                         val duration = state.durationMs
@@ -228,15 +250,28 @@ fun PlayerScreen(
                             val current = feedback as? GestureFeedback.Scrub
                             val delta = (current?.deltaMs ?: 0L) + (fraction * range).toLong()
                             val target = (state.positionMs + delta).coerceIn(0L, duration)
+                            if (current == null) haptics.gestureStart()
+                            else if (target / SCRUB_TICK_MS != current.targetMs / SCRUB_TICK_MS) {
+                                haptics.tick()
+                            }
                             showFeedback(GestureFeedback.Scrub(target, target - state.positionMs))
+                            viewModel.requestPreview(target)
                         }
                     },
                     onDragEnd = {
-                        (feedback as? GestureFeedback.Scrub)?.let { viewModel.seekTo(it.targetMs) }
+                        (feedback as? GestureFeedback.Scrub)?.let {
+                            haptics.gestureEnd()
+                            viewModel.seekTo(it.targetMs)
+                        }
+                        viewModel.requestPreview(null)
                     },
                 )
 
-                PlayerFeedback(feedback = feedback, durationMs = state.durationMs)
+                PlayerFeedback(
+                    feedback = feedback,
+                    durationMs = state.durationMs,
+                    preview = preview,
+                )
 
                 PlayerControls(
                     state = state,
@@ -247,15 +282,19 @@ fun PlayerScreen(
                     hasMotionSensor = glView?.hasMotionSensor == true,
                     canEnterPictureInPicture =
                         canEnterPictureInPicture && !immersive && state.error == null,
+                    preview = preview,
+                    haptics = haptics,
                     onInteraction = ::poke,
                     onNavigateBack = onNavigateBack,
                     onTogglePlayPause = viewModel::togglePlayPause,
                     onSeekBy = viewModel::seekBy,
                     onSeekTo = viewModel::seekTo,
                     onScrubbing = viewModel::setScrubbing,
+                    onPreviewRequest = viewModel::requestPreview,
                     onToggleLive3d = { viewModel.setLive3d(state.live3d == Live3dState.Off) },
                     onOpenSheet = { sheet = it },
                     onToggleLock = {
+                        if (locked) haptics.toggle(false)
                         locked = !locked
                         controlsVisible = true
                         poke()
@@ -316,6 +355,9 @@ fun PlayerScreen(
 }
 
 private const val SCRUB_RANGE_MS = 120_000L
+
+/** The horizontal scrub gesture ticks every 10 seconds of travel. */
+private const val SCRUB_TICK_MS = 10_000L
 
 @Composable
 private fun VideoLayer(

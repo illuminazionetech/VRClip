@@ -439,7 +439,8 @@
     <string name="player_stereo_output_single">Single eye (normal viewing)</string>
     <string name="player_stereo_output_split">Split screen (Cardboard-style headset)</string>
     <string name="player_settings_title">Player</string>
-    <string name="player_settings_subtitle">3D, 360° and Meta Quest playback</string>
+    <string name="player_settings_subtitle">360°, 180° and 3D playback, 2D to 3D</string>
+    <string name="player_settings_subtitle_quest">Immersive playback, passthrough, 2D to 3D</string>
     <string name="player_default_immersive_quest">Immersive playback on Meta Quest</string>
     <string name="player_default_immersive_quest_desc">Use a full spatial scene for 360°/180°/3D video instead of the flat panel</string>
     <string name="player_default_passthrough">Passthrough by default</string>
@@ -517,10 +518,13 @@
     <string name="player_forward">Forward 10 seconds</string>
     <string name="player_seek_amount">%1$s s</string>
     <string name="player_speed">Playback speed</string>
+    <string name="player_slower">Slower</string>
+    <string name="player_faster">Faster</string>
     <string name="player_speed_value">%1$s×</string>
     <string name="player_repeat">Repeat</string>
     <string name="player_lock">Lock controls</string>
     <string name="player_unlock">Unlock controls</string>
+    <string name="player_locked_hint">Controls locked</string>
     <string name="player_rotate">Rotate</string>
     <string name="player_pip">Picture-in-picture</string>
     <string name="player_more">More options</string>

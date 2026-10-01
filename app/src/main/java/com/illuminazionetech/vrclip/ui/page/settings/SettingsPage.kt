@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.Route
 import com.illuminazionetech.vrclip.ui.component.PreferencesHintCard
 import com.illuminazionetech.vrclip.ui.component.SettingItem
@@ -65,6 +66,7 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
 @Composable
 fun SettingsPage(onNavigateTo: (String) -> Unit) {
     val context = LocalContext.current
+    val isVR = LocalIsVRMode.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
     var showBatteryHint by remember {
         mutableStateOf(!pm.isIgnoringBatteryOptimizations(context.packageName))
@@ -165,7 +167,8 @@ fun SettingsPage(onNavigateTo: (String) -> Unit) {
                 listOf(
                     SettingsEntry(
                         R.string.player_settings_title,
-                        R.string.player_settings_subtitle,
+                        if (isVR) R.string.player_settings_subtitle_quest
+                        else R.string.player_settings_subtitle,
                         Icons.Rounded.Vrpano,
                         Route.PLAYER_PREFERENCES,
                     ),

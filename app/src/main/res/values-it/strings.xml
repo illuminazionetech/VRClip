@@ -489,7 +489,8 @@
     <string name="player_stereo_output_single">Un solo occhio (visione normale)</string>
     <string name="player_stereo_output_split">Schermo diviso (visore tipo Cardboard)</string>
     <string name="player_settings_title">Player</string>
-    <string name="player_settings_subtitle">Riproduzione 3D, 360° e Meta Quest</string>
+    <string name="player_settings_subtitle">Riproduzione 360°, 180° e 3D, 2D→3D</string>
+    <string name="player_settings_subtitle_quest">Riproduzione immersiva, passthrough, 2D→3D</string>
     <string name="player_default_immersive_quest">Riproduzione immersiva su Meta Quest</string>
     <string name="player_default_immersive_quest_desc">Usa una scena spaziale completa per i video 360°/180°/3D invece del pannello piatto</string>
     <string name="player_default_passthrough">Passthrough predefinito</string>
@@ -521,10 +522,13 @@
     <string name="player_forward">Avanti di 10 secondi</string>
     <string name="player_seek_amount">%1$s s</string>
     <string name="player_speed">Velocità di riproduzione</string>
+    <string name="player_slower">Più lento</string>
+    <string name="player_faster">Più veloce</string>
     <string name="player_speed_value">%1$s×</string>
     <string name="player_repeat">Ripeti</string>
     <string name="player_lock">Blocca i controlli</string>
     <string name="player_unlock">Sblocca i controlli</string>
+    <string name="player_locked_hint">Comandi bloccati</string>
     <string name="player_rotate">Ruota</string>
     <string name="player_pip">Picture-in-picture</string>
     <string name="player_more">Altre opzioni</string>

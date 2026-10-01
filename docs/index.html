@@ -2,203 +2,195 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VRClip: video/audio downloader for Android and Meta Quest</title>
-<meta
-  name="description"
-  content="Download VRClip: a universal video and audio downloader with an immersive 3D/360 player for Android and Meta Quest. One tap for the right file, always up to date."
-/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>VRClip: download, watch in VR, turn 2D into 3D</title>
+<meta name="description" content="VRClip downloads video and audio from hundreds of sites and plays it on Android and Meta Quest: 360°, 180° and stereo 3D, with on-device 2D to 3D conversion. Free, open source, no tracking." />
 <link rel="icon" type="image/png" href="assets/icon-flat.png" />
 <link rel="apple-touch-icon" href="assets/icon-flat.png" />
-<meta property="og:title" content="VRClip: video/audio downloader for Android and Meta Quest" />
-<meta
-  property="og:description"
-  content="Universal downloader (yt-dlp) with an immersive 3D/360/XR player. Automatically get the right APK for Android or Meta Quest."
-/>
-<meta property="og:image" content="assets/icon-flat.png" />
-<meta name="theme-color" content="#0058c4" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="VRClip for Android and Meta Quest" />
+<meta property="og:description" content="Download video, watch it in 360°, 180° and 3D, turn flat video into 3D on the device." />
+<meta property="og:image" content="https://illuminazionetech.github.io/VRClip/assets/og-image.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#0b1020" />
+<meta name="color-scheme" content="dark light" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<a class="skip-link" href="#main-content">Skip to content</a>
-<div class="bg-blobs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
-<header class="top-bar">
-  <div class="brand">
-    <img src="assets/logo.png" alt="" />
-    VRClip
-  </div>
-  <nav>
-    <a href="#download">Download</a>
-    <a href="#how-to-install">Install</a>
-    <a href="#features">Features</a>
-    <a href="https://github.com/illuminazionetech/VRClip">GitHub</a>
+<header class="top-bar" id="top">
+  <a class="brand" href="#top" aria-label="VRClip">
+    <img src="assets/logo.png" alt="" width="36" height="36" />
+    <span>VRClip</span>
+  </a>
+  <nav class="nav" aria-label="Main">
+    <a href="#features" data-i18n="nav.features">Features</a>
+    <a href="#screens" data-i18n="nav.screens">Screenshots</a>
+    <a href="#whats-new" data-i18n="nav.news">What's new</a>
+    <a href="#install" data-i18n="nav.install">Install</a>
+    <a href="#faq" data-i18n="nav.faq">FAQ</a>
   </nav>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" data-lang="it" lang="it">IT</button>
+    <button type="button" data-lang="en" lang="en">EN</button>
+  </div>
 </header>
 
-<main id="main-content">
-<section class="hero">
-  <img class="hero-logo" src="assets/logo.png" alt="VRClip logo: a blue seal wearing a VR headset" />
-  <div><span class="quest-badge">Compatible with Meta Quest 2 · 3 · Pro</span></div>
-  <h1>VRClip</h1>
-  <p class="tagline">
-    Download video and audio from hundreds of platforms and watch them in an
-    immersive player that automatically recognizes flat, 360, and stereoscopic
-    3D content, on Android or directly in your headset.
-  </p>
-
-  <div class="pill-row">
-    <span class="pill">Free and open source</span>
-    <span class="pill">No ads</span>
-    <span class="pill">No tracking</span>
-    <span class="pill">Material 3 Expressive</span>
-  </div>
-
-  <div class="download-card" id="download">
-    <a class="download-btn" id="download-btn" href="#" aria-disabled="true" role="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
-      </svg>
-      <span id="download-btn-label">Loading latest version…</span>
-    </a>
-    <p class="download-meta" id="download-meta">
-      Fetching the latest APK from the GitHub repository.
-    </p>
-    <details class="other-arch" id="other-arch" hidden>
-      <summary>Other files / architectures</summary>
-      <div class="arch-list" id="arch-list"></div>
-    </details>
-  </div>
-</section>
-
-<section class="tabs-section" id="how-to-install">
-  <h2>How to install</h2>
-  <div class="tabs-header">
-    <button class="tab-btn" data-tab="android">Android (phone/tablet)</button>
-    <button class="tab-btn" data-tab="quest">Meta Quest</button>
-  </div>
-
-  <div class="tab-panel" data-tab="android">
-    <ol class="steps">
-      <li>
-        <div>
-          <h4>Download the APK</h4>
-          <p>Tap the download button above: your browser will fetch the right file for your device (the <code>arm64-v8a</code> architecture, used by nearly every recent phone).</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h4>Allow installs from this source</h4>
-          <p>If a warning appears, go to <em>Settings, Apps, Special access, Install unknown apps</em>, select the browser you used for the download, and enable "Allow from this source".</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h4>Open the downloaded file</h4>
-          <p>Open the <code>.apk</code> file from your notifications or the Download folder and tap "Install". When it finishes, open VRClip and paste the link of the video you want to download.</p>
-        </div>
-      </li>
-    </ol>
-    <div class="note">
-      Not sure which file to pick? The <strong>arm64-v8a</strong> APK offered by the button works on practically every Android phone and tablet made in recent years.
-    </div>
-  </div>
-
-  <div class="tab-panel" data-tab="quest">
-    <ol class="steps">
-      <li>
-        <div>
-          <h4>Enable developer mode on the headset</h4>
-          <p>In the Meta Horizon app on your phone, go to <em>Menu, Devices</em>, select your headset, open <em>Developer settings</em>, and enable developer mode (requires a free Meta developer account).</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h4>Download the APK directly in the headset</h4>
-          <p>Put on the headset, open the Meta Quest browser, and visit this same page: it is detected automatically, and the download button above will fetch the right APK.</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h4>Install the downloaded file</h4>
-          <p>Open the "Files" app in the headset library (under "Unknown sources" if needed), go to the Download folder, and tap the <code>.apk</code> file to install it. If your file manager cannot install it, use <a href="https://sidequestvr.com/" target="_blank" rel="noopener">SideQuest</a> from a PC over cable or Wi-Fi.</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h4>Launch VRClip</h4>
-          <p>Find the app in your library under "Unknown sources" / "Apps on this device". VRClip detects that it is running on Quest and enables the immersive player right away.</p>
-        </div>
-      </li>
-    </ol>
-    <div class="note">
-      Alternatively, download the APK on a phone or PC and install it with <code>adb install filename.apk</code> or SideQuest, without re-downloading it in the headset.
-    </div>
-  </div>
-</section>
-
-<section class="features" id="features">
-  <h2>What VRClip does</h2>
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+<main id="main">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Android · Meta Quest 2, 3, 3S, Pro</p>
+      <h1 data-i18n="hero.title">Download it. Watch it in VR. Turn it into 3D.</h1>
+      <p class="lead" data-i18n="hero.lead">
+        VRClip saves video and audio from hundreds of sites and plays it the way it was meant to be seen:
+        360° and 180° around you, stereo 3D in real depth, and flat video turned into 3D right on your device.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" id="download-btn" href="https://github.com/illuminazionetech/VRClip/releases/latest" rel="noopener">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14" /></svg>
+          <span id="download-label" data-i18n="dl.loading">Download</span>
+        </a>
+        <a class="btn btn-tonal" href="#install" id="guide-btn" data-i18n="hero.guide">How to install</a>
       </div>
-      <h3>Universal downloads</h3>
-      <p>Hundreds of sites supported through yt-dlp, with bundled aria2c for maximum speed.</p>
+      <p class="dl-meta" id="download-meta" aria-live="polite"></p>
+      <details class="dl-other" id="other-files" hidden>
+        <summary data-i18n="dl.other">Other files and architectures</summary>
+        <ul id="other-list"></ul>
+      </details>
+      <ul class="chips" aria-label="Highlights">
+        <li data-i18n="chip.free">Free and open source</li>
+        <li data-i18n="chip.noads">No ads, no tracking</li>
+        <li data-i18n="chip.ondevice">3D conversion on the device</li>
+      </ul>
     </div>
-    <div class="feature-card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m3 16 4.5-4.5a2 2 0 0 1 2.8 0L15 16"/><path d="m13 14 1.5-1.5a2 2 0 0 1 2.8 0L21 16"/></svg>
-      </div>
-      <h3>Immersive player</h3>
-      <p>Automatic detection of flat, 360 mono/3D, 180, and stereoscopic side-by-side or top-bottom content.</p>
+    <div class="hero-art" aria-hidden="true">
+      <div class="device tablet"><img src="assets/screens/library-quest.webp" alt="" width="1200" height="800" loading="eager" /></div>
+      <div class="device phone"><img src="assets/screens/queue-phone-dark.webp" alt="" width="540" height="1171" loading="eager" /></div>
     </div>
-    <div class="feature-card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2-4 4 8 2-4h8"/></svg>
-      </div>
-      <h3>Native on Meta Quest</h3>
-      <p>A real spatial scene through the Meta Spatial SDK: a video panel placed in space with correct per-eye stereo.</p>
+  </section>
+
+  <section class="features" id="features" aria-labelledby="features-title">
+    <h2 id="features-title" data-i18n="features.title">One app, from link to headset</h2>
+    <div class="feature-grid">
+      <article class="feature">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14" /></svg>
+        <h3 data-i18n="f1.t">Downloads from hundreds of sites</h3>
+        <p data-i18n="f1.d">Paste or share a link: yt-dlp picks the formats, aria2c can speed up the transfer, and cover art, chapters and subtitles can be embedded in the file.</p>
+      </article>
+      <article class="feature">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" /></svg>
+        <h3 data-i18n="f2.t">360°, 180° and stereo 3D</h3>
+        <p data-i18n="f2.d">The player reads the projection from the file's metadata, its name or its shape. Look around by moving the phone, use a Cardboard viewer or red and cyan glasses.</p>
+      </article>
+      <article class="feature new">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4Z" /><path d="M4 12l8 4 8-4M4 17l8 4 8-4" /></svg>
+        <h3><span data-i18n="f3.t">From 2D to 3D</span> <span class="tag" data-i18n="tag.new">New</span></h3>
+        <p data-i18n="f3.d">A depth model running on the device builds the second eye: live while you watch, or as a full-quality 3D file that replaces the flat one.</p>
+      </article>
+      <article class="feature">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="5" /><circle cx="8" cy="12" r="2" /><circle cx="16" cy="12" r="2" /></svg>
+        <h3 data-i18n="f4.t">Native on Meta Quest</h3>
+        <p data-i18n="f4.d">The library is a regular panel; playback opens an immersive scene built with the Meta Spatial SDK, with a real stereo screen, passthrough and a control bar you can move.</p>
+      </article>
+      <article class="feature">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12a7 7 0 0 1 12-5l2 2M19 12a7 7 0 0 1-12 5l-2-2" /><path d="M19 4v5h-5M5 20v-5h5" /></svg>
+        <h3 data-i18n="f5.t">Updates itself, safely</h3>
+        <p data-i18n="f5.d">New versions install from inside the app, only after the file's checksum and signature match the official release.</p>
+      </article>
+      <article class="feature">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg>
+        <h3 data-i18n="f6.t">Private by design</h3>
+        <p data-i18n="f6.d">No accounts, no analytics, no ads. Files and history stay on your device.</p>
+      </article>
     </div>
-    <div class="feature-card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
-      <h3>Automatic metadata</h3>
-      <p>Cover art, subtitles, and tags embedded automatically into downloaded files.</p>
+  </section>
+
+  <section class="screens" id="screens" aria-labelledby="screens-title">
+    <h2 id="screens-title" data-i18n="screens.title">A look inside</h2>
+    <p class="section-lead" data-i18n="screens.lead">Screens of VRClip 1.2 on a phone, a tablet and Meta Quest.</p>
+    <div class="gallery" tabindex="0" aria-label="Screenshots">
+      <figure class="shot tall"><img src="assets/screens/queue-phone.webp" width="540" height="1171" loading="lazy" alt="Download queue with progress and speed" data-i18n-alt="alt.queue" /><figcaption data-i18n="cap.queue">Download queue</figcaption></figure>
+      <figure class="shot tall"><img src="assets/screens/library-phone-dark.webp" width="540" height="1171" loading="lazy" alt="Library with 360°, 180° 3D and 3D badges" data-i18n-alt="alt.library" /><figcaption data-i18n="cap.library">Library, with what you already watched</figcaption></figure>
+      <figure class="shot wide"><img src="assets/screens/player-phone.webp" width="1170" height="539" loading="lazy" alt="Player controls over a video" data-i18n-alt="alt.player" /><figcaption data-i18n="cap.player">Player: gestures, speed, tracks, picture-in-picture</figcaption></figure>
+      <figure class="shot wide"><img src="assets/screens/player-360.webp" width="1170" height="539" loading="lazy" alt="360 degree video in the player" data-i18n-alt="alt.360" /><figcaption data-i18n="cap.360">360° video: move the phone to look around</figcaption></figure>
+      <figure class="shot wide"><img src="assets/screens/player-3d.webp" width="1170" height="539" loading="lazy" alt="Player with live 2D to 3D conversion turned on" data-i18n-alt="alt.3d" /><figcaption data-i18n="cap.3d">2D to 3D while you watch</figcaption></figure>
+      <figure class="shot wide"><img src="assets/screens/library-quest.webp" width="1200" height="800" loading="lazy" alt="Library on Meta Quest with the navigation rail" data-i18n-alt="alt.quest" /><figcaption data-i18n="cap.quest">Library on Meta Quest</figcaption></figure>
+      <figure class="shot tall"><img src="assets/screens/settings-player-phone.webp" width="540" height="1171" loading="lazy" alt="Player and 2D to 3D settings" data-i18n-alt="alt.settings" /><figcaption data-i18n="cap.settings">Player and 3D settings</figcaption></figure>
+      <figure class="shot wide"><img src="assets/screens/library-tablet.webp" width="1280" height="800" loading="lazy" alt="Library on a tablet" data-i18n-alt="alt.tablet" /><figcaption data-i18n="cap.tablet">Tablet layout</figcaption></figure>
     </div>
-    <div class="feature-card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
-      </div>
-      <h3>Privacy first</h3>
-      <p>No tracking, no ads, no accounts. Downloads happen locally on your device.</p>
+  </section>
+
+  <section class="depth" id="three-d" aria-labelledby="depth-title">
+    <div class="depth-copy">
+      <h2 id="depth-title" data-i18n="depth.title">How 2D becomes 3D</h2>
+      <p data-i18n="depth.p1">VRClip estimates how far every point of the picture is with Depth Anything V2 Small, a depth model that runs on the phone's or headset's GPU. From the picture and its depth it draws what each eye would see, filling the gaps behind near objects with the background next to them.</p>
+      <p data-i18n="depth.p2">In the player the conversion runs live. From the library it processes every frame at full quality and, once the new file checks out, replaces the flat video with a side-by-side 3D one. The model is downloaded once (about 90 MB) and verified before use.</p>
     </div>
-    <div class="feature-card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-      </div>
-      <h3>Always up to date</h3>
-      <p>Open source and in active development, with built-in automatic updates straight from the GitHub repository.</p>
+    <div class="depth-steps">
+      <figure><img src="assets/screens/2d3d-source.webp" width="640" height="400" loading="lazy" alt="" /><figcaption data-i18n="depth.c1">1. The flat frame</figcaption></figure>
+      <figure><img src="assets/screens/2d3d-depth.webp" width="640" height="400" loading="lazy" alt="" /><figcaption data-i18n="depth.c2">2. Estimated depth (light is near)</figcaption></figure>
+      <figure class="span"><img src="assets/screens/2d3d-sbs.webp" width="1280" height="400" loading="lazy" alt="" /><figcaption data-i18n="depth.c3">3. Left and right eye, side by side</figcaption></figure>
+      <figure><img src="assets/screens/2d3d-anaglyph.webp" width="640" height="400" loading="lazy" alt="" /><figcaption data-i18n="depth.c4">The same frame as a red and cyan anaglyph</figcaption></figure>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="news" id="whats-new" aria-labelledby="news-title">
+    <h2 id="news-title" data-i18n="news.title">What's new</h2>
+    <div class="release card" id="release" aria-live="polite">
+      <p class="muted" data-i18n="news.loading">Loading the latest release notes from GitHub…</p>
+    </div>
+  </section>
+
+  <section class="install" id="install" aria-labelledby="install-title">
+    <h2 id="install-title" data-i18n="install.title">Install VRClip</h2>
+    <div class="tabs" role="tablist" aria-label="Device">
+      <button role="tab" id="tab-android" aria-controls="panel-android" data-tab="android" data-i18n="install.android">Android phone or tablet</button>
+      <button role="tab" id="tab-quest" aria-controls="panel-quest" data-tab="quest" data-i18n="install.quest">Meta Quest</button>
+    </div>
+
+    <div class="tab-panel" role="tabpanel" id="panel-android" aria-labelledby="tab-android" data-tab="android">
+      <ol class="steps">
+        <li><h3 data-i18n="a1.t">Download the APK</h3><p data-i18n="a1.d">Use the download button at the top of this page on your phone: it picks the file for your device (arm64-v8a on nearly every phone of the last years).</p></li>
+        <li><h3 data-i18n="a2.t">Allow the install</h3><p data-i18n="a2.d">Android asks once to allow installs from your browser. Confirm, then go back to the download.</p></li>
+        <li><h3 data-i18n="a3.t">Open the file and install</h3><p data-i18n="a3.d">Open the downloaded .apk from the notification or the Downloads folder and tap Install.</p></li>
+        <li><h3 data-i18n="a4.t">First launch</h3><p data-i18n="a4.d">Give VRClip access to storage so it can save downloads in Download/VRClip, and allow notifications to follow progress. From then on the app updates itself.</p></li>
+      </ol>
+    </div>
+
+    <div class="tab-panel" role="tabpanel" id="panel-quest" aria-labelledby="tab-quest" data-tab="quest" hidden>
+      <ol class="steps">
+        <li><h3 data-i18n="q1.t">Turn on developer mode</h3><p data-i18n="q1.d">Apps from outside the Meta Horizon Store need developer mode. Create a free developer organization at developers.meta.com with the account used on the headset, then in the Meta Horizon app on your phone open Devices, pick the headset, Headset settings, Developer mode, and switch it on. Restart the headset.</p></li>
+        <li><h3 data-i18n="q2.t">Get the APK</h3><p data-i18n="q2.d">On a computer or phone, download the universal or arm64-v8a APK from this page (the button offers the right one).</p></li>
+        <li><h3 data-i18n="q3.t">Install it on the headset</h3><p data-i18n-html="q3.d">Connect the headset to a computer with a USB-C cable, accept "Allow USB debugging" inside the headset, then install with SideQuest (drag the APK onto it) or from a terminal with <code>adb install -r VRClip.apk</code>. Recent Horizon OS versions can also install an APK opened from the Files app in the headset; if yours offers it, the cable is not needed.</p></li>
+        <li><h3 data-i18n="q4.t">Open VRClip</h3><p data-i18n="q4.d">In the headset open the app library and pick the Unknown sources filter (on some versions "Apps from unknown sources"). VRClip opens as a panel like any Horizon OS app.</p></li>
+        <li><h3 data-i18n="q5.t">Download and watch</h3><p data-i18n="q5.d">Paste a link, or share one to VRClip from another app. When the download is done, open it from the Library: the player puts a large screen in front of you, or wraps 360° and 180° video around you. The control bar below the video has play, seek, 3D, projection, passthrough and recenter.</p></li>
+        <li><h3 data-i18n="q6.t">Turn flat video into 3D</h3><p data-i18n="q6.d">Press 3D on the control bar to convert while you watch, or open the video's details in the Library and choose Convert to 3D to create a permanent 3D file. The first time VRClip downloads the depth model.</p></li>
+      </ol>
+      <p class="note" data-i18n="q.note">Back leaves the player and brings the Library back. The control bar can be grabbed and moved; Recenter puts the screen and the bar in front of you again.</p>
+    </div>
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title" data-i18n="faq.title">Questions</h2>
+    <details><summary data-i18n="faq1.q">I have VRClip 1.1 or older: why does the update fail?</summary><p data-i18n="faq1.a">Since 1.2 releases are signed with a new, permanent key. Android does not let an app signed with one key update an app signed with another, so the switch needs one reinstall: export your library from the Library menu (Export) if you want to keep it, uninstall VRClip, install 1.2. Downloaded files in Download/VRClip are not touched. After that, updates install from inside the app.</p></details>
+    <details><summary data-i18n="faq2.q">Which devices does it run on?</summary><p data-i18n="faq2.a">Android 9 or newer on phones and tablets (ARM and x86), and Meta Quest 2, 3, 3S and Pro.</p></details>
+    <details><summary data-i18n="faq3.q">Where are my files?</summary><p data-i18n="faq3.a">In Download/VRClip on the device, or in the folder you choose in the settings.</p></details>
+    <details><summary data-i18n="faq4.q">How long does a 3D conversion take?</summary><p data-i18n="faq4.a">It depends on the device's GPU and the video's length and resolution: it processes every frame, so expect it to take longer than the video itself on most phones. It keeps running with the screen off and shows its progress in a notification; the original stays untouched until the 3D file is complete.</p></details>
+    <details><summary data-i18n="faq5.q">Does VRClip send data anywhere?</summary><p data-i18n-html="faq5.a">No. It connects only to the sites you download from, to GitHub for updates and, if you use 2D to 3D, once to download the depth model from Qualcomm AI Hub's public server. See the <a href="privacy.html">privacy policy</a>.</p></details>
+    <details><summary data-i18n="faq6.q">Is downloading from any site allowed?</summary><p data-i18n="faq6.a">VRClip is a tool: respect the terms of the sites you use and the copyright of what you download.</p></details>
+  </section>
 </main>
 
-<footer>
-  <div class="footer-links">
-    <a href="https://github.com/illuminazionetech/VRClip">Source code</a>
-    <a href="https://github.com/illuminazionetech/VRClip/releases">All releases</a>
-    <a href="https://github.com/illuminazionetech/VRClip/issues">Report an issue</a>
-    <a href="privacy.html">Privacy policy</a>
-    <a href="https://github.com/illuminazionetech/VRClip/blob/main/LICENSE">GPLv3 license</a>
-  </div>
-  <p>
-    VRClip is an open source fork of <a href="https://github.com/JunkFood02/Seal">Seal</a> by JunkFood02.
-    It uses <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a>, ffmpeg, and aria2c.
-    Not affiliated with Meta.
-  </p>
+<footer class="footer">
+  <nav aria-label="Links">
+    <a href="https://github.com/illuminazionetech/VRClip" data-i18n="foot.code">Source code</a>
+    <a href="https://github.com/illuminazionetech/VRClip/releases" data-i18n="foot.releases">All releases</a>
+    <a href="https://github.com/illuminazionetech/VRClip/issues" data-i18n="foot.issues">Report a problem</a>
+    <a href="privacy.html" data-i18n="foot.privacy">Privacy</a>
+    <a href="https://github.com/illuminazionetech/VRClip/blob/main/LICENSE" data-i18n="foot.license">GPLv3 license</a>
+  </nav>
+  <p data-i18n-html="foot.credits">VRClip is based on <a href="https://github.com/JunkFood02/Seal">Seal</a> by JunkFood02 and uses <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a>, FFmpeg, aria2 and <a href="https://github.com/DepthAnything/Depth-Anything-V2">Depth Anything V2</a>. It is not affiliated with Meta.</p>
 </footer>
 
 <script src="app.js"></script>

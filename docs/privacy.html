@@ -2,84 +2,128 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>VRClip privacy policy</title>
-<meta name="description" content="Privacy policy for VRClip, the video/audio downloader for Android and Meta Quest." />
+<meta name="description" content="Privacy policy of VRClip for Android and Meta Quest." />
 <link rel="icon" type="image/png" href="assets/icon-flat.png" />
-<meta name="theme-color" content="#0058c4" />
+<meta name="theme-color" content="#0b1020" />
+<meta name="color-scheme" content="dark light" />
 <link rel="stylesheet" href="style.css" />
-<style>
-  .policy {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 48px 24px 96px;
-    line-height: 1.7;
-  }
-  .policy h1 { margin-bottom: 8px; }
-  .policy .updated { opacity: 0.7; margin-bottom: 32px; }
-  .policy h2 { margin-top: 36px; }
-</style>
 </head>
 <body>
 <header class="top-bar">
-  <div class="brand">
-    <img src="assets/logo.png" alt="" />
-    VRClip
+  <a class="brand" href="index.html" aria-label="VRClip">
+    <img src="assets/logo.png" alt="" width="36" height="36" />
+    <span>VRClip</span>
+  </a>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" data-lang="it" lang="it">IT</button>
+    <button type="button" data-lang="en" lang="en">EN</button>
   </div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="https://github.com/illuminazionetech/VRClip">GitHub</a>
-  </nav>
 </header>
 
 <main class="policy">
-  <h1>Privacy policy</h1>
-  <p class="updated">Last updated: July 18, 2026</p>
+  <article lang="en" data-lang-block="en">
+    <h1>Privacy policy</h1>
+    <p class="muted">Last updated: October 1, 2026</p>
+    <p>VRClip has no servers of its own and no accounts. It does not collect, store or send personal data to the people who make it.</p>
 
-  <p>
-    VRClip does not collect, store, or transmit any personal data to VRClip's own
-    servers. VRClip has no backend servers.
-  </p>
+    <h2>What VRClip connects to</h2>
+    <ul>
+      <li>The sites of the links you give it, to read information about the media and download it.</li>
+      <li>GitHub, to check for and download VRClip updates and updates of the yt-dlp download engine. You can turn both checks off in the settings.</li>
+      <li>Qualcomm AI Hub's public server (Amazon S3), once, when you first use 2D to 3D, to download the depth model. The model is checked against a fixed SHA-256 fingerprint and then runs entirely on your device: your videos are never uploaded.</li>
+    </ul>
+    <p>These services see the usual information of any network request, such as your IP address, under their own privacy policies.</p>
 
-  <h2>Network access</h2>
-  <p>Network access is limited to:</p>
-  <ul>
-    <li>Fetching media the user explicitly requests from a URL they provide, sent directly to the source site.</li>
-    <li>An optional check for yt-dlp engine updates, served from GitHub.</li>
-    <li>An optional check for app updates, served from GitHub Releases.</li>
-  </ul>
+    <h2>Analytics and advertising</h2>
+    <p>There are no analytics, advertising, crash reporting or tracking libraries in VRClip.</p>
 
-  <h2>Analytics and tracking</h2>
-  <p>
-    No analytics, advertising, or tracking SDKs are included. No account or
-    sign-in exists.
-  </p>
+    <h2>Data on your device</h2>
+    <p>Downloaded files, the library, playback positions, settings and cookies you import stay on your device. Uninstalling VRClip removes its private data; files saved in shared folders such as Download/VRClip stay until you delete them.</p>
 
-  <h2>Data storage and deletion</h2>
-  <p>
-    All downloaded files and app preferences are stored locally on the device.
-    They can be deleted at any time by removing the files, clearing the app's
-    data, or uninstalling the app. There is no server-side account or data to
-    delete.
-  </p>
+    <h2>Permissions</h2>
+    <ul>
+      <li>Storage access, to save downloads in the folder you choose.</li>
+      <li>Notifications, to show download, update and 3D conversion progress.</li>
+      <li>Install apps, so VRClip can install its own updates after verifying them.</li>
+      <li>On Meta Quest, hand tracking and scene access, used only by the immersive player.</li>
+    </ul>
 
-  <h2>Permissions</h2>
-  <p>
-    The storage permission is used solely to save downloads to the device's
-    public Download folder. The notification permission is used solely to show
-    download progress and completion. The install-packages permission is used
-    solely to install app updates that the user explicitly confirms.
-  </p>
+    <h2>Contact</h2>
+    <p>Questions about this policy: open an issue at <a href="https://github.com/illuminazionetech/VRClip/issues">github.com/illuminazionetech/VRClip/issues</a>.</p>
+  </article>
 
-  <h2>Contact</h2>
-  <p>
-    For questions or reports, open an issue at
-    <a href="https://github.com/illuminazionetech/VRClip/issues">github.com/illuminazionetech/VRClip/issues</a>.
-  </p>
+  <article lang="it" data-lang-block="it" hidden>
+    <h1>Informativa sulla privacy</h1>
+    <p class="muted">Ultimo aggiornamento: 1 ottobre 2026</p>
+    <p>VRClip non ha server propri né account. Non raccoglie, non conserva e non invia dati personali a chi lo sviluppa.</p>
+
+    <h2>A cosa si collega VRClip</h2>
+    <ul>
+      <li>Ai siti dei link che gli fornisci, per leggere le informazioni sui contenuti e scaricarli.</li>
+      <li>A GitHub, per cercare e scaricare gli aggiornamenti di VRClip e del motore di download yt-dlp. Puoi disattivare entrambi i controlli nelle impostazioni.</li>
+      <li>Al server pubblico di Qualcomm AI Hub (Amazon S3), una sola volta, quando usi per la prima volta il 2D→3D, per scaricare il modello di profondità. Il modello viene confrontato con un'impronta SHA-256 fissa e poi funziona interamente sul dispositivo: i tuoi video non vengono mai caricati.</li>
+    </ul>
+    <p>Questi servizi vedono le informazioni di qualsiasi richiesta di rete, come l'indirizzo IP, secondo le proprie informative.</p>
+
+    <h2>Statistiche e pubblicità</h2>
+    <p>VRClip non contiene librerie di statistiche, pubblicità, segnalazione degli arresti anomali o tracciamento.</p>
+
+    <h2>Dati sul dispositivo</h2>
+    <p>File scaricati, libreria, posizioni di riproduzione, impostazioni e cookie importati restano sul dispositivo. Disinstallando VRClip si eliminano i suoi dati privati; i file salvati in cartelle condivise come Download/VRClip restano finché non li elimini.</p>
+
+    <h2>Autorizzazioni</h2>
+    <ul>
+      <li>Accesso all'archivio, per salvare i download nella cartella che scegli.</li>
+      <li>Notifiche, per mostrare l'avanzamento di download, aggiornamenti e conversioni in 3D.</li>
+      <li>Installazione di app, perché VRClip possa installare i propri aggiornamenti dopo averli verificati.</li>
+      <li>Su Meta Quest, tracciamento delle mani e accesso alla scena, usati solo dal player immersivo.</li>
+    </ul>
+
+    <h2>Contatti</h2>
+    <p>Per domande su questa informativa apri una segnalazione su <a href="https://github.com/illuminazionetech/VRClip/issues">github.com/illuminazionetech/VRClip/issues</a>.</p>
+  </article>
 </main>
 
-<footer>
-  <p>VRClip is free and open source software, licensed under the GPLv3.</p>
+<footer class="footer">
+  <nav aria-label="Links">
+    <a href="index.html">VRClip</a>
+    <a href="https://github.com/illuminazionetech/VRClip">GitHub</a>
+  </nav>
 </footer>
+
+<script>
+  (() => {
+    const read = () => {
+      try {
+        return localStorage.getItem("vrclip-lang");
+      } catch (e) {
+        return null;
+      }
+    };
+    const fromUrl = new URLSearchParams(location.search).get("lang");
+    const prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+    let lang = fromUrl || read() || (prefs.some((l) => String(l).toLowerCase().startsWith("it")) ? "it" : "en");
+    if (lang !== "it" && lang !== "en") lang = "en";
+    const apply = (next, remember) => {
+      document.documentElement.lang = next;
+      document.querySelectorAll("[data-lang-block]").forEach((el) => {
+        el.hidden = el.dataset.langBlock !== next;
+      });
+      document.querySelectorAll(".lang-switch button").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.lang === next));
+      });
+      document.title = next === "it" ? "Informativa sulla privacy di VRClip" : "VRClip privacy policy";
+      if (remember) {
+        try {
+          localStorage.setItem("vrclip-lang", next);
+        } catch (e) {}
+      }
+    };
+    document.querySelectorAll(".lang-switch button").forEach((b) => b.addEventListener("click", () => apply(b.dataset.lang, true)));
+    apply(lang, false);
+  })();
+</script>
 </body>
 </html>

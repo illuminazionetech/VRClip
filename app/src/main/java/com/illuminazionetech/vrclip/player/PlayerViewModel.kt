@@ -69,6 +69,14 @@ sealed interface PlayerSource {
 /** A still from the video, shown above the seek bar while scrubbing. */
 class PreviewFrame(val positionMs: Long, val image: ImageBitmap)
 
+/** What a scrub preview needs, read from the player on its own thread. */
+private class PreviewRequest(
+    val uri: Uri,
+    val positionMs: Long,
+    val aspect: Float,
+    val projection: ProjectionMode,
+)
+
 data class TrackOption(
     val group: Tracks.Group,
     val index: Int,
@@ -174,11 +182,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     private var tickerJob: Job? = null
     private var lastSavedPosition = -1L
 
-    private val previewRequests = MutableStateFlow<Long?>(null)
+    private val previewRequests = MutableStateFlow<PreviewRequest?>(null)
     private val mutablePreview = MutableStateFlow<PreviewFrame?>(null)
     val preview: StateFlow<PreviewFrame?> = mutablePreview.asStateFlow()
+
+    /** Guards the retriever, which is used on a background thread and released on the main one. */
+    private val previewLock = Any()
     private var previewRetriever: MediaMetadataRetriever? = null
     private var previewUri: Uri? = null
+    private var previewClosed = false
 
     private val listener =
         object : Player.Listener {
@@ -223,13 +235,13 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch(Dispatchers.IO) {
             // Only the latest request matters while the finger moves; each one waits for the
             // previous decode, since a retriever is not thread safe.
-            previewRequests.collectLatest { positionMs ->
-                if (positionMs == null) {
+            previewRequests.collectLatest { request ->
+                if (request == null) {
                     mutablePreview.value = null
                     return@collectLatest
                 }
                 delay(PREVIEW_DEBOUNCE_MS)
-                val frame = runCatching { decodePreview(positionMs) }.getOrNull()
+                val frame = runCatching { decodePreview(request) }.getOrNull()
                 if (frame != null) mutablePreview.value = frame
             }
         }
@@ -686,37 +698,51 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
 
     // region Scrub preview
 
-    /** Asks for a still at [positionMs] for the scrub preview; null hides it. */
+    /**
+     * Asks for a still at [positionMs] for the scrub preview; null hides it. Called on the main
+     * thread, where the player may be read; the frame is decoded in the background.
+     */
     fun requestPreview(positionMs: Long?) {
-        previewRequests.value = positionMs
+        val uri = player.currentMediaItem?.localConfiguration?.uri
+        previewRequests.value =
+            if (positionMs == null || uri == null) null
+            else {
+                val current = mutableState.value
+                PreviewRequest(
+                    uri = uri,
+                    positionMs = positionMs,
+                    aspect = current.frame?.aspect?.takeIf { it > 0f } ?: (16f / 9f),
+                    projection = current.sourceProjection,
+                )
+            }
     }
 
-    private fun decodePreview(positionMs: Long): PreviewFrame? {
-        val uri = player.currentMediaItem?.localConfiguration?.uri ?: return null
-        val retriever =
-            previewRetriever?.takeIf { previewUri == uri }
-                ?: MediaMetadataRetriever().also {
-                    previewRetriever?.release()
-                    it.setDataSource(getApplication(), uri)
-                    previewRetriever = it
-                    previewUri = uri
-                }
-        val current = mutableState.value
-        val aspect = current.frame?.aspect?.takeIf { it > 0f } ?: (16f / 9f)
-        val width = PREVIEW_DECODE_WIDTH
-        val height = (width / aspect).toInt().coerceAtLeast(1)
-        val bitmap =
-            retriever.getScaledFrameAtTime(
-                positionMs * 1000,
-                MediaMetadataRetriever.OPTION_CLOSEST_SYNC,
-                width,
-                height,
-            ) ?: return null
-        return PreviewFrame(
-            positionMs,
-            cropToView(bitmap, current.sourceProjection).asImageBitmap(),
-        )
-    }
+    private fun decodePreview(request: PreviewRequest): PreviewFrame? =
+        synchronized(previewLock) {
+            if (previewClosed) return null
+            val retriever =
+                previewRetriever?.takeIf { previewUri == request.uri }
+                    ?: MediaMetadataRetriever().also {
+                        previewRetriever?.release()
+                        previewRetriever = null
+                        it.setDataSource(getApplication(), request.uri)
+                        previewRetriever = it
+                        previewUri = request.uri
+                    }
+            val width = PREVIEW_DECODE_WIDTH
+            val height = (width / request.aspect).toInt().coerceAtLeast(1)
+            val bitmap =
+                retriever.getScaledFrameAtTime(
+                    request.positionMs * 1000,
+                    MediaMetadataRetriever.OPTION_CLOSEST_SYNC,
+                    width,
+                    height,
+                ) ?: return null
+            PreviewFrame(
+                request.positionMs,
+                cropToView(bitmap, request.projection).asImageBitmap(),
+            )
+        }
 
     /** The part of a frame a viewer would look at: one eye, and the front of a 360/180 video. */
     private fun cropToView(bitmap: Bitmap, mode: ProjectionMode): Bitmap {
@@ -768,8 +794,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
 
     override fun onCleared() {
         savePosition()
-        previewRetriever?.release()
-        previewRetriever = null
+        synchronized(previewLock) {
+            previewClosed = true
+            previewRetriever?.release()
+            previewRetriever = null
+        }
         player.removeListener(listener)
         session.release()
         player.release()

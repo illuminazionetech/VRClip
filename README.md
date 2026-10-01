@@ -21,17 +21,22 @@ Website and downloads: [illuminazionetech.github.io/VRClip](https://illuminazion
 - Player on phones and tablets:
   - resumes where you stopped and remembers the playback speed;
   - audio and subtitle tracks, including subtitle files saved next to the video;
-  - double tap to seek, long press for 2x, swipe to scrub, brightness and volume swipes,
-    pinch to fill, controls lock, repeat, picture-in-picture;
+  - double tap to seek, long press for 2x, swipe to scrub with a preview of the frame,
+    brightness and volume swipes, pinch to fill, controls lock, repeat, picture-in-picture;
+  - Material 3 Expressive controls with motion and haptic feedback;
   - 360 and 180 video with touch and motion sensor panning, split screen for Cardboard-style
     viewers, and red and cyan anaglyph output for 3D video.
 - 2D to 3D: Depth Anything V2 Small estimates depth on the device GPU (CPU fallback) and VRClip
   draws a view for each eye. It runs live in the player, or converts a file at full quality in
   the background and replaces the flat original once the 3D file is complete. The model (about
-  90 MB) is downloaded on first use and verified against a fixed SHA-256.
+  90 MB) is downloaded on first use, in the background with a notification; the download
+  resumes after interruptions, falls back to a copy in this repository's `depth-model` release
+  and is verified against a fixed SHA-256.
 - Meta Quest 2, 3, 3S and Pro: a large screen in front of you for flat video, a sphere or half
   dome for 360 and 180, native stereo for 3D files and live 2D to 3D, passthrough, and a control
-  bar you can grab and move.
+  bar you can grab and move, with speed and track pages.
+- High resolution preset for 360 and 3D: asks yt-dlp for the largest video the device's
+  hardware decoders can play, with the codec that reaches that size.
 - Interface: Material 3 Expressive with dynamic color, a bottom bar on phones and a navigation
   rail on tablets and Quest, larger type and touch targets on Quest. English and Italian are
   complete; other languages come from Seal's translations.

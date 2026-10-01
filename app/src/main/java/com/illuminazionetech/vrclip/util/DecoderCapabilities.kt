@@ -18,7 +18,8 @@ object DecoderCapabilities {
 
     /** yt-dlp `vcodec` sort names, best first, as yt-dlp ranks them. */
     enum class Codec(val ytDlpName: String, val mime: String) {
-        Av1("av01", MediaFormat.MIMETYPE_VIDEO_AV1),
+        // MediaFormat.MIMETYPE_VIDEO_AV1 only exists from API 29; the string is the same.
+        Av1("av01", "video/av01"),
         Vp9Hdr("vp9.2", MediaFormat.MIMETYPE_VIDEO_VP9),
         Vp9("vp9", MediaFormat.MIMETYPE_VIDEO_VP9),
         Hevc("h265", MediaFormat.MIMETYPE_VIDEO_HEVC),

@@ -4,6 +4,7 @@ import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
 import java.security.MessageDigest
+import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
@@ -98,6 +99,12 @@ internal class ModelDownloader(
                 // Corrupted data is discarded so the next attempt does not resume from it.
                 if (e.kind == Kind.Corrupted) part.delete()
                 failure = moreUseful(failure, e)
+            } catch (e: IOException) {
+                // Reading the archive or writing the model failed after a complete download: most
+                // likely the storage filled up meanwhile, otherwise the archive cannot be read.
+                val kind = if (freeBytes() < expectedBytes) Kind.NoSpace else Kind.Corrupted
+                if (kind == Kind.Corrupted) part.delete()
+                failure = moreUseful(failure, Failure(kind, "cannot install the file", e))
             }
         }
         throw failure ?: Failure(Kind.Network, "no source")
@@ -124,6 +131,9 @@ internal class ModelDownloader(
             } catch (e: Failure) {
                 throw e
             } catch (e: IOException) {
+                if (freeBytes() < SPACE_MARGIN_BYTES) {
+                    throw Failure(Kind.NoSpace, "storage full while downloading", e)
+                }
                 if (attempt >= retryDelaysMs.size) {
                     throw Failure(Kind.Network, "download of ${source.url} failed", e)
                 }
@@ -225,12 +235,9 @@ internal class ModelDownloader(
                     throw Failure(Kind.Corrupted, "unpacked file does not match")
                 }
             }
-        } catch (e: java.util.zip.ZipException) {
+        } catch (e: IOException) {
             unpacked.delete()
-            throw Failure(Kind.Corrupted, "archive is damaged", e)
-        } catch (e: Failure) {
-            unpacked.delete()
-            throw e
+            throw if (e is ZipException) Failure(Kind.Corrupted, "archive is damaged", e) else e
         }
         moveInto(unpacked, target)
     }

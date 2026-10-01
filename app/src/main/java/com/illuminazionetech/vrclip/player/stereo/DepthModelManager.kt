@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.player.stereo
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.storage.StorageManager
 import android.util.Log
@@ -61,7 +62,7 @@ class DepthModelManager private constructor(private val context: Context) {
     private val mutex = Mutex()
 
     init {
-        // Left behind by versions before 1.2.1, which downloaded without resuming.
+        // Left behind by versions before 1.3, which downloaded without resuming.
         File(directory, "$MODEL_FILE_NAME.part").delete()
     }
 
@@ -201,7 +202,8 @@ class DepthModelManager private constructor(private val context: Context) {
                 ModelDownloader.FileSource(MIRROR_URL, MODEL_BYTES),
             )
 
-        @Volatile private var instance: DepthModelManager? = null
+        // Holds the application context only (see get), which lives as long as the process.
+        @SuppressLint("StaticFieldLeak") @Volatile private var instance: DepthModelManager? = null
 
         fun get(context: Context): DepthModelManager =
             instance

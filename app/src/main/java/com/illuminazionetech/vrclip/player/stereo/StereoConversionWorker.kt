@@ -106,8 +106,7 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
             }
             val replaced =
                 withContext(NonCancellable) {
-                    if (!temp.renameTo(target)) return@withContext false
-                    if (target != input) input.delete()
+                    if (!moveIntoPlace(temp, target, input)) return@withContext false
                     DatabaseUtil.replaceVideoFile(
                         videoId,
                         target.absolutePath,
@@ -313,6 +312,28 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
         const val TAG_CONVERSION = "stereo-conversion"
 
         private val conversionLock = Mutex()
+
+        /**
+         * Moves the finished [temp] file to [target] and removes [original] when the two differ.
+         * Some storage (the FUSE layer of shared storage on a few devices) refuses to rename onto
+         * an existing file, so in that case the original is moved aside first and put back if the
+         * second rename fails too: either the new file is in place or the original is untouched.
+         */
+        internal fun moveIntoPlace(temp: File, target: File, original: File): Boolean {
+            if (temp.renameTo(target)) {
+                if (target != original) original.delete()
+                return true
+            }
+            if (target != original) return false
+            val backup = File(original.parentFile, ".${original.name}.vrclip-original")
+            if (!original.renameTo(backup)) return false
+            if (temp.renameTo(target)) {
+                backup.delete()
+                return true
+            }
+            backup.renameTo(original)
+            return false
+        }
 
         private fun uniqueSibling(directory: File, base: String, extension: String): File {
             var candidate = File(directory, "$base.$extension")

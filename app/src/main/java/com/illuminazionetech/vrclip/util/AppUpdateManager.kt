@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -253,6 +254,9 @@ object AppUpdateManager {
                     }
                 }
             }
+            // A cancelled download stops the loop above; report it as a cancellation, not as a
+            // short file.
+            ensureActive()
             if (expectedSize > 0 && partial.length() != expectedSize) {
                 partial.delete()
                 throw IOException("incomplete download: ${partial.length()} of $expectedSize")

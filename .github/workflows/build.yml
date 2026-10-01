@@ -268,6 +268,16 @@ jobs:
           shopt -s globstar nullglob
           .github/scripts/verify-release-signature.sh release/**/*.apk release/**/*.aab
 
+      - name: Collect release notes
+        if: steps.exists.outputs.exists == 'false'
+        run: |
+          .github/scripts/release-notes.sh "$VERSION" > "$RUNNER_TEMP/release-notes.md"
+          if [ -s "$RUNNER_TEMP/release-notes.md" ]; then
+            echo "Using the $VERSION section of RELEASE_NOTES.md."
+          else
+            echo "::notice::RELEASE_NOTES.md has no section for $VERSION; the release lists the merged pull requests only."
+          fi
+
       - name: Publish GitHub Release
         if: steps.exists.outputs.exists == 'false'
         uses: softprops/action-gh-release@v3
@@ -275,6 +285,8 @@ jobs:
           tag_name: ${{ env.TAG }}
           target_commitish: ${{ github.sha }}
           name: VRClip ${{ env.TAG }}
+          # GitHub appends its list of merged pull requests after these notes.
+          body_path: ${{ runner.temp }}/release-notes.md
           generate_release_notes: true
           make_latest: 'true'
           fail_on_unmatched_files: true

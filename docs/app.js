@@ -403,7 +403,9 @@
   }
 
   function renderMarkdown(markdown, container) {
+    // Headings, "-" lists and paragraphs; wrapped lines continue the item or paragraph above.
     let list = null;
+    let block = null;
     markdown
       .replace(/\r/g, "")
       .split("\n")
@@ -411,12 +413,14 @@
         const line = raw.trimEnd();
         if (!line.trim()) {
           list = null;
+          block = null;
           return;
         }
         const heading = line.match(/^(#{1,4})\s+(.*)$/);
         const item = line.match(/^\s*[-*]\s+(.*)$/);
         if (heading) {
           list = null;
+          block = null;
           const h = document.createElement(heading[1].length <= 2 ? "h4" : "h5");
           inline(h, heading[2]);
           container.append(h);
@@ -425,14 +429,17 @@
             list = document.createElement("ul");
             container.append(list);
           }
-          const li = document.createElement("li");
-          inline(li, item[1]);
-          list.append(li);
+          block = document.createElement("li");
+          inline(block, item[1]);
+          list.append(block);
+        } else if (block && (list ? /^\s/.test(line) : true)) {
+          block.append(" ");
+          inline(block, line.trim());
         } else {
           list = null;
-          const p = document.createElement("p");
-          inline(p, line);
-          container.append(p);
+          block = document.createElement("p");
+          inline(block, line.trim());
+          container.append(block);
         }
       });
   }

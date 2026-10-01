@@ -221,18 +221,23 @@ private fun UpdateDialog(state: State) {
  * Minimal rendering of GitHub release notes: headings in bold, list markers as bullets, inline
  * `**bold**` honored, link-only suffixes such as "by @user in https://…" dropped.
  */
-private fun releaseNotes(markdown: String): AnnotatedString = buildAnnotatedString {
-    val lines =
-        markdown
-            .lineSequence()
-            .map { it.trimEnd() }
-            .filter { it.isNotBlank() && !it.startsWith("**Full Changelog**") }
-            .toList()
+internal fun releaseNotes(markdown: String): AnnotatedString = buildAnnotatedString {
+    val lines = mutableListOf<String>()
+    markdown
+        .lineSequence()
+        .map { it.trimEnd() }
+        .filter { it.isNotBlank() && !it.startsWith("**Full Changelog**") }
+        .forEach { line ->
+            // An indented line that does not start a new item continues the one above.
+            val wrapped =
+                lines.isNotEmpty() && line.first().isWhitespace() && !line.trimStart().matches(listItem)
+            if (wrapped) lines[lines.lastIndex] = lines.last() + " " + line.trim() else lines += line
+        }
     lines.forEachIndexed { index, raw ->
         val heading = raw.startsWith("#")
         var line = raw.trimStart('#', ' ')
         line = line.replace(Regex(""" by @[\w-]+ in https?://\S+$"""), "")
-        line = line.replace(Regex("""^[*-] """), "• ")
+        line = line.replace(Regex("""^[*-] """), "• ").replace("`", "")
         if (heading) {
             withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append(line) }
         } else {
@@ -245,3 +250,5 @@ private fun releaseNotes(markdown: String): AnnotatedString = buildAnnotatedStri
         if (index != lines.lastIndex) append('\n')
     }
 }
+
+private val listItem = Regex("""^[*-] .*""")

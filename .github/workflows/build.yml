@@ -206,6 +206,25 @@ jobs:
           path: app/build/outputs/apk/*/debug/*.apk
           if-no-files-found: ignore
 
+  mirror-model:
+    name: Mirror the depth model
+    # Keeps a verified copy of the 2D to 3D model in the depth-model release, the app's second
+    # download source. Cheap when the copy is already there: one API call.
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Publish the model if it is missing
+        run: .github/scripts/mirror-depth-model.sh
+
   release:
     name: Publish release
     # Only a push to main that changed app code publishes, and only after lint, tests and the

@@ -55,6 +55,13 @@ fun Number?.toFileSizeText(): String {
     }
 }
 
+/** [toFileSizeText] for code that runs outside composition, such as notifications. */
+fun Number.toFileSizeText(context: Context): String =
+    toFloat().let {
+        if (it > GIGA_BYTES) context.getString(R.string.filesize_gb).format(it / GIGA_BYTES)
+        else context.getString(R.string.filesize_mb).format(it / MEGA_BYTES)
+    }
+
 /** Convert time in **seconds** to `hh:mm:ss` or `mm:ss` */
 fun Int.toDurationText(): String =
     this.run {

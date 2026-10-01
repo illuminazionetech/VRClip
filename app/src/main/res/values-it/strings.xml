@@ -560,8 +560,13 @@
     <string name="stereo_model_title">Scarica il modello 3D</string>
     <string name="stereo_model_desc">La conversione in 3D usa un modello di stima della profondità (Depth Anything V2 Small) che funziona interamente su questo dispositivo. Si scarica una volta sola (%1$s) e viene verificato prima dell\'uso.</string>
     <string name="stereo_model_download">Scarica</string>
-    <string name="stereo_model_failed">Non è stato possibile scaricare il modello. Controlla la connessione e riprova.</string>
+    <string name="stereo_model_failed">Il download si è interrotto. Controlla la connessione e riprova: riprende da dove si era fermato.</string>
     <string name="stereo_model_corrupted">Il modello scaricato non ha superato la verifica ed è stato scartato.</string>
+    <string name="stereo_model_downloading">Download del modello 3D</string>
+    <string name="stereo_model_checking">Verifica del modello…</string>
+    <string name="stereo_model_queued">Avvio del download…</string>
+    <string name="stereo_model_background">Il download continua in background, con una notifica. Puoi chiudere questa finestra.</string>
+    <string name="stereo_model_no_space">Spazio libero insufficiente. Durante l\'installazione il modello occupa circa %1$s.</string>
     <string name="stereo_convert_title">Convertire questo video in 3D?</string>
     <string name="stereo_convert_desc">VRClip stima la profondità di ogni fotogramma e crea un video 3D affiancato da guardare nel visore. Al termine della conversione il file 3D sostituisce l\'originale. Richiede tempo e continua anche se esci dall\'app.</string>
     <string name="stereo_convert_output">Risultato: %1$d × %2$d, %3$s, %4$s</string>

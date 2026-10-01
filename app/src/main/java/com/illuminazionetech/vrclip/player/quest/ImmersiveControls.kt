@@ -28,12 +28,12 @@ import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material.icons.rounded.Vrpano
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -55,7 +55,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.player.Live3dState
 import com.illuminazionetech.vrclip.player.PlayerViewModel
@@ -63,8 +62,9 @@ import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.displayName
 import com.illuminazionetech.vrclip.player.formatTime
 import com.illuminazionetech.vrclip.player.stereo.DepthModelManager
+import com.illuminazionetech.vrclip.player.stereo.DepthModelStatus
+import com.illuminazionetech.vrclip.player.stereo.isBusy
 import com.illuminazionetech.vrclip.util.toFileSizeText
-import kotlinx.coroutines.launch
 
 private enum class ControlsPage {
     Main,
@@ -357,29 +357,21 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
         overflow = TextOverflow.Ellipsis,
     )
     Spacer(Modifier.size(8.dp))
-    when (val current = modelState) {
-        is DepthModelManager.State.Downloading ->
-            if (current.progress >= 0f) {
-                LinearWavyProgressIndicator(
-                    progress = { current.progress },
-                    modifier = Modifier.fillMaxWidth(),
+    DepthModelStatus(state = modelState)
+    if (!modelState.isBusy()) {
+        Button(
+            onClick = {
+                manager.resetError()
+                manager.start()
+            },
+            shapes = ButtonDefaults.shapes(),
+        ) {
+            Text(
+                stringResource(
+                    if (modelState is DepthModelManager.State.Failed) R.string.retry
+                    else R.string.stereo_model_download
                 )
-            } else {
-                LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
-            }
-        else ->
-            Button(
-                onClick = {
-                    manager.resetError()
-                    App.applicationScope.launch { manager.download() }
-                }
-            ) {
-                Text(
-                    stringResource(
-                        if (current is DepthModelManager.State.Failed) R.string.retry
-                        else R.string.stereo_model_download
-                    )
-                )
-            }
+            )
+        }
     }
 }

@@ -116,7 +116,7 @@
       "Dipende dalla GPU del dispositivo, dalla durata e dalla risoluzione del video: elabora ogni fotogramma, quindi sulla maggior parte dei telefoni impiega più della durata del video. Continua anche a schermo spento e mostra l'avanzamento in una notifica; l'originale resta intatto finché il file 3D non è completo.",
     "faq5.q": "VRClip invia dati da qualche parte?",
     "faq5.a":
-      "No. Si collega solo ai siti da cui scarichi, a GitHub per gli aggiornamenti e, se usi il 2D→3D, una volta al server pubblico di Qualcomm AI Hub per scaricare il modello di profondità. Leggi l'<a href=\"privacy.html\">informativa sulla privacy</a>.",
+      "No. Si collega solo ai siti da cui scarichi, a GitHub per gli aggiornamenti e, se usi il 2D→3D, una volta al server pubblico di Qualcomm AI Hub (o, se non risponde, alle release di VRClip su GitHub) per scaricare il modello di profondità. Leggi l'<a href=\"privacy.html\">informativa sulla privacy</a>.",
     "faq6.q": "Si può scaricare da qualsiasi sito?",
     "faq6.a": "VRClip è uno strumento: rispetta i termini dei siti che usi e il diritto d'autore di ciò che scarichi.",
     "foot.code": "Codice sorgente",

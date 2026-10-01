@@ -556,8 +556,13 @@
     <string name="stereo_model_title">Download the 3D model</string>
     <string name="stereo_model_desc">Turning video into 3D uses a depth estimation model (Depth Anything V2 Small) that runs entirely on this device. It is downloaded once (%1$s) and checked before use.</string>
     <string name="stereo_model_download">Download</string>
-    <string name="stereo_model_failed">The model could not be downloaded. Check the connection and try again.</string>
+    <string name="stereo_model_failed">The download stopped. Check the connection and try again: it resumes where it left off.</string>
     <string name="stereo_model_corrupted">The downloaded model did not pass verification and was discarded.</string>
+    <string name="stereo_model_downloading">Downloading the 3D model</string>
+    <string name="stereo_model_checking">Checking the model…</string>
+    <string name="stereo_model_queued">Starting the download…</string>
+    <string name="stereo_model_background">The download continues in the background, with a notification. You can close this window.</string>
+    <string name="stereo_model_no_space">Not enough free space. The model needs about %1$s while it is being installed.</string>
     <string name="stereo_convert_title">Convert this video to 3D?</string>
     <string name="stereo_convert_desc">VRClip estimates the depth of every frame and builds a side-by-side 3D video to watch in a headset. When the conversion finishes, the 3D file replaces the original. It takes a while and keeps running if you leave the app.</string>
     <string name="stereo_convert_output">Result: %1$d × %2$d, %3$s, %4$s</string>

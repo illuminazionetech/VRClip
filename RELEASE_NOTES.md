@@ -1,5 +1,82 @@
 # Release notes
 
+## 1.2.0 - New player, 2D to 3D, a working Quest scene and verified updates
+
+### Updating from 1.1.0 or older
+- 1.2.0 is signed with VRClip's new permanent release key. Android does not let an app update
+  to a version signed with a different key, so 1.1.0 cannot update itself to 1.2.0: uninstall
+  VRClip, then install 1.2.0. Files you downloaded stay in Download/VRClip; the library list,
+  settings and history are removed with the old app. Later versions update in place.
+
+### Player
+- The player opens full screen in its own window and can continue in picture-in-picture while
+  you use VRClip or other apps. It also opens local videos shared from other apps.
+- Playback resumes where you stopped (library thumbnails show a progress bar) and the speed
+  you chose is remembered.
+- Audio and subtitle tracks can be chosen, including subtitle files yt-dlp saved next to the
+  video.
+- Gestures: double tap to seek 10 seconds, long press for 2x, horizontal swipe to scrub,
+  vertical swipes for brightness and volume, pinch to fill the screen. Also controls lock,
+  repeat, rotation, and a media session so headset buttons control playback.
+- 360 and 180 video starts straight ahead and upright, 180 maps onto a half dome, the phone's
+  motion sensor turns the view, split screen keeps the right aspect per eye, and a red and cyan
+  anaglyph output joins single eye and split screen.
+- Projection detection reads the stereo and spherical metadata in the file, understands more
+  file name tags (such as `_360` or `vr180_sbs`) and no longer takes "Xbox 360" for a 360
+  degree video.
+
+### 2D to 3D
+- In the player, the 3D button turns a flat video into side-by-side 3D while it plays.
+- In the library, Convert to 3D renders the whole file at full quality in the background, with
+  a notification, and replaces the flat file only after the new one is complete and checked.
+- Depth comes from Depth Anything V2 Small, which runs on the device GPU with a CPU fallback.
+  The model (about 90 MB) is downloaded once, on first use, and checked against a fixed
+  SHA-256 before it is used. Videos never leave the device.
+- Settings for depth strength and pop-out, and a page to manage the model.
+
+### Meta Quest
+- The immersive player now shows the video: before, it never created the scene objects and
+  used a 100x100 video surface. Flat video plays on a large screen in front of you, 360 and
+  180 video surrounds you, 3D files and live 2D to 3D are shown in native stereo, and a control
+  bar you can grab and move has seek, 3D, projection, passthrough and recenter.
+- The library runs as a regular Horizon OS panel, and leaving the player brings it back.
+- The manifest follows Meta's hybrid app layout, and Quest 3S is listed as supported.
+
+### Interface
+- A navigation bar on phones and a rail on tablets, landscape phones and Quest, with a badge
+  for active downloads and the New download action.
+- Material 3 Expressive across the app: queue cards with wavy progress, speed and ETA and
+  readable labels on any thumbnail; a library with a poster grid, 360/180/3D badges, multi
+  selection and a new details sheet; grouped settings; a full-screen onboarding.
+- Transitions follow Material motion and respond to predictive back.
+- Text on Quest no longer overlaps: line height now scales with the larger type.
+- The Italian translation is complete, and counts use real plural forms.
+
+### Updates
+- Every update is checked before it is installed: the SHA-256 published by GitHub, the package
+  name, the version code and the signing certificate must all match. Installation uses a
+  PackageInstaller session, which on Android 12 and newer can install without a confirmation
+  prompt.
+- A daily background check notifies you of new versions; the existing setting turns it off.
+- If an update is signed with a different key, a dialog explains the one-time reinstall
+  instead of showing a generic installer error.
+
+### Fixes
+- A link shared to VRClip while it was closed was ignored.
+- The storage access button could do nothing on some devices.
+- Removing a task left its action sheet open.
+- After a crash report the app now closes instead of staying in an undefined state.
+- Durations of exactly one hour are formatted correctly.
+
+### Under the hood
+- Android Gradle Plugin 9.4, Gradle 9.8, Kotlin 2.4, compileSdk 37, Compose BOM 2026.09 with
+  Material 3 1.5 alpha, Media3 1.11, Room 2.8, Coil 3, Meta Spatial SDK 0.14 and LiteRT 2.2.
+- Version numbers come from the commit history (Conventional Commits). A push to `main` that
+  changes the app publishes a release only after lint, unit tests and the build pass and every
+  APK and the App Bundle carry the release signature; the release text comes from this file.
+- The website is new, in English and Italian, with screenshots of the app, the notes of the
+  latest release and step by step install guides for Android and Meta Quest.
+
 ## 1.1.0 - Working downloads out of the box, expressive UI, modern toolchain
 
 ### Fixes

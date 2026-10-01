@@ -4,10 +4,11 @@ Copyright © contributors to the VRClip project.
 VRClip is a fork of Seal (https://github.com/JunkFood02/Seal) by JunkFood02 and
 contributors, licensed under the GNU General Public License v3.0. This fork adds:
 
-  - Meta Quest (2, 3, Pro) support, including a fully immersive Meta Spatial SDK
-    video player.
+  - Meta Quest (2, 3, 3S, Pro) support, including a fully immersive Meta Spatial
+    SDK video player.
   - An in-app 3D/360/180/stereoscopic video player for Android, with a custom
     OpenGL equirectangular/stereo renderer.
+  - 2D to 3D conversion on the device, live in the player and as a file export.
   - A full Material 3 Expressive redesign of the user interface.
 
 VRClip is distributed under the same license as Seal: GNU General Public
@@ -22,7 +23,13 @@ Third-party components bundled or depended on by VRClip:
   - youtubedl-android (https://github.com/JunkFood02/youtubedl-android): GPLv3,
     providing the Android bindings for the above
   - AndroidX Media3 / ExoPlayer (https://github.com/androidx/media3): Apache-2.0
-  - Meta Spatial SDK (https://developer.oculus.com/): per Meta's SDK license,
-    used for the Meta Quest immersive player
+  - Meta Spatial SDK (https://developers.meta.com/horizon/develop/spatial-sdk):
+    per Meta's SDK license, used for the Meta Quest immersive player
+  - LiteRT (https://github.com/google-ai-edge/LiteRT): Apache-2.0, runs the
+    depth model
+  - Depth Anything V2 Small (https://github.com/DepthAnything/Depth-Anything-V2):
+    Apache-2.0. The model is not bundled: on first use VRClip downloads the
+    TFLite export published by Qualcomm AI Hub (https://aihub.qualcomm.com/)
+    and checks it against a fixed SHA-256.
 
 None of the above imply endorsement by their respective authors.

@@ -453,7 +453,7 @@
     <string name="engine_updating">Aggiornamento del motore di download…</string>
     <string name="engine_init_failed">Il motore di download non si è avviato. Riavvia l\'app per riprovare.</string>
     <string name="onboarding_welcome_title">Benvenuto in VRClip</string>
-    <string name="onboarding_welcome_desc">Scarica video e audio da migliaia di siti e guardali sul telefono o sul Meta Quest. Bastano pochi passaggi per preparare tutto.</string>
+    <string name="onboarding_welcome_desc">Scarica video e audio da centinaia di siti e guardali sul telefono o sul Meta Quest. Bastano pochi passaggi per preparare tutto.</string>
     <string name="onboarding_storage_title">Accesso alla memoria</string>
     <string name="onboarding_storage_desc">I download vengono salvati nella cartella pubblica Download, che richiede il permesso di accesso a tutti i file. Senza questo permesso i download non possono essere salvati.</string>
     <string name="onboarding_storage_granted">Accesso alla memoria concesso</string>

@@ -14,7 +14,7 @@
     <string name="engine_updating">Updating download engine…</string>
     <string name="engine_init_failed">The download engine could not start. Restart the app to try again.</string>
     <string name="onboarding_welcome_title">Welcome to VRClip</string>
-    <string name="onboarding_welcome_desc">Download videos and audio from thousands of sites and watch them on your phone or Meta Quest. A few quick steps will get everything ready.</string>
+    <string name="onboarding_welcome_desc">Download videos and audio from hundreds of sites and watch them on your phone or Meta Quest. A few quick steps will get everything ready.</string>
     <string name="onboarding_storage_title">Storage access</string>
     <string name="onboarding_storage_desc">Downloads are saved to the public Download folder, which requires the All files access permission. Without it, downloads cannot be saved.</string>
     <string name="onboarding_storage_granted">Storage access granted</string>

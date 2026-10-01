@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Android
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Description
 import androidx.compose.material.icons.rounded.Info
@@ -34,6 +35,7 @@ import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider
 import com.illuminazionetech.vrclip.util.AUTO_UPDATE
 import com.illuminazionetech.vrclip.util.PreferenceUtil
+import com.illuminazionetech.vrclip.util.UpdateCheckWorker
 import com.illuminazionetech.vrclip.util.makeToast
 
 private const val releaseURL = "https://github.com/illuminazionetech/VRClip/releases/latest"
@@ -135,6 +137,7 @@ fun AboutPage(
                         onChecked = {
                             isAutoUpdateEnabled = !isAutoUpdateEnabled
                             PreferenceUtil.updateValue(AUTO_UPDATE, isAutoUpdateEnabled)
+                            UpdateCheckWorker.schedule(context, isAutoUpdateEnabled)
                         },
                     )
                 }
@@ -152,6 +155,7 @@ fun AboutPage(
                     PreferenceItem(
                         title = stringResource(R.string.package_name),
                         description = context.packageName,
+                        icon = Icons.Rounded.Android,
                     ) {
                         clipboardManager.setText(AnnotatedString(context.packageName))
                         makeToast(R.string.info_copied)

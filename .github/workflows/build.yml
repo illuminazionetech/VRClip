@@ -54,7 +54,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   lint:
-    name: Lint
+    name: Lint & format check
     needs: version
     runs-on: ubuntu-latest
     steps:
@@ -117,7 +117,7 @@ jobs:
           if-no-files-found: ignore
 
   build:
-    name: Build APKs
+    name: Build APK
     needs: version
     runs-on: ubuntu-latest
     outputs:

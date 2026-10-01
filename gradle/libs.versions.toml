@@ -1,103 +1,106 @@
 [versions]
+androidGradlePlugin = "9.4.1"
+kotlin = "2.4.20"
+ksp = "2.3.12"
+
+androidxComposeBom = "2026.09.00"
+# 1.5.0-alpha27 is the newest material3 alpha that still builds on the stable Compose 1.12
+# line from the BOM above (alpha28+ pull Compose 1.13 alphas). It is the first line that
+# exposes the Material 3 Expressive APIs (MaterialExpressiveTheme, MotionScheme,
+# LoadingIndicator, ButtonGroup, FloatingToolbar, short/wide navigation components).
+material3 = "1.5.0-alpha27"
+graphicsShapes = "1.1.0"
+
+androidxCore = "1.19.1"
+androidxAppCompat = "1.8.0"
+androidxActivity = "1.13.0"
+androidxLifecycle = "2.11.0"
+androidxNavigation = "2.10.2"
+androidxSplashscreen = "1.2.0"
+androidxProfileInstaller = "1.4.1"
+androidxWork = "2.12.0"
+androidMaterial = "1.14.0"
+constraintLayout = "1.1.2"
+documentFile = "1.1.0"
 accompanist = "0.37.3"
-androidGradlePlugin = "8.10.1"
-androidxComposeBom = "2025.12.01"
-androidxCore = "1.15.0"
-androidMaterial = "1.12.0"
-androidxAppCompat = "1.7.0"
-androidxActivity = "1.10.1"
-constraintLayout = "1.1.0"
 
-androidxLifecycle = "2.8.7"
-androidxNavigation = "2.9.8"
+room = "2.8.5"
+media3 = "1.11.1"
+litert = "2.2.0"
 
-androidxEspresso = "3.5.0"
-androidxTestExt = "1.1.4"
-
-
-coil = "2.5.0"
-
-junit4 = "4.13.2"
-
-kotlin = "2.1.21"
-
-coroutines = "1.9.0"
-datetime = "0.6.1"
-serialization = "1.7.2"
-okhttp = "5.1.0"
-
-room = "2.7.2"
-ksp = "2.1.21-2.0.2"
+coroutines = "1.11.0"
+serialization = "1.11.0"
+okhttp = "5.5.0"
+coil = "3.6.3"
+koin = "4.2.2"
 
 youtubedlAndroid = "0.18.1"
+# MMKV 2.x dropped the 32-bit ABIs, and VRClip still ships armeabi-v7a and x86 builds.
+mmkv = "1.3.17"
 
-mmkv = "1.3.12"
-# pin to v1.3.x for 32-bit support
+metaSpatial = "0.14.0"
 
-koin = "4.0.0"
-
-media3 = "1.4.1"
-
-ktfmt = "0.20.1"
-desugar_jdk_libs = "2.1.4"
-metaSpatial = "0.10.1"
+desugarJdkLibs = "2.1.5"
+junit4 = "4.13.2"
+androidxTestExt = "1.3.0"
+androidxEspresso = "3.7.0"
+ktfmt = "0.27.0"
 
 [libraries]
-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
-
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
-android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxSplashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
-
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
-
+androidx-lifecycle-viewmodelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "androidxLifecycle" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileInstaller" }
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentFile" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
-androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
+androidx-compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-
-androidx-compose-material = { group = "androidx.compose.material", name = "material" }
-
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
-
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-
+androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3" }
+androidx-compose-material3-navigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version.ref = "material3" }
+androidx-graphics-shapes = { group = "androidx.graphics", name = "graphics-shapes", version.ref = "graphicsShapes" }
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayout" }
-
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
-
-androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
-
-androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
-
-
-coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-
-junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
-
-kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
-
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
-
 
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
+androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+androidx-media3-effect = { group = "androidx.media3", name = "media3-effect", version.ref = "media3" }
+androidx-media3-transformer = { group = "androidx.media3", name = "media3-transformer", version.ref = "media3" }
+androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
+
+litert = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "litert" }
+
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-video = { group = "io.coil-kt.coil3", name = "coil-video", version.ref = "coil" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkv" }
 
 youtubedl-android-library = { group = "io.github.junkfood02.youtubedl-android", name = "library", version.ref = "youtubedlAndroid" }
 youtubedl-android-ffmpeg = { group = "io.github.junkfood02.youtubedl-android", name = "ffmpeg", version.ref = "youtubedlAndroid" }
@@ -109,50 +112,64 @@ meta-spatial-sdk-uiset = { group = "com.meta.spatial", name = "meta-spatial-sdk-
 meta-spatial-sdk-toolkit = { group = "com.meta.spatial", name = "meta-spatial-sdk-toolkit", version.ref = "metaSpatial" }
 meta-spatial-sdk-vr = { group = "com.meta.spatial", name = "meta-spatial-sdk-vr", version.ref = "metaSpatial" }
 
-mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkv" }
-
-androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
-androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
-androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 
 [plugins]
-meta-spatial-plugin = { id = "com.meta.spatial.plugin", version.ref = "metaSpatial" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 ktfmt-gradle = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
 
-
 [bundles]
-accompanist = [
-    "accompanist-permissions",
-]
-
-androidxCompose = ["androidx-compose-ui",
+androidxCompose = [
+    "androidx-compose-ui",
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-material-iconsExtended",
     "androidx-compose-material3",
     "androidx-compose-material3-windowSizeClass",
+    "androidx-compose-material3-navigationSuite",
     "androidx-compose-foundation",
-    "androidx-navigation-compose",
     "androidx-compose-animation",
-    "androidx-constraintlayout-compose"
+    "androidx-compose-animation-graphics",
+    "androidx-navigation-compose",
+    "androidx-constraintlayout-compose",
+    "androidx-graphics-shapes",
 ]
 
-youtubedlAndroid = ["youtubedl-android-library",
+youtubedlAndroid = [
+    "youtubedl-android-library",
     "youtubedl-android-ffmpeg",
-    "youtubedl-android-aria2c"]
+    "youtubedl-android-aria2c",
+]
 
-media3 = ["androidx-media3-exoplayer",
+media3 = [
+    "androidx-media3-exoplayer",
     "androidx-media3-ui",
-    "androidx-media3-common"]
+    "androidx-media3-common",
+    "androidx-media3-effect",
+    "androidx-media3-transformer",
+    "androidx-media3-session",
+]
 
-core = ["androidx-activity-compose",
+core = [
+    "androidx-activity-compose",
     "android-material",
     "androidx-appcompat",
-    "androidx-core-ktx"]
+    "androidx-core-ktx",
+    "androidx-core-splashscreen",
+    "androidx-profileinstaller",
+    "androidx-work-runtime",
+    "androidx-documentfile",
+    "accompanist-permissions",
+]
+
+coil = [
+    "coil-compose",
+    "coil-network-okhttp",
+    "coil-video",
+]

@@ -8,10 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.illuminazionetech.vrclip.R
 
-/** Picker for [ProjectionMode], with a "Auto-detect" entry (`null`) at the top. Shared by the
- * player screen's toolbar and the downloads list's per-video context menu. */
+/**
+ * Picker for [ProjectionMode], with a "Auto-detect" entry (`null`) at the top. Shared by the player
+ * screen's toolbar and the downloads list's per-video context menu.
+ */
 @Composable
-fun ProjectionMenu(current: ProjectionMode?, onDismiss: () -> Unit, onSelect: (ProjectionMode?) -> Unit) {
+fun ProjectionMenu(
+    current: ProjectionMode?,
+    onDismiss: () -> Unit,
+    onSelect: (ProjectionMode?) -> Unit,
+) {
     DropdownMenu(expanded = true, onDismissRequest = onDismiss) {
         DropdownMenuItem(
             text = { Text(stringResource(R.string.player_projection_auto)) },

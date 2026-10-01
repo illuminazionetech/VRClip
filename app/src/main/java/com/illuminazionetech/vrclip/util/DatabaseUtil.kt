@@ -71,6 +71,13 @@ object DatabaseUtil {
     suspend fun updateProjectionOverride(path: String, projection: String?) =
         dao.updateProjectionOverride(path, projection)
 
+    suspend fun updatePlaybackPosition(id: Int, positionMs: Long, durationMs: Long) =
+        dao.updatePlaybackPosition(id, positionMs, durationMs)
+
+    /** Points a library entry at a new file (e.g. after a 2D to 3D conversion replaced it). */
+    suspend fun replaceVideoFile(id: Int, newPath: String, projection: String?) =
+        dao.replaceVideoFile(id, newPath, projection)
+
     suspend fun deleteInfoById(id: Int) = dao.deleteInfoById(id)
 
     suspend fun insertTemplate(commandTemplate: CommandTemplate) =

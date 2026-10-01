@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -52,9 +51,9 @@ import com.illuminazionetech.vrclip.ui.component.ClearButton
 import com.illuminazionetech.vrclip.ui.component.ConfirmButton
 import com.illuminazionetech.vrclip.ui.component.LinkButton
 import com.illuminazionetech.vrclip.ui.component.PasteFromClipBoardButton
+import com.illuminazionetech.vrclip.ui.component.ShortcutChip
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.component.VRClipTextField
-import com.illuminazionetech.vrclip.ui.component.ShortcutChip
 import com.illuminazionetech.vrclip.util.DatabaseUtil
 import kotlinx.coroutines.launch
 
@@ -67,7 +66,6 @@ fun CommandTemplateDialog(
     confirmationCallback: (Int) -> Unit = {},
 ) {
     val context = LocalContext.current
-    val clipboardManager = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
     var templateText by remember { mutableStateOf(commandTemplate.template) }
     var templateName by remember { mutableStateOf(commandTemplate.name) }
@@ -218,7 +216,7 @@ fun OptionChipsDialog(onDismissRequest: () -> Unit = {}) {
         },
         confirmButton = {
             TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(id = androidx.appcompat.R.string.abc_action_mode_done))
+                Text(text = stringResource(id = R.string.done))
             }
         },
     )

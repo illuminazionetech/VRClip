@@ -58,8 +58,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.state.ToggleableState
@@ -68,6 +68,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.ClearButton
 import com.illuminazionetech.vrclip.ui.component.FilledButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
@@ -84,14 +85,14 @@ fun InputUrlPage(
     onConfigUpdate: (Config) -> Unit,
     onActionPost: (Action) -> Unit,
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = rememberTextClipboard()
     val urlList = remember { mutableStateListOf<String>() }
     val savedLinks = remember(config) { mutableStateListOf<String>() }
 
     LaunchedEffect(Unit) {
         clipboardManager.getText()?.let {
             urlList.clear()
-            urlList.addAll(findURLsFromString(it.toString()).toSet())
+            urlList.addAll(findURLsFromString(it).toSet())
         }
     }
 
@@ -187,8 +188,9 @@ private fun InputUrlPageImpl(
                         onClick = { showPasteDialog = true },
                         label = {
                             Text(
-                                stringResource(
-                                    R.string.select_multiple_link,
+                                pluralStringResource(
+                                    R.plurals.select_multiple_link,
+                                    urlListFromClipboard.size,
                                     urlListFromClipboard.size,
                                 )
                             )
@@ -294,7 +296,15 @@ private fun URLSelectionDialog(
     VRClipDialog(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-        title = { Text(stringResource(R.string.select_multiple_link, urlListFromClipboard.size)) },
+        title = {
+            Text(
+                pluralStringResource(
+                    R.plurals.select_multiple_link,
+                    urlListFromClipboard.size,
+                    urlListFromClipboard.size,
+                )
+            )
+        },
         icon = { Icon(Icons.Rounded.AddLink, null) },
         confirmButton = {
             FilledButtonWithIcon(
@@ -339,7 +349,8 @@ private fun URLSelectionDialog(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).height(48.dp),
+                        modifier =
+                            Modifier.fillMaxWidth().padding(horizontal = 12.dp).height(48.dp),
                     ) {
                         TriStateCheckbox(
                             state = checkBoxState,
@@ -491,7 +502,9 @@ private fun SavedUrlDialogImpl(
                         LaunchedEffect(dismissState.currentValue) {
                             when (dismissState.currentValue) {
                                 SwipeToDismissBoxValue.EndToStart -> {
-                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    hapticFeedback.performHapticFeedback(
+                                        HapticFeedbackType.LongPress
+                                    )
                                     onRemoveLink(it)
                                 }
                                 else -> {}

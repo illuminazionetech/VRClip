@@ -1,6 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2.configure
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.PlaylistAdd
 import androidx.compose.material.icons.rounded.Close
@@ -28,14 +26,15 @@ import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -50,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,9 +57,10 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.TaskFactory
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
+import com.illuminazionetech.vrclip.ui.component.FullScreenSheet
 import com.illuminazionetech.vrclip.ui.component.PlaylistItem
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
-import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheetM2Variant
+import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel.SelectionState
 import com.illuminazionetech.vrclip.ui.page.settings.format.AudioQuickSettingsDialog
 import com.illuminazionetech.vrclip.ui.page.settings.format.VideoQuickSettingsDialog
@@ -94,26 +95,18 @@ fun PlaylistSelectionPage(
 
     var taskList by remember { mutableStateOf(emptyList<TaskFactory.TaskWithState>()) }
 
-    val sheetState =
-        androidx.compose.material.rememberModalBottomSheetState(
-            initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
-        )
-
-    LaunchedEffect(state) { sheetState.show() }
     val scope = rememberCoroutineScope()
-    val onBack: () -> Unit = {
-        scope.launch { sheetState.hide() }.invokeOnCompletion { onDismissRequest() }
-    }
-
-    BackHandler(onBack = onBack)
-
     var showConfigurationSheet by remember { mutableStateOf(false) }
+    val configureSheetState = rememberHiddenSheetState()
 
-    val configureSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    // The full-screen page hands out its animated dismiss; keep it so the download action below
+    // can close the page the same way the back gesture does.
+    var dismissPage by remember { mutableStateOf(onDismissRequest) }
+    val onBack: () -> Unit = { dismissPage() }
 
-    VRClipModalBottomSheetM2Variant(sheetState = sheetState, sheetGesturesEnabled = false) {
-        PlaylistSelectionPageImpl(result = state.result, onDismissRequest = onBack) {
+    FullScreenSheet(onDismissRequest = onDismissRequest) { dismiss ->
+        SideEffect { dismissPage = dismiss }
+        PlaylistSelectionPageImpl(result = state.result, onDismissRequest = dismiss) {
             taskList = it
             showConfigurationSheet = true
         }
@@ -126,7 +119,7 @@ fun PlaylistSelectionPage(
     }
 
     if (showConfigurationSheet) {
-
+        LaunchedEffect(Unit) { configureSheetState.show() }
         VRClipModalBottomSheet(
             sheetState = configureSheetState,
             contentPadding = PaddingValues(),
@@ -251,8 +244,11 @@ fun PlaylistSelectionPageImpl(
                             if (selectedItems.isEmpty())
                                 stringResource(id = R.string.download_playlist)
                             else
-                                stringResource(id = R.string.selected_item_count)
-                                    .format(selectedItems.size),
+                                pluralStringResource(
+                                    R.plurals.selected_item_count,
+                                    selectedItems.size,
+                                    selectedItems.size,
+                                ),
                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                     )
                 },
@@ -353,7 +349,10 @@ fun PlaylistSelectionPageImpl(
                     val index = indexFromZero + 1
                     TooltipBox(
                         state = rememberTooltipState(),
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                        positionProvider =
+                            TooltipDefaults.rememberTooltipPositionProvider(
+                                TooltipAnchorPosition.Above
+                            ),
                         tooltip = { PlainTooltip { Text(text = entry.title ?: index.toString()) } },
                     ) {
                         PlaylistItem(

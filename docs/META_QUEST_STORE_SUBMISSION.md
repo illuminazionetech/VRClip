@@ -14,7 +14,7 @@ rejection or later removal, regardless of how polished the app is technically.
 This document prepares the submission package anyway, per the project's decision
 to proceed with eyes open. It does **not** guarantee store acceptance. VRClip
 remains fully installable and usable via sideloading (SideQuest, `adb install`)
-on Quest 2/3/Pro independent of any store outcome, that path has no such policy
+on Quest 2, 3, 3S and Pro independent of any store outcome, that path has no such policy
 gate.
 
 If you want to reduce (not eliminate) this risk before submitting, consider
@@ -25,26 +25,31 @@ left to the repo owner.
 
 ## Manifest checklist
 
-Already present in `app/src/main/AndroidManifest.xml`:
+VRClip is a hybrid app, laid out like Meta's HybridSample: the library is a 2D panel and the
+player is an immersive activity. Present in `app/src/main/AndroidManifest.xml`:
 
 - [x] `horizonos:uses-horizonos-sdk` (`minSdkVersion=28`, `targetSdkVersion=35`)
-- [x] `com.oculus.intent.category.VR` launcher category on `MainActivity`
-- [x] `com.oculus.supported_devices` = `quest|quest2|questpro|quest3`
-- [x] Optional (`required="false"`) hand-tracking / passthrough / render-model
+- [x] `MainActivity` (the library) has `LAUNCHER` plus `com.oculus.intent.category.2D`, so it
+      opens as a panel in the home environment
+- [x] `ImmersivePlayerActivity` has `com.oculus.intent.category.VR` and is the only immersive
+      entry point; leaving it returns to the library panel
+- [x] `uses-native-library libossdk.oculus.so` with `required="false"`
+- [x] `com.oculus.supportedDevices` = `quest2|questpro|quest3|quest3s` (the Spatial SDK does not
+      support the original Quest)
+- [x] Optional (`required="false"`) hand tracking, passthrough, render model and virtual keyboard
       `uses-feature` entries
-- [x] `com.oculus.permission.HAND_TRACKING`, `com.oculus.permission.RENDER_MODEL`
-- [x] `com.oculus.permission.USE_SCENE`, `android.permission.MODIFY_AUDIO_SETTINGS`
-      (added for the immersive Spatial SDK player)
-- [x] `ImmersivePlayerActivity` registered with a fullscreen theme
+- [x] `com.oculus.permission.HAND_TRACKING`, `com.oculus.permission.RENDER_MODEL`,
+      `com.oculus.permission.USE_SCENE`, `android.permission.MODIFY_AUDIO_SETTINGS`
 
-Still to confirm before submission (needs real hardware / Meta developer
-dashboard, can't be verified from source alone):
+Still to confirm before submission (needs a headset and the Meta developer dashboard, it cannot
+be verified from source):
 
-- [ ] The immersive scene launches and renders correctly on real Quest 2/3/Pro
-      hardware (this was built and reasoned about carefully, but has not been
-      runtime-verified on a physical headset in this development environment)
-- [ ] App doesn't regress the panel-app (2D) experience on Quest when the
-      immersive player isn't in use
+- [ ] The immersive scene launches and renders correctly on Quest 2, 3, 3S and Pro. The scene
+      and its stereo layers follow the Spatial SDK 0.14 samples; only the control bar layout
+      has been checked, in rendered screenshots. Nothing has run on a headset yet.
+- [ ] The library panel and the return from the immersive player behave as expected in the home
+      environment.
+- [ ] Live 2D to 3D keeps a steady frame rate on Quest 2 (the slowest supported GPU).
 
 ## Icon / screenshot assets required by the Horizon Store
 
@@ -56,26 +61,20 @@ Not yet produced, placeholders to fill before submission:
   mockups), should include the immersive player in use
 - Optional: a short (15–30s) capture/trailer video
 
-## Privacy policy (draft)
+## Privacy policy
 
-> VRClip does not collect, store, or transmit any personal data to VRClip's own
-> servers, VRClip has no backend servers. Network access is limited to: (1)
-> fetching media the user explicitly requests from a URL they provide, sent
-> directly to the source site; (2) an optional check for `yt-dlp` engine updates.
-> No analytics, advertising, or tracking SDKs are included. No account or sign-in
-> exists. All downloaded files and app preferences are stored locally on-device
-> and can be deleted by uninstalling the app or clearing its data.
-
-This needs to be hosted at a stable URL (a GitHub Pages page or even a raw
-GitHub-rendered Markdown link is acceptable to Meta) before submission, since the
-developer dashboard requires a privacy policy URL.
+Published at [illuminazionetech.github.io/VRClip/privacy.html](https://illuminazionetech.github.io/VRClip/privacy.html)
+in English and Italian (source: `docs/privacy.html`). It lists everything the app connects to:
+the sites of the links the user provides, GitHub for app and yt-dlp updates, and Qualcomm AI
+Hub's public storage once, to download the depth model for 2D to 3D. No analytics, advertising
+or tracking libraries are included, and there are no accounts.
 
 ## Data safety declaration (draft)
 
 - Data collected: **None**.
-- Data shared with third parties: **None**, other than the destination site the
-  user's browser/app traffic goes to directly when downloading a user-provided
-  URL, VRClip's own servers never see this traffic, because VRClip has none.
+- Data shared with third parties: **None**. The app talks directly to the site of a
+  user-provided URL, to GitHub for updates and to Qualcomm AI Hub's storage for the depth
+  model; VRClip has no servers of its own, so none of this traffic passes through one.
 - Data deletion: uninstalling the app removes all local data; there is no
   server-side account to delete.
 
@@ -102,15 +101,20 @@ download capability) is itself a policy risk, answer honestly.
 
 ## Legal / support URLs required by the dashboard
 
-- Privacy policy URL: see above, needs hosting.
+- Privacy policy URL: https://illuminazionetech.github.io/VRClip/privacy.html
 - Support URL: the GitHub Issues page (`https://github.com/illuminazionetech/VRClip/issues`)
   is acceptable for indie/open-source developers.
 - Support email: needs to be provided by the developer account owner.
 
 ## Signing key
 
-`app/build.gradle.kts` already supports a real release signing config, gated on a
-local (gitignored) `keystore.properties` file:
+Since 1.2.0 every release is signed with a permanent release key. CI reads it from the
+`KEYSTORE_B64` and `KEYSTORE_PASSWORD` repository secrets and refuses to publish any APK or
+App Bundle whose certificate differs from the one pinned in `.github/release-signing-cert.sha256`.
+Keep an offline backup of the keystore and its password: a store listing, like installed copies,
+can only be updated by builds signed with the same key.
+
+For local release builds, `app/build.gradle.kts` reads a gitignored `keystore.properties`:
 
 ```properties
 storeFile=/path/to/your.keystore
@@ -119,15 +123,11 @@ keyAlias=...
 keyPassword=...
 ```
 
-Without it, release builds fall back to the debug signing key, which **cannot**
-be used for a store submission or to update an existing installed release build.
-Generate and securely back up a real keystore before the first submission, Meta,
-like Google Play, requires signing-key consistency across app updates, and losing
-the key means you can never update the app under the same listing again.
+Without it, release builds use the debug key, which cannot be submitted or update an installed
+release.
 
 ## Summary
 
-Code/manifest/CI readiness: mostly done. Store submission itself (developer
-account, real assets, hosted privacy policy, a real signing key, and the actual
-review) is outside what this repository can do, it requires the account owner's
-action, and carries the policy risk flagged at the top of this document.
+Code, manifest, signing and CI are in place, and the privacy policy is hosted. What remains
+needs the account owner: a developer account, store assets, a test on real headsets, and the
+review itself, which carries the policy risk described at the top of this document.

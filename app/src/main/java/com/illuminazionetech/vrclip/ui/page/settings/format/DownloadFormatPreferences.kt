@@ -3,15 +3,15 @@ package com.illuminazionetech.vrclip.ui.page.settings.format
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.ArtTrack
+import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.ContentCut
 import androidx.compose.material.icons.rounded.Crop
-import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.HighQuality
 import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.Photo
-import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.SpatialAudioOff
 import androidx.compose.material.icons.rounded.Subtitles
 import androidx.compose.material.icons.rounded.Sync
@@ -49,8 +49,6 @@ import com.illuminazionetech.vrclip.util.AUDIO_CONVERSION_FORMAT
 import com.illuminazionetech.vrclip.util.AUDIO_CONVERT
 import com.illuminazionetech.vrclip.util.CROP_ARTWORK
 import com.illuminazionetech.vrclip.util.CUSTOM_COMMAND
-import com.illuminazionetech.vrclip.util.AUDIO_FORMAT
-import com.illuminazionetech.vrclip.util.AUDIO_QUALITY
 import com.illuminazionetech.vrclip.util.DownloadUtil
 import com.illuminazionetech.vrclip.util.DownloadUtil.toFormatSorter
 import com.illuminazionetech.vrclip.util.EMBED_METADATA
@@ -207,7 +205,8 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                         title = stringResource(R.string.video_format_preference),
                         description = PreferenceStrings.getVideoFormatLabel(videoFormat),
                         icon = Icons.Rounded.VideoFile,
-                        enabled = !audioSwitch && !isCustomCommandEnabled && !isFormatSortingEnabled,
+                        enabled =
+                            !audioSwitch && !isCustomCommandEnabled && !isFormatSortingEnabled,
                     ) {
                         showVideoFormatDialog = true
                     }
@@ -217,7 +216,8 @@ fun DownloadFormatPreferences(onNavigateBack: () -> Unit, navigateToSubtitlePage
                         title = stringResource(id = R.string.video_quality),
                         description = PreferenceStrings.getVideoResolutionDesc(videoQuality),
                         icon = Icons.Rounded.HighQuality,
-                        enabled = !audioSwitch && !isCustomCommandEnabled && !isFormatSortingEnabled,
+                        enabled =
+                            !audioSwitch && !isCustomCommandEnabled && !isFormatSortingEnabled,
                     ) {
                         showVideoQualityDialog = true
                     }

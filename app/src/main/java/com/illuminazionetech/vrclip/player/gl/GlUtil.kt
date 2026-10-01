@@ -41,8 +41,10 @@ internal object GlUtil {
         return program
     }
 
-    /** Creates and binds a new external-OES texture (the kind [android.graphics.SurfaceTexture]
-     * needs) and leaves it bound to texture unit 0. */
+    /**
+     * Creates and binds a new external-OES texture (the kind [android.graphics.SurfaceTexture]
+     * needs) and leaves it bound to texture unit 0.
+     */
     fun createOesTexture(): Int {
         val textures = IntArray(1)
         GLES20.glGenTextures(1, textures, 0)

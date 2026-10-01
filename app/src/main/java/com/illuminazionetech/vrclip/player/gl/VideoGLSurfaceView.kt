@@ -1,95 +1,153 @@
 package com.illuminazionetech.vrclip.player.gl
 
 import android.content.Context
+import android.graphics.SurfaceTexture
 import android.opengl.GLSurfaceView
 import android.os.Handler
 import android.os.Looper
-import android.view.MotionEvent
 import android.view.Surface
 import com.illuminazionetech.vrclip.player.ProjectionMode
-import kotlin.math.abs
 
 /**
- * [GLSurfaceView] hosting [VideoGLRenderer] for 360/180/stereo-3D playback on phone/tablet.
- * Touch-drag pans the camera; call [setProjectionMode] whenever the active video's projection
- * changes and [onSurfaceReady] fires once (on the main thread) with the [Surface] to hand to
- * ExoPlayer via `setVideoSurface`.
+ * [GLSurfaceView] hosting [VideoGLRenderer] for 360/180 and stereo 3D playback on phones and
+ * tablets. It renders only when something changed (a new video frame, device motion, a gesture),
+ * follows the device orientation for spherical video when [gyroEnabled] is on, and hands the
+ * decoder's [Surface] out through [onSurfaceAvailable] / [onSurfaceDestroyed] on the main thread.
+ * Gestures are handled by the Compose layer above, which calls [pan], [zoom] and [recenter].
  */
 class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
-    /** Degrees of drag per pixel; tuned so a full-width swipe is roughly a quarter turn. */
-    private var dragSensitivity = 0.25f
-
-    @Volatile private var projectionMode: ProjectionMode = ProjectionMode.FLAT
-    @Volatile private var outputMode: StereoOutputMode = StereoOutputMode.SingleEye
-
-    private var lastTouchX = 0f
-    private var lastTouchY = 0f
-    private var isDragging = false
-
-    private val renderer: VideoGLRenderer
     private val mainHandler = Handler(Looper.getMainLooper())
+    private val orientation = OrientationTracker(context) { requestRender() }
+    private val renderer: VideoGLRenderer
+    private var surface: Surface? = null
+    private var surfaceTexture: SurfaceTexture? = null
+    private var resumed = false
 
-    var onSurfaceReady: ((Surface) -> Unit)? = null
+    var onSurfaceAvailable: ((Surface) -> Unit)? = null
+    var onSurfaceDestroyed: ((Surface) -> Unit)? = null
+
+    val hasMotionSensor: Boolean
+        get() = orientation.isAvailable
+
+    var gyroEnabled: Boolean = true
+        set(value) {
+            field = value
+            updateSensor()
+        }
+
+    private var projectionMode = ProjectionMode.FLAT
+
+    /**
+     * Buffer size of the video surface. Needed while video effects draw into it (live 3D): GL
+     * rendering into a SurfaceTexture uses its default buffer size, unlike the decoder.
+     */
+    var bufferSize: Pair<Int, Int>? = null
+        set(value) {
+            if (field == value) return
+            field = value
+            value?.let { (width, height) -> surfaceTexture?.setDefaultBufferSize(width, height) }
+        }
 
     init {
         setEGLContextClientVersion(2)
+        preserveEGLContextOnPause = true
         renderer =
             VideoGLRenderer(
-                getProjectionMode = { projectionMode },
-                getOutputMode = { outputMode },
-                onSurfaceReady = { surface -> mainHandler.post { onSurfaceReady?.invoke(surface) } },
+                orientation = orientation,
+                onSurfaceCreated = { texture, newSurface ->
+                    mainHandler.post { swapSurface(texture, newSurface) }
+                },
+                onFrameAvailable = { requestRender() },
             )
         setRenderer(renderer)
-        renderMode = RENDERMODE_CONTINUOUSLY
+        renderMode = RENDERMODE_WHEN_DIRTY
     }
 
-    fun setProjectionMode(mode: ProjectionMode) {
-        projectionMode = mode
+    internal fun setConfig(config: RenderConfig) {
+        if (renderer.config == config) return
+        renderer.config = config
+        projectionMode = config.mode
+        updateSensor()
+        requestRender()
     }
 
-    fun setOutputMode(mode: StereoOutputMode) {
-        outputMode = mode
+    /** Drag by [dx]/[dy] pixels: the picture follows the finger. */
+    fun pan(dx: Float, dy: Float) {
+        val degreesPerPixel = renderer.fieldOfView / height.coerceAtLeast(1)
+        renderer.touchYaw -= dx * degreesPerPixel
+        renderer.touchPitch = (renderer.touchPitch + dy * degreesPerPixel).coerceIn(-85f, 85f)
+        requestRender()
     }
 
-    /** Absolute camera orientation, e.g. driven by [android.hardware.SensorManager] rotation. */
-    fun setCameraOrientation(yawDegrees: Float, pitchDegrees: Float) {
-        renderer.yawDegrees = yawDegrees
-        renderer.pitchDegrees = pitchDegrees
+    /** Pinch: [factor] > 1 zooms in. */
+    fun zoom(factor: Float) {
+        renderer.fieldOfView =
+            (renderer.fieldOfView / factor).coerceIn(
+                VideoGLRenderer.MIN_FOV,
+                VideoGLRenderer.MAX_FOV,
+            )
+        requestRender()
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (!projectionMode.requiresImmersiveRendering) return super.onTouchEvent(event)
+    fun recenter() {
+        renderer.touchYaw = 0f
+        renderer.touchPitch = 0f
+        renderer.fieldOfView = VideoGLRenderer.DEFAULT_FOV
+        orientation.recenter()
+        requestRender()
+    }
 
-        when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> {
-                lastTouchX = event.x
-                lastTouchY = event.y
-                isDragging = true
-            }
+    override fun onResume() {
+        super.onResume()
+        resumed = true
+        updateSensor()
+    }
 
-            MotionEvent.ACTION_MOVE -> {
-                if (isDragging) {
-                    val dx = event.x - lastTouchX
-                    val dy = event.y - lastTouchY
-                    if (abs(dx) > 0.5f || abs(dy) > 0.5f) {
-                        renderer.yawDegrees -= dx * dragSensitivity
-                        renderer.pitchDegrees =
-                            (renderer.pitchDegrees + dy * dragSensitivity).coerceIn(-89f, 89f)
-                        lastTouchX = event.x
-                        lastTouchY = event.y
-                    }
-                }
-            }
+    override fun onPause() {
+        resumed = false
+        updateSensor()
+        super.onPause()
+    }
 
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> isDragging = false
-        }
-        return true
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        display?.let { orientation.displayRotation = it.rotation }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        // Rotating the device resizes the view; the sensor math depends on the display rotation.
+        display?.let { orientation.displayRotation = it.rotation }
     }
 
     override fun onDetachedFromWindow() {
-        // GL resources must be freed on the GL thread; queueEvent hops there for us.
-        queueEvent { renderer.release() }
+        orientation.stop()
+        queueEvent { renderer.releaseGl() }
         super.onDetachedFromWindow()
+        surface?.let { onSurfaceDestroyed?.invoke(it) }
+        surface?.release()
+        surfaceTexture?.release()
+        surface = null
+        surfaceTexture = null
+    }
+
+    private fun updateSensor() {
+        if (resumed && gyroEnabled && projectionMode.isSpherical) orientation.start()
+        else orientation.stop()
+    }
+
+    private fun swapSurface(texture: SurfaceTexture, newSurface: Surface) {
+        val old = surface
+        val oldTexture = surfaceTexture
+        surface = newSurface
+        surfaceTexture = texture
+        bufferSize?.let { (width, height) -> texture.setDefaultBufferSize(width, height) }
+        onSurfaceAvailable?.invoke(newSurface)
+        if (old != null) {
+            onSurfaceDestroyed?.invoke(old)
+            old.release()
+        }
+        oldTexture?.release()
     }
 }

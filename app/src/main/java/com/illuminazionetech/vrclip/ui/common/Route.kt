@@ -32,11 +32,8 @@ object Route {
     const val TROUBLESHOOTING = "troubleshooting"
     const val PLAYER_PREFERENCES = "player_preferences"
 
-    const val PLAYER = "player"
-
     const val TASK_HASHCODE = "task_hashcode"
     const val TEMPLATE_ID = "template_id"
-    const val VIDEO_ID = "video_id"
 }
 
 infix fun String.arg(arg: String) = "$this/{$arg}"

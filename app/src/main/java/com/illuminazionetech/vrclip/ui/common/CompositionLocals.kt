@@ -11,17 +11,17 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kyant.monet.LocalTonalPalettes
-import com.kyant.monet.PaletteStyle
-import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
 import com.illuminazionetech.vrclip.ui.theme.DEFAULT_SEED_COLOR
 import com.illuminazionetech.vrclip.ui.theme.FixedColorRoles
 import com.illuminazionetech.vrclip.util.DarkThemePreference
 import com.illuminazionetech.vrclip.util.PreferenceUtil
+import com.kyant.monet.LocalTonalPalettes
+import com.kyant.monet.PaletteStyle
+import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
 
 /**
- * Spatial density (Quest vs. phone) touch-target/type-scale profile, the successor of the old
- * glass system's `GlassDensity`, now consumed directly by M3 components instead of a blur effect.
+ * Spatial density (Quest vs. phone) touch-target/type-scale profile, the successor of the old glass
+ * system's `GlassDensity`, now consumed directly by M3 components instead of a blur effect.
  */
 enum class SpatialDensity(val minTouchTarget: Dp, val typeScale: Float, val shapeScale: Float) {
     Phone(minTouchTarget = 48.dp, typeScale = 1f, shapeScale = 1f),
@@ -55,7 +55,8 @@ fun SettingsProvider(windowWidthSizeClass: WindowWidthSizeClass, content: @Compo
             LocalPaletteStyleIndex provides 0,
             LocalWindowWidthState provides windowWidthSizeClass,
             LocalDynamicColorSwitch provides dynamicColor,
-            LocalTonalPalettes provides Color(DEFAULT_SEED_COLOR).toTonalPalettes(PaletteStyle.Expressive),
+            LocalTonalPalettes provides
+                Color(DEFAULT_SEED_COLOR).toTonalPalettes(PaletteStyle.Expressive),
             content = content,
         )
     }

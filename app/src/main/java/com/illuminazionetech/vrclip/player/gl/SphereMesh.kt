@@ -8,89 +8,77 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 /**
- * A procedurally generated UV sphere (inward-facing, camera at the center) used to render
- * equirectangular 360/180 video. Vertices interleave position (xyz) and texture coordinates (uv);
- * [horizontalSweepDegrees] lets 180° content use a half-dome instead of a full sphere.
+ * A procedurally generated UV sphere seen from the inside, used to render equirectangular 360 and
+ * 180 video. Vertices interleave position (xyz) and texture coordinates (uv) in image space (v = 0
+ * at the bottom of the picture). The center of the picture (u = 0.5) sits straight ahead on -Z, so
+ * a viewer with an identity camera looks at the middle of the video; [sweepDegrees] of 180 builds
+ * the front half-dome that 180° video covers.
  */
 internal class SphereMesh(
-    latitudeSegments: Int = 48,
-    longitudeSegments: Int = 48,
+    latitudeSegments: Int = 64,
+    longitudeSegments: Int = 96,
     radius: Float = 50f,
-    horizontalSweepDegrees: Float = 360f,
+    sweepDegrees: Float = 360f,
 ) {
     val vertexBuffer: FloatBuffer
     val indexBuffer: ShortBuffer
     val indexCount: Int
 
-    companion object {
-        private const val FLOAT_SIZE_BYTES = 4
-        private const val SHORT_SIZE_BYTES = 2
-        const val STRIDE_FLOATS = 5 // x, y, z, u, v
-    }
-
     init {
-        val vertices = mutableListOf<Float>()
-        val sweepRad = Math.toRadians(horizontalSweepDegrees.toDouble())
-        val startLon = -sweepRad / 2.0
-
+        val vertices = FloatArray((latitudeSegments + 1) * (longitudeSegments + 1) * STRIDE_FLOATS)
+        val sweep = Math.toRadians(sweepDegrees.toDouble())
+        var i = 0
         for (lat in 0..latitudeSegments) {
-            val theta = Math.PI * lat / latitudeSegments // 0 (top) .. PI (bottom)
+            val theta = Math.PI * lat / latitudeSegments // 0 at the zenith, PI at the nadir
             val sinTheta = sin(theta)
             val cosTheta = cos(theta)
-
             for (lon in 0..longitudeSegments) {
-                val phi = startLon + sweepRad * lon / longitudeSegments
-                val sinPhi = sin(phi)
-                val cosPhi = cos(phi)
-
-                // Inward-facing sphere: camera sits at the origin looking out.
-                val x = (radius * sinTheta * cosPhi).toFloat()
-                val y = (radius * cosTheta).toFloat()
-                val z = (radius * sinTheta * sinPhi).toFloat()
-
-                val u = (lon.toFloat() / longitudeSegments)
-                val v = (lat.toFloat() / latitudeSegments)
-
-                vertices.addAll(listOf(x, y, z, u, v))
+                // phi = 0 is straight ahead (-Z), growing to the right (+X).
+                val phi = -sweep / 2.0 + sweep * lon / longitudeSegments
+                vertices[i++] = (radius * sinTheta * sin(phi)).toFloat()
+                vertices[i++] = (radius * cosTheta).toFloat()
+                vertices[i++] = (-radius * sinTheta * cos(phi)).toFloat()
+                vertices[i++] = lon.toFloat() / longitudeSegments
+                vertices[i++] = 1f - lat.toFloat() / latitudeSegments
             }
         }
 
-        val indices = mutableListOf<Short>()
-        val vertsPerRow = longitudeSegments + 1
+        val indices = ShortArray(latitudeSegments * longitudeSegments * 6)
+        val row = longitudeSegments + 1
+        var j = 0
         for (lat in 0 until latitudeSegments) {
             for (lon in 0 until longitudeSegments) {
-                val first = (lat * vertsPerRow + lon)
-                val second = first + vertsPerRow
-
-                // Wind so the visible (front) face points inward, toward the camera at origin.
-                indices.add(first.toShort())
-                indices.add(second.toShort())
-                indices.add((first + 1).toShort())
-
-                indices.add((first + 1).toShort())
-                indices.add(second.toShort())
-                indices.add((second + 1).toShort())
+                val first = lat * row + lon
+                val second = first + row
+                indices[j++] = first.toShort()
+                indices[j++] = second.toShort()
+                indices[j++] = (first + 1).toShort()
+                indices[j++] = (first + 1).toShort()
+                indices[j++] = second.toShort()
+                indices[j++] = (second + 1).toShort()
             }
         }
 
         vertexBuffer =
-            ByteBuffer.allocateDirect(vertices.size * FLOAT_SIZE_BYTES)
+            ByteBuffer.allocateDirect(vertices.size * 4)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
                 .apply {
-                    put(vertices.toFloatArray())
+                    put(vertices)
                     position(0)
                 }
-
         indexBuffer =
-            ByteBuffer.allocateDirect(indices.size * SHORT_SIZE_BYTES)
+            ByteBuffer.allocateDirect(indices.size * 2)
                 .order(ByteOrder.nativeOrder())
                 .asShortBuffer()
                 .apply {
-                    put(indices.toShortArray())
+                    put(indices)
                     position(0)
                 }
-
         indexCount = indices.size
+    }
+
+    companion object {
+        const val STRIDE_FLOATS = 5 // x, y, z, u, v
     }
 }

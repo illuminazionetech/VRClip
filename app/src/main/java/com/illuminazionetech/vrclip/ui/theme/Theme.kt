@@ -5,7 +5,9 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -19,11 +21,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDirection
 import com.google.android.material.color.MaterialColors
-import com.kyant.monet.dynamicColorScheme
-import com.meta.spatial.uiset.theme.SpatialTheme
 import com.illuminazionetech.vrclip.ui.common.LocalDynamicColorSwitch
 import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
 import com.illuminazionetech.vrclip.ui.common.spatialDensity
+import com.kyant.monet.dynamicColorScheme
+import com.meta.spatial.uiset.theme.SpatialTheme
 
 fun Color.applyOpacity(enabled: Boolean): Color {
     return if (enabled) this else this.copy(alpha = 0.62f)
@@ -40,9 +42,9 @@ fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
 /**
- * Forces true-black surfaces on top of a derived dark scheme: a deliberate OLED-friendly
- * option (real battery savings and higher contrast on Quest's/phones' OLED panels), applied only
- * when the app is deriving its own HCT/Monet scheme rather than the system's Android 12+ dynamic
+ * Forces true-black surfaces on top of a derived dark scheme: a deliberate OLED-friendly option
+ * (real battery savings and higher contrast on Quest's/phones' OLED panels), applied only when the
+ * app is deriving its own HCT/Monet scheme rather than the system's Android 12+ dynamic
  * (wallpaper-based) colors, since forcing pure black would fight the whole point of following the
  * system palette.
  */
@@ -111,12 +113,9 @@ fun VRClipTheme(
         LocalFixedColorRoles provides fixedColorRoles,
         LocalTextStyle provides textStyle,
     ) {
-        // The Material 3 Expressive theme wrapper (MaterialExpressiveTheme + MotionScheme) is
-        // still internal in material3 1.4.0 stable; the app applies its expressive look through
-        // its own shape scale, typography, and the ExpressiveMotion spring tokens instead of
-        // depending on 1.5.0 alpha APIs.
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = colorScheme,
+            motionScheme = MotionScheme.expressive(),
             typography = Typography.scaled(density.typeScale),
             shapes = Shapes.scaled(density.shapeScale),
         ) {

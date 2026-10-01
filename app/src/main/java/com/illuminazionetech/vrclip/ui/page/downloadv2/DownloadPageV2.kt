@@ -2,107 +2,92 @@ package com.illuminazionetech.vrclip.ui.page.downloadv2
 
 import android.Manifest
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Build
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.AnimationState
-import androidx.compose.animation.core.animateTo
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.List
+import androidx.compose.material.icons.automirrored.rounded.ViewList
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.CloudDownload
 import androidx.compose.material.icons.rounded.ErrorOutline
-import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.FolderOff
 import androidx.compose.material.icons.rounded.GridView
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.rounded.Inbox
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.toShape
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -113,7 +98,6 @@ import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.Task
-import com.illuminazionetech.vrclip.download.Task.DownloadState.Canceled
 import com.illuminazionetech.vrclip.download.Task.DownloadState.Completed
 import com.illuminazionetech.vrclip.download.Task.DownloadState.Error
 import com.illuminazionetech.vrclip.download.Task.DownloadState.FetchingInfo
@@ -121,39 +105,25 @@ import com.illuminazionetech.vrclip.download.Task.DownloadState.Idle
 import com.illuminazionetech.vrclip.download.Task.DownloadState.ReadyWithInfo
 import com.illuminazionetech.vrclip.download.Task.DownloadState.Running
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
-import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
-import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
-import com.illuminazionetech.vrclip.ui.common.tonalSurface
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
-import com.illuminazionetech.vrclip.ui.component.SelectionGroupDefaults
-import com.illuminazionetech.vrclip.ui.component.SelectionGroupItem
-import com.illuminazionetech.vrclip.ui.component.SelectionGroupRow
-import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel.Action
+import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.Config
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialog
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
+import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel.Action
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.FormatPage
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.PlaylistSelectionPage
-import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.PreferencesMock
-import com.illuminazionetech.vrclip.ui.svg.DynamicColorImageVectors
-import com.illuminazionetech.vrclip.ui.svg.drawablevectors.download
-import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.util.DownloadUtil
 import com.illuminazionetech.vrclip.util.FileUtil
 import com.illuminazionetech.vrclip.util.StorageUtil
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.illuminazionetech.vrclip.util.getErrorReport
 import com.illuminazionetech.vrclip.util.makeToast
-import com.illuminazionetech.vrclip.util.YtDlpEngine
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-
-private const val TAG = "DownloadPageV2"
 
 enum class Filter {
     All,
@@ -167,35 +137,22 @@ enum class Filter {
         when (this) {
             All -> stringResource(R.string.all)
             Downloading -> stringResource(R.string.status_downloading)
-            Canceled -> stringResource(R.string.status_canceled)
+            Canceled -> stringResource(R.string.filter_stopped)
             Finished -> stringResource(R.string.status_completed)
         }
 
-    fun predict(entry: Pair<Task, Task.State>): Boolean {
-        if (this == All) return true
-        val state = entry.second.downloadState
-        return when (this) {
-            Downloading -> {
-                when (state) {
-                    is FetchingInfo,
-                    Idle,
-                    ReadyWithInfo,
-                    is Running -> true
-                    else -> false
-                }
-            }
-            Canceled -> {
-                state is Error || state is Task.DownloadState.Canceled
-            }
-            Finished -> {
-                state is Completed
-            }
-            else -> {
-                true
-            }
+    fun predict(entry: Pair<Task, Task.State>): Boolean =
+        when (this) {
+            All -> true
+            Downloading -> entry.second.downloadState.isActive()
+            Canceled ->
+                entry.second.downloadState.let { it is Error || it is Task.DownloadState.Canceled }
+            Finished -> entry.second.downloadState is Completed
         }
-    }
 }
+
+private fun Task.DownloadState.isActive(): Boolean =
+    this is FetchingInfo || this == Idle || this == ReadyWithInfo || this is Running
 
 sealed interface UiAction {
     data class OpenFile(val filePath: String?) : UiAction
@@ -217,28 +174,24 @@ sealed interface UiAction {
     data class CopyErrorReport(val throwable: Throwable) : UiAction
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DownloadPageV2(
     modifier: Modifier = Modifier,
-    onMenuOpen: (() -> Unit) = {},
     dialogViewModel: DownloadDialogViewModel,
     downloader: DownloaderV2 = koinInject(),
 ) {
     val view = LocalView.current
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = rememberTextClipboard()
     val uriHandler = LocalUriHandler.current
 
     DownloadPageImplV2(
         modifier = modifier,
         taskDownloadStateMap = downloader.getTaskStateMap(),
-        downloadCallback = {
+        onNewDownload = {
             view.slightHapticFeedback()
             dialogViewModel.postAction(Action.ShowSheet())
         },
-        onMenuOpen = onMenuOpen,
     ) { task, action ->
         view.slightHapticFeedback()
         when (action) {
@@ -246,13 +199,11 @@ fun DownloadPageV2(
             UiAction.Delete -> downloader.remove(task)
             UiAction.Resume -> downloader.restart(task)
             is UiAction.CopyErrorReport -> {
-                clipboardManager.setText(
-                    AnnotatedString(getErrorReport(action.throwable, task.url))
-                )
+                clipboard.setText(getErrorReport(action.throwable, task.url))
                 context.makeToast(R.string.error_copied)
             }
             UiAction.CopyVideoURL -> {
-                clipboardManager.setText(AnnotatedString(task.url))
+                clipboard.setText(task.url)
                 context.makeToast(R.string.link_copied)
             }
             is UiAction.OpenFile -> {
@@ -260,12 +211,8 @@ fun DownloadPageV2(
                     FileUtil.openFile(path = it) { context.makeToast(R.string.file_unavailable) }
                 }
             }
-            is UiAction.OpenThumbnailURL -> {
-                uriHandler.openUri(action.url)
-            }
-            is UiAction.OpenVideoURL -> {
-                uriHandler.openUri(action.url)
-            }
+            is UiAction.OpenThumbnailURL -> uriHandler.openUri(action.url)
+            is UiAction.OpenVideoURL -> uriHandler.openUri(action.url)
             is UiAction.ShareFile -> {
                 val shareTitle = App.context.getString(R.string.share)
                 FileUtil.createIntentForSharingFile(action.filePath)?.let {
@@ -280,11 +227,10 @@ fun DownloadPageV2(
     }
     val sheetValue by dialogViewModel.sheetValueFlow.collectAsStateWithLifecycle()
     val state by dialogViewModel.sheetStateFlow.collectAsStateWithLifecycle()
-
     val selectionState = dialogViewModel.selectionStateFlow.collectAsStateWithLifecycle().value
 
     var showDialog by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = rememberHiddenSheetState()
 
     LaunchedEffect(sheetValue) {
         if (sheetValue == DownloadDialogViewModel.SheetValue.Expanded) {
@@ -295,7 +241,6 @@ fun DownloadPageV2(
     }
 
     if (showDialog) {
-
         DownloadDialog(
             state = state,
             sheetState = sheetState,
@@ -312,12 +257,11 @@ fun DownloadPageV2(
                 onDismissRequest = { dialogViewModel.postAction(Action.Reset) },
             )
 
-        is DownloadDialogViewModel.SelectionState.PlaylistSelection -> {
+        is DownloadDialogViewModel.SelectionState.PlaylistSelection ->
             PlaylistSelectionPage(
                 state = selectionState,
                 onDismissRequest = { dialogViewModel.postAction(Action.Reset) },
             )
-        }
 
         DownloadDialogViewModel.SelectionState.Idle -> {}
     }
@@ -335,226 +279,160 @@ private operator fun PaddingValues.plus(other: PaddingValues): PaddingValues {
     )
 }
 
-private const val HeaderSpacingDp = 28
-
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * The download queue: every task with its live state, filterable, as a grid of cards or a compact
+ * list. The "new download" FAB is shown here on phones; on rails the navigation rail carries that
+ * action instead.
+ */
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DownloadPageImplV2(
     modifier: Modifier = Modifier,
     taskDownloadStateMap: SnapshotStateMap<Task, Task.State>,
-    downloadCallback: () -> Unit = {},
-    onMenuOpen: (() -> Unit) = {},
+    onNewDownload: () -> Unit = {},
+    showFab: Boolean =
+        LocalWindowWidthState.current == WindowWidthSizeClass.Compact && !LocalIsVRMode.current,
     onActionPost: (Task, UiAction) -> Unit,
 ) {
-    var activeFilter by remember { mutableStateOf(Filter.All) }
-    val filteredMap by
-        remember(activeFilter) {
-            derivedStateOf { taskDownloadStateMap.filter { activeFilter.predict(it.toPair()) } }
-        }
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-    var selectedTask by remember { mutableStateOf<Task?>(null) }
+    var activeFilter by rememberSaveable { mutableStateOf(Filter.All) }
+    var isGridView by rememberSaveable { mutableStateOf(true) }
     val view = LocalView.current
+    val scope = rememberCoroutineScope()
+
+    val allEntries by remember {
+        derivedStateOf {
+            taskDownloadStateMap.entries
+                .map { it.key to it.value }
+                .sortedWith(
+                    compareBy<Pair<Task, Task.State>> { it.second.downloadState }
+                        .thenByDescending { it.first.timeCreated }
+                )
+        }
+    }
+    val visibleEntries by remember {
+        derivedStateOf { allEntries.filter { activeFilter.predict(it) } }
+    }
+    val counts by remember {
+        derivedStateOf { Filter.entries.associateWith { f -> allEntries.count { f.predict(it) } } }
+    }
+
+    val sheetState = rememberHiddenSheetState(skipPartiallyExpanded = false)
+    var selectedTask by remember { mutableStateOf<Task?>(null) }
 
     fun showActionSheet(task: Task) {
         view.slightHapticFeedback()
-        scope.launch {
-            selectedTask = task
-            delay(50)
-            sheetState.show()
+        selectedTask = task
+    }
+
+    // A task removed while its sheet is open (deleted from the sheet itself, or from a
+    // notification) must close the sheet instead of leaving it pointing at nothing.
+    LaunchedEffect(selectedTask, taskDownloadStateMap.size) {
+        if (selectedTask != null && !taskDownloadStateMap.contains(selectedTask)) {
+            selectedTask = null
         }
     }
 
-    LaunchedEffect(selectedTask, taskDownloadStateMap.size) {
-        if (!taskDownloadStateMap.contains(selectedTask)) {
-            selectedTask == null
-        }
-    }
+    val gridState = rememberLazyGridState()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val fabExpanded by remember { derivedStateOf { gridState.firstVisibleItemIndex == 0 } }
 
     Scaffold(
-        modifier = modifier.fillMaxSize().statusBarsPadding(),
+        modifier = modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.surface,
-        floatingActionButton = { FABs(modifier = Modifier, downloadCallback = downloadCallback) },
-    ) { windowInsetsPadding ->
-        val lazyListState = rememberLazyGridState()
-        val windowWidthSizeClass = LocalWindowWidthState.current
-        val spacerHeight =
-            with(LocalDensity.current) {
-                if (windowWidthSizeClass != WindowWidthSizeClass.Compact) 0f
-                else HeaderSpacingDp.dp.toPx()
-            }
-        var headerOffset by remember { mutableFloatStateOf(spacerHeight) }
-        var isGridView by rememberSaveable { mutableStateOf(true) }
-
-        val splineBasedDecay = rememberSplineBasedDecay<Float>()
-        val nestedScrollConnection = remember(spacerHeight, splineBasedDecay) {
-            TopBarNestedScrollConnection(
-                maxOffset = spacerHeight,
-                flingAnimationSpec = splineBasedDecay,
-                offset = { headerOffset },
-                onOffsetUpdate = { headerOffset = it },
+        topBar = {
+            QueueTopBar(
+                active = counts[Filter.Downloading] ?: 0,
+                completed = counts[Filter.Finished] ?: 0,
+                stopped = counts[Filter.Canceled] ?: 0,
+                isGridView = isGridView,
+                onToggleView = {
+                    view.slightHapticFeedback()
+                    isGridView = !isGridView
+                },
+                scrollBehavior = scrollBehavior,
             )
-        }
-
-        Column(
-            modifier =
-                Modifier.fillMaxSize()
-                    .then(
-                        if (windowWidthSizeClass != WindowWidthSizeClass.Compact) Modifier
-                        else Modifier.nestedScroll(connection = nestedScrollConnection)
-                    )
+        },
+        floatingActionButton = {
+            if (showFab && allEntries.isNotEmpty()) {
+                ExtendedFloatingActionButton(
+                    text = { Text(stringResource(R.string.new_download)) },
+                    icon = { Icon(Icons.Rounded.Add, contentDescription = null) },
+                    expanded = fabExpanded,
+                    onClick = onNewDownload,
+                )
+            }
+        },
+    ) { innerPadding ->
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
+            state = gridState,
+            columns = if (isGridView) GridCells.Adaptive(280.dp) else GridCells.Adaptive(520.dp),
+            contentPadding =
+                innerPadding +
+                    PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 104.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(if (isGridView) 16.dp else 8.dp),
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                    Spacer(Modifier.height(with(LocalDensity.current) { headerOffset.toDp() }))
-                    Header(onMenuOpen = onMenuOpen, modifier = Modifier.padding(horizontal = 16.dp))
-                    SelectionGroupRow(
-                        modifier =
-                            Modifier.horizontalScroll(rememberScrollState())
-                                .padding(horizontal = 20.dp)
-                    ) {
-                        Filter.entries.forEach { filter ->
-                            SelectionGroupItem(
-                                colors =
-                                    SelectionGroupDefaults.colors(
-                                        activeContainerColor =
-                                            LocalFixedColorRoles.current.tertiaryFixed,
-                                        activeContentColor =
-                                            LocalFixedColorRoles.current.onTertiaryFixed,
-                                    ),
-                                selected = activeFilter == filter,
-                                onClick = {
-                                    if (activeFilter == filter) {
-                                        scope.launch { lazyListState.animateScrollToItem(0) }
-                                        scope.launch {
-                                            val initialValue = headerOffset
-                                            AnimationState(initialValue = initialValue).animateTo(
-                                                spacerHeight
-                                            ) {
-                                                headerOffset = value
-                                            }
-                                        }
-                                    } else {
-                                        activeFilter = filter
-                                    }
-                                },
-                            ) {
-                                Text(filter.label())
-                            }
+            item(key = "filters", span = { GridItemSpan(maxLineSpan) }) {
+                FilterRow(
+                    activeFilter = activeFilter,
+                    counts = counts,
+                    onSelect = { filter ->
+                        view.slightHapticFeedback()
+                        if (filter == activeFilter) {
+                            scope.launch { gridState.animateScrollToItem(0) }
+                        } else {
+                            activeFilter = filter
                         }
-                    }
-                    StorageAccessRow(
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
-                    )
-                    EngineStatusRow(
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    if (headerOffset <= 0.1f && spacerHeight > 0f) {
-                        HorizontalDivider(thickness = Dp.Hairline)
-                    }
-                }
+                    },
+                )
+            }
+            item(key = "storage", span = { GridItemSpan(maxLineSpan) }) { StorageAccessBanner() }
+            item(key = "engine", span = { GridItemSpan(maxLineSpan) }) { EngineStatusBanner() }
 
-                LazyVerticalGrid(
-                    modifier = Modifier,
-                    state = lazyListState,
-                    columns = GridCells.Adaptive(240.dp),
-                    contentPadding =
-                        windowInsetsPadding +
-                            PaddingValues(start = 20.dp, end = 20.dp, bottom = 80.dp),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp),
-                ) {
-                    if (filteredMap.isNotEmpty()) {
-                        item(span = { GridItemSpan(maxLineSpan) }) {
-                            val videoCount =
-                                filteredMap.count {
-                                    !it.value.viewState.videoFormats.isNullOrEmpty()
-                                }
-                            SubHeader(
-                                modifier = Modifier,
-                                videoCount = videoCount,
-                                audioCount = filteredMap.size - videoCount,
-                                isGridView = isGridView,
-                                onToggleView = { isGridView = !isGridView },
-                            )
-                        }
-                    }
-
-                    if (isGridView) {
-                        items(
-                            items =
-                                filteredMap.toList().sortedBy { (_, state) -> state.downloadState },
-                            key = { (task, _) -> task.id },
-                        ) { (task, state) ->
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = fadeIn() + scaleIn(initialScale = 0.95f),
-                                exit = fadeOut() + scaleOut(targetScale = 0.95f),
-                            ) {
-                                with(state.viewState) {
-                                    VideoCardV2(
-                                        modifier = Modifier.padding(bottom = 20.dp).padding(),
-                                        viewState = this,
-                                        actionButton = {
-                                            ActionButton(
-                                                modifier = Modifier,
-                                                downloadState = state.downloadState,
-                                            ) {
-                                                onActionPost(task, it)
-                                            }
-                                        },
-                                        stateIndicator = {
-                                            CardStateIndicator(
-                                                modifier = Modifier,
-                                                downloadState = state.downloadState,
-                                            )
-                                        },
-                                        onButtonClick = { showActionSheet(task) },
-                                    )
-                                }
-                            }
-                        }
-                    } else {
-                        items(
-                            items =
-                                filteredMap.toList().sortedBy { (_, state) -> state.downloadState },
-                            key = { (task, _) -> task.id },
-                            span = { GridItemSpan(maxLineSpan) },
-                        ) { (task, state) ->
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = fadeIn() + scaleIn(initialScale = 0.98f),
-                                exit = fadeOut() + scaleOut(targetScale = 0.98f),
-                            ) {
-                                VideoListItem(
-                                    modifier = Modifier.padding(bottom = 16.dp),
-                                    viewState = state.viewState,
-                                    stateIndicator = {
-                                        ListItemStateText(
-                                            modifier = Modifier.padding(top = 3.dp),
-                                            downloadState = state.downloadState,
-                                        )
-                                    },
-                                    onButtonClick = { showActionSheet(task) },
-                                )
-                            }
-                        }
-                    }
+            if (visibleEntries.isEmpty()) {
+                item(key = "empty", span = { GridItemSpan(maxLineSpan) }) {
+                    QueueEmptyState(
+                        modifier = Modifier.animateItem(),
+                        filtered = activeFilter != Filter.All && allEntries.isNotEmpty(),
+                        onNewDownload = onNewDownload,
+                        onShowAll = { activeFilter = Filter.All },
+                    )
                 }
             }
-        if (filteredMap.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                DownloadQueuePlaceholder(
-                    modifier =
-                        Modifier.fillMaxHeight(0.4f).widthIn(max = 360.dp).align(Alignment.Center)
-                )
+
+            items(items = visibleEntries, key = { (task, _) -> task.id }) { (task, state) ->
+                val itemModifier = Modifier.animateItem()
+                if (isGridView) {
+                    VideoCardV2(
+                        modifier = itemModifier,
+                        viewState = state.viewState,
+                        downloadState = state.downloadState,
+                        actionButton = {
+                            ActionButton(downloadState = state.downloadState) {
+                                onActionPost(task, it)
+                            }
+                        },
+                        stateIndicator = {
+                            CardStateIndicator(downloadState = state.downloadState)
+                        },
+                        onClick = { showActionSheet(task) },
+                    )
+                } else {
+                    VideoListItem(
+                        modifier = itemModifier,
+                        viewState = state.viewState,
+                        stateIndicator = { ListItemStateText(downloadState = state.downloadState) },
+                        onButtonClick = { showActionSheet(task) },
+                    )
+                }
             }
         }
     }
-    if (selectedTask != null) {
-        val task = selectedTask!!
-        val (downloadState, _, viewState) = taskDownloadStateMap[task] ?: return
+
+    selectedTask?.let { task ->
+        val taskState = taskDownloadStateMap[task] ?: return@let
+        LaunchedEffect(task) { sheetState.show() }
         VRClipModalBottomSheet(
             sheetState = sheetState,
             contentPadding = PaddingValues(),
@@ -564,8 +442,8 @@ fun DownloadPageImplV2(
         ) {
             SheetContent(
                 task = task,
-                downloadState = downloadState,
-                viewState = viewState,
+                downloadState = taskState.downloadState,
+                viewState = taskState.viewState,
                 onDismissRequest = {
                     scope.launch { sheetState.hide() }.invokeOnCompletion { selectedTask = null }
                 },
@@ -575,14 +453,107 @@ fun DownloadPageImplV2(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun QueueTopBar(
+    active: Int,
+    completed: Int,
+    stopped: Int,
+    isGridView: Boolean,
+    onToggleView: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
+) {
+    val parts = buildList {
+        if (active > 0) add(pluralStringResource(R.plurals.queue_active, active, active))
+        if (completed > 0)
+            add(pluralStringResource(R.plurals.queue_completed, completed, completed))
+        if (stopped > 0) add(pluralStringResource(R.plurals.queue_stopped, stopped, stopped))
+    }
+    val subtitle = parts.joinToString(" · ").ifEmpty { stringResource(R.string.queue_idle) }
+
+    MediumFlexibleTopAppBar(
+        title = { Text(stringResource(R.string.download_queue), maxLines = 1) },
+        subtitle = {
+            AnimatedContent(
+                targetState = subtitle,
+                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                label = "queueSubtitle",
+            ) {
+                Text(it, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        },
+        actions = {
+            IconButton(onClick = onToggleView) {
+                AnimatedContent(
+                    targetState = isGridView,
+                    transitionSpec = { fadeIn() togetherWith fadeOut() },
+                    label = "viewToggle",
+                ) { grid ->
+                    Icon(
+                        imageVector =
+                            if (grid) Icons.AutoMirrored.Rounded.ViewList
+                            else Icons.Rounded.GridView,
+                        contentDescription =
+                            stringResource(
+                                if (grid) R.string.switch_to_list_view
+                                else R.string.switch_to_grid_view
+                            ),
+                    )
+                }
+            }
+        },
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ),
+        scrollBehavior = scrollBehavior,
+    )
+}
+
+/** Connected toggle buttons (Material 3 Expressive button group) for the queue filters. */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun FilterRow(activeFilter: Filter, counts: Map<Filter, Int>, onSelect: (Filter) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+    ) {
+        val filters = Filter.entries
+        filters.forEachIndexed { index, filter ->
+            val count = counts[filter] ?: 0
+            ToggleButton(
+                checked = activeFilter == filter,
+                onCheckedChange = { onSelect(filter) },
+                shapes =
+                    when (index) {
+                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                        filters.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                    },
+                colors =
+                    ToggleButtonDefaults.colors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    ),
+            ) {
+                Text(
+                    text =
+                        if (count > 0 && filter != Filter.All) "${filter.label()} $count"
+                        else filter.label(),
+                    maxLines = 1,
+                )
+            }
+        }
+    }
+}
+
 /**
- * A call-to-action row shown while the app lacks the storage access it needs to save downloads,
- * with a direct link to the system grant screen. Downloads fail with an opaque yt-dlp error
- * without this permission, so surfacing it here beats letting the user find out the hard way.
+ * Shown while the app lacks the storage access it needs to save downloads, with a direct link to
+ * the system grant screen: without it downloads fail with an opaque yt-dlp error.
  */
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-private fun StorageAccessRow(modifier: Modifier = Modifier) {
+private fun StorageAccessBanner(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var granted by remember { mutableStateOf(StorageUtil.isStorageAccessGranted(context)) }
@@ -606,396 +577,175 @@ private fun StorageAccessRow(modifier: Modifier = Modifier) {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    AnimatedVisibility(
+    StatusBanner(
+        modifier = modifier,
         visible = !granted,
-        enter = expandVertically() + fadeIn(),
-        exit = shrinkVertically() + fadeOut(),
-    ) {
-        Row(
-            modifier =
-                modifier.fillMaxWidth().tonalSurface(shape = MaterialTheme.shapes.medium).padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp,
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.FolderOff,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(18.dp),
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = stringResource(R.string.storage_access_needed),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(1f),
-            )
+        icon = Icons.Rounded.FolderOff,
+        text = stringResource(R.string.storage_access_needed),
+        containerColor = MaterialTheme.colorScheme.errorContainer,
+        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+        action = {
             TextButton(
+                colors =
+                    ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    ),
                 onClick = {
                     if (Build.VERSION.SDK_INT >= 30) {
                         StorageUtil.launchAllFilesAccessSettings(context)
                     } else {
                         legacyStoragePermission?.launchPermissionRequest()
                     }
-                }
+                },
             ) {
                 Text(stringResource(R.string.grant_access))
             }
-        }
-    }
+        },
+    )
 }
 
 /**
- * A slim status row shown while the yt-dlp engine is initializing or updating, so the first
- * download after install does not look stuck. Hidden as soon as the engine is ready.
+ * Shown while the yt-dlp engine is initializing or updating, so the first download after install
+ * does not look stuck. Hidden as soon as the engine is ready.
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun EngineStatusRow(modifier: Modifier = Modifier) {
+private fun EngineStatusBanner(modifier: Modifier = Modifier) {
     val engineState by YtDlpEngine.state.collectAsStateWithLifecycle()
-    AnimatedVisibility(
+    val failed = engineState is YtDlpEngine.State.InitFailed
+    StatusBanner(
+        modifier = modifier,
         visible = engineState !is YtDlpEngine.State.Ready,
+        icon = if (failed) Icons.Rounded.ErrorOutline else null,
+        text =
+            stringResource(
+                when {
+                    failed -> R.string.engine_init_failed
+                    engineState is YtDlpEngine.State.Updating -> R.string.engine_updating
+                    else -> R.string.engine_preparing
+                }
+            ),
+        containerColor =
+            if (failed) MaterialTheme.colorScheme.errorContainer
+            else MaterialTheme.colorScheme.secondaryContainer,
+        contentColor =
+            if (failed) MaterialTheme.colorScheme.onErrorContainer
+            else MaterialTheme.colorScheme.onSecondaryContainer,
+        leading =
+            if (failed) null
+            else {
+                {
+                    LoadingIndicator(
+                        modifier = Modifier.size(28.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    )
+                }
+            },
+    )
+}
+
+@Composable
+private fun StatusBanner(
+    visible: Boolean,
+    text: String,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    leading: (@Composable () -> Unit)? = null,
+    action: (@Composable () -> Unit)? = null,
+) {
+    AnimatedVisibility(
+        visible = visible,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
     ) {
-        Row(
-            modifier =
-                modifier.fillMaxWidth().tonalSurface(shape = MaterialTheme.shapes.medium).padding(
-                    horizontal = 16.dp,
-                    vertical = 10.dp,
-                ),
-            verticalAlignment = Alignment.CenterVertically,
+        Surface(
+            modifier = modifier.fillMaxWidth().padding(top = 8.dp),
+            color = containerColor,
+            contentColor = contentColor,
+            shape = MaterialTheme.shapes.large,
         ) {
-            when (engineState) {
-                is YtDlpEngine.State.InitFailed -> {
-                    Icon(
-                        imageVector = Icons.Rounded.ErrorOutline,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        text = stringResource(R.string.engine_init_failed),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-                else -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp),
-                        strokeWidth = 2.5.dp,
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        text =
-                            stringResource(
-                                if (engineState is YtDlpEngine.State.Updating)
-                                    R.string.engine_updating
-                                else R.string.engine_preparing
-                            ),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Header(modifier: Modifier = Modifier, onMenuOpen: () -> Unit = {}) {
-    val windowWidthSizeClass = LocalWindowWidthState.current
-    when (windowWidthSizeClass) {
-        WindowWidthSizeClass.Expanded -> {
-            HeaderExpanded(modifier = modifier)
-        }
-        else -> {
-            HeaderCompact(modifier = modifier, onMenuOpen = onMenuOpen)
-        }
-    }
-}
-
-@Composable
-private fun HeaderCompact(modifier: Modifier = Modifier, onMenuOpen: () -> Unit) {
-
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .height(64.dp)
-                .tonalSurface(shape = MaterialTheme.shapes.large),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        IconButton(onClick = onMenuOpen, modifier = Modifier.padding(start = 8.dp)) {
-            Icon(
-                imageVector = Icons.Rounded.Menu,
-                contentDescription = stringResource(R.string.show_navigation_drawer),
-                modifier = Modifier,
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            stringResource(R.string.download_queue),
-            style =
-                MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 0.5.sp,
-                ),
-        )
-    }
-}
-
-@Composable
-private fun HeaderExpanded(modifier: Modifier = Modifier) {
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .height(72.dp)
-                .tonalSurface(shape = MaterialTheme.shapes.extraLarge),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            stringResource(R.string.download_queue),
-            style =
-                MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp,
-                ),
-        )
-    }
-    Spacer(Modifier.height(8.dp))
-}
-
-@Composable
-fun FABs(modifier: Modifier = Modifier, downloadCallback: () -> Unit = {}) {
-    val expanded = LocalWindowWidthState.current != WindowWidthSizeClass.Compact
-    Column(modifier = modifier.padding(6.dp), horizontalAlignment = Alignment.End) {
-        FloatingActionButton(
-            onClick = downloadCallback,
-            shape = MaterialTheme.shapes.extraLarge,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            content = {
-                if (expanded) {
-                    Row(
-                        modifier = Modifier.widthIn(min = 100.dp).padding(horizontal = 20.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(Icons.Rounded.FileDownload, contentDescription = null)
-                        Spacer(Modifier.width(12.dp))
-                        Text(stringResource(R.string.download), style = MaterialTheme.typography.titleMedium)
-                    }
-                } else {
-                    Icon(
-                        Icons.Rounded.FileDownload,
-                        contentDescription = stringResource(R.string.download),
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-            },
-            modifier = Modifier.padding(vertical = 12.dp),
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun DownloadQueuePlaceholder(modifier: Modifier = Modifier) {
-    BoxWithConstraints(modifier = modifier) {
-        ConstraintLayout {
-            val (image, text) = createRefs()
-            val showImage =
-                with(LocalDensity.current) {
-                    this@BoxWithConstraints.constraints.maxHeight >= 240.dp.toPx()
-                }
-            if (showImage) {
-                Icon(
-                    imageVector = Icons.Rounded.FileDownload,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
-                    modifier =
-                        Modifier.size(160.dp).constrainAs(image) {
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                )
-            } else {
-                Spacer(Modifier.height(72.dp).constrainAs(image) { top.linkTo(parent.top) })
-            }
-            Column(
-                modifier = Modifier.constrainAs(text) { top.linkTo(image.bottom, margin = 36.dp) },
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Row(
+                modifier = Modifier.padding(start = 16.dp, end = 8.dp).height(56.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+                when {
+                    leading != null -> leading()
+                    icon != null -> Icon(icon, contentDescription = null, Modifier.size(22.dp))
+                }
+                Spacer(Modifier.width(12.dp))
                 Text(
-                    text = stringResource(R.string.you_ll_find_your_downloads_here),
-                    modifier = Modifier.padding(horizontal = 24.dp),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    text = text,
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.weight(1f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    text = stringResource(R.string.download_hint),
-                    modifier = Modifier.padding(top = 4.dp).padding(horizontal = 24.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
+                action?.invoke()
             }
         }
     }
 }
 
 @Composable
-fun SubHeader(
+private fun QueueEmptyState(
+    filtered: Boolean,
+    onNewDownload: () -> Unit,
+    onShowAll: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color =
-        MaterialTheme.colorScheme.run {
-            if (LocalDarkTheme.current.isDarkTheme()) surfaceContainer else surfaceContainerLowest
-        },
-    videoCount: Int = 0,
-    audioCount: Int = 0,
-    isGridView: Boolean = true,
-    onToggleView: () -> Unit,
 ) {
-    val text = buildString {
-        if (videoCount > 0) {
-            append(pluralStringResource(R.plurals.video_count, videoCount).format(videoCount))
-            if (audioCount > 0) {
-                append(", ")
-            }
-        }
-        if (audioCount > 0) {
-            append(pluralStringResource(R.plurals.audio_count, audioCount).format(audioCount))
-        }
-    }
-    val view = LocalView.current
-
-    Row(
-        modifier = modifier.padding(top = 12.dp, bottom = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        modifier = modifier.fillMaxWidth().padding(top = 48.dp, bottom = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row(
-            modifier = Modifier.padding(start = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        Box(
+            modifier = Modifier.size(144.dp),
+            contentAlignment = Alignment.Center,
         ) {
-            Text(text = text, style = MaterialTheme.typography.labelLarge)
-            Spacer(Modifier.width(4.dp))
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        FilledIconButton(
-            onClick = {
-                onToggleView()
-                view.slightHapticFeedback()
-            },
-            modifier = Modifier.size(32.dp),
-            colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
-        ) {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                shape = MaterialShapes.Cookie9Sided.toShape(),
+                color = MaterialTheme.colorScheme.primaryContainer,
+            ) {}
             Icon(
-                imageVector =
-                    if (isGridView) Icons.AutoMirrored.Rounded.List else Icons.Rounded.GridView,
-                contentDescription =
-                    stringResource(
-                        if (isGridView) R.string.switch_to_list_view else R.string.switch_to_grid_view
-                    ),
-                modifier = Modifier.size(16.dp),
+                imageVector = if (filtered) Icons.Rounded.Inbox else Icons.Rounded.CloudDownload,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(56.dp),
             )
         }
-
-    }
-}
-
-internal class DownloadPageV2Test {
-    private val mockDownloader =
-        object : DownloaderV2 {
-            private val map = mutableStateMapOf<Task, Task.State>()
-
-            init {
-                val viewState =
-                    Task.ViewState(title = "Sample title", uploader = "dummy video uploader")
-                val list =
-                    listOf(
-                        Task.State(Idle, null, viewState),
-                        Task.State(Canceled(Task.RestartableAction.Download), null, viewState),
-                        Task.State(Completed(null), null, viewState),
-                    )
-                map.run {
-                    repeat(9) {
-                        put(Task(url = "$it", preferences = PreferencesMock), list[it % 3])
-                    }
-                }
-                val scope = CoroutineScope(SupervisorJob())
-
-                scope.launch(Dispatchers.Default) {
-                    while (true) {
-                        delay(1000)
-                        val newEntries =
-                            map.toMap().map { (task, state) ->
-                                val newDownloadState =
-                                    when (state.downloadState) {
-                                        is Canceled -> Idle
-                                        is Completed -> Idle
-                                        is Error -> Idle
-                                        is FetchingInfo -> ReadyWithInfo
-                                        Idle -> FetchingInfo(Job(), task.id)
-                                        ReadyWithInfo -> Running(Job(), task.id)
-                                        is Running -> {
-                                            val preState: Running = state.downloadState
-                                            if (preState.progress >= 1f) Completed(null)
-                                            else preState.copy(progress = preState.progress + 0.1f)
-                                        }
-                                    }
-                                task to state.copy(downloadState = newDownloadState)
-                            }
-                        Snapshot.withMutableSnapshot {
-                            newEntries.forEach { (task, state) ->
-                                delay(100)
-                                map[task] = state
-                            }
-                        }
-                    }
-                }
-            }
-
-            override fun getTaskStateMap(): SnapshotStateMap<Task, Task.State> {
-                return map
-            }
-
-            override fun cancel(task: Task): Boolean {
-                return false
-            }
-
-            override fun restart(task: Task) {}
-
-            override fun enqueue(task: Task) {}
-
-            override fun enqueue(task: Task, state: Task.State) {}
-
-            override fun remove(task: Task): Boolean {
-                return true
-            }
-        }
-
-    @Composable
-    @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO)
-    @Preview(name = "Tablet", device = "spec:width=600dp,height=800dp,dpi=240")
-    private fun Preview() {
-
-        val downloader: DownloaderV2 = mockDownloader
-        VRClipTheme {
-            Column() {
-                DownloadPageImplV2(
-                    taskDownloadStateMap = downloader.getTaskStateMap(),
-                    onActionPost = { task, state -> },
-                    onMenuOpen = {},
-                )
+        Spacer(Modifier.height(24.dp))
+        Text(
+            text =
+                stringResource(
+                    if (filtered) R.string.queue_filter_empty
+                    else R.string.you_ll_find_your_downloads_here
+                ),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 24.dp),
+        )
+        Text(
+            text =
+                stringResource(
+                    if (filtered) R.string.queue_filter_empty_desc else R.string.download_hint
+                ),
+            modifier =
+                Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(Modifier.height(24.dp))
+        if (filtered) {
+            TextButton(onClick = onShowAll) { Text(stringResource(R.string.show_all)) }
+        } else {
+            Button(onClick = onNewDownload) {
+                Icon(Icons.Rounded.Add, contentDescription = null, Modifier.size(18.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.new_download))
             }
         }
     }

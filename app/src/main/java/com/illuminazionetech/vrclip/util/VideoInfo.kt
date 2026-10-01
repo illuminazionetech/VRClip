@@ -177,8 +177,7 @@ data class PlaylistResult(
     @SerialName("extractor_key") val extractorKey: String? = null,
 ) : YoutubeDLInfo
 
-@Serializable
-data class Thumbnail(val url: String, val height: Double = .0, val width: Double = .0)
+@Serializable data class Thumbnail(val url: String, val height: Double = .0, val width: Double = .0)
 
 @Serializable
 data class PlaylistEntry(

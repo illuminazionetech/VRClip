@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.horizontalScroll
@@ -25,13 +24,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material.icons.rounded.SdCardAlert
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.FolderDelete
 import androidx.compose.material.icons.rounded.FolderOpen
 import androidx.compose.material.icons.rounded.FolderSpecial
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.SdCard
+import androidx.compose.material.icons.rounded.SdCardAlert
 import androidx.compose.material.icons.rounded.SnippetFolder
 import androidx.compose.material.icons.rounded.Spellcheck
 import androidx.compose.material.icons.rounded.TabUnselected
@@ -61,7 +60,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -110,6 +108,7 @@ import com.illuminazionetech.vrclip.util.SDCARD_DOWNLOAD
 import com.illuminazionetech.vrclip.util.SDCARD_URI
 import com.illuminazionetech.vrclip.util.SUBDIRECTORY_EXTRACTOR
 import com.illuminazionetech.vrclip.util.SUBDIRECTORY_PLAYLIST_TITLE
+import com.illuminazionetech.vrclip.util.StorageUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -137,7 +136,6 @@ enum class Directory {
 fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
 
     val uriHandler = LocalUriHandler.current
-    val clipboardManager = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
@@ -262,15 +260,8 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                         description = stringResource(R.string.permission_issue_desc),
                         icon = Icons.Rounded.SdCardAlert,
                     ) {
-                        if (
-                            Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()
-                        ) {
-                            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                data = Uri.parse("package:" + context.packageName)
-                                if (resolveActivity(context.packageManager) != null)
-                                    context.startActivity(this)
-                            }
+                        if (!StorageUtil.isStorageAccessGranted(context)) {
+                            StorageUtil.launchAllFilesAccessSettings(context)
                         }
                     }
                 }
@@ -406,16 +397,19 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                     showClearTempDialog = false
                     scope.launch(Dispatchers.IO) {
                         FileUtil.clearTempFiles(context.getConfigDirectory())
-                        val count =
-                            FileUtil.run {
-                                clearTempFiles(getExternalTempDir()) +
-                                    clearTempFiles(context.getSdcardTempDir(null)) +
-                                    clearTempFiles(context.getInternalTempDir())
-                            }
+                        val count = FileUtil.run {
+                            clearTempFiles(getExternalTempDir()) +
+                                clearTempFiles(context.getSdcardTempDir(null)) +
+                                clearTempFiles(context.getInternalTempDir())
+                        }
 
                         withContext(Dispatchers.Main) {
                             snackbarHostState.showSnackbar(
-                                App.context.getString(R.string.clear_temp_files_count).format(count)
+                                App.context.resources.getQuantityString(
+                                    R.plurals.clear_temp_files_count,
+                                    count,
+                                    count,
+                                )
                             )
                         }
                     }

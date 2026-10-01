@@ -35,10 +35,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
-import com.meta.spatial.uiset.control.SpatialCheckbox
-import com.meta.spatial.uiset.control.SpatialRadioButton
-import com.meta.spatial.uiset.control.SpatialSwitch
-import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -52,7 +48,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -62,11 +57,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.ui.theme.applyOpacity
 import com.illuminazionetech.vrclip.ui.theme.harmonizeWithPrimary
 import com.kyant.monet.LocalTonalPalettes
 import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
+import com.meta.spatial.uiset.control.SpatialCheckbox
+import com.meta.spatial.uiset.control.SpatialRadioButton
+import com.meta.spatial.uiset.control.SpatialSwitch
 
 private const val horizontal = 8
 private const val vertical = 12
@@ -523,7 +522,9 @@ fun PreferenceSwitchWithDivider(
                     checked = isChecked,
                     onCheckedChange = { onChecked() },
                     modifier =
-                        Modifier.padding(horizontal = 6.dp).semantics { contentDescription = title },
+                        Modifier.padding(horizontal = 6.dp).semantics {
+                            contentDescription = title
+                        },
                     enabled = isSwitchEnabled,
                     thumbContent = thumbContent,
                 )

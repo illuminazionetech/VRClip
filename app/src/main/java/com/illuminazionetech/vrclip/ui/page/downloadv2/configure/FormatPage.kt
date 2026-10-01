@@ -29,7 +29,6 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Subtitles
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -68,6 +67,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.style.TextAlign
@@ -84,10 +84,10 @@ import com.illuminazionetech.vrclip.ui.component.FormatItem
 import com.illuminazionetech.vrclip.ui.component.FormatSubtitle
 import com.illuminazionetech.vrclip.ui.component.FormatVideoPreview
 import com.illuminazionetech.vrclip.ui.component.PreferenceInfo
-import com.illuminazionetech.vrclip.ui.component.VRClipDialog
-import com.illuminazionetech.vrclip.ui.component.VRClipSearchBar
 import com.illuminazionetech.vrclip.ui.component.SuggestedFormatItem
 import com.illuminazionetech.vrclip.ui.component.TextButtonWithIcon
+import com.illuminazionetech.vrclip.ui.component.VRClipDialog
+import com.illuminazionetech.vrclip.ui.component.VRClipSearchBar
 import com.illuminazionetech.vrclip.ui.component.VideoFilterChip
 import com.illuminazionetech.vrclip.ui.page.settings.general.DialogCheckBoxItem
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
@@ -505,10 +505,13 @@ private fun FormatPageImpl(
                             ) {
                                 Text(
                                     text =
-                                        stringResource(
-                                            id = R.string.split_video_msg,
-                                            videoInfo.chapters?.size ?: 0,
-                                        ),
+                                        (videoInfo.chapters?.size ?: 0).let { chapters ->
+                                            pluralStringResource(
+                                                R.plurals.split_video_msg,
+                                                chapters,
+                                                chapters,
+                                            )
+                                        },
                                     style = MaterialTheme.typography.labelMedium,
                                     modifier = Modifier.padding(horizontal = 12.dp),
                                 )
@@ -542,12 +545,7 @@ private fun FormatPageImpl(
 
                             ClickableTextAction(
                                 visible = true,
-                                text =
-                                    stringResource(
-                                        id =
-                                            androidx.appcompat.R.string
-                                                .abc_activity_chooser_view_see_all
-                                    ),
+                                text = stringResource(id = R.string.see_all),
                             ) {
                                 showSubtitleSelectionDialog = true
                             }
@@ -579,7 +577,8 @@ private fun FormatPageImpl(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier =
-                            Modifier.padding(top = 12.dp, bottom = 4.dp).padding(horizontal = 12.dp),
+                            Modifier.padding(top = 12.dp, bottom = 4.dp)
+                                .padding(horizontal = 12.dp),
                     ) {
                         FormatSubtitle(text = stringResource(R.string.suggested))
                     }
@@ -620,7 +619,12 @@ private fun FormatPageImpl(
 
                         ClickableTextAction(
                             visible = audioOnlyItemLimit < audioOnlyFormats.size,
-                            text = stringResource(R.string.show_all_items, audioOnlyFormats.size),
+                            text =
+                                pluralStringResource(
+                                    R.plurals.show_all_items,
+                                    audioOnlyFormats.size,
+                                    audioOnlyFormats.size,
+                                ),
                         ) {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             audioOnlyItemLimit = Int.MAX_VALUE
@@ -670,7 +674,11 @@ private fun FormatPageImpl(
                             ClickableTextAction(
                                 visible = videoOnlyItemLimit < videoOnlyFormats.size,
                                 text =
-                                    stringResource(R.string.show_all_items, videoOnlyFormats.size),
+                                    pluralStringResource(
+                                        R.plurals.show_all_items,
+                                        videoOnlyFormats.size,
+                                        videoOnlyFormats.size,
+                                    ),
                             ) {
                                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                                 videoOnlyItemLimit = Int.MAX_VALUE
@@ -710,7 +718,12 @@ private fun FormatPageImpl(
                         )
                         ClickableTextAction(
                             visible = videoAudioItemLimit < videoAudioFormats.size,
-                            text = stringResource(R.string.show_all_items, videoAudioFormats.size),
+                            text =
+                                pluralStringResource(
+                                    R.plurals.show_all_items,
+                                    videoAudioFormats.size,
+                                    videoAudioFormats.size,
+                                ),
                         ) {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             videoAudioItemLimit = Int.MAX_VALUE

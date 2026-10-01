@@ -8,12 +8,11 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import com.illuminazionetech.vrclip.App.Companion.context
+import com.illuminazionetech.vrclip.MainActivity
 import com.illuminazionetech.vrclip.NotificationActionReceiver
 import com.illuminazionetech.vrclip.NotificationActionReceiver.Companion.ACTION_CANCEL_TASK
 import com.illuminazionetech.vrclip.NotificationActionReceiver.Companion.ACTION_ERROR_REPORT
@@ -37,12 +36,15 @@ object NotificationUtil {
     private const val NOTIFICATION_GROUP_ID = "vrclip.download.notification"
     private const val DEFAULT_NOTIFICATION_ID = 100
     const val SERVICE_NOTIFICATION_ID = 123
+    private const val UPDATE_CHANNEL_ID = "app_update"
+    private const val UPDATE_NOTIFICATION_ID = 124
+    const val STEREO_CHANNEL_ID = "stereo_conversion"
     private lateinit var serviceNotification: Notification
 
     /**
      * Posts a notification only when the user has notifications enabled at the system level,
-     * swallowing the SecurityException some OEM builds throw when the POST_NOTIFICATIONS
-     * permission has been revoked mid-session.
+     * swallowing the SecurityException some OEM builds throw when the POST_NOTIFICATIONS permission
+     * has been revoked mid-session.
      */
     private fun safeNotify(notificationId: Int, notification: Notification) {
         if (!areNotificationsEnabled()) return
@@ -50,7 +52,6 @@ object NotificationUtil {
             .onFailure { Log.w(TAG, "Could not post notification", it) }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel() {
         val name = context.getString(R.string.channel_name)
         val descriptionText = context.getString(R.string.channel_description)
@@ -67,9 +68,53 @@ object NotificationUtil {
                 description = context.getString(R.string.service_title)
                 group = NOTIFICATION_GROUP_ID
             }
+        val updateChannel =
+            NotificationChannel(
+                    UPDATE_CHANNEL_ID,
+                    context.getString(R.string.update_channel_name),
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                )
+                .apply { description = context.getString(R.string.update_channel_description) }
+        val stereoChannel =
+            NotificationChannel(
+                    STEREO_CHANNEL_ID,
+                    context.getString(R.string.stereo_channel_name),
+                    NotificationManager.IMPORTANCE_LOW,
+                )
+                .apply { description = context.getString(R.string.stereo_channel_description) }
         notificationManager.createNotificationChannelGroup(channelGroup)
         notificationManager.createNotificationChannel(channel)
         notificationManager.createNotificationChannel(serviceChannel)
+        notificationManager.createNotificationChannel(updateChannel)
+        notificationManager.createNotificationChannel(stereoChannel)
+    }
+
+    /** Posts [notification] under [id] if the user allows notifications. */
+    fun post(id: Int, notification: Notification) = safeNotify(id, notification)
+
+    fun cancel(id: Int) = notificationManager.cancel(id)
+
+    /** "A new version is available", opening the app where the update dialog takes over. */
+    fun notifyUpdateAvailable(versionName: String) {
+        val intent =
+            Intent(context, MainActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent =
+            PendingIntent.getActivity(
+                context,
+                UPDATE_NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+        val notification =
+            NotificationCompat.Builder(context, UPDATE_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_stat_vrclip)
+                .setContentTitle(context.getString(R.string.update_available_title, versionName))
+                .setContentText(context.getString(R.string.update_notification_text))
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build()
+        safeNotify(UPDATE_NOTIFICATION_ID, notification)
     }
 
     fun notifyProgress(
@@ -80,21 +125,20 @@ object NotificationUtil {
         text: String? = null,
     ) {
         if (!NOTIFICATION.getBoolean()) return
-        val pendingIntent =
-            taskId?.let {
-                Intent(context.applicationContext, NotificationActionReceiver::class.java)
-                    .putExtra(TASK_ID_KEY, taskId)
-                    .putExtra(NOTIFICATION_ID_KEY, notificationId)
-                    .putExtra(ACTION_KEY, ACTION_CANCEL_TASK)
-                    .run {
-                        PendingIntent.getBroadcast(
-                            context.applicationContext,
-                            notificationId,
-                            this,
-                            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
-                        )
-                    }
-            }
+        val pendingIntent = taskId?.let {
+            Intent(context.applicationContext, NotificationActionReceiver::class.java)
+                .putExtra(TASK_ID_KEY, taskId)
+                .putExtra(NOTIFICATION_ID_KEY, notificationId)
+                .putExtra(ACTION_KEY, ACTION_CANCEL_TASK)
+                .run {
+                    PendingIntent.getBroadcast(
+                        context.applicationContext,
+                        notificationId,
+                        this,
+                        PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
+                    )
+                }
+        }
 
         NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_vrclip)
@@ -261,8 +305,5 @@ object NotificationUtil {
         notificationManager.cancelAll()
     }
 
-    fun areNotificationsEnabled(): Boolean {
-        return if (Build.VERSION.SDK_INT <= 24) true
-        else notificationManager.areNotificationsEnabled()
-    }
+    fun areNotificationsEnabled(): Boolean = notificationManager.areNotificationsEnabled()
 }

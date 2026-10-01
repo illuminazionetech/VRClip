@@ -12,9 +12,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import coil.compose.AsyncImagePainter
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.illuminazionetech.vrclip.R
 
 @Composable
@@ -43,10 +44,9 @@ fun AsyncImageImpl(
             colorFilter = colorFilter,
         )
     else
-        coil.compose.AsyncImage(
+        AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(model).crossfade(true).build(),
             contentDescription = contentDescription,
-            imageLoader = LocalContext.current.imageLoader,
             modifier = modifier,
             transform = transform,
             onState = onState,

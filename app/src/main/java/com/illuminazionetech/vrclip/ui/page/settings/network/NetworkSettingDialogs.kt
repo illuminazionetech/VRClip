@@ -31,6 +31,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.DpSize
@@ -133,7 +134,7 @@ fun ConcurrentDownloadDialog(onDismissRequest: () -> Unit) {
         text = {
             Column {
                 val interactionSource = remember { MutableInteractionSource() }
-                Text(text = stringResource(R.string.concurrent_download_num, count))
+                Text(text = pluralStringResource(R.plurals.concurrent_download_num, count, count))
 
                 Spacer(modifier = Modifier.height(8.dp))
 

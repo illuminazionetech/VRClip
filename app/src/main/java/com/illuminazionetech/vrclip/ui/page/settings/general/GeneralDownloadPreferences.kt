@@ -15,6 +15,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.PlaylistAddCheck
 import androidx.compose.material.icons.rounded.Archive
 import androidx.compose.material.icons.rounded.DoneAll
 import androidx.compose.material.icons.rounded.Edit
@@ -25,7 +26,6 @@ import androidx.compose.material.icons.rounded.MoneyOff
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsOff
-import androidx.compose.material.icons.automirrored.rounded.PlaylistAddCheck
 import androidx.compose.material.icons.rounded.Print
 import androidx.compose.material.icons.rounded.PrintDisabled
 import androidx.compose.material.icons.rounded.RemoveDone
@@ -74,13 +74,13 @@ import com.illuminazionetech.vrclip.ui.common.booleanState
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.ConfirmButton
 import com.illuminazionetech.vrclip.ui.component.DismissButton
+import com.illuminazionetech.vrclip.ui.component.NotificationPermissionDialog
 import com.illuminazionetech.vrclip.ui.component.PreferenceInfo
 import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitch
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
-import com.illuminazionetech.vrclip.ui.component.NotificationPermissionDialog
 import com.illuminazionetech.vrclip.util.CONFIGURE
 import com.illuminazionetech.vrclip.util.CUSTOM_COMMAND
 import com.illuminazionetech.vrclip.util.DEBUG
@@ -91,7 +91,6 @@ import com.illuminazionetech.vrclip.util.NOTIFICATION
 import com.illuminazionetech.vrclip.util.NotificationUtil
 import com.illuminazionetech.vrclip.util.PLAYLIST
 import com.illuminazionetech.vrclip.util.PRIVATE_MODE
-import com.illuminazionetech.vrclip.util.VR_MODE
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getString
@@ -99,9 +98,10 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.updateBoolean
 import com.illuminazionetech.vrclip.util.SPONSORBLOCK
 import com.illuminazionetech.vrclip.util.SUBTITLE
 import com.illuminazionetech.vrclip.util.THUMBNAIL
-import com.illuminazionetech.vrclip.util.makeToast
-import com.illuminazionetech.vrclip.util.YtDlpEngine
+import com.illuminazionetech.vrclip.util.VR_MODE
 import com.illuminazionetech.vrclip.util.YT_DLP_VERSION
+import com.illuminazionetech.vrclip.util.YtDlpEngine
+import com.illuminazionetech.vrclip.util.makeToast
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -210,7 +210,9 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                                     }
                                     is YtDlpEngine.UpdateResult.Failed -> {
                                         result.throwable.printStackTrace()
-                                        makeToast(App.context.getString(R.string.yt_dlp_update_fail))
+                                        makeToast(
+                                            App.context.getString(R.string.yt_dlp_update_fail)
+                                        )
                                     }
                                     else -> {}
                                 }
@@ -222,7 +224,8 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                             IconButton(onClick = { showYtdlpDialog = true }) {
                                 Icon(
                                     imageVector = Icons.Rounded.Settings,
-                                    contentDescription = stringResource(id = R.string.open_settings),
+                                    contentDescription =
+                                        stringResource(id = R.string.open_settings),
                                 )
                             }
                         },

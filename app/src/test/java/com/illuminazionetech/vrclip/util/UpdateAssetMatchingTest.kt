@@ -5,9 +5,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * The in-app updater picks a release asset by matching the device ABI against the asset file
- * name. These are the exact names the CI release pipeline produces, so this test pins the
- * matcher against them, in particular the "x86" vs "x86_64" substring trap.
+ * The in-app updater picks a release asset by matching the device ABI against the asset file name.
+ * These are the exact names the CI release pipeline produces, so this test pins the matcher against
+ * them, in particular the "x86" vs "x86_64" substring trap.
  */
 class UpdateAssetMatchingTest {
 
@@ -20,8 +20,9 @@ class UpdateAssetMatchingTest {
             "app-generic-universal-release.apk",
         )
 
-    private fun matchesOf(abi: String): List<String> =
-        assets.filter { UpdateUtil.assetMatchesAbi(it, abi) }
+    private fun matchesOf(abi: String): List<String> = assets.filter {
+        UpdateUtil.assetMatchesAbi(it, abi)
+    }
 
     @Test
     fun `arm64 only matches the arm64 asset`() {

@@ -6,6 +6,10 @@
  * builds the APK's version and the other compares it against GitHub release tags to detect
  * updates. `VersionParityTest` in `app/src/test` asserts both parse the same sample strings
  * identically, update both together and keep that test green.
+ *
+ * Nobody edits a version number by hand: CI computes the next version from the commits since the
+ * last release tag (`.github/scripts/next-version.sh`) and passes it in with
+ * `-Pvrclip.versionName=X.Y.Z`. Local builds fall back to the most recent `vX.Y.Z` git tag.
  */
 sealed class Version(val major: Int, val minor: Int, val patch: Int, val build: Int = 0) {
     abstract val name: String
@@ -51,6 +55,25 @@ sealed class Version(val major: Int, val minor: Int, val patch: Int, val build: 
             get() =
                 major * MAJOR + minor * MINOR + patch * PATCH + build * BUILD + RELEASE_CANDIDATE
     }
+
+    companion object {
+        private val pattern = Regex("""v?(\d+)\.(\d+)\.(\d+)(-(\w+)\.(\d+))?""")
+
+        /** Parses `1.2.3`, `v1.2.3`, `1.2.3-beta.4`; returns null for anything else. */
+        fun parse(text: String): Version? {
+            val match = pattern.find(text.trim()) ?: return null
+            val (major, minor, patch) = match.destructured.let { (a, b, c) ->
+                Triple(a.toInt(), b.toInt(), c.toInt())
+            }
+            val build = match.groupValues[6].toIntOrNull() ?: 0
+            return when (match.groupValues[5]) {
+                "alpha" -> Alpha(major, minor, patch, build)
+                "beta" -> Beta(major, minor, patch, build)
+                "rc" -> ReleaseCandidate(major, minor, patch, build)
+                else -> Stable(major, minor, patch)
+            }
+        }
+    }
 }
 
 // private const val ABI = 1L
@@ -65,4 +88,22 @@ private const val ALPHA = VARIANT * 1
 private const val BETA = VARIANT * 2
 private const val RELEASE_CANDIDATE = VARIANT * 3
 
-val currentVersion: Version = Version.Stable(versionMajor = 1, versionMinor = 1, versionPatch = 0)
+/** Name of the Gradle property CI uses to inject the computed release version. */
+const val VERSION_NAME_PROPERTY = "vrclip.versionName"
+
+private val FALLBACK_VERSION = Version.Stable(0, 0, 1)
+
+/**
+ * Resolves the version for this build: the explicit [VERSION_NAME_PROPERTY] when CI passes one,
+ * otherwise the latest `vX.Y.Z` tag reachable from HEAD ([latestTag], queried lazily), otherwise
+ * [FALLBACK_VERSION] (shallow clones without tags).
+ */
+fun resolveAppVersion(explicitVersionName: String?, latestTag: () -> String?): Version {
+    explicitVersionName
+        ?.takeIf { it.isNotBlank() }
+        ?.let { name ->
+            return Version.parse(name)
+                ?: error("$VERSION_NAME_PROPERTY='$name' is not a valid MAJOR.MINOR.PATCH version")
+        }
+    return latestTag()?.let { Version.parse(it) } ?: FALLBACK_VERSION
+}

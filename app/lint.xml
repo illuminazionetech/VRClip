@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Contributor translations: the checker flags valid words there (Norwegian "media",
+         German "AV1-Formate"). -->
+    <issue id="Typos">
+        <ignore path="src/main/res/values-nb/strings.xml" />
+        <ignore path="src/main/res/values-de/strings.xml" />
+    </issue>
+    <!-- Deliberate pins, explained in gradle/libs.versions.toml: material3 alpha28+ needs
+         Compose 1.13 alphas, MMKV 2.x dropped the 32-bit ABIs VRClip still ships. -->
+    <issue id="GradleDependency">
+        <ignore regexp="material3" />
+    </issue>
+    <issue id="NewerVersionAvailable">
+        <ignore regexp="mmkv" />
+    </issue>
+</lint>

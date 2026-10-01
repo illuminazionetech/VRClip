@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Android
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Description
 import androidx.compose.material.icons.rounded.Info
@@ -19,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -29,11 +29,13 @@ import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.App.Companion.packageInfo
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider
 import com.illuminazionetech.vrclip.util.AUTO_UPDATE
 import com.illuminazionetech.vrclip.util.PreferenceUtil
+import com.illuminazionetech.vrclip.util.UpdateCheckWorker
 import com.illuminazionetech.vrclip.util.makeToast
 
 private const val releaseURL = "https://github.com/illuminazionetech/VRClip/releases/latest"
@@ -52,7 +54,7 @@ fun AboutPage(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val context = LocalContext.current
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = rememberTextClipboard()
     var isAutoUpdateEnabled by remember { mutableStateOf(PreferenceUtil.isAutoUpdateEnabled()) }
 
     val info = App.getVersionReport()
@@ -71,7 +73,7 @@ fun AboutPage(
                 navigationIcon = { BackButton { onNavigateBack() } },
                 scrollBehavior = scrollBehavior,
                 colors =
-                    TopAppBarDefaults.largeTopAppBarColors(
+                    TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                         scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
@@ -85,7 +87,7 @@ fun AboutPage(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.vrclip_mark),
+                            painter = painterResource(id = R.drawable.vrclip_seal),
                             contentDescription = null,
                             modifier = Modifier.size(96.dp),
                         )
@@ -135,6 +137,7 @@ fun AboutPage(
                         onChecked = {
                             isAutoUpdateEnabled = !isAutoUpdateEnabled
                             PreferenceUtil.updateValue(AUTO_UPDATE, isAutoUpdateEnabled)
+                            UpdateCheckWorker.schedule(context, isAutoUpdateEnabled)
                         },
                     )
                 }
@@ -152,6 +155,7 @@ fun AboutPage(
                     PreferenceItem(
                         title = stringResource(R.string.package_name),
                         description = context.packageName,
+                        icon = Icons.Rounded.Android,
                     ) {
                         clipboardManager.setText(AnnotatedString(context.packageName))
                         makeToast(R.string.info_copied)

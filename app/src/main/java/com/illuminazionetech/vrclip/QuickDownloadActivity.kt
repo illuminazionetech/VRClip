@@ -1,7 +1,7 @@
 package com.illuminazionetech.vrclip
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -9,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
@@ -17,9 +16,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.common.SettingsProvider
+import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.Config
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialog
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
@@ -76,13 +77,11 @@ class QuickDownloadActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         window.run {
-            setBackgroundDrawable(ColorDrawable(0))
+            setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
             setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
             )
-            // minSdk is 28 (API O = 26), so TYPE_APPLICATION_OVERLAY is always available.
-            setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
         }
 
         if (Build.VERSION.SDK_INT < 33) {
@@ -106,7 +105,7 @@ class QuickDownloadActivity : ComponentActivity() {
 
                     val state = viewModel.sheetStateFlow.collectAsStateWithLifecycle().value
 
-                    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                    val sheetState = rememberHiddenSheetState()
 
                     val selectionState =
                         viewModel.selectionStateFlow.collectAsStateWithLifecycle().value

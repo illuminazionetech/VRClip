@@ -7,6 +7,7 @@ import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.view.Surface
 import com.illuminazionetech.vrclip.player.ProjectionMode
+import com.illuminazionetech.vrclip.player.StereoLayout
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -16,275 +17,293 @@ import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
 
-/** Which half of a stereo-cropped frame to sample. No-op ([Mono]) for non-stereo content. */
-internal enum class StereoEye {
-    Mono,
-    Left,
-    Right,
-}
-
-/** How stereo content is presented on a flat (non-headset) display. */
+/** How stereo (and spherical) content is presented on a phone or tablet screen. */
 enum class StereoOutputMode {
-    /** Full-screen using a single chosen eye, normal viewing on a phone/tablet screen. */
+    /** Full screen, one eye only: normal viewing. */
     SingleEye,
 
-    /** Left/right halves of the viewport rendered separately, for a Cardboard-style holder. */
+    /** Left and right halves of the screen, one per eye, for a Cardboard-style viewer. */
     SplitScreen,
+
+    /** Both eyes mixed into red/cyan (Dubois), for anaglyph glasses. */
+    Anaglyph,
 }
 
+/** Everything the renderer needs to know about what to draw; replaced as a whole. */
+internal data class RenderConfig(
+    val mode: ProjectionMode = ProjectionMode.FLAT,
+    val output: StereoOutputMode = StereoOutputMode.SingleEye,
+    /** Width / height of the decoded frame, pixel aspect ratio included. */
+    val frameAspect: Float = 16f / 9f,
+)
+
 /**
- * Renders decoded video frames (delivered via [SurfaceTexture] from ExoPlayer) either as a flat
- * textured quad, or, for 360/180/stereo-3D [ProjectionMode]s, projected onto an inward-facing
- * [SphereMesh] (equirect) or a cropped flat quad (SBS/OU), with yaw/pitch driven by touch drag
- * and/or the device gyroscope. This is the phone/tablet rendering path; Quest uses the Meta
- * Spatial SDK scene instead (see `player.quest`).
+ * Renders decoded video frames (delivered through a [SurfaceTexture]) for stereo 3D and 360/180
+ * content: a letterboxed quad per eye for flat 3D, an inward-facing sphere or half-dome for
+ * spherical video, with split-screen and anaglyph output. The camera combines the device
+ * orientation (from [OrientationTracker]) with touch/pinch input. Plain 2D video does not come
+ * here; it plays through a SurfaceView, which is cheaper and keeps HDR.
  */
 internal class VideoGLRenderer(
-    private val getProjectionMode: () -> ProjectionMode,
-    private val getOutputMode: () -> StereoOutputMode,
-    private val onSurfaceReady: (Surface) -> Unit,
+    private val orientation: OrientationTracker,
+    private val onSurfaceCreated: (SurfaceTexture, Surface) -> Unit,
+    private val onFrameAvailable: () -> Unit,
 ) : GLSurfaceView.Renderer {
 
-    @Volatile var yawDegrees: Float = 0f
-    @Volatile var pitchDegrees: Float = 0f
+    @Volatile var config: RenderConfig = RenderConfig()
+
+    /** Touch offsets in degrees, applied on top of the device orientation. */
+    @Volatile var touchYaw = 0f
+    @Volatile var touchPitch = 0f
+    @Volatile var fieldOfView = DEFAULT_FOV
 
     private var program = 0
-    private var oesTextureId = 0
+    private var oesTexture = 0
     private var surfaceTexture: SurfaceTexture? = null
-    private val surfaceTextureMatrix = FloatArray(16)
+    private val texMatrix = FloatArray(16).also { Matrix.setIdentityM(it, 0) }
 
-    private var aPositionLoc = 0
-    private var aTexCoordLoc = 0
-    private var uMvpMatrixLoc = 0
-    private var uTexMatrixLoc = 0
-    private var uUvScaleLoc = 0
-    private var uUvOffsetLoc = 0
-    private var uTextureLoc = 0
+    private var aPosition = 0
+    private var aUv = 0
+    private var uMvp = 0
+    private var uTexMatrix = 0
+    private var uEyeA = 0
+    private var uEyeB = 0
+    private var uAnaglyph = 0
+    private var uTexture = 0
 
-    private var sphereMesh: SphereMesh? = null
-    private var quadVertexBuffer: FloatBuffer? = null
+    private var sphere360: SphereMesh? = null
+    private var sphere180: SphereMesh? = null
+    private var quad: FloatBuffer? = null
 
-    private var viewportWidth = 1
-    private var viewportHeight = 1
+    private var width = 1
+    private var height = 1
 
-    private val projectionMatrix = FloatArray(16)
-    private val viewMatrix = FloatArray(16)
-    private val mvpMatrix = FloatArray(16)
-    private val identityMatrix =
-        FloatArray(16).also { Matrix.setIdentityM(it, 0) }
+    private val projection = FloatArray(16)
+    private val device = FloatArray(16)
+    private val yawMatrix = FloatArray(16)
+    private val pitchMatrix = FloatArray(16)
+    private val temp = FloatArray(16)
+    private val view = FloatArray(16)
+    private val mvp = FloatArray(16)
 
     @Volatile private var frameAvailable = false
 
-    override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+    override fun onSurfaceCreated(gl: GL10?, eglConfig: EGLConfig?) {
         GLES20.glClearColor(0f, 0f, 0f, 1f)
         program = GlUtil.linkProgram(VERTEX_SHADER, FRAGMENT_SHADER)
+        aPosition = GLES20.glGetAttribLocation(program, "aPosition")
+        aUv = GLES20.glGetAttribLocation(program, "aUv")
+        uMvp = GLES20.glGetUniformLocation(program, "uMvp")
+        uTexMatrix = GLES20.glGetUniformLocation(program, "uTexMatrix")
+        uEyeA = GLES20.glGetUniformLocation(program, "uEyeA")
+        uEyeB = GLES20.glGetUniformLocation(program, "uEyeB")
+        uAnaglyph = GLES20.glGetUniformLocation(program, "uAnaglyph")
+        uTexture = GLES20.glGetUniformLocation(program, "uTexture")
 
-        aPositionLoc = GLES20.glGetAttribLocation(program, "aPosition")
-        aTexCoordLoc = GLES20.glGetAttribLocation(program, "aTexCoord")
-        uMvpMatrixLoc = GLES20.glGetUniformLocation(program, "uMVPMatrix")
-        uTexMatrixLoc = GLES20.glGetUniformLocation(program, "uTexMatrix")
-        uUvScaleLoc = GLES20.glGetUniformLocation(program, "uUvScale")
-        uUvOffsetLoc = GLES20.glGetUniformLocation(program, "uUvOffset")
-        uTextureLoc = GLES20.glGetUniformLocation(program, "uTexture")
-
-        oesTextureId = GlUtil.createOesTexture()
+        oesTexture = GlUtil.createOesTexture()
         val texture =
-            SurfaceTexture(oesTextureId).apply {
-                setOnFrameAvailableListener { frameAvailable = true }
+            SurfaceTexture(oesTexture).apply {
+                setOnFrameAvailableListener {
+                    frameAvailable = true
+                    onFrameAvailable()
+                }
             }
         surfaceTexture = texture
-        sphereMesh = SphereMesh()
-        quadVertexBuffer = buildQuadBuffer()
-
-        onSurfaceReady(Surface(texture))
+        quad = buildQuad()
+        onSurfaceCreated(texture, Surface(texture))
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-        viewportWidth = max(width, 1)
-        viewportHeight = max(height, 1)
-        GLES20.glViewport(0, 0, width, height)
-        val aspect = viewportWidth.toFloat() / viewportHeight.toFloat()
-        Matrix.perspectiveM(projectionMatrix, 0, FIELD_OF_VIEW_DEGREES, aspect, 0.1f, 200f)
+        this.width = max(width, 1)
+        this.height = max(height, 1)
     }
 
     override fun onDrawFrame(gl: GL10?) {
         val texture = surfaceTexture ?: return
         if (frameAvailable) {
-            texture.updateTexImage()
-            texture.getTransformMatrix(surfaceTextureMatrix)
             frameAvailable = false
+            texture.updateTexImage()
+            texture.getTransformMatrix(texMatrix)
         }
 
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
+        GLES20.glViewport(0, 0, width, height)
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         GLES20.glUseProgram(program)
-
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
-        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, oesTextureId)
-        GLES20.glUniform1i(uTextureLoc, 0)
-        GLES20.glUniformMatrix4fv(uTexMatrixLoc, 1, false, surfaceTextureMatrix, 0)
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, oesTexture)
+        GLES20.glUniform1i(uTexture, 0)
+        GLES20.glUniformMatrix4fv(uTexMatrix, 1, false, texMatrix, 0)
 
-        val mode = getProjectionMode()
-        when {
-            mode.requiresImmersiveRendering && (mode.is360 || mode.is180) -> drawSphere(mode)
-            mode.requiresImmersiveRendering -> drawFlatStereoQuad(mode)
-            else -> drawFlatQuad(StereoEye.Mono)
+        val current = config
+        val layout = current.mode.stereoLayout
+        val output =
+            if (layout == StereoLayout.None && current.output == StereoOutputMode.Anaglyph)
+                StereoOutputMode.SingleEye
+            else current.output
+
+        when (output) {
+            StereoOutputMode.SplitScreen -> {
+                val half = width / 2
+                drawEye(current, Eye.Left, 0, half, output)
+                drawEye(current, Eye.Right, half, width - half, output)
+            }
+            else -> drawEye(current, Eye.Left, 0, width, output)
         }
     }
 
-    private fun drawSphere(mode: ProjectionMode) {
-        val mesh = sphereMesh ?: return
-        val pitchRad = Math.toRadians(pitchDegrees.coerceIn(-89f, 89f).toDouble())
-        val yawRad = Math.toRadians(yawDegrees.toDouble())
-        val cosPitch = cos(pitchRad)
+    private enum class Eye {
+        Left,
+        Right,
+    }
 
-        // Look direction on the unit sphere for the current yaw/pitch; camera stays at the
-        // origin (center of the sphere) and only rotates, matching how a viewer's head moves.
-        val lookX = (cosPitch * sin(yawRad)).toFloat()
-        val lookY = sin(pitchRad).toFloat()
-        val lookZ = -(cosPitch * cos(yawRad)).toFloat()
+    private fun drawEye(
+        config: RenderConfig,
+        eye: Eye,
+        x: Int,
+        viewportWidth: Int,
+        output: StereoOutputMode,
+    ) {
+        GLES20.glViewport(x, 0, viewportWidth, height)
+        val layout = config.mode.stereoLayout
+        setEye(uEyeA, layout, eye)
+        setEye(uEyeB, layout, Eye.Right)
+        GLES20.glUniform1i(uAnaglyph, if (output == StereoOutputMode.Anaglyph) 1 else 0)
 
-        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, 0f, lookX, lookY, lookZ, 0f, 1f, 0f)
+        val viewportAspect = viewportWidth.toFloat() / height
+        if (config.mode.isSpherical) {
+            drawSphere(config.mode, viewportAspect)
+        } else {
+            val eyeAspect = ProjectionMode.eyeAspectRatio(config.mode, config.frameAspect)
+            drawQuad(eyeAspect, viewportAspect)
+        }
+    }
 
+    /** Crop of the frame that holds one eye, as (scale.xy, offset.xy) in image space. */
+    private fun setEye(location: Int, layout: StereoLayout, eye: Eye) {
+        val right = eye == Eye.Right
+        when (layout) {
+            StereoLayout.None -> GLES20.glUniform4f(location, 1f, 1f, 0f, 0f)
+            StereoLayout.LeftRight ->
+                GLES20.glUniform4f(location, 0.5f, 1f, if (right) 0.5f else 0f, 0f)
+            // The left eye is the top half; image-space v grows upward.
+            StereoLayout.TopBottom ->
+                GLES20.glUniform4f(location, 1f, 0.5f, 0f, if (right) 0f else 0.5f)
+        }
+    }
+
+    private fun drawSphere(mode: ProjectionMode, viewportAspect: Float) {
+        val mesh =
+            if (mode.is180) sphere180 ?: SphereMesh(sweepDegrees = 180f).also { sphere180 = it }
+            else sphere360 ?: SphereMesh().also { sphere360 = it }
+
+        val roll = orientation.read(device)
+        Matrix.setRotateM(yawMatrix, 0, touchYaw, 0f, 1f, 0f)
+        Matrix.setRotateM(pitchMatrix, 0, -touchPitch, cos(roll), sin(roll), 0f)
+        Matrix.multiplyMM(temp, 0, device, 0, yawMatrix, 0)
+        Matrix.multiplyMM(view, 0, pitchMatrix, 0, temp, 0)
+        Matrix.perspectiveM(projection, 0, fieldOfView, viewportAspect, 0.1f, 100f)
+        Matrix.multiplyMM(mvp, 0, projection, 0, view, 0)
+        GLES20.glUniformMatrix4fv(uMvp, 1, false, mvp, 0)
+
+        val stride = SphereMesh.STRIDE_FLOATS * 4
         mesh.vertexBuffer.position(0)
         GLES20.glVertexAttribPointer(
-            aPositionLoc,
+            aPosition,
             3,
             GLES20.GL_FLOAT,
             false,
-            SphereMesh.STRIDE_FLOATS * 4,
+            stride,
             mesh.vertexBuffer,
         )
-        GLES20.glEnableVertexAttribArray(aPositionLoc)
-
+        GLES20.glEnableVertexAttribArray(aPosition)
         mesh.vertexBuffer.position(3)
-        GLES20.glVertexAttribPointer(
-            aTexCoordLoc,
-            2,
-            GLES20.GL_FLOAT,
-            false,
-            SphereMesh.STRIDE_FLOATS * 4,
-            mesh.vertexBuffer,
+        GLES20.glVertexAttribPointer(aUv, 2, GLES20.GL_FLOAT, false, stride, mesh.vertexBuffer)
+        GLES20.glEnableVertexAttribArray(aUv)
+        GLES20.glDrawElements(
+            GLES20.GL_TRIANGLES,
+            mesh.indexCount,
+            GLES20.GL_UNSIGNED_SHORT,
+            mesh.indexBuffer,
         )
-        GLES20.glEnableVertexAttribArray(aTexCoordLoc)
-
-        fun drawEye(eye: StereoEye, viewport: IntArray?) {
-            viewport?.let { GLES20.glViewport(it[0], it[1], it[2], it[3]) }
-            Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
-            GLES20.glUniformMatrix4fv(uMvpMatrixLoc, 1, false, mvpMatrix, 0)
-            applyEyeCrop(mode, eye)
-            GLES20.glDrawElements(
-                GLES20.GL_TRIANGLES,
-                mesh.indexCount,
-                GLES20.GL_UNSIGNED_SHORT,
-                mesh.indexBuffer,
-            )
-        }
-
-        if (mode.isStereo && getOutputMode() == StereoOutputMode.SplitScreen) {
-            val halfWidth = viewportWidth / 2
-            drawEye(StereoEye.Left, intArrayOf(0, 0, halfWidth, viewportHeight))
-            drawEye(StereoEye.Right, intArrayOf(halfWidth, 0, viewportWidth - halfWidth, viewportHeight))
-            GLES20.glViewport(0, 0, viewportWidth, viewportHeight)
-        } else {
-            drawEye(if (mode.isStereo) StereoEye.Left else StereoEye.Mono, null)
-        }
     }
 
-    private fun drawFlatStereoQuad(mode: ProjectionMode) {
-        if (getOutputMode() == StereoOutputMode.SplitScreen) {
-            val halfWidth = viewportWidth / 2
-            GLES20.glViewport(0, 0, halfWidth, viewportHeight)
-            drawFlatQuad(StereoEye.Left, mode)
-            GLES20.glViewport(halfWidth, 0, viewportWidth - halfWidth, viewportHeight)
-            drawFlatQuad(StereoEye.Right, mode)
-            GLES20.glViewport(0, 0, viewportWidth, viewportHeight)
-        } else {
-            drawFlatQuad(StereoEye.Left, mode)
+    /** Draws the eye picture letterboxed inside the current viewport. */
+    private fun drawQuad(eyeAspect: Float, viewportAspect: Float) {
+        val buffer = quad ?: return
+        Matrix.setIdentityM(mvp, 0)
+        if (eyeAspect > 0f) {
+            if (eyeAspect > viewportAspect)
+                Matrix.scaleM(mvp, 0, 1f, viewportAspect / eyeAspect, 1f)
+            else Matrix.scaleM(mvp, 0, eyeAspect / viewportAspect, 1f, 1f)
         }
-    }
-
-    private fun drawFlatQuad(eye: StereoEye, mode: ProjectionMode = ProjectionMode.FLAT) {
-        val quad = quadVertexBuffer ?: return
-        quad.position(0)
-        GLES20.glVertexAttribPointer(aPositionLoc, 3, GLES20.GL_FLOAT, false, 5 * 4, quad)
-        GLES20.glEnableVertexAttribArray(aPositionLoc)
-        quad.position(3)
-        GLES20.glVertexAttribPointer(aTexCoordLoc, 2, GLES20.GL_FLOAT, false, 5 * 4, quad)
-        GLES20.glEnableVertexAttribArray(aTexCoordLoc)
-
-        GLES20.glUniformMatrix4fv(uMvpMatrixLoc, 1, false, identityMatrix, 0)
-        applyEyeCrop(mode, eye)
+        GLES20.glUniformMatrix4fv(uMvp, 1, false, mvp, 0)
+        buffer.position(0)
+        GLES20.glVertexAttribPointer(aPosition, 3, GLES20.GL_FLOAT, false, 5 * 4, buffer)
+        GLES20.glEnableVertexAttribArray(aPosition)
+        buffer.position(3)
+        GLES20.glVertexAttribPointer(aUv, 2, GLES20.GL_FLOAT, false, 5 * 4, buffer)
+        GLES20.glEnableVertexAttribArray(aUv)
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
     }
 
-    private fun applyEyeCrop(mode: ProjectionMode, eye: StereoEye) {
-        val (scale, offset) = eyeCrop(mode, eye)
-        GLES20.glUniform2f(uUvScaleLoc, scale[0], scale[1])
-        GLES20.glUniform2f(uUvOffsetLoc, offset[0], offset[1])
-    }
-
-    private fun eyeCrop(mode: ProjectionMode, eye: StereoEye): Pair<FloatArray, FloatArray> {
-        if (eye == StereoEye.Mono) return floatArrayOf(1f, 1f) to floatArrayOf(0f, 0f)
-        val isTopBottom =
-            mode == ProjectionMode.STEREO_360_TB ||
-                mode == ProjectionMode.STEREO_180_TB ||
-                mode == ProjectionMode.OU_3D
-        val isLeftRight =
-            mode == ProjectionMode.STEREO_360_LR ||
-                mode == ProjectionMode.STEREO_180_LR ||
-                mode == ProjectionMode.SBS_3D
-        return when {
-            isTopBottom && eye == StereoEye.Left -> floatArrayOf(1f, 0.5f) to floatArrayOf(0f, 0f)
-            isTopBottom && eye == StereoEye.Right -> floatArrayOf(1f, 0.5f) to floatArrayOf(0f, 0.5f)
-            isLeftRight && eye == StereoEye.Left -> floatArrayOf(0.5f, 1f) to floatArrayOf(0f, 0f)
-            isLeftRight && eye == StereoEye.Right -> floatArrayOf(0.5f, 1f) to floatArrayOf(0.5f, 0f)
-            else -> floatArrayOf(1f, 1f) to floatArrayOf(0f, 0f)
-        }
-    }
-
-    fun release() {
-        surfaceTexture?.release()
-        surfaceTexture = null
-        if (program != 0) {
-            GLES20.glDeleteProgram(program)
-            program = 0
-        }
+    /** Frees GL objects; must run on the GL thread while the context is still current. */
+    fun releaseGl() {
+        if (program != 0) GLES20.glDeleteProgram(program)
+        if (oesTexture != 0) GLES20.glDeleteTextures(1, intArrayOf(oesTexture), 0)
+        program = 0
+        oesTexture = 0
     }
 
     companion object {
-        private const val FIELD_OF_VIEW_DEGREES = 90f
+        const val DEFAULT_FOV = 75f
+        const val MIN_FOV = 30f
+        const val MAX_FOV = 110f
 
         private const val VERTEX_SHADER =
             """
-            uniform mat4 uMVPMatrix;
-            uniform mat4 uTexMatrix;
+            uniform mat4 uMvp;
             attribute vec4 aPosition;
-            attribute vec2 aTexCoord;
-            varying vec2 vTexCoord;
+            attribute vec2 aUv;
+            varying vec2 vUv;
             void main() {
-                gl_Position = uMVPMatrix * aPosition;
-                vec4 tc = uTexMatrix * vec4(aTexCoord, 0.0, 1.0);
-                vTexCoord = tc.xy;
+                gl_Position = uMvp * aPosition;
+                vUv = aUv;
             }
             """
 
+        // Eye crops are applied in image space, before the SurfaceTexture transform, so they stay
+        // right whatever flip or crop the decoder's buffer needs.
         private const val FRAGMENT_SHADER =
             """
             #extension GL_OES_EGL_image_external : require
             precision mediump float;
-            varying vec2 vTexCoord;
+            varying vec2 vUv;
             uniform samplerExternalOES uTexture;
-            uniform vec2 uUvScale;
-            uniform vec2 uUvOffset;
+            uniform mat4 uTexMatrix;
+            uniform vec4 uEyeA;
+            uniform vec4 uEyeB;
+            uniform int uAnaglyph;
+
+            vec3 sampleEye(vec4 eye) {
+                vec2 uv = vUv * eye.xy + eye.zw;
+                return texture2D(uTexture, (uTexMatrix * vec4(uv, 0.0, 1.0)).xy).rgb;
+            }
+
             void main() {
-                vec2 uv = vTexCoord * uUvScale + uUvOffset;
-                gl_FragColor = texture2D(uTexture, uv);
+                if (uAnaglyph == 1) {
+                    // Dubois least-squares red/cyan matrices (GLSL matrices are column-major).
+                    mat3 leftMix = mat3(0.456, -0.040, -0.015, 0.500, -0.038, -0.021, 0.176, -0.016, -0.005);
+                    mat3 rightMix = mat3(-0.043, 0.378, -0.072, -0.088, 0.734, -0.113, -0.002, -0.018, 1.226);
+                    vec3 color = leftMix * sampleEye(uEyeA) + rightMix * sampleEye(uEyeB);
+                    gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+                } else {
+                    gl_FragColor = vec4(sampleEye(uEyeA), 1.0);
+                }
             }
             """
 
-        private fun buildQuadBuffer(): FloatBuffer {
-            // x, y, z, u, v, a full-screen triangle strip; V flipped (SurfaceTexture is
-            // top-down while GL texture space is bottom-up) is handled via uTexMatrix instead.
+        private fun buildQuad(): FloatBuffer {
+            // x, y, z, u, v as a triangle strip; image-space v = 0 is the bottom of the picture.
             val data =
                 floatArrayOf(
                     -1f,

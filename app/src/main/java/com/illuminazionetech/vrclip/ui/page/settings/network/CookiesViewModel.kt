@@ -52,10 +52,9 @@ class CookiesViewModel : ViewModel() {
         setEditingProfile(cookieProfile = state.editingCookieProfile.copy(url = url))
     }
 
-    fun updateContent(content: String) =
-        mutableStateFlow.update {
-            it.copy(editingCookieProfile = it.editingCookieProfile.copy(content = content))
-        }
+    fun updateContent(content: String) = mutableStateFlow.update {
+        it.copy(editingCookieProfile = it.editingCookieProfile.copy(content = content))
+    }
 
     fun updateCookieProfile(profile: CookieProfile = state.editingCookieProfile) {
         viewModelScope.launch(Dispatchers.IO) {

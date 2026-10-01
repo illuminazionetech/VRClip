@@ -48,9 +48,9 @@ import androidx.core.text.isDigitsOnly
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.component.ConfirmButton
 import com.illuminazionetech.vrclip.ui.component.DismissButton
+import com.illuminazionetech.vrclip.ui.component.TextButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.component.VRClipTextField
-import com.illuminazionetech.vrclip.ui.component.TextButtonWithIcon
 import com.illuminazionetech.vrclip.util.isNumberInRange
 import com.illuminazionetech.vrclip.util.toDurationText
 import com.illuminazionetech.vrclip.util.toIntRange
@@ -72,8 +72,8 @@ fun CustomRangeSlider(
     RangeSlider(
         modifier = modifier,
         state = state,
-        startInteractionSource = startInteractionSource,
-        endInteractionSource = endInteractionSource,
+        startThumbInteractionSource = startInteractionSource,
+        endThumbInteractionSource = endInteractionSource,
         startThumb = {
             Box(modifier = Modifier) {
                 SliderDefaults.Thumb(
@@ -89,7 +89,7 @@ fun CustomRangeSlider(
             Box(modifier = Modifier) {
                 SliderDefaults.Thumb(
                     modifier = Modifier.align(Alignment.Center),
-                    interactionSource = startInteractionSource,
+                    interactionSource = endInteractionSource,
                     colors = colors,
                     enabled = enabled,
                     thumbSize = thumbSize,

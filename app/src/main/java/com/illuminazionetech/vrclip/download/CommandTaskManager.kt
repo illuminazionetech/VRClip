@@ -1,8 +1,6 @@
 package com.illuminazionetech.vrclip.download
 
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import com.illuminazionetech.vrclip.App.Companion.applicationScope
 import com.illuminazionetech.vrclip.App.Companion.context
 import com.illuminazionetech.vrclip.App.Companion.startService
@@ -24,10 +22,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * Tracks the lifecycle of custom-command (`yt-dlp` template) tasks and keeps the foreground
- * service bound while any task or download is active. This is the surviving half of the old
- * `Downloader` singleton after the dead single-download orchestration flow (superseded by
- * [DownloaderV2]) was removed.
+ * Tracks the lifecycle of custom-command (`yt-dlp` template) tasks and keeps the foreground service
+ * bound while any task or download is active. This is the surviving half of the old `Downloader`
+ * singleton after the dead single-download orchestration flow (superseded by [DownloaderV2]) was
+ * removed.
  */
 object CommandTaskManager {
 
@@ -75,8 +73,8 @@ object CommandTaskManager {
             return true
         }
 
-        fun onCopyLog(clipboardManager: ClipboardManager) {
-            clipboardManager.setText(AnnotatedString(output))
+        fun onCopyLog(copyText: (String) -> Unit) {
+            copyText(output)
         }
 
         fun onRestart() {
@@ -85,8 +83,8 @@ object CommandTaskManager {
             }
         }
 
-        fun onCopyError(clipboardManager: ClipboardManager) {
-            clipboardManager.setText(AnnotatedString(currentLine))
+        fun onCopyError(copyText: (String) -> Unit) {
+            copyText(currentLine)
             makeToast(R.string.error_copied)
         }
 
@@ -136,14 +134,13 @@ object CommandTaskManager {
     fun updateTaskOutput(template: CommandTemplate, url: String, line: String, progress: Float) {
         val key = makeKey(url, template.name)
         val oldValue = mutableTaskList[key] ?: return
-        val newValue =
-            oldValue.run {
-                copy(
-                    output = output + line + "\n",
-                    currentLine = line,
-                    state = CustomCommandTask.State.Running(progress),
-                )
-            }
+        val newValue = oldValue.run {
+            copy(
+                output = output + line + "\n",
+                currentLine = line,
+                state = CustomCommandTask.State.Running(progress),
+            )
+        }
         mutableTaskList[key] = newValue
     }
 
@@ -169,12 +166,11 @@ object CommandTaskManager {
 
     fun onProcessEnded() = mutableProcessCount.update { it - 1 }
 
-    fun onProcessCanceled(taskId: String) =
-        mutableTaskList.run {
-            get(taskId)?.let { this.put(taskId, it.copy(state = CustomCommandTask.State.Canceled)) }
-        }
+    fun onProcessCanceled(taskId: String) = mutableTaskList.run {
+        get(taskId)?.let { this.put(taskId, it.copy(state = CustomCommandTask.State.Canceled)) }
+    }
 
-    fun onTaskError(errorReport: String, template: CommandTemplate, url: String) =
+    fun onTaskError(errorReport: String, template: CommandTemplate, url: String): Unit =
         mutableTaskList.run {
             val key = makeKey(url, template.name)
             NotificationUtil.notifyError(

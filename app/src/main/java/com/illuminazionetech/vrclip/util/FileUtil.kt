@@ -11,6 +11,7 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.annotation.CheckResult
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.illuminazionetech.vrclip.App.Companion.context
 import com.illuminazionetech.vrclip.R
@@ -26,9 +27,7 @@ object FileUtil {
     fun openFileFromResult(downloadResult: Result<List<String>>) {
         val filePaths = downloadResult.getOrNull()
         if (filePaths.isNullOrEmpty()) return
-        openFile(filePaths.first()) {
-            makeToast(context.getString(R.string.file_unavailable))
-        }
+        openFile(filePaths.first()) { makeToast(context.getString(R.string.file_unavailable)) }
     }
 
     inline fun openFile(path: String, onFailureCallback: (Throwable) -> Unit) =
@@ -45,7 +44,7 @@ object FileUtil {
         val uri =
             path
                 .runCatching {
-                    DocumentFile.fromSingleUri(context, Uri.parse(path)).run {
+                    DocumentFile.fromSingleUri(context, path.toUri()).run {
                         if (this?.exists() == true) {
                             this.uri
                         } else if (File(this@runCatching).exists()) {
@@ -87,21 +86,20 @@ object FileUtil {
     fun String.getFileSize(): Long =
         this.run {
             val length = File(this).length()
-            if (length == 0L) DocumentFile.fromSingleUri(context, Uri.parse(this))?.length() ?: 0L
+            if (length == 0L) DocumentFile.fromSingleUri(context, toUri())?.length() ?: 0L
             else length
         }
 
     fun String.getFileName(): String =
         this.run {
             File(this).nameWithoutExtension.ifEmpty {
-                DocumentFile.fromSingleUri(context, Uri.parse(this))?.name ?: "video"
+                DocumentFile.fromSingleUri(context, toUri())?.name ?: "video"
             }
         }
 
-    fun deleteFile(path: String) =
-        path.runCatching {
-            if (!File(path).delete()) DocumentFile.fromSingleUri(context, Uri.parse(this))?.delete()
-        }
+    fun deleteFile(path: String) = path.runCatching {
+        if (!File(path).delete()) DocumentFile.fromSingleUri(context, toUri())?.delete()
+    }
 
     @CheckResult
     fun scanFileToMediaLibraryPostDownload(title: String, downloadDir: String): List<String> =
@@ -130,37 +128,36 @@ object FileUtil {
     fun moveFilesToSdcard(tempPath: File, sdcardUri: String): Result<List<String>> {
         val uriList = mutableListOf<String>()
         val destDir =
-            Uri.parse(sdcardUri).run {
+            sdcardUri.toUri().run {
                 DocumentsContract.buildDocumentUriUsingTree(
                     this,
                     DocumentsContract.getTreeDocumentId(this),
                 )
             }
-        val res =
-            tempPath.runCatching {
-                walkTopDown().forEach {
-                    if (it.isDirectory) return@forEach
-                    val mimeType =
-                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+        val res = tempPath.runCatching {
+            walkTopDown().forEach {
+                if (it.isDirectory) return@forEach
+                val mimeType =
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
 
-                    val destUri =
-                        DocumentsContract.createDocument(
-                            context.contentResolver,
-                            destDir,
-                            mimeType,
-                            it.name,
-                        ) ?: return@forEach
+                val destUri =
+                    DocumentsContract.createDocument(
+                        context.contentResolver,
+                        destDir,
+                        mimeType,
+                        it.name,
+                    ) ?: return@forEach
 
-                    val inputStream = it.inputStream()
-                    val outputStream =
-                        context.contentResolver.openOutputStream(destUri) ?: return@forEach
-                    inputStream.copyTo(outputStream)
-                    inputStream.closeQuietly()
-                    outputStream.closeQuietly()
-                    uriList.add(destUri.toString())
-                }
-                uriList
+                val inputStream = it.inputStream()
+                val outputStream =
+                    context.contentResolver.openOutputStream(destUri) ?: return@forEach
+                inputStream.copyTo(outputStream)
+                inputStream.closeQuietly()
+                outputStream.closeQuietly()
+                uriList.add(destUri.toString())
             }
+            uriList
+        }
         tempPath.deleteRecursively()
         return res
     }
@@ -195,7 +192,10 @@ object FileUtil {
     fun Context.getInternalTempDir() = File(filesDir, "tmp")
 
     internal fun getExternalDownloadDirectory() =
-        File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "VRClip")
+        File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "VRClip",
+            )
             .also { it.mkdir() }
 
     internal fun getExternalPrivateDownloadDirectory() =

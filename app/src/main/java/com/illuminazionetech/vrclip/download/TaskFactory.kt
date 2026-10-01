@@ -92,21 +92,24 @@ object TaskFactory {
         checkNotNull(playlistResult.entries)
         val indexEntryMap = indexList.associateWith { index -> playlistResult.entries[index - 1] }
 
-        val taskList =
-            indexEntryMap.map { (index, entry) ->
-                val viewState =
-                    Task.ViewState(
-                        url = entry.url ?: "",
-                        title = entry.title ?: "${playlistResult.title} - $index",
-                        duration = entry.duration?.roundToInt() ?: 0,
-                        uploader = entry.uploader ?: entry.channel ?: playlistResult.channel ?: "",
-                        thumbnailUrl = (entry.thumbnails?.lastOrNull()?.url) ?: "",
-                    )
-                val task = Task(url = playlistUrl, preferences = preferences, type = Task.TypeInfo.Playlist(index))
-                val state =
-                    Task.State(downloadState = Idle, videoInfo = null, viewState = viewState)
-                TaskWithState(task, state)
-            }
+        val taskList = indexEntryMap.map { (index, entry) ->
+            val viewState =
+                Task.ViewState(
+                    url = entry.url ?: "",
+                    title = entry.title ?: "${playlistResult.title} - $index",
+                    duration = entry.duration?.roundToInt() ?: 0,
+                    uploader = entry.uploader ?: entry.channel ?: playlistResult.channel ?: "",
+                    thumbnailUrl = (entry.thumbnails?.lastOrNull()?.url) ?: "",
+                )
+            val task =
+                Task(
+                    url = playlistUrl,
+                    preferences = preferences,
+                    type = Task.TypeInfo.Playlist(index),
+                )
+            val state = Task.State(downloadState = Idle, videoInfo = null, viewState = viewState)
+            TaskWithState(task, state)
+        }
 
         return taskList
     }

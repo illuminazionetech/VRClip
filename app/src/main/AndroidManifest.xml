@@ -18,10 +18,13 @@
         android:minSdkVersion="33" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- Keeps VRClip the owner of its own updates (Android 14+), see AppUpdateManager. -->
+    <uses-permission android:name="android.permission.ENFORCE_UPDATE_OWNERSHIP" />
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="com.oculus.permission.USE_SCENE" />
 
@@ -34,6 +37,29 @@
             <data android:scheme="https" />
         </intent>
     </queries>
+
+    <uses-feature
+        android:name="com.oculus.feature.RENDER_MODEL"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.vr.headtracking"
+        android:required="false" />
+
+    <uses-feature
+        android:name="oculus.software.handtracking"
+        android:required="false" />
+
+    <uses-feature
+        android:name="com.oculus.feature.VIRTUAL_KEYBOARD"
+        android:required="false" />
+
+    <uses-feature
+        android:name="com.oculus.feature.PASSTHROUGH"
+        android:required="false" />
+
+    <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
+    <uses-permission android:name="com.oculus.permission.RENDER_MODEL" />
 
     <application
         android:name=".App"
@@ -77,6 +103,35 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".player.PlayerActivity"
+            android:autoRemoveFromRecents="true"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboardHidden|keyboard|navigation|uiMode|density"
+            android:exported="true"
+            android:label="@string/player_app_label"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            android:taskAffinity="${applicationId}.player"
+            android:theme="@style/Theme.VRClip.Player">
+            <!-- Lets other apps (file managers, galleries) open local videos in VRClip. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+        </activity>
+
+        <!-- WorkManager runs the 2D to 3D conversion as a foreground job. -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync|mediaProcessing"
+            tools:node="merge" />
+
         <service
             android:name=".DownloadService"
             android:enabled="true"
@@ -88,7 +143,6 @@
             android:configChanges="screenSize|screenLayout|orientation|keyboardHidden|keyboard|navigation|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="unspecified"
             android:theme="@style/Theme.VRClip">
             <layout
                 android:defaultHeight="800dp"
@@ -98,8 +152,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="com.oculus.intent.category.VR" />
+                <!-- On Meta Quest the library opens as a 2D panel; the player goes immersive. -->
+                <category android:name="com.oculus.intent.category.2D" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -121,13 +177,26 @@
             </intent-filter>
         </activity>
 
+        <!-- Immersive (OpenXR) activity of the hybrid Quest app, declared as Meta's samples do. -->
         <activity
             android:name=".player.quest.ImmersivePlayerActivity"
             android:configChanges="screenSize|screenLayout|orientation|keyboardHidden|keyboard|navigation|uiMode"
             android:excludeFromRecents="false"
-            android:exported="false"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.oculus.intent.category.VR" />
+            </intent-filter>
+        </activity>
+
+        <!-- Horizon OS library used by the Spatial SDK; absent (and not needed) on phones. -->
+        <uses-native-library
+            android:name="libossdk.oculus.so"
+            android:required="false" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
@@ -148,7 +217,13 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver android:name=".NotificationActionReceiver" />
+        <receiver
+            android:name=".NotificationActionReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".UpdateInstallReceiver"
+            android:exported="false" />
 
         <meta-data
             android:name="com.oculus.vr.focusaware"
@@ -157,27 +232,8 @@
             android:name="com.oculus.handtracking.version"
             android:value="V2.0" />
         <meta-data
-            android:name="com.oculus.supported_devices"
-            android:value="quest|quest2|questpro|quest3" />
+            android:name="com.oculus.supportedDevices"
+            android:value="quest2|questpro|quest3|quest3s" />
     </application>
-
-    <uses-feature
-        android:name="com.oculus.feature.RENDER_MODEL"
-        android:required="false" />
-    <uses-feature
-        android:name="com.oculus.feature.VIRTUAL_KEYBOARD"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.vr.headtracking"
-        android:required="false" />
-    <uses-feature
-        android:name="com.oculus.feature.PASSTHROUGH"
-        android:required="false" />
-    <uses-feature
-        android:name="oculus.software.handtracking"
-        android:required="false" />
-
-    <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
-    <uses-permission android:name="com.oculus.permission.RENDER_MODEL" />
 
 </manifest>

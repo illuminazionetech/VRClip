@@ -14,15 +14,20 @@ import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import androidx.core.content.getSystemService
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
+import coil3.request.crossfade
+import coil3.video.VideoFrameDecoder
 import com.google.android.material.color.DynamicColors
 import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.DownloaderV2Impl
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.illuminazionetech.vrclip.ui.page.settings.directory.Directory
-import com.illuminazionetech.vrclip.player.PlayerEngine
 import com.illuminazionetech.vrclip.ui.page.settings.network.CookiesViewModel
 import com.illuminazionetech.vrclip.ui.page.videolist.VideoListViewModel
 import com.illuminazionetech.vrclip.util.AUDIO_DIRECTORY
+import com.illuminazionetech.vrclip.util.AppUpdateManager
 import com.illuminazionetech.vrclip.util.COMMAND_DIRECTORY
 import com.illuminazionetech.vrclip.util.DownloadUtil
 import com.illuminazionetech.vrclip.util.FileUtil
@@ -35,10 +40,10 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getString
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateString
 import com.illuminazionetech.vrclip.util.SDCARD_URI
-import com.illuminazionetech.vrclip.util.UpdateUtil
+import com.illuminazionetech.vrclip.util.UpdateCheckWorker
 import com.illuminazionetech.vrclip.util.VIDEO_DIRECTORY
-import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.illuminazionetech.vrclip.util.YT_DLP_VERSION
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.tencent.mmkv.MMKV
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
@@ -52,21 +57,21 @@ import kotlinx.coroutines.withContext
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-class App : Application() {
+class App : Application(), SingletonImageLoader.Factory {
     override fun onCreate() {
         super.onCreate()
         MMKV.initialize(this)
 
         startKoin {
-            androidLogger()
+            androidLogger(if (BuildConfig.DEBUG) Level.INFO else Level.ERROR)
             androidContext(this@App)
             modules(
                 module {
                     single<DownloaderV2> { DownloaderV2Impl(androidContext()) }
-                    single { PlayerEngine(androidContext()) }
                     viewModel { DownloadDialogViewModel(downloader = get()) }
                     viewModel { CookiesViewModel() }
                     viewModel { VideoListViewModel() }
@@ -96,7 +101,7 @@ class App : Application() {
                 DownloadUtil.getCookiesContentFromDatabase().getOrNull()?.let {
                     FileUtil.writeContentToFile(it, getCookiesFile())
                 }
-                UpdateUtil.deleteOutdatedApk()
+                AppUpdateManager.cleanUp()
             } catch (th: Throwable) {
                 YtDlpEngine.notifyInitFailed(th)
                 withContext(Dispatchers.Main) { startCrashReportActivity(th) }
@@ -109,10 +114,27 @@ class App : Application() {
         if (!PreferenceUtil.containsKey(COMMAND_DIRECTORY)) {
             COMMAND_DIRECTORY.updateString(videoDownloadDir)
         }
-        if (Build.VERSION.SDK_INT >= 26) NotificationUtil.createNotificationChannel()
+        NotificationUtil.createNotificationChannel()
+        UpdateCheckWorker.schedule(this, PreferenceUtil.isAutoUpdateEnabled())
 
-        Thread.setDefaultUncaughtExceptionHandler { _, e -> startCrashReportActivity(e) }
+        val systemHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, e ->
+            runCatching { startCrashReportActivity(e) }
+            // Let the platform finish tearing the process down: a process that keeps running
+            // after an uncaught exception is left in an undefined state.
+            systemHandler?.uncaughtException(thread, e)
+                ?: run {
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                    kotlin.system.exitProcess(10)
+                }
+        }
     }
+
+    override fun newImageLoader(context: PlatformContext): ImageLoader =
+        ImageLoader.Builder(context)
+            .components { add(VideoFrameDecoder.Factory()) }
+            .crossfade(true)
+            .build()
 
     private fun startCrashReportActivity(th: Throwable) {
         th.printStackTrace()
@@ -138,12 +160,13 @@ class App : Application() {
 
         private val connection =
             object : ServiceConnection {
-                override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                    val binder = service as DownloadService.DownloadServiceBinder
+                override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
                     isServiceRunning = true
                 }
 
-                override fun onServiceDisconnected(arg0: ComponentName) {}
+                override fun onServiceDisconnected(className: ComponentName?) {
+                    isServiceRunning = false
+                }
             }
 
         fun startService() {

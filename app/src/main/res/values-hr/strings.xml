@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings">Postavke</string>
-    <string name="download_settings_desc">Opće, format, prilagođena naredba</string>
     <string name="download">Preuzmi</string>
-    <string name="url_empty">Poveznica ne može biti prazna</string>
     <string name="yt_dlp_up_to_date">Koristite najnoviju inačicu yt-dlp</string>
     <string name="yt_dlp_update_fail">Nije moguće instalirati najnoviju inačicu yt-dlp. Provjerite jeste li povezani s internetskom vezom.</string>
-    <string name="fetching_info">Dobavljam informacije o videu…</string>
     <string name="permission_denied">Dopuštenje odbijeno</string>
     <string name="video_directory">Mapa videozapisa</string>
     <string name="create_thumbnail_summary">Spremite minijaturu videozapisa kao datoteku</string>
     <string name="extract_audio">Spremi kao zvučni zapis</string>
     <string name="create_thumbnail">Spremi minijaturu</string>
-    <string name="download_success_msg">Preuzimanje završeno</string>
     <string name="extract_audio_summary">Preuzmite i spremite zvučni zapis, umjesto videozapisa</string>
     <string name="download_error_msg">Datoteku nije bilo moguće preuzeti</string>
-    <string name="download_start_msg">Preuzimanje „%1$s“</string>
     <string name="language">Jezik</string>
-    <string name="task_running">Postojeće preuzimanje je već pokrenuto</string>
     <string name="paste_msg">Zalijepljen URL iz međuspremnika</string>
     <string name="ytdlp_update">Kliknite kako biste preuzeli najnoviju inačicu yt-dlp</string>
     <string name="delete_info">Ukloniti\?</string>
     <string name="delete_info_msg">Zauvijek ukloniti „%1$s“ iz povijesti preuzimanja?</string>
     <string name="confirm">Potvrdi</string>
     <string name="dismiss">Odustani</string>
-    <string name="downloads_history">Preuzimanja</string>
     <string name="delete_file">Izbriši datoteku</string>
     <string name="about">O aplikaciji</string>
     <string name="about_page">Inačica, povratne informacije, automatsko ažuriranje</string>
@@ -41,7 +34,6 @@
     <string name="advanced_settings">Napredno</string>
     <string name="print_details">Detaljan izlaz informacija</string>
     <string name="print_details_desc">Prikažite detaljne informacije prilikom preuzimanja</string>
-    <string name="display">Prikaz</string>
     <string name="display_settings">Tamna tema, dinamička boja, jezici</string>
     <string name="follow_system">Prati sistem</string>
     <string name="on">Omogućeno</string>
@@ -55,24 +47,18 @@
     <string name="best_quality">Najbolja kvaliteta</string>
     <string name="video_format_preference">Preferirani format videozapisa</string>
     <string name="start_download">Preuzmi</string>
-    <string name="convert_audio">Pretvori</string>
     <string name="close">Zatvori</string>
-    <string name="close_never_show_again">Ne prikazuj više</string>
-    <string name="paste_desc">Kliknite „Zalijepi“ kako biste zalijepili poveznicu na videozapis iz međuspremnika.</string>
-    <string name="download_desc">Tada kliknite „Preuzmi“ nakon prilagodbe postavki.</string>
-    <string name="check_download_settings_desc">Pregledajte postavke preuzimanja i provjerite da li koristite najnoviju inačicu yt-dlp prije nego što počnete koristiti aplikaciju.</string>
     <string name="channel_name">Preuzimanje</string>
     <string name="channel_description">Obavijesti me o preuzetim datotekama i preuzimanjima u tijeku</string>
     <string name="video_url">Poveznica na videozapis</string>
     <string name="download_finish_notification">Preuzimanje završeno. Dodirnite kako biste otvorili.</string>
     <string name="execute_command_notification">Pokretanje prilagođene naredbe…</string>
-    <string name="battery_settings_desc">Postavite potrošnju baterije ove aplikacije na „Neograničeno“ u postavkama sustava za preuzimanje u pozadini.</string>
     <string name="concurrent_download">Višenitno preuzimanje</string>
-    <string name="concurrent_download_num">%d nit(i) bi bilo korišteno kako bi se istovremeno preuzeli DASH/HLS videozapisi.</string>
-    <string name="options">Opcije</string>
+    <plurals name="concurrent_download_num">
+        <item quantity="other">%d nit(i) bi bilo korišteno kako bi se istovremeno preuzeli DASH/HLS videozapisi.</item>
+    </plurals>
     <string name="additional_settings">Dodatne postavke</string>
     <string name="share_fail_msg">Nije moguće podudaranje URL iz dijeljenog sadržaja</string>
-    <string name="share_success_msg">Čitanje poveznice na videozapis iz dijeljenog sadržaja…</string>
     <string name="show_more_actions">Prikaži više radnji</string>
     <string name="download_notification">Obavijest o preuzimanju</string>
     <string name="download_notification_desc">Obavijesti me o preuzetim datotekama i preuzimanjima u tijeku</string>
@@ -89,16 +75,11 @@
     <string name="battery_configuration">Konfiguracija baterije</string>
     <string name="battery_configuration_desc">Ignorirajte optimizaciju baterije kako bi aplikacija mogla preuzimati u pozadini</string>
     <string name="service_title">VRClip preuzima…</string>
-    <string name="unknown_error">Nepoznata greška</string>
     <string name="translate_desc">Pomognite prevesti ovu aplikaciju pomoću Hosted Weblate</string>
-    <string name="prefix">Predložak puta</string>
     <string name="embed_subtitles_desc">Ugradi titlove u videa, ako su dostupni</string>
     <string name="new_template">Novi predložak</string>
     <string name="template_label">Oznaka</string>
-    <string name="remove_template_desc">Zauvijek ukloniti „%1$s“ iz naredbenih predložaka?</string>
     <string name="template_selection">Odabir predložaka</string>
-    <string name="github_issue">GitHub prijava problema</string>
-    <string name="github_issue_desc">Prijavite nam greške u aplikaciji i predložite slijedeću novu značajku</string>
     <string name="info_copied">Informacije kopirane u međuspremnik</string>
     <string name="status_canceled">Otkazano</string>
     <string name="restart">Ponovno pokreni</string>
@@ -107,8 +88,6 @@
     <string name="copy_error_report">Kopiraj izvještaj</string>
     <string name="export_to_clipboard">Izvezi u međuspremnik</string>
     <string name="import_from_clipboard">Uvezi iz međuspremnika</string>
-    <string name="recently_added">Nedavno Dodano</string>
-    <string name="multiselect_item_count">%1$d videozapis(a), %2$d zvučni(h) zapis(a)</string>
     <string name="sponsorblock_categories_desc">Odredite koje će SponsorBlock kategorije biti uklonjene ili označene u video datoteci</string>
     <string name="sponsorblock_categories">SponsorBlock kategorije</string>
     <string name="check_for_updates">Potraži ažuriranja</string>
@@ -117,7 +96,9 @@
     <string name="cookies_desc">Za preuzimanja koristite kolačiće formatirane pomoću Netscape-a</string>
     <string name="clear_temp_files">Čišćenje privremenih datoteka</string>
     <string name="clear_temp_files_desc">Očistite sve privremene datoteke iz privremenog direktorija</string>
-    <string name="clear_temp_files_count">%1$d privremena(ih) datoteka izbrisana(o)</string>
+    <plurals name="clear_temp_files_count">
+        <item quantity="other">%1$d privremena(ih) datoteka izbrisana(o)</item>
+    </plurals>
     <string name="clear_temp_files_info">Privremene datoteke služe kako bi se nastavila otkazana preuzimanja. Jeste li sigurni da ih želite sve izbrisati\?
 \n
 \nOvim datotekama možete pristupiti u %1$s</string>
@@ -126,20 +107,16 @@
     <string name="private_mode_desc">Onemogućite povijest preuzimanja</string>
     <string name="dynamic_color">Dinamička boja</string>
     <string name="dynamic_color_desc">Primijenite boje s pozadina na temu aplikacije</string>
-    <string name="language_settings">Odaberi jezik</string>
     <string name="general_settings">Općenito</string>
     <string name="fetch_info_error_msg">Neuspjelo dohvaćanje informacija o videu</string>
     <string name="audio">Zvučni zapis</string>
     <string name="paste_fail_msg">Greška prilikom lijepljenja URL iz međuspremnika</string>
-    <string name="ytdlp_version">Yt-dlp inačica</string>
     <string name="link_copied">Poveznica kopirana u međuspremnik</string>
     <string name="open_url">Otvori poveznicu</string>
     <string name="remove">Ukloni</string>
-    <string name="settings_before_download_text">Prilagodite ovo preuzimanje</string>
     <string name="dark_theme">Tamna tema</string>
     <string name="credits">Zasluge</string>
     <string name="settings_before_download">Konfiguracija prije preuzimanja</string>
-    <string name="checked">Provjereno</string>
     <string name="credits_desc">Zasluge i slobodni softver</string>
     <string name="edit">Uredi</string>
     <string name="paste">Zalijepi</string>
@@ -153,35 +130,31 @@
     <string name="not_specified">Neodređeno (zadano)</string>
     <string name="preferred_format_desc">Preferirani format kada ih je više ponuđeno</string>
     <string name="download_playlist">Preuzmi popis za reprodukciju</string>
-    <string name="video_format">Format videozapisa</string>
-    <string name="user_guide">Korisnički vodič</string>
     <string name="open_settings">Otvori postavke</string>
-    <string name="download_history_desc">Pregledajte i upravljajte preuzimanjima, uključujući datoteke videozapisa i zvučnih zapisa.</string>
-    <string name="defaults">Zadano</string>
     <string name="download_playlist_desc">Preuzmite više videozapisa s popisa za reprodukciju</string>
     <string name="concurrent_download_desc">Paralelno preuzmite više dijelova M3U8/MPD videozapisa</string>
     <string name="to">Kraj</string>
     <string name="invalid_index_range">Neispravan domet indeksa</string>
-    <string name="playlist_indicator_text">Preuzimanje popisa za reprodukciju (%1$d/%2$d)…</string>
     <string name="download_directory">Direktorij preuzimanja</string>
     <string name="open_file">Otvori datoteku</string>
     <string name="translate">Prevedi</string>
-    <string name="custom_command_template_desc">Uredite i upravljajte naredbenim predlošcima</string>
-    <string name="downloading_indicator_text">Preuzimanje u tijeku…</string>
     <string name="status_completed">Završeno</string>
     <string name="embed_subtitles">Ugradi titlove</string>
     <string name="remove_template">Ukloniti\?</string>
-    <string name="task_canceled">Preuzimanje otkazano</string>
     <string name="status_downloading">Preuzimanje</string>
     <string name="status_enqueued">Dodano u red čekanja</string>
     <string name="status_fetching_video_info">Dobavljanje informacija</string>
     <string name="video_resolution">Rezolucija videozapisa</string>
-    <string name="template_exported">Izvezen(o) %1$d predložak(a)</string>
-    <string name="template_imported">Uvezen(o) %1$d predložak(a)</string>
+    <plurals name="template_exported">
+        <item quantity="other">Izvezen(o) %1$d predložak(a)</item>
+    </plurals>
+    <plurals name="template_imported">
+        <item quantity="other">Uvezen(o) %1$d predložak(a)</item>
+    </plurals>
     <string name="sponsorblock_desc">Uklonite ili označite dijelove iz videozapisa pomoću SponsorBlock API</string>
-    <string name="video_file_size">Veličina video datoteke</string>
-    <string name="download_task_count">%1$d zadataka preuzimanja</string>
-    <string name="delete_multiple_items_msg">Zauvijek ukloniti %1$d predmet(a) iz povijesti preuzimanja\?</string>
+    <plurals name="delete_multiple_items_msg">
+        <item quantity="other">Zauvijek ukloniti %1$d predmet(a) iz povijesti preuzimanja\?</item>
+    </plurals>
     <string name="app_update_failed">Ažuriranje na najnoviju inačicu nije uspjelo</string>
     <string name="update">Ažuriraj</string>
     <string name="app_up_to_date">Trenutna inačica je ažurna</string>
@@ -214,10 +187,11 @@
     <string name="edit_shortcuts">Uredi prečace</string>
     <string name="clear">Očisti</string>
     <string name="add">Dodaj</string>
-    <string name="selected_item_count">Odabrano: %1$d</string>
+    <plurals name="selected_item_count">
+        <item quantity="other">Odabrano: %1$d</item>
+    </plurals>
     <string name="suggested">Predloženo</string>
     <string name="cookies_usage_msg">Preuzimanje s nekih internetskih stranica zahtijeva informacije o potvrdi korisničkog računa. Kliknite „Generiraj nove kolačiće“, unesite URL stranice te se prijavite sa svojim korisničkim računom. Aplikacija će ih generirati za vas.</string>
-    <string name="telegram_channel">Telegram kanal</string>
     <string name="video_title_sample_text">Primjer teksta naslova videozapisa</string>
     <string name="subtitle">Titlovi</string>
     <string name="download_subtitles">Preuzmi titlove</string>
@@ -226,12 +200,10 @@
     <string name="embed_subtitles_mkv_msg">Da bi se titlovi ugradili, videozapisi će se konvertirati u mkv kontejner. Možete koristiti VLC Media Player ili druge kompatibilne aplikacije za gledanje videozapisa s titlovima.</string>
     <string name="subtitle_sponsorblock">Titlovi mogu biti pogrešno tempirani nakon uklanjanja SponsorBlock segmenta.</string>
     <string name="max_rate">Maksimalna brzina</string>
-    <string name="high_contrast">Tamna tema visokog kontrasta</string>
     <string name="rate_limit_desc">Ograničite maksimalnu brzinu preuzimanja</string>
     <string name="format_selection">Odabir formata</string>
     <string name="use_cookies">Koristi kolačiće</string>
     <string name="cookies">Kolačići</string>
-    <string name="download_disabled_with_cellular">Preuzimanje putem mobilnih podataka je onemogućeno u postavkama</string>
     <string name="file_unavailable">Ova datoteka više nije dostupna</string>
     <string name="format_settings_desc">Datotečni format, kvaliteta videa, titlovi</string>
     <string name="general_settings_desc">Inačica Yt-dlp-a, obavijest, popis za reprodukciju</string>
@@ -239,20 +211,16 @@
     <string name="crop_artwork_desc">Izrežite ugrađenu sliku u kvadratni format</string>
     <string name="rate_limit">Ograničenje brzine</string>
     <string name="abs_hint">Većina platforma strujanja videozapisa dostavljaju odvojen zvučni zapis i videozapis. Možete odabrati i spojiti format koji sadrži samo zvučni zapis s formatom koji sadrži samo videozapis u jedan videozapis.</string>
-    <string name="matrix_space">Matrix prostor</string>
     <string name="select_all">Odaberi sve</string>
     <string name="subtitle_language">Jezici titlova</string>
     <string name="shortcuts">Prečaci</string>
     <string name="edit_shortcuts_desc">Uredite prilagođene prečace koji se mogu koristiti kao sastavljači predložaka naredbi.</string>
-    <string name="running_tasks">Radnje u tijeku</string>
     <string name="download_with_cellular_desc">Dopustite preuzimanje medija putem ograničenog interneta</string>
     <string name="audio_quality">Kvaliteta zvučnog zapisa</string>
     <string name="no_downloaded_media">Nema preuzetih medija</string>
-    <string name="beta_features">Beta</string>
     <string name="filesize_mb">%.2f MB</string>
     <string name="filesize_gb">%.2f GB</string>
     <string name="discard">Odbaci</string>
-    <string name="apply">Primjeni</string>
     <string name="format_sorting_desc">Sortiranje formata pomoću yt-dlp opcije -S</string>
     <string name="import_from_preferences">Uvezi</string>
     <string name="title">Naslov</string>
@@ -261,20 +229,17 @@
     <string name="audio_quality_desc">Ograničite bitrate zvučnog zapisa, kada je dostupno više kvaliteta</string>
     <string name="format_sorting">Sortiranje formata</string>
     <string name="rename">Preimenuj</string>
-    <string name="temporary_directory_desc">Pohranite privremene datoteke u unutarnji direktorij</string>
     <string name="second">sekunda</string>
     <string name="minute">minuta</string>
     <string name="clear_all_cookies">Očisti sve kolačiće</string>
     <string name="clip_video_dialog_msg">Preuzimanja izvršena ovom značajkom bit će izaslani FFmpeg-u kako bi preuzeo odabrane dijelove videozapisa. Ova značajka je još u razvoju te je moguće da izrezivanje ne bude posve točno uz moguću sporiju brzinu preuzimanja.</string>
     <string name="clip_video_desc">Napravite isječke videozapisa na stranici za odabir formata</string>
-    <string name="switch_to_github_builds">prebacivanje na GitHub inačice</string>
-    <string name="feature_unavailable">Značajka nije dostupna</string>
-    <string name="no_custom_command_tasks">Nema prilagođenih naredbenih radnji</string>
-    <string name="download_video_desc">Preuzmite videozapise s URL-a</string>
     <string name="convert_subtitle">Pretvori titlove</string>
     <string name="convert_subtitle_desc">Pretvorite titlove u jedan drugi format</string>
     <string name="split_video">Razdvoji videozapis</string>
-    <string name="split_video_msg">Videozapis će biti podijeljen u %1$d poglavlja</string>
+    <plurals name="split_video_msg">
+        <item quantity="other">Videozapis će biti podijeljen u %1$d poglavlja</item>
+    </plurals>
     <string name="unknown_error_title">Ups! Nešto nije u redu</string>
     <string name="copy_and_exit">Kopiraj i izađi</string>
     <string name="share">Dijeli</string>
@@ -285,11 +250,9 @@
 \nMoguća je nestabilnost ovih inačica, molimo ne ustručavajte se dati nam povratne informacije u slučaju problema s aplikacijom. One će nam pomoći poboljšati buduće inačice aplikacije.</string>
     <string name="auto_update">Automatsko ažuriranje</string>
     <string name="enable_auto_update">Omogući automatsko ažuriranje</string>
-    <string name="unlimited">Neograničeno</string>
     <string name="audio_format_preference">Preferirani format zvuka</string>
     <string name="audio_format">Audio format</string>
     <string name="enable_experimental_feature">Omogućiti eksperimentalne značajke\?</string>
-    <string name="auto_update_disabled_msg">Automatsko ažuriranje nije dostupno za %1$s inačice. Ako nemate %1$s instaliran na svom uređaju ili želite pregledati nadolazeće nove značajke u VRClip-u, razmislite o %2$s.</string>
     <string name="okay">U redu</string>
     <string name="got_it">Razumijem</string>
     <string name="expand">Proširi</string>
@@ -300,7 +263,6 @@
     <string name="clip_end">Kraj</string>
     <string name="update_channel">Kanal ažuriranja</string>
     <string name="clear_all_cookies_desc">Zauvijek izbrisati sve kolačiće pohranjene u aplikaciji\?</string>
-    <string name="feedback">Povratne informacije</string>
     <string name="ytdlp_update_action">Ažuriraj yt-dlp</string>
     <string name="disable">Onemogući</string>
     <string name="set_directory_desc">Dodirnite za postavljanje direktorija</string>
@@ -308,7 +270,6 @@
     <string name="disabled">Onemogućeno</string>
     <string name="folder_picker">Birač mapa</string>
     <string name="custom_command_directory_desc">Navedite izlazni direktorij kada koristite prilagođene naredbe</string>
-    <string name="format_preference">Postavke formata</string>
     <string name="proxy_desc">Koristite proksi za internetske veze</string>
     <string name="legacy">Zastario</string>
     <string name="quality">Kvaliteta</string>
@@ -317,7 +278,6 @@
     <string name="proxy">Proksi</string>
     <string name="download_type">Vrsta preuzimanja</string>
     <string name="custom">Prilagođen</string>
-    <string name="auto">Automatski</string>
     <string name="commands">Naredbe</string>
     <string name="learn_more">Saznaj više</string>
     <string name="unknown">Nepoznato</string>
@@ -340,14 +300,13 @@
     <string name="presets">Unaprijed postavljeno</string>
     <string name="output_template">Izlazni predložak</string>
     <string name="output_template_desc">Navedite predložak za nazive izlaznih datoteka</string>
-    <string name="clear_download_archive">Očistiti arhivu preuzimanja\?</string>
-    <string name="clear_download_archive_desc">Zauvijek ukloniti %1$s iz arhivske datoteke\?</string>
     <string name="download_archive_desc">Snimite ID-ove preuzetih videozapisa u arhivu kako biste izbjegli dvostruka preuzimanja</string>
     <string name="download_archive">Arhiva preuzimanja</string>
     <string name="embed_metadata">Ugradi metapodatke</string>
     <string name="embed_metadata_desc">Ugradite metapodatke i minijaturu videozapisa u audio datoteku</string>
-    <string name="required">Obavezno</string>
-    <string name="show_all_items">Prikaži sve predmete: %1$d</string>
+    <plurals name="show_all_items">
+        <item quantity="other">Prikaži sve predmete: %1$d</item>
+    </plurals>
     <string name="save">Spremi</string>
     <string name="use_format_sorting">Koristi sortiranje formata</string>
     <string name="edit_file">Uredite datoteku</string>
@@ -364,14 +323,12 @@
     <string name="dont_allow">Nemoj dozvoliti</string>
     <string name="allow_always">Dozvoli uvijek</string>
     <string name="merge_audiostream_desc">Dozvoli sjedinjavanje audio strimova u jednu datoteku</string>
-    <string name="download_with_cellular_request">Dozvoliti preuzimanje putem mobilnih podataka?</string>
     <string name="merge_audiostream">Sjedini audio strimove</string>
     <string name="auto_translated_subtitles">Automatski prevedeni titlovi</string>
     <string name="auto_translated_subtitles_msg">Automatski prevedeni titlovi za sve jezike će biti dostupni za preuzimanje. Ovi titlovi mogu biti netočni i teško razumljivi.</string>
     <string name="look_and_feel">Izgled i osjećaj</string>
     <string name="use_previous_selection">Koristi prethodni odabir</string>
     <string name="none">Ništa</string>
-    <string name="remember_for_next_download">Zapamti za sljedeće preuzimanje</string>
     <string name="subtitle_language_desc">Jezik titlova za preuzimanje u odabiru automatskog formata, odvojen zarezima.</string>
     <string name="reset">Resetiraj</string>
     <string name="search_in_subtitles">Traži u titlovima</string>
@@ -383,7 +340,9 @@
     <string name="clipboard">Međuspremnik</string>
     <string name="import_from">Uvezi iz</string>
     <string name="export_download_history_msg">Izvoz %1$s iz povijesti preuzimanja. Preuzete datoteke i postavke se neće sigurnosno kopirati.</string>
-    <string name="cookies_in_database">Ukupno %1$d kolačića od %2$d web stranica</string>
+    <plurals name="cookies_in_database">
+        <item quantity="other">Ukupno %1$d kolačića od %2$d web stranica</item>
+    </plurals>
     <string name="interface_and_interaction">Sučelje i interakcija</string>
     <string name="export_backup">Izvezi</string>
     <string name="import_backup">Uvezi</string>
@@ -394,7 +353,6 @@
     <string name="export_download_history">Izvesti povijest preuzimanja?</string>
     <string name="import_download_history">Uvesti povijest preuzimanja?</string>
     <string name="import_download_history_msg">Preuzete datoteke se neće uvesti. Morat ćete ih ponovo preuzeti ručno</string>
-    <string name="download_history">Povijest preuzimanja</string>
     <string name="every_day">Svaki dan</string>
     <string name="every_week">Svaki tjedan</string>
     <string name="every_month">Svaki mjesec</string>
@@ -408,19 +366,8 @@
     <string name="prefer_placeholder">Preferiraj %1$s</string>
     <string name="custom_format_selection_desc">Biraj iz formata, titlova i dodatno ih prilagodi</string>
     <string name="edit_preset">Uredi postavku</string>
-    <plurals name="video_count">
-        <item quantity="one">%d video</item>
-        <item quantity="few">%d videa</item>
-        <item quantity="other">%d videa</item>
-    </plurals>
-    <string name="task_added">Zadatak dodan u red</string>
     <string name="remux_container_mkv">Kontejner konvertiranog videa</string>
     <string name="remux_container_mkv_desc">Konvertiraj videa u MKV kontejner za bolju kompatibilnost</string>
-    <plurals name="audio_count">
-        <item quantity="one">%d audio snimka</item>
-        <item quantity="few">%d audio snimke</item>
-        <item quantity="other">%d audio snimki</item>
-    </plurals>
     <string name="preset_format_selection_desc">Preuzmi automatski koristeći tvoje postavke formata</string>
     <string name="best_quality_desc">Preuzmi najbolji dostupni format</string>
 </resources>

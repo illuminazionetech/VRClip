@@ -57,6 +57,8 @@ object ProjectionDetector {
     private val bare360 = Regex("(?<![\\dx])360(?![\\dp])")
     private val bare180 = Regex("(?<![\\dx])180(?![\\dp])")
     private val notSpherical = Regex("\\bxbox ?360\\b")
+    // "_360" / "-180" glued to the name is how cameras and VR sites tag exported files.
+    private val attachedTag = Regex("(?:^|[_-])(360|180)(?=[_-]|$)")
     private val tag3d = Regex("\\b3d\\b|\\bstereo(?:scopic)?\\b")
     private val explicitLr =
         Regex("\\b(?:h|f|half ?|full ?)?sbs\\b|\\bside ?by ?side\\b|\\b3dh\\b")
@@ -92,9 +94,11 @@ object ProjectionDetector {
                 .substringBeforeLast('.')
                 .lowercase()
                 .replace(separators, " ")
+        val raw = filePath.substringAfterLast('/').substringBeforeLast('.').lowercase()
+        val attached = if (raw.contains("xbox")) emptySet() else attachedTag.findAll(raw).map { it.groupValues[1] }.toSet()
         val cleaned = name.replace(notSpherical, " ")
-        val strong360 = strong360.containsMatchIn(cleaned)
-        val strong180 = !strong360 && strong180.containsMatchIn(cleaned)
+        val strong360 = "360" in attached || strong360.containsMatchIn(cleaned)
+        val strong180 = !strong360 && ("180" in attached || strong180.containsMatchIn(cleaned))
         val maybe360 = bare360.containsMatchIn(cleaned)
         val maybe180 = bare180.containsMatchIn(cleaned)
         val has3d = tag3d.containsMatchIn(cleaned)

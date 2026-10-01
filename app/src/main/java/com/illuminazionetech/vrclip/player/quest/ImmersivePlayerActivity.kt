@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.window.OnBackInvokedDispatcher
-import android.view.KeyEvent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
@@ -389,17 +388,6 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             )
         }
         finish()
-    }
-
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        // Controller buttons bring the control bar back if it was hidden.
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            when (event.keyCode) {
-                KeyEvent.KEYCODE_BUTTON_A,
-                KeyEvent.KEYCODE_BUTTON_X -> controlsEntity?.setComponent(Visible(true))
-            }
-        }
-        return super.dispatchKeyEvent(event)
     }
 
     override fun onPause() {

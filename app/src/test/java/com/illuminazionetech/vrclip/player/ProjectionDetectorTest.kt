@@ -15,11 +15,15 @@ class ProjectionDetectorTest {
         assertEquals(ProjectionMode.MONO_360, detect("walk_vr360.webm"))
         assertEquals(ProjectionMode.STEREO_180_LR, detect("concert_VR180_SBS.mp4"))
         assertEquals(ProjectionMode.STEREO_360_TB, detect("dive 360 3D TB.mp4"))
+        assertEquals(ProjectionMode.MONO_360, detect("maldive_360.mp4"))
+        assertEquals(ProjectionMode.STEREO_180_LR, detect("concerto_vr180_sbs.mp4"))
+        assertEquals(ProjectionMode.MONO_180, detect("walk-180.mp4"))
     }
 
     @Test
     fun bareNumbersNeedConfirmation() {
         assertEquals(ProjectionMode.FLAT, detect("Xbox 360 gameplay.mp4", FrameInfo(1920, 1080)))
+        assertEquals(ProjectionMode.FLAT, detect("Xbox_360_gameplay.mp4"))
         assertEquals(ProjectionMode.FLAT, detect("Top 180 songs.mp4"))
         assertEquals(ProjectionMode.FLAT, detect("Mountains 360.mp4"))
         // The frame shape confirms a bare "360".

@@ -32,5 +32,8 @@ Third-party components bundled or depended on by VRClip:
     TFLite export published by Qualcomm AI Hub (https://aihub.qualcomm.com/),
     or the identical copy kept in the depth-model release of this repository,
     and checks it against a fixed SHA-256.
+  - Space Grotesk (https://github.com/floriankarsten/space-grotesk): SIL Open
+    Font License 1.1, used only by the website in docs/ (license in
+    docs/assets/fonts/OFL.txt)
 
 None of the above imply endorsement by their respective authors.

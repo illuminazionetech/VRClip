@@ -29,7 +29,11 @@ Third-party components bundled or depended on by VRClip:
     depth model
   - Depth Anything V2 Small (https://github.com/DepthAnything/Depth-Anything-V2):
     Apache-2.0. The model is not bundled: on first use VRClip downloads the
-    TFLite export published by Qualcomm AI Hub (https://aihub.qualcomm.com/)
+    TFLite export published by Qualcomm AI Hub (https://aihub.qualcomm.com/),
+    or the identical copy kept in the depth-model release of this repository,
     and checks it against a fixed SHA-256.
+  - Space Grotesk (https://github.com/floriankarsten/space-grotesk): SIL Open
+    Font License 1.1, used only by the website in docs/ (license in
+    docs/assets/fonts/OFL.txt)
 
 None of the above imply endorsement by their respective authors.

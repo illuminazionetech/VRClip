@@ -1,8 +1,14 @@
 package com.illuminazionetech.vrclip.player
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,30 +20,38 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.ViewInAr
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
+import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,10 +62,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.player.gl.StereoOutputMode
@@ -74,6 +86,9 @@ enum class PlayerSheet {
 }
 
 private val speedPresets = listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 1.75f, 2f, 3f)
+private const val SPEED_MIN = 0.25f
+private const val SPEED_MAX = 3f
+private const val SPEED_STEP = 0.05f
 
 @Composable
 internal fun PlayerSheets(
@@ -87,26 +102,34 @@ internal fun PlayerSheets(
     onDeleted: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val haptics = rememberPlayerHaptics()
     when (sheet) {
         PlayerSheet.Projection ->
             PlayerBottomSheet(onDismiss) {
                 DrawerSheetSubtitle(text = stringResource(R.string.player_projection))
-                Column(Modifier.fillMaxWidth()) {
-                    val detected = state.detection.mode.displayName()
+                val detected = state.detection.mode.displayName()
+                val modes = ProjectionMode.entries
+                SegmentedGroup {
                     ChoiceRow(
+                        index = 0,
+                        count = modes.size + 1,
                         label = stringResource(R.string.player_projection_detected, detected),
                         supporting = detectionSourceLabel(state.detection.source),
                         selected = state.projectionOverride == null,
                         onClick = {
+                            haptics.tap()
                             viewModel.setProjectionOverride(null)
                             onDismiss()
                         },
                     )
-                    ProjectionMode.entries.forEach { mode ->
+                    modes.forEachIndexed { index, mode ->
                         ChoiceRow(
+                            index = index + 1,
+                            count = modes.size + 1,
                             label = mode.displayName(),
                             selected = state.projectionOverride == mode,
                             onClick = {
+                                haptics.tap()
                                 viewModel.setProjectionOverride(mode)
                                 onDismiss()
                             },
@@ -117,28 +140,46 @@ internal fun PlayerSheets(
 
         PlayerSheet.Tracks ->
             PlayerBottomSheet(onDismiss) {
-                Column(Modifier.fillMaxWidth()) {
-                    if (state.audioTracks.size > 1) {
-                        DrawerSheetSubtitle(text = stringResource(R.string.player_audio))
-                        state.audioTracks.forEach { option ->
+                if (state.audioTracks.size > 1) {
+                    DrawerSheetSubtitle(text = stringResource(R.string.player_audio))
+                    SegmentedGroup {
+                        state.audioTracks.forEachIndexed { index, option ->
                             ChoiceRow(
+                                index = index,
+                                count = state.audioTracks.size,
                                 label = option.label,
                                 selected = option.selected,
-                                onClick = { viewModel.selectTrack(option) },
+                                onClick = {
+                                    haptics.tap()
+                                    viewModel.selectTrack(option)
+                                },
                             )
                         }
                     }
-                    DrawerSheetSubtitle(text = stringResource(R.string.player_subtitles))
+                }
+                DrawerSheetSubtitle(text = stringResource(R.string.player_subtitles))
+                val count = state.textTracks.size + 1
+                SegmentedGroup {
                     ChoiceRow(
+                        index = 0,
+                        count = count,
                         label = stringResource(R.string.player_subtitles_off),
                         selected = state.subtitlesOff,
-                        onClick = viewModel::disableSubtitles,
+                        onClick = {
+                            haptics.tap()
+                            viewModel.disableSubtitles()
+                        },
                     )
-                    state.textTracks.forEach { option ->
+                    state.textTracks.forEachIndexed { index, option ->
                         ChoiceRow(
+                            index = index + 1,
+                            count = count,
                             label = option.label,
                             selected = option.selected,
-                            onClick = { viewModel.selectTrack(option) },
+                            onClick = {
+                                haptics.tap()
+                                viewModel.selectTrack(option)
+                            },
                         )
                     }
                 }
@@ -147,39 +188,28 @@ internal fun PlayerSheets(
         PlayerSheet.Speed ->
             PlayerBottomSheet(onDismiss) {
                 DrawerSheetSubtitle(text = stringResource(R.string.player_speed))
-                var value by remember { mutableFloatStateOf(state.speed) }
-                Text(
-                    text = stringResource(R.string.player_speed_value, speedLabel(value)),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                )
-                Slider(
-                    value = value,
-                    onValueChange = { value = (Math.round(it * 20) / 20f) },
-                    onValueChangeFinished = { viewModel.setSpeed(value) },
-                    valueRange = 0.25f..3f,
-                )
-                SpeedPresets(
-                    current = value,
-                    onSelect = {
-                        value = it
-                        viewModel.setSpeed(it)
-                    },
+                SpeedPicker(
+                    initial = state.speed,
+                    haptics = haptics,
+                    onPreview = { viewModel.setSpeed(it) },
                 )
             }
 
         PlayerSheet.StereoOutput ->
             PlayerBottomSheet(onDismiss) {
                 DrawerSheetSubtitle(text = stringResource(R.string.player_stereo_output))
-                Column(Modifier.fillMaxWidth()) {
-                    val options =
-                        if (state.renderProjection.isStereo) StereoOutputMode.entries
-                        else listOf(StereoOutputMode.SingleEye, StereoOutputMode.SplitScreen)
-                    options.forEach { mode ->
+                val options =
+                    if (state.renderProjection.isStereo) StereoOutputMode.entries
+                    else listOf(StereoOutputMode.SingleEye, StereoOutputMode.SplitScreen)
+                SegmentedGroup {
+                    options.forEachIndexed { index, mode ->
                         ChoiceRow(
+                            index = index,
+                            count = options.size,
                             label = mode.label(),
                             selected = state.stereoOutput == mode,
                             onClick = {
+                                haptics.tap()
                                 viewModel.setStereoOutput(mode)
                                 onDismiss()
                             },
@@ -190,32 +220,49 @@ internal fun PlayerSheets(
 
         PlayerSheet.More ->
             PlayerBottomSheet(onDismiss) {
-                Column(Modifier.fillMaxWidth()) {
-                    val canConvert =
-                        state.libraryId != null &&
-                            state.sourceProjection == ProjectionMode.FLAT &&
-                            state.videoPath?.startsWith("content://") == false
+                val canConvert =
+                    state.libraryId != null &&
+                        state.sourceProjection == ProjectionMode.FLAT &&
+                        state.videoPath?.startsWith("content://") == false
+                val actions = buildList {
                     if (canConvert) {
-                        ActionRow(Icons.Rounded.ViewInAr, stringResource(R.string.convert_to_3d)) {
-                            viewModel.pause()
-                            onOpenSheet(PlayerSheet.Convert)
-                        }
+                        add(
+                            Action(Icons.Rounded.ViewInAr, R.string.convert_to_3d) {
+                                viewModel.pause()
+                                onOpenSheet(PlayerSheet.Convert)
+                            }
+                        )
                     }
                     if (state.libraryId != null) {
-                        ActionRow(Icons.Rounded.Share, stringResource(R.string.share)) {
-                            onDismiss()
-                            onShare()
-                        }
-                        ActionRow(
-                            Icons.AutoMirrored.Rounded.OpenInNew,
-                            stringResource(R.string.player_open_externally),
-                        ) {
-                            onDismiss()
-                            viewModel.pause()
-                            onOpenExternally()
-                        }
-                        ActionRow(Icons.Rounded.Delete, stringResource(R.string.delete)) {
-                            onOpenSheet(PlayerSheet.Delete)
+                        add(
+                            Action(Icons.Rounded.Share, R.string.share) {
+                                onDismiss()
+                                onShare()
+                            }
+                        )
+                        add(
+                            Action(
+                                Icons.AutoMirrored.Rounded.OpenInNew,
+                                R.string.player_open_externally,
+                            ) {
+                                onDismiss()
+                                viewModel.pause()
+                                onOpenExternally()
+                            }
+                        )
+                        add(
+                            Action(Icons.Rounded.Delete, R.string.delete, destructive = true) {
+                                onOpenSheet(PlayerSheet.Delete)
+                            }
+                        )
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+                SegmentedGroup {
+                    actions.forEachIndexed { index, action ->
+                        ActionRow(index = index, count = actions.size, action = action) {
+                            haptics.tap()
+                            action.onClick()
                         }
                     }
                 }
@@ -228,9 +275,10 @@ internal fun PlayerSheets(
                 title = { Text(stringResource(R.string.player_delete_title)) },
                 text = { Text(stringResource(R.string.player_delete_desc)) },
                 confirmButton = {
-                    TextButton(
+                    Button(
                         onClick = {
-                            val id = state.libraryId ?: return@TextButton
+                            val id = state.libraryId ?: return@Button
+                            haptics.confirm()
                             viewModel.pause()
                             scope.launch {
                                 runCatching {
@@ -242,13 +290,21 @@ internal fun PlayerSheets(
                                 onDismiss()
                                 onDeleted()
                             }
-                        }
+                        },
+                        shapes = ButtonDefaults.shapes(),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error,
+                                contentColor = MaterialTheme.colorScheme.onError,
+                            ),
                     ) {
                         Text(stringResource(R.string.delete))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+                    TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
+                        Text(stringResource(R.string.cancel))
+                    }
                 },
             )
 
@@ -268,55 +324,170 @@ private fun PlayerBottomSheet(onDismiss: () -> Unit, content: @Composable () -> 
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
-        Column(modifier = Modifier.heightIn(max = 560.dp).verticalScroll(rememberScrollState())) {
+        Column(
+            modifier =
+                Modifier.heightIn(max = 560.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 16.dp)
+        ) {
             content()
         }
     }
 }
 
+/**
+ * Items of a segmented list: separate rounded tiles with a small gap, the group rounded at its
+ * ends.
+ */
+@Composable
+private fun SegmentedGroup(content: @Composable () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap)) { content() }
+}
+
 @Composable
 private fun ChoiceRow(
+    index: Int,
+    count: Int,
     label: String,
     selected: Boolean,
     onClick: () -> Unit,
     supporting: String? = null,
 ) {
-    ListItem(
-        modifier =
-            Modifier.fillMaxWidth()
-                .selectable(selected = selected, role = Role.RadioButton, onClick = onClick),
+    SegmentedListItem(
+        selected = selected,
+        onClick = onClick,
+        shapes = ListItemDefaults.segmentedShapes(index = index, count = count),
+        colors =
+            ListItemDefaults.segmentedColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                selectedContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            ),
         supportingContent = supporting?.let { { Text(it) } },
-        leadingContent = { RadioButton(selected = selected, onClick = null) },
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        trailingContent = {
+            AnimatedVisibility(
+                visible = selected,
+                enter = fadeIn() + scaleIn(initialScale = 0.4f),
+                exit = fadeOut() + scaleOut(targetScale = 0.4f),
+            ) {
+                Icon(Icons.Rounded.Check, contentDescription = null)
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text(label)
     }
 }
+
+private class Action(
+    val icon: ImageVector,
+    val label: Int,
+    val destructive: Boolean = false,
+    val onClick: () -> Unit,
+)
 
 @Composable
-private fun ActionRow(icon: ImageVector, label: String, onClick: () -> Unit) {
-    ListItem(
-        modifier = Modifier.fillMaxWidth().selectable(selected = false, onClick = onClick),
-        leadingContent = { Icon(icon, contentDescription = null) },
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+private fun ActionRow(index: Int, count: Int, action: Action, onClick: () -> Unit) {
+    val tint =
+        if (action.destructive) MaterialTheme.colorScheme.error
+        else MaterialTheme.colorScheme.onSurfaceVariant
+    SegmentedListItem(
+        onClick = onClick,
+        shapes = ListItemDefaults.segmentedShapes(index = index, count = count),
+        colors =
+            ListItemDefaults.segmentedColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
+            ),
+        leadingContent = { Icon(action.icon, contentDescription = null, tint = tint) },
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Text(label)
+        Text(
+            stringResource(action.label),
+            color =
+                if (action.destructive) MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.onSurface,
+        )
     }
 }
 
+/**
+ * Speed as a large value with step buttons, a slider for fine control and the common presets.
+ * Changes apply at once, so the effect can be heard while choosing.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SpeedPresets(current: Float, onSelect: (Float) -> Unit) {
-    FlowRow(
+private fun SpeedPicker(initial: Float, haptics: PlayerHaptics, onPreview: (Float) -> Unit) {
+    var value by remember { mutableFloatStateOf(initial) }
+    fun set(next: Float, fromSlider: Boolean = false) {
+        val rounded = (Math.round(next / SPEED_STEP) * SPEED_STEP).coerceIn(SPEED_MIN, SPEED_MAX)
+        if (rounded == value) return
+        // A tick at every quarter step while sliding, a firmer one for buttons and presets.
+        if (fromSlider) {
+            if ((rounded * 4).toInt() != (value * 4).toInt()) haptics.tick()
+        } else {
+            haptics.step()
+        }
+        value = rounded
+        onPreview(rounded)
+    }
+    Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        FilledTonalIconButton(
+            onClick = { set(value - SPEED_STEP) },
+            enabled = value > SPEED_MIN,
+            shapes = IconButtonDefaults.shapes(),
+            modifier = Modifier.size(IconButtonDefaults.mediumContainerSize()),
+        ) {
+            Icon(Icons.Rounded.Remove, contentDescription = stringResource(R.string.player_slower))
+        }
+        AnimatedContent(
+            targetState = value,
+            transitionSpec = {
+                val up = targetState > initialState
+                (slideInVertically { if (up) it else -it } + fadeIn()) togetherWith
+                    (slideOutVertically { if (up) -it else it } + fadeOut())
+            },
+            label = "speedValue",
+        ) {
+            Text(
+                text = stringResource(R.string.player_speed_value, speedLabel(it)),
+                style = MaterialTheme.typography.displaySmall.copy(fontFeatureSettings = "tnum"),
+            )
+        }
+        FilledTonalIconButton(
+            onClick = { set(value + SPEED_STEP) },
+            enabled = value < SPEED_MAX,
+            shapes = IconButtonDefaults.shapes(),
+            modifier = Modifier.size(IconButtonDefaults.mediumContainerSize()),
+        ) {
+            Icon(Icons.Rounded.Add, contentDescription = stringResource(R.string.player_faster))
+        }
+    }
+    Slider(
+        value = value,
+        onValueChange = { set(it, fromSlider = true) },
+        valueRange = SPEED_MIN..SPEED_MAX,
+    )
+    FlowRow(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         speedPresets.forEach { speed ->
-            FilterChip(
-                selected = current == speed,
-                onClick = { onSelect(speed) },
-                label = { Text(stringResource(R.string.player_speed_value, speedLabel(speed))) },
-            )
+            ToggleButton(
+                checked = value == speed,
+                onCheckedChange = { set(speed) },
+                shapes = ToggleButtonDefaults.shapesFor(40.dp),
+                modifier = Modifier.height(40.dp),
+            ) {
+                Text(
+                    stringResource(R.string.player_speed_value, speedLabel(speed)),
+                    style = MaterialTheme.typography.labelLarge.copy(fontFeatureSettings = "tnum"),
+                )
+            }
         }
     }
 }
@@ -344,9 +515,11 @@ internal fun Live3dMessages(state: PlayerUiState, viewModel: PlayerViewModel) {
             },
         )
     }
+    val haptics = rememberPlayerHaptics()
     var showFailure by remember { mutableStateOf(false) }
     LaunchedEffect(state.live3d) {
         if (state.live3d == Live3dState.Failed) {
+            haptics.reject()
             showFailure = true
             delay(4_000)
             showFailure = false
@@ -356,8 +529,8 @@ internal fun Live3dMessages(state: PlayerUiState, viewModel: PlayerViewModel) {
     Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
         AnimatedVisibility(
             visible = showFailure,
-            enter = fadeIn(),
-            exit = fadeOut(),
+            enter = fadeIn() + slideInVertically { -it },
+            exit = fadeOut() + slideOutVertically { -it },
             modifier =
                 Modifier.align(Alignment.TopCenter)
                     .padding(top = 72.dp, start = 24.dp, end = 24.dp),

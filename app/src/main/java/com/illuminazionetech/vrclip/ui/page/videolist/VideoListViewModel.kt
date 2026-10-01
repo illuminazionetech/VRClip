@@ -53,8 +53,14 @@ class VideoListViewModel : ViewModel() {
                 }
         }
 
+    /** Sites in the library, most used first, so the filter chips keep a stable order. */
     val filterSetFlow = searchedVideoListFlow.map { infoList ->
-        mutableSetOf<String>().apply { infoList.forEach { this.add(it.extractor) } }
+        infoList
+            .groupingBy { it.extractor }
+            .eachCount()
+            .entries
+            .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+            .mapTo(LinkedHashSet()) { it.key }
     }
 
     val fileSizeMapFlow =

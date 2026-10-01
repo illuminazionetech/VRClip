@@ -66,7 +66,8 @@ Not yet produced, placeholders to fill before submission:
 Published at [illuminazionetech.github.io/VRClip/privacy.html](https://illuminazionetech.github.io/VRClip/privacy.html)
 in English and Italian (source: `docs/privacy.html`). It lists everything the app connects to:
 the sites of the links the user provides, GitHub for app and yt-dlp updates, and Qualcomm AI
-Hub's public storage once, to download the depth model for 2D to 3D. No analytics, advertising
+Hub's public storage once, to download the depth model for 2D to 3D (or, if that fails, the
+identical copy in VRClip's GitHub releases). No analytics, advertising
 or tracking libraries are included, and there are no accounts.
 
 ## Data safety declaration (draft)

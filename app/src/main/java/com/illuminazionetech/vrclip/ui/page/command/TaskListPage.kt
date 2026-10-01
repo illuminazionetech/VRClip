@@ -39,10 +39,8 @@ import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -66,6 +64,7 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.database.objects.CommandTemplate
 import com.illuminazionetech.vrclip.download.CommandTaskManager
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
+import com.illuminazionetech.vrclip.ui.common.MorphingShapeBox
 import com.illuminazionetech.vrclip.ui.common.intState
 import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.ClearButton
@@ -259,12 +258,12 @@ private fun CommandsEmptyState(onRunCommand: () -> Unit) {
         modifier = Modifier.fillMaxWidth().padding(top = 56.dp, bottom = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(modifier = Modifier.size(144.dp), contentAlignment = Alignment.Center) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                shape = MaterialShapes.SoftBurst.toShape(),
-                color = MaterialTheme.colorScheme.secondaryContainer,
-            ) {}
+        MorphingShapeBox(
+            shape = MaterialShapes.SoftBurst,
+            color = MaterialTheme.colorScheme.secondaryContainer,
+            idleSpin = true,
+            modifier = Modifier.size(144.dp),
+        ) {
             Icon(
                 imageVector = Icons.Rounded.Terminal,
                 contentDescription = null,

@@ -37,6 +37,7 @@ import com.meta.spatial.core.Pose
 import com.meta.spatial.core.Quaternion
 import com.meta.spatial.core.SpatialFeature
 import com.meta.spatial.core.Vector3
+import com.meta.spatial.runtime.LayerFilters
 import com.meta.spatial.runtime.ReferenceSpace
 import com.meta.spatial.runtime.StereoMode
 import com.meta.spatial.toolkit.AppSystemActivity
@@ -332,9 +333,17 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             }
         return MediaPanelSettings(
             shape = shape,
-            // The swapchain must match the video: a smaller one would blur the picture.
             display = PixelDisplayOptions(width = config.width, height = config.height),
-            rendering = MediaPanelRenderOptions(stereoMode = stereo),
+            rendering =
+                MediaPanelRenderOptions(
+                    stereoMode = stereo,
+                    // Layers are composited in order, not by depth: keep the video behind the
+                    // control bar and the controller rays, as Meta's media sample does.
+                    zIndex = -1,
+                    // A large video downscaled onto the screen shimmers without supersampling.
+                    layerFilters =
+                        if (config.mode.isSpherical) 0 else LayerFilters.QUALITY_SUPER_SAMPLING,
+                ),
         )
     }
 
@@ -424,8 +433,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         private const val SCREEN_WIDTH = 3.2f
         private const val SCREEN_DISTANCE = 3f
         private const val SPHERE_RADIUS = 50f
-        private const val CONTROLS_WIDTH = 1.1f
-        private const val CONTROLS_HEIGHT = 0.24f
+        private const val CONTROLS_WIDTH = 1.2f
+        private const val CONTROLS_HEIGHT = 0.3f
         private const val CONTROLS_DP_PER_METER = 900f
     }
 }

@@ -1,65 +1,102 @@
 package com.illuminazionetech.vrclip.player.stereo
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.storage.StorageManager
 import android.util.Log
 import com.illuminazionetech.vrclip.BuildConfig
 import java.io.File
-import java.io.IOException
-import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
-import java.util.zip.ZipInputStream
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Request
 
 /**
  * The depth estimation model used for 2D to 3D conversion: Depth Anything V2 Small (Apache-2.0
  * weights), as exported to TFLite by Qualcomm AI Hub (518x518 RGB in 0..1, relative inverse depth
- * out). It is about 95 MB, so it is not bundled in the APK: it is downloaded on first use from a
- * versioned URL and only accepted if its SHA-256 matches the value pinned here.
+ * out). It is about 99 MB, so it is not bundled in the APK: it is downloaded on first use and only
+ * accepted if its SHA-256 matches the value pinned here.
+ *
+ * The download runs as a foreground [DepthModelWorker] ([start]), so it survives leaving the app;
+ * it resumes where it stopped and falls back to a second source (see [ModelDownloader]).
  */
-class DepthModelManager private constructor(context: Context) {
+class DepthModelManager private constructor(private val context: Context) {
 
     sealed interface State {
         data object NotInstalled : State
+
+        /** Waiting for the background job to start. */
+        data object Queued : State
 
         data class Downloading(val downloadedBytes: Long, val totalBytes: Long) : State {
             val progress: Float
                 get() = if (totalBytes > 0) downloadedBytes.toFloat() / totalBytes else -1f
         }
 
+        data object Verifying : State
+
         data object Installed : State
 
-        data class Failed(val corrupted: Boolean) : State
+        data class Failed(val reason: Reason) : State
+    }
+
+    enum class Reason {
+        Network,
+        NoSpace,
+        Corrupted,
     }
 
     private val directory = File(context.noBackupFilesDir, "models")
     val modelFile = File(directory, MODEL_FILE_NAME)
 
     private val mutableState =
-        MutableStateFlow<State>(if (modelFile.isFile) State.Installed else State.NotInstalled)
+        MutableStateFlow<State>(if (isReady()) State.Installed else State.NotInstalled)
     val state: StateFlow<State> = mutableState.asStateFlow()
 
     private val mutex = Mutex()
 
-    private val client by lazy {
-        OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .followRedirects(true)
-            .build()
+    init {
+        // Left behind by versions before 1.3, which downloaded without resuming.
+        File(directory, "$MODEL_FILE_NAME.part").delete()
+    }
+
+    private val downloader by lazy {
+        ModelDownloader(
+            client =
+                OkHttpClient.Builder()
+                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(45, TimeUnit.SECONDS)
+                    .followRedirects(true)
+                    .retryOnConnectionFailure(true)
+                    .build(),
+            workDir = File(directory, "download"),
+            userAgent = "VRClip/${BuildConfig.VERSION_NAME}",
+            freeBytes = ::freeBytes,
+        )
     }
 
     fun isReady(): Boolean = modelFile.isFile && modelFile.length() == MODEL_BYTES
+
+    /**
+     * Starts the download in the background, with a progress notification. Returns immediately;
+     * follow [state]. Does nothing when the model is installed or a download is running.
+     */
+    fun start() {
+        if (isReady()) {
+            mutableState.value = State.Installed
+            return
+        }
+        val current = mutableState.value
+        if (current is State.Downloading || current is State.Verifying) return
+        mutableState.value = State.Queued
+        DepthModelWorker.enqueue(context)
+    }
 
     /** Downloads, unpacks and verifies the model. Safe to call again; returns true when ready. */
     suspend fun download(): Boolean = mutex.withLock {
@@ -69,26 +106,58 @@ class DepthModelManager private constructor(context: Context) {
         }
         withContext(Dispatchers.IO) {
             try {
-                fetch()
+                mutableState.value = State.Downloading(0, SOURCES.first().downloadBytes)
+                downloader.fetch(
+                    sources = SOURCES,
+                    target = modelFile,
+                    expectedBytes = MODEL_BYTES,
+                    expectedSha256 = MODEL_SHA256,
+                    onProgress = { done, total ->
+                        mutableState.value = State.Downloading(done, total)
+                    },
+                    onVerifying = { mutableState.value = State.Verifying },
+                )
                 mutableState.value = State.Installed
                 true
             } catch (e: CancellationException) {
                 mutableState.value = State.NotInstalled
                 throw e
-            } catch (e: CorruptedModelException) {
-                Log.w(TAG, "Depth model failed verification", e)
-                mutableState.value = State.Failed(corrupted = true)
+            } catch (e: ModelDownloader.Failure) {
+                Log.w(TAG, "Depth model download failed (${e.kind})", e)
+                mutableState.value =
+                    State.Failed(
+                        when (e.kind) {
+                            ModelDownloader.Kind.Network -> Reason.Network
+                            ModelDownloader.Kind.NoSpace -> Reason.NoSpace
+                            ModelDownloader.Kind.Corrupted -> Reason.Corrupted
+                        }
+                    )
                 false
             } catch (e: Exception) {
                 Log.w(TAG, "Depth model download failed", e)
-                mutableState.value = State.Failed(corrupted = false)
+                mutableState.value = State.Failed(Reason.Network)
                 false
             }
         }
     }
 
+    /** Called when the background job could not even start (for example, it was cancelled). */
+    internal fun onJobStopped() {
+        val current = mutableState.value
+        if (current is State.Queued || current is State.Downloading) {
+            mutableState.value = if (isReady()) State.Installed else State.NotInstalled
+        }
+    }
+
+    fun cancel() {
+        DepthModelWorker.cancel(context)
+        onJobStopped()
+    }
+
     fun delete() {
+        cancel()
         modelFile.delete()
+        File(directory, "download").deleteRecursively()
         mutableState.value = State.NotInstalled
     }
 
@@ -98,93 +167,43 @@ class DepthModelManager private constructor(context: Context) {
         }
     }
 
-    private suspend fun fetch() {
+    private fun freeBytes(): Long {
         directory.mkdirs()
-        val partial = File(directory, "$MODEL_FILE_NAME.part")
-        partial.delete()
-        val request =
-            Request.Builder()
-                .url(DOWNLOAD_URL)
-                .header("User-Agent", "VRClip/${BuildConfig.VERSION_NAME}")
-                .build()
-        mutableState.value = State.Downloading(0, DOWNLOAD_BYTES)
-        val digest = MessageDigest.getInstance("SHA-256")
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
-            val body = response.body
-            val total = body.contentLength().takeIf { it > 0 } ?: DOWNLOAD_BYTES
-            val counting = CountingInputStream(body.byteStream())
-            ZipInputStream(counting).use { zip ->
-                var found = false
-                while (true) {
-                    val entry = zip.nextEntry ?: break
-                    if (entry.isDirectory || !entry.name.endsWith(".tflite")) continue
-                    found = true
-                    partial.outputStream().use { output ->
-                        val buffer = ByteArray(128 * 1024)
-                        var lastReported = 0L
-                        while (currentCoroutineContext().isActive) {
-                            val read = zip.read(buffer)
-                            if (read == -1) break
-                            output.write(buffer, 0, read)
-                            digest.update(buffer, 0, read)
-                            if (counting.count - lastReported >= 512 * 1024) {
-                                lastReported = counting.count
-                                mutableState.value = State.Downloading(counting.count, total)
-                            }
-                        }
-                    }
-                    break
-                }
-                if (!found) throw CorruptedModelException("no model in the archive")
-            }
-        }
-        currentCoroutineContext().ensureActiveOrDelete(partial)
-        val hash = digest.digest().joinToString("") { "%02x".format(it) }
-        if (hash != MODEL_SHA256 || partial.length() != MODEL_BYTES) {
-            partial.delete()
-            throw CorruptedModelException("hash $hash, size ${partial.length()}")
-        }
-        modelFile.delete()
-        if (!partial.renameTo(modelFile)) throw IOException("cannot move the model into place")
-    }
-
-    private fun kotlin.coroutines.CoroutineContext.ensureActiveOrDelete(file: File) {
-        if (!isActive) {
-            file.delete()
-            throw CancellationException("download cancelled")
-        }
-    }
-
-    private class CorruptedModelException(message: String) : IOException(message)
-
-    private class CountingInputStream(private val source: java.io.InputStream) :
-        java.io.FilterInputStream(source) {
-        var count = 0L
-            private set
-
-        override fun read(): Int = super.read().also { if (it >= 0) count++ }
-
-        override fun read(b: ByteArray, off: Int, len: Int): Int =
-            super.read(b, off, len).also { if (it > 0) count += it }
-
-        override fun skip(n: Long): Long = super.skip(n).also { count += it }
+        val storage = context.getSystemService(StorageManager::class.java)
+        return runCatching { storage.getAllocatableBytes(storage.getUuidForPath(directory)) }
+            .getOrElse { directory.usableSpace }
     }
 
     companion object {
         private const val TAG = "DepthModelManager"
         private const val MODEL_FILE_NAME = "depth_anything_v2_small_518.tflite"
 
-        /** Qualcomm AI Hub Models release 0.63.0, float TFLite export. */
+        /** Qualcomm AI Hub Models release 0.63.0, float TFLite export (a zip archive). */
         const val DOWNLOAD_URL =
             "https://qaihub-public-assets.s3.us-west-2.amazonaws.com/qai-hub-models/models/" +
                 "depth_anything_v2/releases/v0.63.0/depth_anything_v2-tflite-float.zip"
         const val DOWNLOAD_BYTES = 91_864_237L
+
+        /**
+         * The same model file, published by VRClip's CI as an asset of the `depth-model` release
+         * after checking it against [MODEL_SHA256]. Used when the first source cannot be reached.
+         */
+        const val MIRROR_URL =
+            "https://github.com/illuminazionetech/VRClip/releases/download/depth-model/" +
+                MODEL_FILE_NAME
+
         const val MODEL_BYTES = 98_920_480L
         const val MODEL_SHA256 = "b40c1b6365033c127dbba693e499bacd56f59eba53def9d4bfa4a26e8778bea7"
         const val INPUT_SIZE = 518
 
-        @Volatile private var instance: DepthModelManager? = null
+        private val SOURCES =
+            listOf(
+                ModelDownloader.ZipSource(DOWNLOAD_URL, DOWNLOAD_BYTES, entrySuffix = ".tflite"),
+                ModelDownloader.FileSource(MIRROR_URL, MODEL_BYTES),
+            )
+
+        // Holds the application context only (see get), which lives as long as the process.
+        @SuppressLint("StaticFieldLeak") @Volatile private var instance: DepthModelManager? = null
 
         fun get(context: Context): DepthModelManager =
             instance

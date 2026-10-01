@@ -179,7 +179,7 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
         rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     val showDirectoryAlert =
         Build.VERSION.SDK_INT >= 30 &&
-            !Environment.isExternalStorageManager() &&
+            !StorageUtil.isStorageAccessGranted(context) &&
             (!audioDirectoryText.isValidDirectory() ||
                 !videoDirectoryText.isValidDirectory() ||
                 !customCommandDirectory.isValidDirectory())

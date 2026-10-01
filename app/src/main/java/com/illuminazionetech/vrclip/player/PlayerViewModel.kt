@@ -3,9 +3,13 @@
 package com.illuminazionetech.vrclip.player
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.view.Surface
 import androidx.annotation.OptIn
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,6 +51,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -60,6 +65,17 @@ sealed interface PlayerSource {
     /** A file handed over by another app ("Open with"). */
     data class External(val uri: Uri, val title: String?) : PlayerSource
 }
+
+/** A still from the video, shown above the seek bar while scrubbing. */
+class PreviewFrame(val positionMs: Long, val image: ImageBitmap)
+
+/** What a scrub preview needs, read from the player on its own thread. */
+private class PreviewRequest(
+    val uri: Uri,
+    val positionMs: Long,
+    val aspect: Float,
+    val projection: ProjectionMode,
+)
 
 data class TrackOption(
     val group: Tracks.Group,
@@ -166,6 +182,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     private var tickerJob: Job? = null
     private var lastSavedPosition = -1L
 
+    private val previewRequests = MutableStateFlow<PreviewRequest?>(null)
+    private val mutablePreview = MutableStateFlow<PreviewFrame?>(null)
+    val preview: StateFlow<PreviewFrame?> = mutablePreview.asStateFlow()
+
+    /** Guards the retriever, which is used on a background thread and released on the main one. */
+    private val previewLock = Any()
+    private var previewRetriever: MediaMetadataRetriever? = null
+    private var previewUri: Uri? = null
+    private var previewClosed = false
+
     private val listener =
         object : Player.Listener {
             override fun onEvents(player: Player, events: Player.Events) {
@@ -206,6 +232,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         }
 
     init {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Only the latest request matters while the finger moves; each one waits for the
+            // previous decode, since a retriever is not thread safe.
+            previewRequests.collectLatest { request ->
+                if (request == null) {
+                    mutablePreview.value = null
+                    return@collectLatest
+                }
+                delay(PREVIEW_DEBOUNCE_MS)
+                val frame = runCatching { decodePreview(request) }.getOrNull()
+                if (frame != null) mutablePreview.value = frame
+            }
+        }
         viewModelScope.launch {
             LiveStereoStatus.state.collect { status ->
                 val live = mutableState.value.live3d
@@ -657,6 +696,86 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    // region Scrub preview
+
+    /**
+     * Asks for a still at [positionMs] for the scrub preview; null hides it. Called on the main
+     * thread, where the player may be read; the frame is decoded in the background.
+     */
+    fun requestPreview(positionMs: Long?) {
+        val uri = player.currentMediaItem?.localConfiguration?.uri
+        previewRequests.value =
+            if (positionMs == null || uri == null) null
+            else {
+                val current = mutableState.value
+                PreviewRequest(
+                    uri = uri,
+                    positionMs = positionMs,
+                    aspect = current.frame?.aspect?.takeIf { it > 0f } ?: (16f / 9f),
+                    projection = current.sourceProjection,
+                )
+            }
+    }
+
+    private fun decodePreview(request: PreviewRequest): PreviewFrame? =
+        synchronized(previewLock) {
+            if (previewClosed) return null
+            val retriever =
+                previewRetriever?.takeIf { previewUri == request.uri }
+                    ?: MediaMetadataRetriever().also {
+                        previewRetriever?.release()
+                        previewRetriever = null
+                        it.setDataSource(getApplication(), request.uri)
+                        previewRetriever = it
+                        previewUri = request.uri
+                    }
+            val width = PREVIEW_DECODE_WIDTH
+            val height = (width / request.aspect).toInt().coerceAtLeast(1)
+            val bitmap =
+                retriever.getScaledFrameAtTime(
+                    request.positionMs * 1000,
+                    MediaMetadataRetriever.OPTION_CLOSEST_SYNC,
+                    width,
+                    height,
+                ) ?: return null
+            PreviewFrame(
+                request.positionMs,
+                cropToView(bitmap, request.projection).asImageBitmap(),
+            )
+        }
+
+    /** The part of a frame a viewer would look at: one eye, and the front of a 360/180 video. */
+    private fun cropToView(bitmap: Bitmap, mode: ProjectionMode): Bitmap {
+        var left = 0f
+        var top = 0f
+        var right = 1f
+        var bottom = 1f
+        when (mode.stereoLayout) {
+            StereoLayout.LeftRight -> right = 0.5f
+            StereoLayout.TopBottom -> bottom = 0.5f
+            StereoLayout.None -> Unit
+        }
+        if (mode.isSpherical) {
+            // The middle of an equirectangular frame is straight ahead; keep roughly the
+            // field of view of a phone held in landscape.
+            val w = right - left
+            val h = bottom - top
+            val keepW = if (mode.is360) 0.3f else 0.55f
+            left += w * (1 - keepW) / 2
+            right -= w * (1 - keepW) / 2
+            top += h * 0.2f
+            bottom -= h * 0.2f
+        }
+        if (left == 0f && top == 0f && right == 1f && bottom == 1f) return bitmap
+        val x = (left * bitmap.width).toInt()
+        val y = (top * bitmap.height).toInt()
+        val w = ((right - left) * bitmap.width).toInt().coerceAtLeast(1)
+        val h = ((bottom - top) * bitmap.height).toInt().coerceAtLeast(1)
+        return Bitmap.createBitmap(bitmap, x, y, w, h)
+    }
+
+    // endregion
+
     /** Stores where playback is, or clears it once the video has been watched to the end. */
     fun savePosition() {
         val id = info?.id ?: return
@@ -675,6 +794,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
 
     override fun onCleared() {
         savePosition()
+        synchronized(previewLock) {
+            previewClosed = true
+            previewRetriever?.release()
+            previewRetriever = null
+        }
         player.removeListener(listener)
         session.release()
         player.release()
@@ -683,6 +807,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     companion object {
         private val sessionCounter = java.util.concurrent.atomic.AtomicInteger()
         const val SEEK_STEP_MS = 10_000L
+        private const val PREVIEW_DEBOUNCE_MS = 40L
+        private const val PREVIEW_DECODE_WIDTH = 384
         private const val TICK_MS = 250L
         private const val SAVE_INTERVAL_MS = 5_000L
         private const val MIN_RESUME_MS = 5_000L

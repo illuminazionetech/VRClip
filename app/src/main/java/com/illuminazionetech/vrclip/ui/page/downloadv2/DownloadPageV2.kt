@@ -12,7 +12,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -60,7 +59,6 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.toShape
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -107,6 +105,7 @@ import com.illuminazionetech.vrclip.download.Task.DownloadState.Running
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
+import com.illuminazionetech.vrclip.ui.common.MorphingShapeBox
 import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
 import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
@@ -699,15 +698,12 @@ private fun QueueEmptyState(
         modifier = modifier.fillMaxWidth().padding(top = 48.dp, bottom = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
+        MorphingShapeBox(
+            shape = MaterialShapes.Cookie9Sided,
+            color = MaterialTheme.colorScheme.primaryContainer,
+            idleSpin = true,
             modifier = Modifier.size(144.dp),
-            contentAlignment = Alignment.Center,
         ) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                shape = MaterialShapes.Cookie9Sided.toShape(),
-                color = MaterialTheme.colorScheme.primaryContainer,
-            ) {}
             Icon(
                 imageVector = if (filtered) Icons.Rounded.Inbox else Icons.Rounded.CloudDownload,
                 contentDescription = null,

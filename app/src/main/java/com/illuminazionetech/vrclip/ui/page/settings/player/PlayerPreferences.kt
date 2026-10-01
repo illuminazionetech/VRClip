@@ -1,5 +1,10 @@
 package com.illuminazionetech.vrclip.ui.page.settings.player
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -37,7 +42,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.player.stereo.DepthModelDialog
 import com.illuminazionetech.vrclip.player.stereo.DepthModelManager
+import com.illuminazionetech.vrclip.player.stereo.DepthModelStatus
 import com.illuminazionetech.vrclip.player.stereo.StereoSettings
+import com.illuminazionetech.vrclip.player.stereo.isBusy
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
@@ -58,6 +66,7 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
     val context = LocalContext.current
     val model = remember { DepthModelManager.get(context) }
     val modelState by model.state.collectAsStateWithLifecycle()
+    val isVR = LocalIsVRMode.current
 
     var questImmersive by remember { mutableStateOf(PLAYER_QUEST_IMMERSIVE.getBoolean(true)) }
     var questPassthrough by remember {
@@ -81,60 +90,64 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
         },
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-            item { PreferenceSubtitle(text = stringResource(R.string.player_settings_title)) }
-            item {
-                PreferenceSwitch(
-                    title = stringResource(R.string.player_gyro_default),
-                    description = stringResource(R.string.player_gyro_default_desc),
-                    icon = Icons.Rounded.ScreenRotationAlt,
-                    isChecked = gyro,
-                    onClick = {
-                        gyro = !gyro
-                        PreferenceUtil.updateValue(PLAYER_GYRO, gyro)
-                    },
-                )
-            }
-            item {
-                PreferenceSwitch(
-                    title = stringResource(R.string.player_default_cardboard),
-                    description = stringResource(R.string.player_default_cardboard_desc),
-                    icon = Icons.Rounded.ViewInAr,
-                    isChecked = cardboardDefault,
-                    onClick = {
-                        cardboardDefault = !cardboardDefault
-                        PreferenceUtil.updateValue(PLAYER_CARDBOARD_DEFAULT, cardboardDefault)
-                    },
-                )
+            if (!isVR) {
+                item { PreferenceSubtitle(text = stringResource(R.string.player_settings_title)) }
+                item {
+                    PreferenceSwitch(
+                        title = stringResource(R.string.player_gyro_default),
+                        description = stringResource(R.string.player_gyro_default_desc),
+                        icon = Icons.Rounded.ScreenRotationAlt,
+                        isChecked = gyro,
+                        onClick = {
+                            gyro = !gyro
+                            PreferenceUtil.updateValue(PLAYER_GYRO, gyro)
+                        },
+                    )
+                }
+                item {
+                    PreferenceSwitch(
+                        title = stringResource(R.string.player_default_cardboard),
+                        description = stringResource(R.string.player_default_cardboard_desc),
+                        icon = Icons.Rounded.ViewInAr,
+                        isChecked = cardboardDefault,
+                        onClick = {
+                            cardboardDefault = !cardboardDefault
+                            PreferenceUtil.updateValue(PLAYER_CARDBOARD_DEFAULT, cardboardDefault)
+                        },
+                    )
+                }
             }
 
-            item { PreferenceSubtitle(text = "Meta Quest") }
-            item {
-                PreferenceSwitch(
-                    title = stringResource(R.string.player_default_immersive_quest),
-                    description = stringResource(R.string.player_default_immersive_quest_desc),
-                    icon = Icons.Rounded.Vrpano,
-                    isChecked = questImmersive,
-                    onClick = {
-                        questImmersive = !questImmersive
-                        PreferenceUtil.updateValue(PLAYER_QUEST_IMMERSIVE, questImmersive)
-                    },
-                )
-            }
-            item {
-                PreferenceSwitch(
-                    title = stringResource(R.string.player_default_passthrough),
-                    description = stringResource(R.string.player_default_passthrough_desc),
-                    icon = Icons.Rounded.Public,
-                    isChecked = questPassthrough,
-                    enabled = questImmersive,
-                    onClick = {
-                        questPassthrough = !questPassthrough
-                        PreferenceUtil.updateValue(
-                            PLAYER_QUEST_PASSTHROUGH_DEFAULT,
-                            questPassthrough,
-                        )
-                    },
-                )
+            if (isVR) {
+                item { PreferenceSubtitle(text = "Meta Quest") }
+                item {
+                    PreferenceSwitch(
+                        title = stringResource(R.string.player_default_immersive_quest),
+                        description = stringResource(R.string.player_default_immersive_quest_desc),
+                        icon = Icons.Rounded.Vrpano,
+                        isChecked = questImmersive,
+                        onClick = {
+                            questImmersive = !questImmersive
+                            PreferenceUtil.updateValue(PLAYER_QUEST_IMMERSIVE, questImmersive)
+                        },
+                    )
+                }
+                item {
+                    PreferenceSwitch(
+                        title = stringResource(R.string.player_default_passthrough),
+                        description = stringResource(R.string.player_default_passthrough_desc),
+                        icon = Icons.Rounded.Public,
+                        isChecked = questPassthrough,
+                        enabled = questImmersive,
+                        onClick = {
+                            questPassthrough = !questPassthrough
+                            PreferenceUtil.updateValue(
+                                PLAYER_QUEST_PASSTHROUGH_DEFAULT,
+                                questPassthrough,
+                            )
+                        },
+                    )
+                }
             }
 
             item { PreferenceSubtitle(text = stringResource(R.string.stereo_settings)) }
@@ -190,6 +203,18 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
                         } else null,
                     onClick = { if (!installed) showModelDialog = true },
                 )
+            }
+            item {
+                AnimatedVisibility(
+                    visible = modelState.isBusy() || modelState is DepthModelManager.State.Failed,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    DepthModelStatus(
+                        state = modelState,
+                        modifier = Modifier.padding(start = 64.dp, end = 24.dp, bottom = 16.dp),
+                    )
+                }
             }
         }
     }

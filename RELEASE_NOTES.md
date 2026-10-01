@@ -1,5 +1,53 @@
 # Release notes
 
+## 1.3.0 - Reliable 3D model download, expressive player and a new website
+
+### 2D to 3D
+- The depth model download no longer starts over or stops with a generic error. It runs in the
+  background with a progress notification and a Cancel button, keeps going when you leave the
+  app, resumes after a dropped connection, retries, and checks free space before it starts.
+  When it fails it says why: no connection, not enough space, or a file that did not pass the
+  check.
+- If Qualcomm AI Hub cannot be reached, the same model is downloaded from VRClip's GitHub
+  releases and checked against the same SHA-256.
+- The player settings and the model dialog show the download as it runs, with size and
+  percentage.
+
+### Player
+- New controls built on Material 3 Expressive: a play button that changes shape while playing,
+  seek buttons that spin with the jump, a seek bar that shows the buffered range and a still of
+  the frame under your finger while you scrub, and the secondary actions in a floating toolbar.
+  Tap the duration to see the remaining time.
+- Haptic feedback follows the same rules everywhere: ticks for buttons and while scrubbing,
+  clicks for toggles, a stronger bump when a long press or a drag takes hold and when
+  brightness or volume reaches its end.
+- The speed sheet has step buttons and presets and applies the speed as you change it; track
+  and projection sheets mark the current choice; deleting a video asks for confirmation.
+- Controls over the video are easier to read on bright scenes, and the resume message no longer
+  covers the seek buttons.
+- On phones the player settings show only phone options; Meta Quest options appear only on
+  Meta Quest.
+
+### Meta Quest
+- The control bar uses the same controls as the phone player and adds pages for playback speed
+  and audio and subtitle tracks. The 3D model page shows the download and can cancel it.
+- The video layer is drawn behind the control bar, so a 360 video can no longer cover it, and
+  flat screens use supersampling to reduce shimmer.
+
+### Downloads
+- The "VR mode" preset is now "High resolution for 360° and 3D". It asks for the highest
+  resolution the device's hardware decoders can play, with the codec that reaches it, instead
+  of a fixed 8K AV1 video that many phones and Quest 2 cannot decode.
+- The site filters in the library keep a stable order: by number of videos, then by name.
+
+### Interface
+- Onboarding illustrations morph from one shape into the next, empty pages move slowly, and
+  settings switches give toggle haptics.
+
+### Website
+- New design with light and dark themes, an interactive 2D to 3D demo and screenshots of this
+  version.
+
 ## 1.2.0 - New player, 2D to 3D, a working Quest scene and verified updates
 
 ### Updating from 1.1.0 or older

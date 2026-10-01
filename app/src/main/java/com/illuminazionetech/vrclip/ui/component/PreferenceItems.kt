@@ -40,6 +40,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +48,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -356,6 +359,7 @@ fun PreferenceSwitchVariant(
     thumbContent: (@Composable () -> Unit)? = rememberThumbContent(isChecked = isChecked),
     onClick: (() -> Unit) = {},
 ) {
+    val toggle = rememberToggleHaptic(isChecked, onClick)
 
     val interactionSource = remember { MutableInteractionSource() }
     Surface(
@@ -363,7 +367,7 @@ fun PreferenceSwitchVariant(
             Modifier.toggleable(
                 value = isChecked,
                 enabled = enabled,
-                onValueChange = { onClick() },
+                onValueChange = { toggle() },
                 indication = LocalIndication.current,
                 interactionSource = interactionSource,
             )
@@ -391,7 +395,7 @@ fun PreferenceSwitchVariant(
             if (LocalIsVRMode.current) {
                 SpatialSwitch(
                     checked = isChecked,
-                    onCheckedChange = { onClick() },
+                    onCheckedChange = { toggle() },
                     enabled = enabled,
                 )
             } else {
@@ -418,6 +422,7 @@ fun PreferenceSwitch(
     thumbContent: (@Composable () -> Unit)? = rememberThumbContent(isChecked = isChecked),
     onClick: (() -> Unit) = {},
 ) {
+    val toggle = rememberToggleHaptic(isChecked, onClick)
 
     val interactionSource = remember { MutableInteractionSource() }
     Surface(
@@ -425,7 +430,7 @@ fun PreferenceSwitch(
             Modifier.toggleable(
                 value = isChecked,
                 enabled = enabled,
-                onValueChange = { onClick() },
+                onValueChange = { toggle() },
                 indication = LocalIndication.current,
                 interactionSource = interactionSource,
             )
@@ -474,6 +479,7 @@ fun PreferenceSwitchWithDivider(
     onClick: (() -> Unit) = {},
     onChecked: () -> Unit = {},
 ) {
+    val toggleChecked = rememberToggleHaptic(isChecked, onChecked)
 
     Surface(
         modifier =
@@ -514,13 +520,13 @@ fun PreferenceSwitchWithDivider(
             if (LocalIsVRMode.current) {
                 SpatialSwitch(
                     checked = isChecked,
-                    onCheckedChange = { onChecked() },
+                    onCheckedChange = { toggleChecked() },
                     enabled = isSwitchEnabled,
                 )
             } else {
                 Switch(
                     checked = isChecked,
-                    onCheckedChange = { onChecked() },
+                    onCheckedChange = { toggleChecked() },
                     modifier =
                         Modifier.padding(horizontal = 6.dp).semantics {
                             contentDescription = title
@@ -671,6 +677,7 @@ fun PreferenceSwitchWithContainer(
     thumbContent: @Composable (() -> Unit)? = rememberThumbContent(isChecked = isChecked),
     onClick: () -> Unit,
 ) {
+    val toggle = rememberToggleHaptic(isChecked, onClick)
 
     val interactionSource = remember { MutableInteractionSource() }
     Row(
@@ -681,7 +688,7 @@ fun PreferenceSwitchWithContainer(
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .toggleable(
                     value = isChecked,
-                    onValueChange = { onClick() },
+                    onValueChange = { toggle() },
                     interactionSource = interactionSource,
                     indication = LocalIndication.current,
                 )
@@ -708,7 +715,7 @@ fun PreferenceSwitchWithContainer(
             )
         }
         if (LocalIsVRMode.current) {
-            SpatialSwitch(checked = isChecked, onCheckedChange = { onClick() })
+            SpatialSwitch(checked = isChecked, onCheckedChange = { toggle() })
         } else {
             Switch(
                 checked = isChecked,
@@ -889,4 +896,20 @@ fun PreferenceInfo(
 @Preview(showBackground = true)
 fun PreferenceInfoPreview() {
     PreferenceInfo(text = stringResource(id = R.string.custom_command_enabled_hint))
+}
+
+/** Wraps a switch callback with the toggle haptic for the state it is about to enter. */
+@Composable
+private fun rememberToggleHaptic(isChecked: Boolean, action: () -> Unit): () -> Unit {
+    val haptics = LocalHapticFeedback.current
+    val currentAction by rememberUpdatedState(action)
+    val checked by rememberUpdatedState(isChecked)
+    return remember(haptics) {
+        {
+            haptics.performHapticFeedback(
+                if (checked) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn
+            )
+            currentAction()
+        }
+    }
 }

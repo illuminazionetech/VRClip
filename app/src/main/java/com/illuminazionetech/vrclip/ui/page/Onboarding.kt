@@ -6,7 +6,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -48,7 +47,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -59,7 +57,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -76,6 +73,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.MorphingShapeBox
 import com.illuminazionetech.vrclip.util.ONBOARDING_COMPLETED
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateBoolean
@@ -316,24 +314,24 @@ private fun StepIllustration(step: OnboardingStep) {
                 MaterialShapes.SoftBurst to Icons.Rounded.NotificationsActive
             OnboardingStep.Engine -> MaterialShapes.Sunny to Icons.Rounded.Download
         }
-    val rotation by
-        animateFloatAsState(
-            targetValue = step.ordinal * 30f,
-            animationSpec = MaterialTheme.motionScheme.slowSpatialSpec(),
-            label = "illustrationRotation",
-        )
     val container =
         when (step) {
             OnboardingStep.Immersive -> MaterialTheme.colorScheme.tertiaryContainer
             OnboardingStep.Notifications -> MaterialTheme.colorScheme.secondaryContainer
             else -> MaterialTheme.colorScheme.primaryContainer
         }
-    Box(modifier = Modifier.size(200.dp), contentAlignment = Alignment.Center) {
-        Surface(
-            modifier = Modifier.fillMaxSize().rotate(rotation),
-            shape = shape.toShape(),
-            color = container,
-        ) {}
+    val animatedContainer by
+        animateColorAsState(
+            targetValue = container,
+            animationSpec = MaterialTheme.motionScheme.slowEffectsSpec(),
+            label = "illustrationColor",
+        )
+    MorphingShapeBox(
+        shape = shape,
+        color = animatedContainer,
+        rotation = step.ordinal * 30f,
+        modifier = Modifier.size(200.dp),
+    ) {
         if (icon == null) {
             Image(
                 painter = painterResource(R.drawable.vrclip_seal),

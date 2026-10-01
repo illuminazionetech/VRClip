@@ -55,10 +55,8 @@ import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -95,6 +93,7 @@ import com.illuminazionetech.vrclip.database.objects.DownloadedVideoInfo
 import com.illuminazionetech.vrclip.database.objects.watchedFraction
 import com.illuminazionetech.vrclip.player.stereo.ConvertTo3dDialog
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
+import com.illuminazionetech.vrclip.ui.common.MorphingShapeBox
 import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.CheckBoxItem
 import com.illuminazionetech.vrclip.ui.component.ConfirmButton
@@ -671,12 +670,12 @@ private fun LibraryEmptyState(noResults: Boolean, modifier: Modifier = Modifier)
         modifier = modifier.fillMaxWidth().padding(top = 56.dp, bottom = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(modifier = Modifier.size(144.dp), contentAlignment = Alignment.Center) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                shape = MaterialShapes.Clover4Leaf.toShape(),
-                color = MaterialTheme.colorScheme.tertiaryContainer,
-            ) {}
+        MorphingShapeBox(
+            shape = MaterialShapes.Clover4Leaf,
+            color = MaterialTheme.colorScheme.tertiaryContainer,
+            idleSpin = true,
+            modifier = Modifier.size(144.dp),
+        ) {
             Icon(
                 imageVector =
                     if (noResults) Icons.Rounded.SearchOff else Icons.Rounded.VideoLibrary,

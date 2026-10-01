@@ -31,8 +31,8 @@
     <string name="download_error_msg">Could not download file</string>
     <string name="fetch_info_error_msg">Could not fetch video info</string>
     <string name="general_settings">General</string>
-    <string name="vr_mode">VR Mode</string>
-    <string name="vr_mode_desc">Optimize downloads for Meta Quest 3 and 3D videos</string>
+    <string name="vr_mode">High resolution for 360° and 3D</string>
+    <string name="vr_mode_desc">Prefer the highest resolution and the best codec this device decodes in hardware</string>
     <string name="vr_and_3d">VR &amp; 3D</string>
     <string name="language">Display language</string>
     <string name="paste_msg">Paste URL</string>

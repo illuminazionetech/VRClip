@@ -42,8 +42,8 @@
     <string name="download_error_msg">Impossibile scaricare il file</string>
     <string name="about">Informazioni</string>
     <string name="general_settings">Generale</string>
-    <string name="vr_mode">Modalità VR</string>
-    <string name="vr_mode_desc">Ottimizza i download per Meta Quest 3 e video 3D</string>
+    <string name="vr_mode">Alta risoluzione per 360° e 3D</string>
+    <string name="vr_mode_desc">Preferisce la risoluzione più alta e il codec migliore che questo dispositivo decodifica in hardware</string>
     <string name="language">Lingua</string>
     <string name="delete_info">Rimuovere\?</string>
     <string name="ytdlp_update">Clicca per installare l\'ultima versione di yt-dlp</string>

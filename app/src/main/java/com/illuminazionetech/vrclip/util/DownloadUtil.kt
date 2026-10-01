@@ -482,8 +482,9 @@ object DownloadUtil {
                 }
                 if (videoClips.isEmpty()) addOption("--embed-chapters")
                 if (vrMode) {
-                    // VR Optimization: Prefer high resolution (4K+) and modern codecs
-                    addOption("-S", "res:4320,res:2160,vcodec:av01,vcodec:vp9.2,vcodec:h265")
+                    // 360/180 and 3D video needs every pixel: the largest resolution and the best
+                    // codec this device decodes in hardware (see DecoderCapabilities).
+                    addOption("-S", DecoderCapabilities.highResolutionSort())
                     addOption("--prefer-free-formats")
                 }
             }

@@ -15,8 +15,7 @@ plugins {
 
 val splitApks = !project.hasProperty("noSplits")
 
-val abiFilterList =
-    providers.gradleProperty("ABI_FILTERS").orNull?.split(';') ?: emptyList()
+val abiFilterList = providers.gradleProperty("ABI_FILTERS").orNull?.split(';') ?: emptyList()
 
 val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 3, "x86_64" to 4)
 
@@ -41,9 +40,9 @@ val baseVersionCode = appVersion.code.toInt()
 /**
  * Release signing. CI writes `keystore.properties` from the KEYSTORE_B64 / KEYSTORE_PASSWORD
  * repository secrets; `keyAlias` defaults to "vrclip" and `keyPassword` to the store password
- * (PKCS12 keystores use one password for both). Without it, release builds fall back to the
- * debug key, which is fine for local testing but can never update an installed release, so the
- * release workflow refuses to publish anything that is not signed with the real key.
+ * (PKCS12 keystores use one password for both). Without it, release builds fall back to the debug
+ * key, which is fine for local testing but can never update an installed release, so the release
+ * workflow refuses to publish anything that is not signed with the real key.
  */
 val releaseSigning: Properties? =
     rootProject
@@ -155,9 +154,7 @@ android {
         }
     }
 
-    lint {
-        disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity"))
-    }
+    lint { disable.addAll(listOf("MissingTranslation", "ExtraTranslation", "MissingQuantity")) }
 
     packaging {
         resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }

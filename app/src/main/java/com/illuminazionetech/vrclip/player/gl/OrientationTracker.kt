@@ -86,7 +86,8 @@ internal class OrientationTracker(context: Context, private val onChange: () -> 
         synchronized(lock) {
             // The camera looks along the negated third row of the view matrix (column-major
             // elements 2, 6 and 10); its heading is the angle of that vector around the Y axis.
-            val yaw = Math.toDegrees(atan2(rotation[2].toDouble(), rotation[10].toDouble())).toFloat()
+            val yaw =
+                Math.toDegrees(atan2(rotation[2].toDouble(), rotation[10].toDouble())).toFloat()
             val offset = recenterYaw ?: yaw.also { recenterYaw = it }
             Matrix.rotateM(rotation, 0, offset, 0f, 1f, 0f)
             System.arraycopy(rotation, 0, deviceMatrix, 0, 16)

@@ -13,7 +13,8 @@ import java.io.File
  * CPU otherwise. Input is an RGB image of [size] x [size] pixels as bytes; output is the relative
  * inverse depth for each pixel (larger means closer). Not thread safe: use from one thread.
  */
-class DepthEstimator private constructor(
+class DepthEstimator
+private constructor(
     private val model: CompiledModel,
     val accelerator: Accelerator,
 ) : AutoCloseable {
@@ -70,27 +71,28 @@ class DepthEstimator private constructor(
             for ((accelerator, precision) in attempts) {
                 val estimator =
                     runCatching {
-                            val options = CompiledModel.Options(accelerator)
-                            if (precision != null) {
-                                options.gpuOptions =
-                                    CompiledModel.GpuOptions(
-                                        precision = precision,
-                                        infiniteFloatCapping = true,
-                                        serializationDir = cacheDir.absolutePath,
-                                        modelCacheKey = "depth_anything_v2_small_518_${precision.name}",
-                                        serializeProgramCache = true,
-                                    )
-                            } else {
-                                options.cpuOptions =
-                                    CompiledModel.CpuOptions(
-                                        numThreads = Runtime.getRuntime().availableProcessors().coerceIn(2, 6)
-                                    )
-                            }
-                            DepthEstimator(
-                                CompiledModel.create(modelFile.absolutePath, options),
-                                accelerator,
-                            )
+                        val options = CompiledModel.Options(accelerator)
+                        if (precision != null) {
+                            options.gpuOptions =
+                                CompiledModel.GpuOptions(
+                                    precision = precision,
+                                    infiniteFloatCapping = true,
+                                    serializationDir = cacheDir.absolutePath,
+                                    modelCacheKey = "depth_anything_v2_small_518_${precision.name}",
+                                    serializeProgramCache = true,
+                                )
+                        } else {
+                            options.cpuOptions =
+                                CompiledModel.CpuOptions(
+                                    numThreads =
+                                        Runtime.getRuntime().availableProcessors().coerceIn(2, 6)
+                                )
                         }
+                        DepthEstimator(
+                            CompiledModel.create(modelFile.absolutePath, options),
+                            accelerator,
+                        )
+                    }
                         .onFailure {
                             lastError = it
                             Log.w(TAG, "Cannot load the depth model on $accelerator/$precision", it)

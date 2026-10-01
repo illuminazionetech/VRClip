@@ -16,7 +16,8 @@ class UpdateInstallReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ACTION_INSTALL_STATUS) return
-        val status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, PackageInstaller.STATUS_FAILURE)
+        val status =
+            intent.getIntExtra(PackageInstaller.EXTRA_STATUS, PackageInstaller.STATUS_FAILURE)
         if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
             val confirmation =
                 if (Build.VERSION.SDK_INT >= 33) {
@@ -26,8 +27,8 @@ class UpdateInstallReceiver : BroadcastReceiver() {
                 }
             if (confirmation != null) {
                 runCatching {
-                        context.startActivity(confirmation.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    }
+                    context.startActivity(confirmation.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                }
                     .onFailure {
                         Log.w(TAG, "Cannot show the install confirmation", it)
                         AppUpdateManager.onInstallResult(PackageInstaller.STATUS_FAILURE_BLOCKED)
@@ -35,12 +36,16 @@ class UpdateInstallReceiver : BroadcastReceiver() {
             }
             return
         }
-        Log.d(TAG, "Install finished with status $status: ${intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)}")
+        Log.d(
+            TAG,
+            "Install finished with status $status: ${intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)}",
+        )
         AppUpdateManager.onInstallResult(status)
     }
 
     companion object {
         private const val TAG = "UpdateInstallReceiver"
-        const val ACTION_INSTALL_STATUS = "com.illuminazionetech.vrclip.action.UPDATE_INSTALL_STATUS"
+        const val ACTION_INSTALL_STATUS =
+            "com.illuminazionetech.vrclip.action.UPDATE_INSTALL_STATUS"
     }
 }

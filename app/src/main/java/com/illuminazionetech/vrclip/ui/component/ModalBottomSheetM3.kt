@@ -1,14 +1,14 @@
 package com.illuminazionetech.vrclip.ui.component
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetDefaults
@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 /**
- * A [SheetState] that starts expanded, for sheets whose visibility is driven by composition
- * instead of a show animation.
+ * A [SheetState] that starts expanded, for sheets whose visibility is driven by composition instead
+ * of a show animation.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

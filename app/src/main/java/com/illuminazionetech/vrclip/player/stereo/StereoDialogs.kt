@@ -54,8 +54,11 @@ fun DepthModelDialog(onDismiss: () -> Unit, onReady: () -> Unit) {
         icon = { Icon(Icons.Rounded.Download, contentDescription = null) },
         title = { Text(stringResource(R.string.stereo_model_title)) },
         text = {
-            AnimatedContent(targetState = state, contentKey = { it::class }, label = "modelState") {
-                current ->
+            AnimatedContent(
+                targetState = state,
+                contentKey = { it::class },
+                label = "modelState",
+            ) { current ->
                 Column {
                     Text(
                         stringResource(
@@ -129,9 +132,9 @@ fun DepthModelDialog(onDismiss: () -> Unit, onReady: () -> Unit) {
 }
 
 /**
- * Confirms a permanent 2D to 3D conversion: explains that the 3D file replaces the original,
- * what the result will be (size, codec, HDR to SDR) and what it needs (the model download, time),
- * then starts [StereoConversionWorker].
+ * Confirms a permanent 2D to 3D conversion: explains that the 3D file replaces the original, what
+ * the result will be (size, codec, HDR to SDR) and what it needs (the model download, time), then
+ * starts [StereoConversionWorker].
  */
 @Composable
 fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
@@ -188,9 +191,11 @@ fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
                     Text(
                         text =
                             stringResource(
-                                if (result.exceptionOrNull() is ConversionException &&
-                                    (result.exceptionOrNull() as ConversionException).reason ==
-                                        ConversionException.Reason.EncoderUnavailable)
+                                if (
+                                    result.exceptionOrNull() is ConversionException &&
+                                        (result.exceptionOrNull() as ConversionException).reason ==
+                                            ConversionException.Reason.EncoderUnavailable
+                                )
                                     R.string.stereo_error_encoder
                                 else R.string.stereo_error_missing
                             ),
@@ -214,13 +219,16 @@ fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
                 onClick = {
                     starting = true
                     StereoConversionWorker.start(context, videoId)
-                    Toast.makeText(context, R.string.stereo_convert_started, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.stereo_convert_started, Toast.LENGTH_LONG)
+                        .show()
                     onDismiss()
                 },
             ) {
                 Text(stringResource(R.string.stereo_convert_confirm))
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        },
     )
 }

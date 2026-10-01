@@ -60,12 +60,16 @@ class UpdateSelectionTest {
                 Release(tagName = "v1.1.0"),
             )
         assertEquals("v1.2.0", UpdateUtil.selectRelease(releases, stableOnly = true)?.tagName)
-        assertEquals("v1.2.1-beta.1", UpdateUtil.selectRelease(releases, stableOnly = false)?.tagName)
+        assertEquals(
+            "v1.2.1-beta.1",
+            UpdateUtil.selectRelease(releases, stableOnly = false)?.tagName,
+        )
     }
 
     @Test
     fun `version comes from the tag even when the name is decorative`() {
-        val releases = listOf(Release(tagName = "v1.10.0", name = "Big update"), Release(tagName = "v1.9.3"))
+        val releases =
+            listOf(Release(tagName = "v1.10.0", name = "Big update"), Release(tagName = "v1.9.3"))
         assertEquals("v1.10.0", UpdateUtil.selectRelease(releases, stableOnly = true)?.tagName)
     }
 

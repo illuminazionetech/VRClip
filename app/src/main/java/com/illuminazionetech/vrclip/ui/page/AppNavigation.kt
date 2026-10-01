@@ -59,7 +59,13 @@ enum class TopLevelDestination(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
 ) {
-    Queue(Route.HOME, Route.HOME, R.string.nav_queue, Icons.Rounded.Download, Icons.Outlined.Download),
+    Queue(
+        Route.HOME,
+        Route.HOME,
+        R.string.nav_queue,
+        Icons.Rounded.Download,
+        Icons.Outlined.Download,
+    ),
     Library(
         Route.DOWNLOADS,
         Route.DOWNLOADS,
@@ -95,9 +101,9 @@ enum class AppNavigationLayout(val suiteType: NavigationSuiteType) {
 
 /**
  * The app shell: a Material 3 navigation suite that shows a bottom bar on phones and a rail on
- * wider windows and on the Quest panel. The navigation hides (animated) on detail screens and
- * comes back on the root screen of every top-level destination. On rails the primary "new
- * download" action sits in the rail header; on phones the queue page shows it as a FAB.
+ * wider windows and on the Quest panel. The navigation hides (animated) on detail screens and comes
+ * back on the root screen of every top-level destination. On rails the primary "new download"
+ * action sits in the rail header; on phones the queue page shows it as a FAB.
  */
 @Composable
 fun AppNavigationScaffold(
@@ -112,9 +118,7 @@ fun AppNavigationScaffold(
     val state = rememberNavigationSuiteScaffoldState()
     val showNavigation = currentDestination == null || currentDestination.isTopLevelRoot()
 
-    LaunchedEffect(showNavigation) {
-        if (showNavigation) state.show() else state.hide()
-    }
+    LaunchedEffect(showNavigation) { if (showNavigation) state.show() else state.hide() }
 
     val taskMap = downloader.getTaskStateMap()
     val activeDownloads by remember {
@@ -157,7 +161,8 @@ fun AppNavigationScaffold(
                         }
                     },
                     icon = {
-                        val count = if (destination == TopLevelDestination.Queue) activeDownloads else 0
+                        val count =
+                            if (destination == TopLevelDestination.Queue) activeDownloads else 0
                         BadgedBox(
                             badge = {
                                 if (count > 0) Badge { Text(count.coerceAtMost(99).toString()) }

@@ -136,9 +136,10 @@ internal class VideoGLRenderer(
 
         val current = config
         val layout = current.mode.stereoLayout
-        val output = if (layout == StereoLayout.None && current.output == StereoOutputMode.Anaglyph)
-            StereoOutputMode.SingleEye
-        else current.output
+        val output =
+            if (layout == StereoLayout.None && current.output == StereoOutputMode.Anaglyph)
+                StereoOutputMode.SingleEye
+            else current.output
 
         when (output) {
             StereoOutputMode.SplitScreen -> {
@@ -206,7 +207,14 @@ internal class VideoGLRenderer(
 
         val stride = SphereMesh.STRIDE_FLOATS * 4
         mesh.vertexBuffer.position(0)
-        GLES20.glVertexAttribPointer(aPosition, 3, GLES20.GL_FLOAT, false, stride, mesh.vertexBuffer)
+        GLES20.glVertexAttribPointer(
+            aPosition,
+            3,
+            GLES20.GL_FLOAT,
+            false,
+            stride,
+            mesh.vertexBuffer,
+        )
         GLES20.glEnableVertexAttribArray(aPosition)
         mesh.vertexBuffer.position(3)
         GLES20.glVertexAttribPointer(aUv, 2, GLES20.GL_FLOAT, false, stride, mesh.vertexBuffer)
@@ -224,7 +232,8 @@ internal class VideoGLRenderer(
         val buffer = quad ?: return
         Matrix.setIdentityM(mvp, 0)
         if (eyeAspect > 0f) {
-            if (eyeAspect > viewportAspect) Matrix.scaleM(mvp, 0, 1f, viewportAspect / eyeAspect, 1f)
+            if (eyeAspect > viewportAspect)
+                Matrix.scaleM(mvp, 0, 1f, viewportAspect / eyeAspect, 1f)
             else Matrix.scaleM(mvp, 0, eyeAspect / viewportAspect, 1f, 1f)
         }
         GLES20.glUniformMatrix4fv(uMvp, 1, false, mvp, 0)
@@ -297,10 +306,26 @@ internal class VideoGLRenderer(
             // x, y, z, u, v as a triangle strip; image-space v = 0 is the bottom of the picture.
             val data =
                 floatArrayOf(
-                    -1f, -1f, 0f, 0f, 0f,
-                    1f, -1f, 0f, 1f, 0f,
-                    -1f, 1f, 0f, 0f, 1f,
-                    1f, 1f, 0f, 1f, 1f,
+                    -1f,
+                    -1f,
+                    0f,
+                    0f,
+                    0f,
+                    1f,
+                    -1f,
+                    0f,
+                    1f,
+                    0f,
+                    -1f,
+                    1f,
+                    0f,
+                    0f,
+                    1f,
+                    1f,
+                    1f,
+                    0f,
+                    1f,
+                    1f,
                 )
             return ByteBuffer.allocateDirect(data.size * 4)
                 .order(ByteOrder.nativeOrder())

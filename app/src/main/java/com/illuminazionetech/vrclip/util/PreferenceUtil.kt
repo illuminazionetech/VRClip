@@ -188,7 +188,6 @@ const val TEMPLATE_SHORTCUTS = "template_shortcuts"
 const val TASK_LIST = "task_list"
 const val SAVED_LINKS = "saved_links"
 
-
 private val StringPreferenceDefaults =
     mapOf(
         SPONSORBLOCK_CATEGORIES to "default",
@@ -413,15 +412,16 @@ object PreferenceUtil {
         }
     }
 
-    fun encodeTaskListBackup(map: Map<Task, Task.State>) =
-        runCatching { json.encodeToString<Map<Task, Task.State>>(map) }
-            .onSuccess { kv.encode(TASK_LIST, it) }
-            .onFailure { it.printStackTrace() }
+    fun encodeTaskListBackup(map: Map<Task, Task.State>) = runCatching {
+        json.encodeToString<Map<Task, Task.State>>(map)
+    }
+        .onSuccess { kv.encode(TASK_LIST, it) }
+        .onFailure { it.printStackTrace() }
 
     fun decodeTaskListBackup(): Map<Task, Task.State> =
         runCatching {
-                kv.decodeString(TASK_LIST)?.let { json.decodeFromString<Map<Task, Task.State>>(it) }
-            }
+            kv.decodeString(TASK_LIST)?.let { json.decodeFromString<Map<Task, Task.State>>(it) }
+        }
             .onFailure { it.printStackTrace() }
             .getOrNull() ?: emptyMap()
 

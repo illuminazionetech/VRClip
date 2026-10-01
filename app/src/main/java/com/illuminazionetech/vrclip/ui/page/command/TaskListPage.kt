@@ -1,26 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.command
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Terminal
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.MaterialShapes
-import androidx.compose.material3.MediumFlexibleTopAppBar
-import androidx.compose.material3.Surface
-import androidx.compose.material3.toShape
-import androidx.compose.ui.res.pluralStringResource
-import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
-import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
-import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -45,17 +27,22 @@ import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.DownloadDone
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.NewLabel
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -67,20 +54,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.illuminazionetech.vrclip.download.CommandTaskManager
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.database.objects.CommandTemplate
+import com.illuminazionetech.vrclip.download.CommandTaskManager
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.intState
-import com.illuminazionetech.vrclip.ui.component.BackButton
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.ClearButton
 import com.illuminazionetech.vrclip.ui.component.CustomCommandTaskItem
 import com.illuminazionetech.vrclip.ui.component.DismissButton
@@ -88,19 +75,20 @@ import com.illuminazionetech.vrclip.ui.component.FilledButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.OutlinedButtonChip
 import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.PasteFromClipBoardButton
-import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.component.TaskStatus
+import com.illuminazionetech.vrclip.ui.component.VRClipDialog
+import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
+import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
 import com.illuminazionetech.vrclip.ui.page.settings.command.CommandTemplateDialog
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 import com.illuminazionetech.vrclip.util.TEMPLATE_ID
 import com.illuminazionetech.vrclip.util.findURLsFromString
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Custom yt-dlp commands run from user templates, with their live output. Same page anatomy as
- * the queue and the library: flexible top bar with a summary, empty state, primary action FAB.
+ * Custom yt-dlp commands run from user templates, with their live output. Same page anatomy as the
+ * queue and the library: flexible top bar with a summary, empty state, primary action FAB.
  */
 @Composable
 fun TaskListPage(onNavigateToDetail: (Int) -> Unit) {
@@ -296,7 +284,8 @@ private fun CommandsEmptyState(onRunCommand: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
+            modifier =
+                Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
         )
         Spacer(Modifier.height(24.dp))
         Button(onClick = onRunCommand) {

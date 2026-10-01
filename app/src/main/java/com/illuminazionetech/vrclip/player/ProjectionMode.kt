@@ -9,8 +9,8 @@ enum class StereoLayout {
 
 /**
  * How a video's frame should be projected/interpreted during playback. Detected by
- * [ProjectionDetector] from container metadata, filename conventions and aspect ratio, or forced
- * by the user via a per-video override (see
+ * [ProjectionDetector] from container metadata, filename conventions and aspect ratio, or forced by
+ * the user via a per-video override (see
  * [com.illuminazionetech.vrclip.database.objects.DownloadedVideoInfo.projectionOverride]).
  */
 enum class ProjectionMode {
@@ -71,16 +71,17 @@ enum class ProjectionMode {
         get() = this != FLAT
 
     companion object {
-        fun fromStorageKey(key: String?): ProjectionMode? =
-            key?.let { k -> entries.firstOrNull { it.name == k } }
+        fun fromStorageKey(key: String?): ProjectionMode? = key?.let { k ->
+            entries.firstOrNull { it.name == k }
+        }
 
         /**
          * Aspect ratio (width / height) of one eye's picture for flat content, given the decoded
          * frame size. Stereo files come in two packings: "full" (each eye keeps the source aspect,
-         * so a side-by-side 16:9 video is 32:9) and "half" (each eye squeezed into half the
-         * frame, so the file stays 16:9). The frame shape tells them apart, the same rule used by
-         * most VR players: a side-by-side frame wider than 2.5:1, or an over-under frame taller
-         * than 1.2:1, is full packing.
+         * so a side-by-side 16:9 video is 32:9) and "half" (each eye squeezed into half the frame,
+         * so the file stays 16:9). The frame shape tells them apart, the same rule used by most VR
+         * players: a side-by-side frame wider than 2.5:1, or an over-under frame taller than 1.2:1,
+         * is full packing.
          */
         fun eyeAspectRatio(mode: ProjectionMode, frameAspect: Float): Float =
             when (mode.stereoLayout) {

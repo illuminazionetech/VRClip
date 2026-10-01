@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -27,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.common.SettingsProvider
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.FilledButtonWithIcon
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 
@@ -81,7 +81,8 @@ fun CrashReportPage(errorMessage: String = "ERROR_EXAMPLE", onClick: () -> Unit 
             Text(
                 text = stringResource(R.string.unknown_error_title),
                 style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 60.dp, bottom = 12.dp),
+                modifier =
+                    Modifier.padding(start = 16.dp, end = 16.dp, top = 60.dp, bottom = 12.dp),
             )
             Text(
                 text = errorMessage,

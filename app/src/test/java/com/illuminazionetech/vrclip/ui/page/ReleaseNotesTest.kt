@@ -39,7 +39,9 @@ class ReleaseNotesTest {
 
         val text = releaseNotes(notes)
         assertEquals("What's Changed\n• feat: new player", text.text)
-        assertTrue(text.spanStyles.any { it.item.fontWeight == FontWeight.SemiBold && it.start == 0 })
+        assertTrue(
+            text.spanStyles.any { it.item.fontWeight == FontWeight.SemiBold && it.start == 0 }
+        )
     }
 
     @Test

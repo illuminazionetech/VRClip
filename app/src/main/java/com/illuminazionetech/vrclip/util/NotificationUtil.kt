@@ -43,8 +43,8 @@ object NotificationUtil {
 
     /**
      * Posts a notification only when the user has notifications enabled at the system level,
-     * swallowing the SecurityException some OEM builds throw when the POST_NOTIFICATIONS
-     * permission has been revoked mid-session.
+     * swallowing the SecurityException some OEM builds throw when the POST_NOTIFICATIONS permission
+     * has been revoked mid-session.
      */
     private fun safeNotify(notificationId: Int, notification: Notification) {
         if (!areNotificationsEnabled()) return
@@ -125,21 +125,20 @@ object NotificationUtil {
         text: String? = null,
     ) {
         if (!NOTIFICATION.getBoolean()) return
-        val pendingIntent =
-            taskId?.let {
-                Intent(context.applicationContext, NotificationActionReceiver::class.java)
-                    .putExtra(TASK_ID_KEY, taskId)
-                    .putExtra(NOTIFICATION_ID_KEY, notificationId)
-                    .putExtra(ACTION_KEY, ACTION_CANCEL_TASK)
-                    .run {
-                        PendingIntent.getBroadcast(
-                            context.applicationContext,
-                            notificationId,
-                            this,
-                            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
-                        )
-                    }
-            }
+        val pendingIntent = taskId?.let {
+            Intent(context.applicationContext, NotificationActionReceiver::class.java)
+                .putExtra(TASK_ID_KEY, taskId)
+                .putExtra(NOTIFICATION_ID_KEY, notificationId)
+                .putExtra(ACTION_KEY, ACTION_CANCEL_TASK)
+                .run {
+                    PendingIntent.getBroadcast(
+                        context.applicationContext,
+                        notificationId,
+                        this,
+                        PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
+                    )
+                }
+        }
 
         NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_vrclip)

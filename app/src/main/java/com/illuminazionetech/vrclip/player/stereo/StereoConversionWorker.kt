@@ -35,9 +35,9 @@ import kotlinx.coroutines.withContext
  * Permanent 2D to 3D conversion of a library video, run by WorkManager as a foreground job so it
  * survives leaving the app. The new file is written next to the original under a hidden name and
  * only replaces it once the export completed and the result checks out (a video track of the
- * planned size and the full duration); until then the original stays untouched, and any failure
- * or cancellation just deletes the partial file. An MP4 source is replaced in place; other
- * containers become an .mp4 with the same name, since the output is always MP4.
+ * planned size and the full duration); until then the original stays untouched, and any failure or
+ * cancellation just deletes the partial file. An MP4 source is replaced in place; other containers
+ * become an .mp4 with the same name, since the output is always MP4.
  */
 class StereoConversionWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
@@ -98,7 +98,8 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
                 if (input.extension.equals("mp4", ignoreCase = true)) input
                 else uniqueSibling(directory, input.nameWithoutExtension, "mp4")
             // The video may have been deleted from the library while it was being converted.
-            val stillInLibrary = runCatching { DatabaseUtil.getInfoById(videoId) }.getOrNull() != null
+            val stillInLibrary =
+                runCatching { DatabaseUtil.getInfoById(videoId) }.getOrNull() != null
             if (!stillInLibrary || !input.exists()) {
                 temp.delete()
                 return failure(Failure.Missing)
@@ -107,7 +108,11 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
                 withContext(NonCancellable) {
                     if (!temp.renameTo(target)) return@withContext false
                     if (target != input) input.delete()
-                    DatabaseUtil.replaceVideoFile(videoId, target.absolutePath, ProjectionMode.SBS_3D.name)
+                    DatabaseUtil.replaceVideoFile(
+                        videoId,
+                        target.absolutePath,
+                        ProjectionMode.SBS_3D.name,
+                    )
                     true
                 }
             if (!replaced) {
@@ -120,7 +125,10 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
                 null,
                 null,
             )
-            notifyDone(success = true, message = applicationContext.getString(R.string.stereo_convert_done))
+            notifyDone(
+                success = true,
+                message = applicationContext.getString(R.string.stereo_convert_done),
+            )
             return Result.success(workDataOf(KEY_OUTPUT to target.absolutePath))
         } catch (e: CancellationException) {
             temp.delete()
@@ -170,7 +178,11 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROCESSING,
             )
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ForegroundInfo(notificationId, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            ForegroundInfo(
+                notificationId,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC,
+            )
         } else {
             ForegroundInfo(notificationId, notification)
         }
@@ -288,7 +300,9 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
                     WorkInfo.State.FAILED ->
                         Status.Failed(
                             runCatching {
-                                    Failure.valueOf(info.outputData.getString(KEY_FAILURE).orEmpty())
+                                    Failure.valueOf(
+                                        info.outputData.getString(KEY_FAILURE).orEmpty()
+                                    )
                                 }
                                 .getOrDefault(Failure.Failed)
                         )

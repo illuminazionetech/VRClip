@@ -2,8 +2,6 @@
 
 package com.illuminazionetech.vrclip.player
 
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -12,6 +10,7 @@ import android.media.AudioManager
 import android.provider.Settings
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
+import androidx.annotation.OptIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -26,7 +25,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +47,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.Player
 import androidx.media3.common.text.CueGroup
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.media3.ui.SubtitleView
@@ -152,7 +151,8 @@ fun PlayerScreen(
         val aspect = state.frame?.aspect ?: return@LaunchedEffect
         onRequestOrientation(
             when {
-                state.stereoOutput == StereoOutputMode.SplitScreen -> PlayerActivity.ORIENTATION_LANDSCAPE
+                state.stereoOutput == StereoOutputMode.SplitScreen ->
+                    PlayerActivity.ORIENTATION_LANDSCAPE
                 !isPhone || spherical -> PlayerActivity.ORIENTATION_UNSPECIFIED
                 aspect > 1.05f -> PlayerActivity.ORIENTATION_LANDSCAPE
                 aspect < 0.95f -> PlayerActivity.ORIENTATION_PORTRAIT
@@ -169,138 +169,149 @@ fun PlayerScreen(
 
     // Controls sit on video, not on a surface: give them light content explicitly.
     CompositionLocalProvider(LocalContentColor provides Color.White) {
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
-        VideoLayer(
-            viewModel = viewModel,
-            state = state,
-            aspectMode = aspectMode,
-            gyroEnabled = gyroEnabled,
-            onGlView = { glView = it },
-        )
-
-        if (!isInPictureInPicture) {
-            GestureLayer(
-                locked = locked,
-                immersive = immersive,
-                onTap = {
-                    controlsVisible = !controlsVisible
-                    poke()
-                },
-                onDoubleTap = { forward ->
-                    if (locked) return@GestureLayer
-                    viewModel.seekBy(if (forward) PlayerViewModel.SEEK_STEP_MS else -PlayerViewModel.SEEK_STEP_MS)
-                    val previous = feedback as? GestureFeedback.Seek
-                    val seconds =
-                        if (previous != null && previous.forward == forward) previous.seconds + 10 else 10
-                    showFeedback(GestureFeedback.Seek(forward, seconds))
-                },
-                onLongPress = { pressed ->
-                    if (pressed && state.isPlaying) {
-                        viewModel.setTemporarySpeed(2f)
-                        feedback = GestureFeedback.FastForward
-                    } else if (!pressed && feedback == GestureFeedback.FastForward) {
-                        viewModel.setTemporarySpeed(null)
-                        feedback = null
-                    }
-                },
-                onPan = { delta -> glView?.pan(delta.x, delta.y) },
-                onZoom = { factor ->
-                    if (immersive) glView?.zoom(factor)
-                    else if (factor > 1.08f) aspectMode = AspectMode.Fill
-                    else if (factor < 0.92f) aspectMode = AspectMode.Fit
-                },
-                onVerticalDrag = { left, fraction ->
-                    if (left) showFeedback(GestureFeedback.Brightness(brightness.adjust(context, fraction)))
-                    else showFeedback(GestureFeedback.Volume(volume.adjust(fraction)))
-                },
-                onHorizontalDrag = { fraction ->
-                    val duration = state.durationMs
-                    if (duration > 0) {
-                        val range = duration.coerceAtMost(SCRUB_RANGE_MS)
-                        val current = feedback as? GestureFeedback.Scrub
-                        val delta = (current?.deltaMs ?: 0L) + (fraction * range).toLong()
-                        val target = (state.positionMs + delta).coerceIn(0L, duration)
-                        showFeedback(GestureFeedback.Scrub(target, target - state.positionMs))
-                    }
-                },
-                onDragEnd = {
-                    (feedback as? GestureFeedback.Scrub)?.let { viewModel.seekTo(it.targetMs) }
-                },
-            )
-
-            PlayerFeedback(feedback = feedback, durationMs = state.durationMs)
-
-            PlayerControls(
+        Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+            VideoLayer(
+                viewModel = viewModel,
                 state = state,
-                visible = controlsVisible,
-                locked = locked,
                 aspectMode = aspectMode,
                 gyroEnabled = gyroEnabled,
-                hasMotionSensor = glView?.hasMotionSensor == true,
-                canEnterPictureInPicture =
-                    canEnterPictureInPicture && !immersive && state.error == null,
-                onInteraction = ::poke,
-                onNavigateBack = onNavigateBack,
-                onTogglePlayPause = viewModel::togglePlayPause,
-                onSeekBy = viewModel::seekBy,
-                onSeekTo = viewModel::seekTo,
-                onScrubbing = viewModel::setScrubbing,
-                onToggleLive3d = { viewModel.setLive3d(state.live3d == Live3dState.Off) },
-                onOpenSheet = { sheet = it },
-                onToggleLock = {
-                    locked = !locked
-                    controlsVisible = true
-                    poke()
-                },
-                onToggleRepeat = viewModel::toggleRepeat,
-                onCycleAspect = {
-                    aspectMode = AspectMode.entries[(aspectMode.ordinal + 1) % AspectMode.entries.size]
-                },
-                onToggleGyro = {
-                    gyroEnabled = !gyroEnabled
-                    PreferenceUtil.updateValue(PLAYER_GYRO, gyroEnabled)
-                },
-                onRecenter = { glView?.recenter() },
-                onRotate = {
-                    orientationLocked = true
-                    onRequestOrientation(
-                        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                            PlayerActivity.ORIENTATION_PORTRAIT
-                        else PlayerActivity.ORIENTATION_LANDSCAPE
-                    )
-                },
-                onEnterPictureInPicture = {
-                    controlsVisible = false
-                    onEnterPictureInPicture()
-                },
-                onStartOver = viewModel::startOver,
-                onDismissResume = viewModel::consumeResumeHint,
-                onRetry = viewModel::retry,
-                onOpenExternally = {
-                    state.videoPath?.let { path -> FileUtil.openFile(path) {} }
-                },
+                onGlView = { glView = it },
             )
 
-            PlayerSheets(
-                sheet = sheet,
-                state = state,
-                viewModel = viewModel,
-                onDismiss = { sheet = null },
-                onShare = {
-                    state.videoPath?.let { path ->
-                        FileUtil.createIntentForSharingFile(path)?.let {
-                            context.startActivity(Intent.createChooser(it, null))
+            if (!isInPictureInPicture) {
+                GestureLayer(
+                    locked = locked,
+                    immersive = immersive,
+                    onTap = {
+                        controlsVisible = !controlsVisible
+                        poke()
+                    },
+                    onDoubleTap = { forward ->
+                        if (locked) return@GestureLayer
+                        viewModel.seekBy(
+                            if (forward) PlayerViewModel.SEEK_STEP_MS
+                            else -PlayerViewModel.SEEK_STEP_MS
+                        )
+                        val previous = feedback as? GestureFeedback.Seek
+                        val seconds =
+                            if (previous != null && previous.forward == forward)
+                                previous.seconds + 10
+                            else 10
+                        showFeedback(GestureFeedback.Seek(forward, seconds))
+                    },
+                    onLongPress = { pressed ->
+                        if (pressed && state.isPlaying) {
+                            viewModel.setTemporarySpeed(2f)
+                            feedback = GestureFeedback.FastForward
+                        } else if (!pressed && feedback == GestureFeedback.FastForward) {
+                            viewModel.setTemporarySpeed(null)
+                            feedback = null
                         }
-                    }
-                },
-                onOpenExternally = { state.videoPath?.let { path -> FileUtil.openFile(path) {} } },
-                onOpenSheet = { sheet = it },
-                onDeleted = onNavigateBack,
-            )
+                    },
+                    onPan = { delta -> glView?.pan(delta.x, delta.y) },
+                    onZoom = { factor ->
+                        if (immersive) glView?.zoom(factor)
+                        else if (factor > 1.08f) aspectMode = AspectMode.Fill
+                        else if (factor < 0.92f) aspectMode = AspectMode.Fit
+                    },
+                    onVerticalDrag = { left, fraction ->
+                        if (left)
+                            showFeedback(
+                                GestureFeedback.Brightness(brightness.adjust(context, fraction))
+                            )
+                        else showFeedback(GestureFeedback.Volume(volume.adjust(fraction)))
+                    },
+                    onHorizontalDrag = { fraction ->
+                        val duration = state.durationMs
+                        if (duration > 0) {
+                            val range = duration.coerceAtMost(SCRUB_RANGE_MS)
+                            val current = feedback as? GestureFeedback.Scrub
+                            val delta = (current?.deltaMs ?: 0L) + (fraction * range).toLong()
+                            val target = (state.positionMs + delta).coerceIn(0L, duration)
+                            showFeedback(GestureFeedback.Scrub(target, target - state.positionMs))
+                        }
+                    },
+                    onDragEnd = {
+                        (feedback as? GestureFeedback.Scrub)?.let { viewModel.seekTo(it.targetMs) }
+                    },
+                )
 
-            Live3dMessages(state = state, viewModel = viewModel)
+                PlayerFeedback(feedback = feedback, durationMs = state.durationMs)
+
+                PlayerControls(
+                    state = state,
+                    visible = controlsVisible,
+                    locked = locked,
+                    aspectMode = aspectMode,
+                    gyroEnabled = gyroEnabled,
+                    hasMotionSensor = glView?.hasMotionSensor == true,
+                    canEnterPictureInPicture =
+                        canEnterPictureInPicture && !immersive && state.error == null,
+                    onInteraction = ::poke,
+                    onNavigateBack = onNavigateBack,
+                    onTogglePlayPause = viewModel::togglePlayPause,
+                    onSeekBy = viewModel::seekBy,
+                    onSeekTo = viewModel::seekTo,
+                    onScrubbing = viewModel::setScrubbing,
+                    onToggleLive3d = { viewModel.setLive3d(state.live3d == Live3dState.Off) },
+                    onOpenSheet = { sheet = it },
+                    onToggleLock = {
+                        locked = !locked
+                        controlsVisible = true
+                        poke()
+                    },
+                    onToggleRepeat = viewModel::toggleRepeat,
+                    onCycleAspect = {
+                        aspectMode =
+                            AspectMode.entries[(aspectMode.ordinal + 1) % AspectMode.entries.size]
+                    },
+                    onToggleGyro = {
+                        gyroEnabled = !gyroEnabled
+                        PreferenceUtil.updateValue(PLAYER_GYRO, gyroEnabled)
+                    },
+                    onRecenter = { glView?.recenter() },
+                    onRotate = {
+                        orientationLocked = true
+                        onRequestOrientation(
+                            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                                PlayerActivity.ORIENTATION_PORTRAIT
+                            else PlayerActivity.ORIENTATION_LANDSCAPE
+                        )
+                    },
+                    onEnterPictureInPicture = {
+                        controlsVisible = false
+                        onEnterPictureInPicture()
+                    },
+                    onStartOver = viewModel::startOver,
+                    onDismissResume = viewModel::consumeResumeHint,
+                    onRetry = viewModel::retry,
+                    onOpenExternally = {
+                        state.videoPath?.let { path -> FileUtil.openFile(path) {} }
+                    },
+                )
+
+                PlayerSheets(
+                    sheet = sheet,
+                    state = state,
+                    viewModel = viewModel,
+                    onDismiss = { sheet = null },
+                    onShare = {
+                        state.videoPath?.let { path ->
+                            FileUtil.createIntentForSharingFile(path)?.let {
+                                context.startActivity(Intent.createChooser(it, null))
+                            }
+                        }
+                    },
+                    onOpenExternally = {
+                        state.videoPath?.let { path -> FileUtil.openFile(path) {} }
+                    },
+                    onOpenSheet = { sheet = it },
+                    onDeleted = onNavigateBack,
+                )
+
+                Live3dMessages(state = state, viewModel = viewModel)
+            }
         }
-    }
     }
 }
 

@@ -2,7 +2,6 @@ package com.illuminazionetech.vrclip.util
 
 import android.content.Context
 import android.widget.Toast
-import androidx.annotation.MainThread
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.core.text.isDigitsOnly
@@ -15,21 +14,18 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Show a toast message from any thread.
- */
+/** Show a toast message from any thread. */
 fun makeToast(text: String) {
     applicationScope.launch(Dispatchers.Main) {
         Toast.makeText(context.applicationContext, text, Toast.LENGTH_SHORT).show()
     }
 }
 
-/**
- * Show a toast message from any thread.
- */
+/** Show a toast message from any thread. */
 fun makeToast(stringId: Int) {
     applicationScope.launch(Dispatchers.Main) {
-        Toast.makeText(context.applicationContext, context.getString(stringId), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context.applicationContext, context.getString(stringId), Toast.LENGTH_SHORT)
+            .show()
     }
 }
 
@@ -87,8 +83,7 @@ fun String?.toHttpsUrl(): String =
 
 fun matchUrlFromClipboard(string: String, isMatchingMultiLink: Boolean = false): String {
     findURLsFromString(string, !isMatchingMultiLink).joinToString(separator = "\n").run {
-        if (isEmpty()) makeToast(R.string.paste_fail_msg)
-        else makeToast(R.string.paste_msg)
+        if (isEmpty()) makeToast(R.string.paste_fail_msg) else makeToast(R.string.paste_msg)
         return this
     }
 }

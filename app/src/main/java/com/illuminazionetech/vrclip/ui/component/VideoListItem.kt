@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -231,7 +230,12 @@ fun MediaGridItem(
                     modifier =
                         Modifier.weight(1f).padding(start = 14.dp, top = 10.dp, bottom = 12.dp)
                 ) {
-                    MediaTexts(title = title, author = author, fileSize = videoFileSize, minTitleLines = 2)
+                    MediaTexts(
+                        title = title,
+                        author = author,
+                        fileSize = videoFileSize,
+                        minTitleLines = 2,
+                    )
                 }
                 AnimatedVisibility(
                     visible = !isSelectEnabled(),
@@ -271,13 +275,14 @@ private fun Modifier.mediaClickable(
     onSelect: () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-): Modifier =
-    semantics { if (isSelectEnabled()) selected = isSelected() }
-        .combinedClickable(
-            role = Role.Button,
-            onClick = { if (isSelectEnabled()) onSelect() else onClick() },
-            onLongClick = { if (isSelectEnabled()) onSelect() else onLongClick() },
-        )
+): Modifier = semantics {
+    if (isSelectEnabled()) selected = isSelected()
+}
+    .combinedClickable(
+        role = Role.Button,
+        onClick = { if (isSelectEnabled()) onSelect() else onClick() },
+        onLongClick = { if (isSelectEnabled()) onSelect() else onLongClick() },
+    )
 
 @Composable
 private fun MediaTexts(title: String, author: String, fileSize: Long, minTitleLines: Int = 1) {
@@ -343,13 +348,16 @@ private fun SelectionMark(visible: Boolean, selected: Boolean, modifier: Modifie
         exit = fadeOut() + scaleOut(targetScale = 0.6f),
     ) {
         Icon(
-            imageVector = if (selected) Icons.Rounded.CheckCircle else Icons.Rounded.RadioButtonUnchecked,
+            imageVector =
+                if (selected) Icons.Rounded.CheckCircle else Icons.Rounded.RadioButtonUnchecked,
             contentDescription = null,
             tint = if (selected) MaterialTheme.colorScheme.primary else Color.White,
             modifier =
                 Modifier.size(28.dp)
                     .clip(CircleShape)
-                    .background(if (selected) MaterialTheme.colorScheme.onPrimary else OverlayScrim),
+                    .background(
+                        if (selected) MaterialTheme.colorScheme.onPrimary else OverlayScrim
+                    ),
         )
     }
 }

@@ -21,11 +21,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDirection
 import com.google.android.material.color.MaterialColors
-import com.kyant.monet.dynamicColorScheme
-import com.meta.spatial.uiset.theme.SpatialTheme
 import com.illuminazionetech.vrclip.ui.common.LocalDynamicColorSwitch
 import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
 import com.illuminazionetech.vrclip.ui.common.spatialDensity
+import com.kyant.monet.dynamicColorScheme
+import com.meta.spatial.uiset.theme.SpatialTheme
 
 fun Color.applyOpacity(enabled: Boolean): Color {
     return if (enabled) this else this.copy(alpha = 0.62f)
@@ -42,9 +42,9 @@ fun Color.harmonizeWithPrimary(): Color =
     this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
 /**
- * Forces true-black surfaces on top of a derived dark scheme: a deliberate OLED-friendly
- * option (real battery savings and higher contrast on Quest's/phones' OLED panels), applied only
- * when the app is deriving its own HCT/Monet scheme rather than the system's Android 12+ dynamic
+ * Forces true-black surfaces on top of a derived dark scheme: a deliberate OLED-friendly option
+ * (real battery savings and higher contrast on Quest's/phones' OLED panels), applied only when the
+ * app is deriving its own HCT/Monet scheme rather than the system's Android 12+ dynamic
  * (wallpaper-based) colors, since forcing pure black would fight the whole point of following the
  * system palette.
  */

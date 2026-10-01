@@ -27,8 +27,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.meta.spatial.uiset.input.SpatialTextField
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
+import com.meta.spatial.uiset.input.SpatialTextField
 import kotlinx.coroutines.delay
 
 /** @param contentDescription Text label of the `TextField` for the accessibility service */

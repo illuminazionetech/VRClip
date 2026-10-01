@@ -64,6 +64,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PlainTooltip
@@ -77,7 +78,6 @@ import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -109,7 +109,8 @@ internal fun formatTime(ms: Long): String {
     else "%d:%02d".format(minutes, seconds)
 }
 
-private val scrimTop = Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.72f), Color.Transparent))
+private val scrimTop =
+    Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.72f), Color.Transparent))
 private val scrimBottom =
     Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.78f)))
 
@@ -143,96 +144,99 @@ internal fun PlayerControls(
     onOpenExternally: () -> Unit,
 ) {
     CompositionLocalProvider(LocalContentColor provides Color.White) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        AnimatedVisibility(
-            visible = visible && !locked,
-            enter = fadeIn(),
-            exit = fadeOut(),
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                TopBar(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    state = state,
-                    onInteraction = onInteraction,
-                    onNavigateBack = onNavigateBack,
-                    onToggleLive3d = onToggleLive3d,
-                    onOpenSheet = onOpenSheet,
-                )
-                if (state.error == null) {
-                    Transport(
-                        modifier = Modifier.align(Alignment.Center),
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedVisibility(
+                visible = visible && !locked,
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    TopBar(
+                        modifier = Modifier.align(Alignment.TopCenter),
                         state = state,
                         onInteraction = onInteraction,
-                        onTogglePlayPause = onTogglePlayPause,
-                        onSeekBy = onSeekBy,
+                        onNavigateBack = onNavigateBack,
+                        onToggleLive3d = onToggleLive3d,
+                        onOpenSheet = onOpenSheet,
+                    )
+                    if (state.error == null) {
+                        Transport(
+                            modifier = Modifier.align(Alignment.Center),
+                            state = state,
+                            onInteraction = onInteraction,
+                            onTogglePlayPause = onTogglePlayPause,
+                            onSeekBy = onSeekBy,
+                        )
+                    }
+                    BottomBar(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        state = state,
+                        aspectMode = aspectMode,
+                        gyroEnabled = gyroEnabled,
+                        hasMotionSensor = hasMotionSensor,
+                        canEnterPictureInPicture = canEnterPictureInPicture,
+                        onInteraction = onInteraction,
+                        onSeekTo = onSeekTo,
+                        onScrubbing = onScrubbing,
+                        onOpenSheet = onOpenSheet,
+                        onToggleLock = onToggleLock,
+                        onToggleRepeat = onToggleRepeat,
+                        onCycleAspect = onCycleAspect,
+                        onToggleGyro = onToggleGyro,
+                        onRecenter = onRecenter,
+                        onRotate = onRotate,
+                        onEnterPictureInPicture = onEnterPictureInPicture,
                     )
                 }
-                BottomBar(
-                    modifier = Modifier.align(Alignment.BottomCenter),
-                    state = state,
-                    aspectMode = aspectMode,
-                    gyroEnabled = gyroEnabled,
-                    hasMotionSensor = hasMotionSensor,
-                    canEnterPictureInPicture = canEnterPictureInPicture,
-                    onInteraction = onInteraction,
-                    onSeekTo = onSeekTo,
-                    onScrubbing = onScrubbing,
-                    onOpenSheet = onOpenSheet,
-                    onToggleLock = onToggleLock,
-                    onToggleRepeat = onToggleRepeat,
-                    onCycleAspect = onCycleAspect,
-                    onToggleGyro = onToggleGyro,
-                    onRecenter = onRecenter,
-                    onRotate = onRotate,
-                    onEnterPictureInPicture = onEnterPictureInPicture,
+            }
+
+            AnimatedVisibility(
+                visible = visible && locked,
+                enter = fadeIn() + scaleIn(initialScale = 0.8f),
+                exit = fadeOut() + scaleOut(targetScale = 0.8f),
+                modifier =
+                    Modifier.align(Alignment.BottomCenter)
+                        .windowInsetsPadding(WindowInsets.safeDrawing)
+                        .padding(bottom = 32.dp),
+            ) {
+                FilledTonalIconButton(
+                    onClick = onToggleLock,
+                    modifier = Modifier.size(64.dp),
+                ) {
+                    Icon(
+                        Icons.Rounded.LockOpen,
+                        contentDescription = stringResource(R.string.player_unlock),
+                    )
+                }
+            }
+
+            if (state.isBuffering && !visible && state.error == null) {
+                LoadingIndicator(modifier = Modifier.align(Alignment.Center).size(64.dp))
+            }
+
+            ResumeHint(
+                modifier =
+                    Modifier.align(Alignment.BottomStart)
+                        .windowInsetsPadding(WindowInsets.safeDrawing)
+                        .padding(start = 16.dp, bottom = if (visible) 132.dp else 24.dp),
+                resumedFromMs = state.resumedFromMs,
+                onStartOver = onStartOver,
+                onDismiss = onDismissResume,
+            )
+
+            state.error?.let { error ->
+                ErrorCard(
+                    modifier =
+                        Modifier.align(Alignment.Center)
+                            .windowInsetsPadding(WindowInsets.safeDrawing)
+                            .padding(24.dp),
+                    error = error,
+                    onRetry = onRetry,
+                    onOpenExternally = onOpenExternally,
                 )
             }
         }
-
-        AnimatedVisibility(
-            visible = visible && locked,
-            enter = fadeIn() + scaleIn(initialScale = 0.8f),
-            exit = fadeOut() + scaleOut(targetScale = 0.8f),
-            modifier =
-                Modifier.align(Alignment.BottomCenter)
-                    .windowInsetsPadding(WindowInsets.safeDrawing)
-                    .padding(bottom = 32.dp),
-        ) {
-            FilledTonalIconButton(
-                onClick = onToggleLock,
-                modifier = Modifier.size(64.dp),
-            ) {
-                Icon(Icons.Rounded.LockOpen, contentDescription = stringResource(R.string.player_unlock))
-            }
-        }
-
-        if (state.isBuffering && !visible && state.error == null) {
-            LoadingIndicator(modifier = Modifier.align(Alignment.Center).size(64.dp))
-        }
-
-        ResumeHint(
-            modifier =
-                Modifier.align(Alignment.BottomStart)
-                    .windowInsetsPadding(WindowInsets.safeDrawing)
-                    .padding(start = 16.dp, bottom = if (visible) 132.dp else 24.dp),
-            resumedFromMs = state.resumedFromMs,
-            onStartOver = onStartOver,
-            onDismiss = onDismissResume,
-        )
-
-        state.error?.let { error ->
-            ErrorCard(
-                modifier =
-                    Modifier.align(Alignment.Center)
-                        .windowInsetsPadding(WindowInsets.safeDrawing)
-                        .padding(24.dp),
-                error = error,
-                onRetry = onRetry,
-                onOpenExternally = onOpenExternally,
-            )
-        }
-    }
     }
 }
 
@@ -247,7 +251,10 @@ private fun TopBar(
 ) {
     Box(
         modifier =
-            modifier.fillMaxWidth().background(scrimTop).windowInsetsPadding(WindowInsets.safeDrawing)
+            modifier
+                .fillMaxWidth()
+                .background(scrimTop)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 8.dp),
@@ -331,11 +338,16 @@ private fun Live3dToggle(state: Live3dState, onClick: () -> Unit) {
         onCheckedChange = { onClick() },
         modifier = Modifier.padding(horizontal = 4.dp),
     ) {
-        AnimatedContent(targetState = state == Live3dState.Starting, label = "live3dIcon") { starting ->
+        AnimatedContent(targetState = state == Live3dState.Starting, label = "live3dIcon") {
+            starting ->
             if (starting) {
                 LoadingIndicator(modifier = Modifier.size(20.dp))
             } else {
-                Icon(Icons.Rounded.ViewInAr, contentDescription = null, modifier = Modifier.size(20.dp))
+                Icon(
+                    Icons.Rounded.ViewInAr,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
         }
         Spacer(Modifier.width(6.dp))
@@ -363,7 +375,10 @@ private fun Transport(
             },
             modifier = Modifier.size(56.dp),
         ) {
-            Icon(Icons.Rounded.Replay10, contentDescription = stringResource(R.string.player_rewind))
+            Icon(
+                Icons.Rounded.Replay10,
+                contentDescription = stringResource(R.string.player_rewind),
+            )
         }
 
         // The button morphs from a circle (paused) to a squircle (playing).
@@ -397,11 +412,23 @@ private fun Transport(
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
                     PlayIcon.Replay ->
-                        Icon(Icons.Rounded.Replay, stringResource(R.string.player_play), Modifier.size(40.dp))
+                        Icon(
+                            Icons.Rounded.Replay,
+                            stringResource(R.string.player_play),
+                            Modifier.size(40.dp),
+                        )
                     PlayIcon.Pause ->
-                        Icon(Icons.Rounded.Pause, stringResource(R.string.player_pause), Modifier.size(40.dp))
+                        Icon(
+                            Icons.Rounded.Pause,
+                            stringResource(R.string.player_pause),
+                            Modifier.size(40.dp),
+                        )
                     PlayIcon.Play ->
-                        Icon(Icons.Rounded.PlayArrow, stringResource(R.string.player_play), Modifier.size(40.dp))
+                        Icon(
+                            Icons.Rounded.PlayArrow,
+                            stringResource(R.string.player_play),
+                            Modifier.size(40.dp),
+                        )
                 }
             }
         }
@@ -413,7 +440,10 @@ private fun Transport(
             },
             modifier = Modifier.size(56.dp),
         ) {
-            Icon(Icons.Rounded.Forward10, contentDescription = stringResource(R.string.player_forward))
+            Icon(
+                Icons.Rounded.Forward10,
+                contentDescription = stringResource(R.string.player_forward),
+            )
         }
     }
 }
@@ -453,9 +483,17 @@ private fun BottomBar(
 
     Box(
         modifier =
-            modifier.fillMaxWidth().background(scrimBottom).windowInsetsPadding(WindowInsets.safeDrawing)
+            modifier
+                .fillMaxWidth()
+                .background(scrimBottom)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(top = 24.dp, bottom = 4.dp)) {
+        Column(
+            modifier =
+                Modifier.fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 24.dp, bottom = 4.dp)
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = formatTime(position),
@@ -469,7 +507,9 @@ private fun BottomBar(
                 )
             }
             Slider(
-                value = if (dragging) dragPosition else (state.positionMs.toFloat() / duration).coerceIn(0f, 1f),
+                value =
+                    if (dragging) dragPosition
+                    else (state.positionMs.toFloat() / duration).coerceIn(0f, 1f),
                 onValueChange = {
                     if (!dragging) {
                         dragging = true
@@ -486,9 +526,7 @@ private fun BottomBar(
                 },
                 enabled = state.durationMs > 0,
                 colors =
-                    SliderDefaults.colors(
-                        inactiveTrackColor = Color.White.copy(alpha = 0.24f)
-                    ),
+                    SliderDefaults.colors(inactiveTrackColor = Color.White.copy(alpha = 0.24f)),
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -500,7 +538,11 @@ private fun BottomBar(
                         onOpenSheet(PlayerSheet.Speed)
                     }
                 ) {
-                    Icon(Icons.Rounded.Speed, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Icon(
+                        Icons.Rounded.Speed,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
                     Spacer(Modifier.width(6.dp))
                     Text(stringResource(R.string.player_speed_value, speedLabel(state.speed)))
                 }
@@ -595,8 +637,7 @@ private fun BottomBar(
 
 internal fun speedLabel(speed: Float): String =
     if (speed % 1f == 0f) "%.0f".format(speed)
-    else if ((speed * 10) % 1f == 0f) "%.1f".format(speed)
-    else "%.2f".format(speed)
+    else if ((speed * 10) % 1f == 0f) "%.1f".format(speed) else "%.2f".format(speed)
 
 /** Icon button with a tooltip carrying its label (also its accessibility description). */
 @Composable
@@ -645,7 +686,9 @@ private fun ResumeHint(
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(Modifier.width(8.dp))
-                TextButton(onClick = onStartOver) { Text(stringResource(R.string.player_start_over)) }
+                TextButton(onClick = onStartOver) {
+                    Text(stringResource(R.string.player_start_over))
+                }
             }
         }
     }
@@ -722,7 +765,11 @@ internal fun PlayerFeedback(feedback: GestureFeedback?, durationMs: Long) {
             exit = fadeOut(),
             modifier = Modifier.align(Alignment.CenterStart).padding(start = 48.dp),
         ) {
-            SeekBubble(icon = Icons.Rounded.FastRewind, seconds = seek?.seconds ?: 10, forward = false)
+            SeekBubble(
+                icon = Icons.Rounded.FastRewind,
+                seconds = seek?.seconds ?: 10,
+                forward = false,
+            )
         }
         AnimatedVisibility(
             visible = seek != null && seek.forward,
@@ -730,7 +777,11 @@ internal fun PlayerFeedback(feedback: GestureFeedback?, durationMs: Long) {
             exit = fadeOut(),
             modifier = Modifier.align(Alignment.CenterEnd).padding(end = 48.dp),
         ) {
-            SeekBubble(icon = Icons.Rounded.FastForward, seconds = seek?.seconds ?: 10, forward = true)
+            SeekBubble(
+                icon = Icons.Rounded.FastForward,
+                seconds = seek?.seconds ?: 10,
+                forward = true,
+            )
         }
 
         val pill: (@Composable () -> Unit)? =
@@ -747,10 +798,22 @@ internal fun PlayerFeedback(feedback: GestureFeedback?, durationMs: Long) {
                     }
                 }
                 is GestureFeedback.Brightness -> {
-                    { LevelPill(Icons.Rounded.BrightnessMedium, stringResource(R.string.player_brightness), feedback.level) }
+                    {
+                        LevelPill(
+                            Icons.Rounded.BrightnessMedium,
+                            stringResource(R.string.player_brightness),
+                            feedback.level,
+                        )
+                    }
                 }
                 is GestureFeedback.Volume -> {
-                    { LevelPill(Icons.AutoMirrored.Rounded.VolumeUp, stringResource(R.string.player_volume), feedback.level) }
+                    {
+                        LevelPill(
+                            Icons.AutoMirrored.Rounded.VolumeUp,
+                            stringResource(R.string.player_volume),
+                            feedback.level,
+                        )
+                    }
                 }
                 GestureFeedback.FastForward -> {
                     {
@@ -773,7 +836,9 @@ internal fun PlayerFeedback(feedback: GestureFeedback?, durationMs: Long) {
                 shape = CircleShape,
                 color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.92f),
             ) {
-                Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) { pill?.invoke() }
+                Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
+                    pill?.invoke()
+                }
             }
         }
     }
@@ -781,14 +846,27 @@ internal fun PlayerFeedback(feedback: GestureFeedback?, durationMs: Long) {
 
 @Composable
 private fun SeekBubble(icon: ImageVector, seconds: Int, forward: Boolean) {
-    Surface(shape = CircleShape, color = Color.Black.copy(alpha = 0.5f), modifier = Modifier.size(104.dp)) {
+    Surface(
+        shape = CircleShape,
+        color = Color.Black.copy(alpha = 0.5f),
+        modifier = Modifier.size(104.dp),
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(32.dp))
+            Icon(
+                icon,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(32.dp),
+            )
             Text(
-                text = stringResource(R.string.player_seek_amount, if (forward) "+$seconds" else "−$seconds"),
+                text =
+                    stringResource(
+                        R.string.player_seek_amount,
+                        if (forward) "+$seconds" else "−$seconds",
+                    ),
                 style = MaterialTheme.typography.labelLarge,
                 color = Color.White,
             )

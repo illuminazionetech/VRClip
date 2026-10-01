@@ -22,10 +22,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * Tracks the lifecycle of custom-command (`yt-dlp` template) tasks and keeps the foreground
- * service bound while any task or download is active. This is the surviving half of the old
- * `Downloader` singleton after the dead single-download orchestration flow (superseded by
- * [DownloaderV2]) was removed.
+ * Tracks the lifecycle of custom-command (`yt-dlp` template) tasks and keeps the foreground service
+ * bound while any task or download is active. This is the surviving half of the old `Downloader`
+ * singleton after the dead single-download orchestration flow (superseded by [DownloaderV2]) was
+ * removed.
  */
 object CommandTaskManager {
 
@@ -134,14 +134,13 @@ object CommandTaskManager {
     fun updateTaskOutput(template: CommandTemplate, url: String, line: String, progress: Float) {
         val key = makeKey(url, template.name)
         val oldValue = mutableTaskList[key] ?: return
-        val newValue =
-            oldValue.run {
-                copy(
-                    output = output + line + "\n",
-                    currentLine = line,
-                    state = CustomCommandTask.State.Running(progress),
-                )
-            }
+        val newValue = oldValue.run {
+            copy(
+                output = output + line + "\n",
+                currentLine = line,
+                state = CustomCommandTask.State.Running(progress),
+            )
+        }
         mutableTaskList[key] = newValue
     }
 
@@ -167,10 +166,9 @@ object CommandTaskManager {
 
     fun onProcessEnded() = mutableProcessCount.update { it - 1 }
 
-    fun onProcessCanceled(taskId: String) =
-        mutableTaskList.run {
-            get(taskId)?.let { this.put(taskId, it.copy(state = CustomCommandTask.State.Canceled)) }
-        }
+    fun onProcessCanceled(taskId: String) = mutableTaskList.run {
+        get(taskId)?.let { this.put(taskId, it.copy(state = CustomCommandTask.State.Canceled)) }
+    }
 
     fun onTaskError(errorReport: String, template: CommandTemplate, url: String): Unit =
         mutableTaskList.run {

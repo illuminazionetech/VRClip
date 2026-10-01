@@ -9,10 +9,10 @@ import kotlin.math.sin
 
 /**
  * A procedurally generated UV sphere seen from the inside, used to render equirectangular 360 and
- * 180 video. Vertices interleave position (xyz) and texture coordinates (uv) in image space
- * (v = 0 at the bottom of the picture). The center of the picture (u = 0.5) sits straight ahead
- * on -Z, so a viewer with an identity camera looks at the middle of the video; [sweepDegrees] of
- * 180 builds the front half-dome that 180° video covers.
+ * 180 video. Vertices interleave position (xyz) and texture coordinates (uv) in image space (v = 0
+ * at the bottom of the picture). The center of the picture (u = 0.5) sits straight ahead on -Z, so
+ * a viewer with an identity camera looks at the middle of the video; [sweepDegrees] of 180 builds
+ * the front half-dome that 180° video covers.
  */
 internal class SphereMesh(
     latitudeSegments: Int = 64,

@@ -117,10 +117,16 @@ private fun UpdateDialog(state: State) {
             ) { current ->
                 when (current) {
                     is State.Available ->
-                        Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState())) {
+                        Column(
+                            Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState())
+                        ) {
                             current.asset.size?.let {
                                 Text(
-                                    text = stringResource(R.string.update_download_size, it.toFileSizeText()),
+                                    text =
+                                        stringResource(
+                                            R.string.update_download_size,
+                                            it.toFileSizeText(),
+                                        ),
                                     style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -157,7 +163,8 @@ private fun UpdateDialog(state: State) {
                             Text(stringResource(R.string.update_installing))
                         }
                     }
-                    is State.SignatureChanged -> Text(stringResource(R.string.update_key_changed_desc))
+                    is State.SignatureChanged ->
+                        Text(stringResource(R.string.update_key_changed_desc))
                     is State.Failed ->
                         Text(
                             stringResource(
@@ -230,8 +237,11 @@ internal fun releaseNotes(markdown: String): AnnotatedString = buildAnnotatedStr
         .forEach { line ->
             // An indented line that does not start a new item continues the one above.
             val wrapped =
-                lines.isNotEmpty() && line.first().isWhitespace() && !line.trimStart().matches(listItem)
-            if (wrapped) lines[lines.lastIndex] = lines.last() + " " + line.trim() else lines += line
+                lines.isNotEmpty() &&
+                    line.first().isWhitespace() &&
+                    !line.trimStart().matches(listItem)
+            if (wrapped) lines[lines.lastIndex] = lines.last() + " " + line.trim()
+            else lines += line
         }
     lines.forEachIndexed { index, raw ->
         val heading = raw.startsWith("#")
@@ -243,7 +253,8 @@ internal fun releaseNotes(markdown: String): AnnotatedString = buildAnnotatedStr
         } else {
             val parts = line.split("**")
             parts.forEachIndexed { i, part ->
-                if (i % 2 == 1) withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append(part) }
+                if (i % 2 == 1)
+                    withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append(part) }
                 else append(part)
             }
         }

@@ -60,8 +60,7 @@ object ProjectionDetector {
     // "_360" / "-180" glued to the name is how cameras and VR sites tag exported files.
     private val attachedTag = Regex("(?:^|[_-])(360|180)(?=[_-]|$)")
     private val tag3d = Regex("\\b3d\\b|\\bstereo(?:scopic)?\\b")
-    private val explicitLr =
-        Regex("\\b(?:h|f|half ?|full ?)?sbs\\b|\\bside ?by ?side\\b|\\b3dh\\b")
+    private val explicitLr = Regex("\\b(?:h|f|half ?|full ?)?sbs\\b|\\bside ?by ?side\\b|\\b3dh\\b")
     private val explicitTb =
         Regex(
             "\\b(?:hou|htb|fou|ftb)\\b|\\b(?:half|full) ?(?:ou|tb)\\b|\\bover ?under\\b|" +
@@ -95,7 +94,9 @@ object ProjectionDetector {
                 .lowercase()
                 .replace(separators, " ")
         val raw = filePath.substringAfterLast('/').substringBeforeLast('.').lowercase()
-        val attached = if (raw.contains("xbox")) emptySet() else attachedTag.findAll(raw).map { it.groupValues[1] }.toSet()
+        val attached =
+            if (raw.contains("xbox")) emptySet()
+            else attachedTag.findAll(raw).map { it.groupValues[1] }.toSet()
         val cleaned = name.replace(notSpherical, " ")
         val strong360 = "360" in attached || strong360.containsMatchIn(cleaned)
         val strong180 = !strong360 && ("180" in attached || strong180.containsMatchIn(cleaned))
@@ -103,8 +104,10 @@ object ProjectionDetector {
         val maybe180 = bare180.containsMatchIn(cleaned)
         val has3d = tag3d.containsMatchIn(cleaned)
         val context = strong360 || strong180 || maybe360 || maybe180 || has3d
-        val lr = explicitLr.containsMatchIn(cleaned) || (context && shortLr.containsMatchIn(cleaned))
-        val tb = explicitTb.containsMatchIn(cleaned) || (context && shortTb.containsMatchIn(cleaned))
+        val lr =
+            explicitLr.containsMatchIn(cleaned) || (context && shortLr.containsMatchIn(cleaned))
+        val tb =
+            explicitTb.containsMatchIn(cleaned) || (context && shortTb.containsMatchIn(cleaned))
         val layout =
             when {
                 lr && !tb -> StereoLayout.LeftRight
@@ -118,12 +121,11 @@ object ProjectionDetector {
         val has180 =
             !has360 &&
                 (strong180 ||
-                    (maybe180 && (confirmed || layoutFromShape(frame, false, strict = true) != null)))
+                    (maybe180 &&
+                        (confirmed || layoutFromShape(frame, false, strict = true) != null)))
         return when {
-            has360 ->
-                spherical(true, layout ?: layoutFromShape(frame, true) ?: StereoLayout.None)
-            has180 ->
-                spherical(false, layout ?: layoutFromShape(frame, false) ?: StereoLayout.None)
+            has360 -> spherical(true, layout ?: layoutFromShape(frame, true) ?: StereoLayout.None)
+            has180 -> spherical(false, layout ?: layoutFromShape(frame, false) ?: StereoLayout.None)
             layout == StereoLayout.LeftRight -> ProjectionMode.SBS_3D
             layout == StereoLayout.TopBottom -> ProjectionMode.OU_3D
             else -> null
@@ -132,10 +134,10 @@ object ProjectionDetector {
 
     /**
      * For a spherical video whose name gives no stereo layout, the frame shape does: a mono
-     * equirectangular 360 frame is 2:1 and a mono 180 frame 1:1, so a 360 frame that is square
-     * (or a 180 frame that is 1:2) holds two views stacked, and one twice as wide holds two views
-     * side by side. Returns null when the shape fits none of these; with [strict], a shape that
-     * matches the mono layout counts as a match too (used to confirm a bare "360" in a title).
+     * equirectangular 360 frame is 2:1 and a mono 180 frame 1:1, so a 360 frame that is square (or
+     * a 180 frame that is 1:2) holds two views stacked, and one twice as wide holds two views side
+     * by side. Returns null when the shape fits none of these; with [strict], a shape that matches
+     * the mono layout counts as a match too (used to confirm a bare "360" in a title).
      */
     private fun layoutFromShape(
         frame: FrameInfo?,
@@ -164,8 +166,8 @@ object ProjectionDetector {
         }
 
     /**
-     * Reads the spherical projection (Google Spherical Video V2 `sv3d`/`proj` boxes, or the V1
-     * XML) and the stereo layout (`st3d` box or Matroska StereoMode, both surfaced by Media3 as
+     * Reads the spherical projection (Google Spherical Video V2 `sv3d`/`proj` boxes, or the V1 XML)
+     * and the stereo layout (`st3d` box or Matroska StereoMode, both surfaced by Media3 as
      * `Format.stereoMode`).
      */
     internal fun fromMetadata(frame: FrameInfo?): ProjectionMode? {
@@ -209,8 +211,7 @@ object ProjectionDetector {
         if (!text.contains("equirectangular", ignoreCase = true)) return null
         val cropped = xmlInt(text, "CroppedAreaImageWidthPixels")
         val full = xmlInt(text, "FullPanoWidthPixels")
-        return if (cropped != null && full != null && cropped * 2 <= full + 1)
-            SphericalExtent.Half
+        return if (cropped != null && full != null && cropped * 2 <= full + 1) SphericalExtent.Half
         else SphericalExtent.Full
     }
 

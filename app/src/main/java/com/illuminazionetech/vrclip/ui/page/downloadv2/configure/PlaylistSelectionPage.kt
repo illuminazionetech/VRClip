@@ -1,7 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2.configure
 
-import androidx.compose.ui.res.pluralStringResource
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,9 +57,9 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.download.DownloaderV2
 import com.illuminazionetech.vrclip.download.TaskFactory
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
+import com.illuminazionetech.vrclip.ui.component.FullScreenSheet
 import com.illuminazionetech.vrclip.ui.component.PlaylistItem
 import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
-import com.illuminazionetech.vrclip.ui.component.FullScreenSheet
 import com.illuminazionetech.vrclip.ui.component.rememberHiddenSheetState
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.DownloadDialogViewModel.SelectionState
 import com.illuminazionetech.vrclip.ui.page.settings.format.AudioQuickSettingsDialog

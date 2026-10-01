@@ -11,8 +11,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Release/version helpers shared by the in-app updater ([AppUpdateManager]) and the yt-dlp
- * engine updater. The pure selection functions here are unit tested.
+ * Release/version helpers shared by the in-app updater ([AppUpdateManager]) and the yt-dlp engine
+ * updater. The pure selection functions here are unit tested.
  */
 object UpdateUtil {
 
@@ -38,9 +38,9 @@ object UpdateUtil {
         }
 
     /**
-     * Picks the newest release a user on [stableOnly] should be offered: drafts are never
-     * offered, and the stable channel only sees stable versions that are not marked as
-     * pre-releases. The version comes from the tag (falling back to the release name).
+     * Picks the newest release a user on [stableOnly] should be offered: drafts are never offered,
+     * and the stable channel only sees stable versions that are not marked as pre-releases. The
+     * version comes from the tag (falling back to the release name).
      */
     fun selectRelease(releases: List<Release>, stableOnly: Boolean): Release? =
         releases
@@ -52,8 +52,8 @@ object UpdateUtil {
     fun Release.version(): Version = (tagName ?: name).toVersion()
 
     /**
-     * The APK asset for this build: same publish flavor (a `-generic-` or `-githubPreview-`
-     * token), trying the device ABIs in preference order and falling back to the universal APK.
+     * The APK asset for this build: same publish flavor (a `-generic-` or `-githubPreview-` token),
+     * trying the device ABIs in preference order and falling back to the universal APK.
      */
     fun selectAsset(release: Release, flavor: String, supportedAbis: List<String>): AssetsItem? {
         val candidates =

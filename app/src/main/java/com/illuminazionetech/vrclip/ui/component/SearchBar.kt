@@ -25,10 +25,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.meta.spatial.uiset.input.SpatialSearchBar
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
+import com.meta.spatial.uiset.input.SpatialSearchBar
 
 @Composable
 fun VRClipSearchBar(

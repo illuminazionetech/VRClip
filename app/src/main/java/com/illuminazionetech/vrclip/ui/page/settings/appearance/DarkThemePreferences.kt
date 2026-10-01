@@ -1,10 +1,7 @@
 package com.illuminazionetech.vrclip.ui.page.settings.appearance
 
-import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Contrast
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
@@ -19,8 +16,6 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceSingleChoiceItem
-import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
-import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchVariant
 import com.illuminazionetech.vrclip.util.DarkThemePreference.Companion.FOLLOW_SYSTEM
 import com.illuminazionetech.vrclip.util.DarkThemePreference.Companion.OFF
 import com.illuminazionetech.vrclip.util.DarkThemePreference.Companion.ON

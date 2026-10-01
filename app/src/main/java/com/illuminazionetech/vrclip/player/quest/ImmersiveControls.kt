@@ -74,8 +74,8 @@ private enum class ControlsPage {
 
 /**
  * Control bar of the immersive player, drawn on a panel in the scene. Everything stays inside the
- * panel (no dialogs or popup menus, which would open outside the scene): secondary choices swap
- * the bar's content instead.
+ * panel (no dialogs or popup menus, which would open outside the scene): secondary choices swap the
+ * bar's content instead.
  */
 @Composable
 internal fun ImmersiveControls(
@@ -105,7 +105,9 @@ internal fun ImmersiveControls(
             transitionSpec = { fadeIn() togetherWith fadeOut() },
             label = "controlsPage",
         ) { current ->
-            Column(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp)) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp)
+            ) {
                 when (current) {
                     ControlsPage.Main ->
                         MainPage(
@@ -180,7 +182,9 @@ private fun MainPage(
         )
         Slider(
             modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
-            value = if (dragging) dragValue else (state.positionMs.toFloat() / duration).coerceIn(0f, 1f),
+            value =
+                if (dragging) dragValue
+                else (state.positionMs.toFloat() / duration).coerceIn(0f, 1f),
             onValueChange = {
                 if (!dragging) {
                     dragging = true
@@ -204,28 +208,42 @@ private fun MainPage(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         FilledTonalIconButton(onClick = { viewModel.seekBy(-PlayerViewModel.SEEK_STEP_MS) }) {
-            Icon(Icons.Rounded.Replay10, contentDescription = stringResource(R.string.player_rewind))
+            Icon(
+                Icons.Rounded.Replay10,
+                contentDescription = stringResource(R.string.player_rewind),
+            )
         }
         FilledIconButton(onClick = viewModel::togglePlayPause, modifier = Modifier.size(56.dp)) {
             if (state.isBuffering && state.playWhenReady) {
                 LoadingIndicator(Modifier.size(32.dp), color = MaterialTheme.colorScheme.onPrimary)
             } else {
                 Icon(
-                    if (state.playWhenReady && !state.ended) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                    if (state.playWhenReady && !state.ended) Icons.Rounded.Pause
+                    else Icons.Rounded.PlayArrow,
                     contentDescription =
-                        stringResource(if (state.playWhenReady) R.string.player_pause else R.string.player_play),
+                        stringResource(
+                            if (state.playWhenReady) R.string.player_pause else R.string.player_play
+                        ),
                 )
             }
         }
         FilledTonalIconButton(onClick = { viewModel.seekBy(PlayerViewModel.SEEK_STEP_MS) }) {
-            Icon(Icons.Rounded.Forward10, contentDescription = stringResource(R.string.player_forward))
+            Icon(
+                Icons.Rounded.Forward10,
+                contentDescription = stringResource(R.string.player_forward),
+            )
         }
         Spacer(Modifier.weight(1f))
         if (state.canConvertLive || state.live3d != Live3dState.Off) {
             val on = state.live3d == Live3dState.On || state.live3d == Live3dState.Starting
             ToggleButton(checked = on, onCheckedChange = { viewModel.setLive3d(!on) }) {
                 if (state.live3d == Live3dState.Starting) LoadingIndicator(Modifier.size(20.dp))
-                else Icon(Icons.Rounded.ViewInAr, contentDescription = null, modifier = Modifier.size(20.dp))
+                else
+                    Icon(
+                        Icons.Rounded.ViewInAr,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
                 Spacer(Modifier.width(6.dp))
                 Text(stringResource(R.string.player_live_3d))
             }
@@ -247,7 +265,10 @@ private fun MainPage(
             }
         }
         IconButton(onClick = onRecenter) {
-            Icon(Icons.Rounded.CenterFocusStrong, contentDescription = stringResource(R.string.player_recenter))
+            Icon(
+                Icons.Rounded.CenterFocusStrong,
+                contentDescription = stringResource(R.string.player_recenter),
+            )
         }
     }
     if (state.live3d == Live3dState.Failed) {
@@ -264,9 +285,15 @@ private fun ProjectionPage(viewModel: PlayerViewModel, onBack: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
+            Icon(
+                Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = stringResource(R.string.back),
+            )
         }
-        Text(stringResource(R.string.player_projection), style = MaterialTheme.typography.titleMedium)
+        Text(
+            stringResource(R.string.player_projection),
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
     Row(
         modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
@@ -279,7 +306,12 @@ private fun ProjectionPage(viewModel: PlayerViewModel, onBack: () -> Unit) {
                 onBack()
             },
             label = {
-                Text(stringResource(R.string.player_projection_detected, state.detection.mode.displayName()))
+                Text(
+                    stringResource(
+                        R.string.player_projection_detected,
+                        state.detection.mode.displayName(),
+                    )
+                )
             },
         )
         ProjectionMode.entries.forEach { mode ->
@@ -304,12 +336,22 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
+            Icon(
+                Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = stringResource(R.string.back),
+            )
         }
-        Text(stringResource(R.string.stereo_model_title), style = MaterialTheme.typography.titleMedium)
+        Text(
+            stringResource(R.string.stereo_model_title),
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
     Text(
-        text = stringResource(R.string.stereo_model_desc, DepthModelManager.DOWNLOAD_BYTES.toFileSizeText()),
+        text =
+            stringResource(
+                R.string.stereo_model_desc,
+                DepthModelManager.DOWNLOAD_BYTES.toFileSizeText(),
+            ),
         style = MaterialTheme.typography.bodyMedium,
         maxLines = 3,
         overflow = TextOverflow.Ellipsis,
@@ -318,7 +360,10 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
     when (val current = modelState) {
         is DepthModelManager.State.Downloading ->
             if (current.progress >= 0f) {
-                LinearWavyProgressIndicator(progress = { current.progress }, modifier = Modifier.fillMaxWidth())
+                LinearWavyProgressIndicator(
+                    progress = { current.progress },
+                    modifier = Modifier.fillMaxWidth(),
+                )
             } else {
                 LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
             }

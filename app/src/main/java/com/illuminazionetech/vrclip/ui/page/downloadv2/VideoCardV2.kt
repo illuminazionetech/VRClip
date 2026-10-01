@@ -34,16 +34,15 @@ import androidx.compose.material.icons.rounded.Movie
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.RestartAlt
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
@@ -79,7 +78,6 @@ import com.illuminazionetech.vrclip.download.Task.DownloadState.ReadyWithInfo
 import com.illuminazionetech.vrclip.download.Task.DownloadState.Running
 import com.illuminazionetech.vrclip.download.Task.RestartableAction
 import com.illuminazionetech.vrclip.ui.common.AsyncImageImpl
-import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
 import com.illuminazionetech.vrclip.ui.common.motion.materialSharedAxisY
@@ -165,7 +163,7 @@ fun VideoListItem(
     ) {
         Row(
             modifier = Modifier.padding(8.dp).height(IntrinsicSize.Min),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.Top,
         ) {
             Box(modifier = Modifier) {
                 ListItemImage(modifier = Modifier, thumbnailModel = thumbnailModel)
@@ -191,7 +189,7 @@ fun VideoListItem(
                     modifier = Modifier.align(Alignment.BottomEnd).offset(x = 8.dp, y = 8.dp),
                 ) {
                     Icon(
-                    imageVector = Icons.Rounded.MoreVert,
+                        imageVector = Icons.Rounded.MoreVert,
                         contentDescription = stringResource(R.string.show_more_actions),
                         modifier = Modifier.size(20.dp),
                     )
@@ -290,11 +288,13 @@ fun VideoCardV2(
                         )
                     LinearWavyProgressIndicator(
                         progress = { animatedProgress },
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                        modifier =
+                            Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
                     )
                 } else {
                     LinearWavyProgressIndicator(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
+                        modifier =
+                            Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
                     )
                 }
             }
@@ -363,9 +363,7 @@ private fun ThumbnailPlaceholder(modifier: Modifier = Modifier, iconSize: Dp? = 
     Box(
         modifier =
             modifier.background(
-                Brush.linearGradient(
-                    listOf(colors.primaryContainer, colors.tertiaryContainer)
-                )
+                Brush.linearGradient(listOf(colors.primaryContainer, colors.tertiaryContainer))
             ),
         contentAlignment = Alignment.Center,
     ) {

@@ -1,12 +1,7 @@
 package com.illuminazionetech.vrclip.ui.page.videolist
 
-import com.illuminazionetech.vrclip.player.stereo.StereoConversionWorker
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.LinearWavyProgressIndicator
-import androidx.compose.animation.AnimatedVisibility
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -35,10 +30,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,12 +52,14 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.database.objects.DownloadedVideoInfo
 import com.illuminazionetech.vrclip.player.ProjectionDetector
 import com.illuminazionetech.vrclip.player.ProjectionMenu
 import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.displayName
+import com.illuminazionetech.vrclip.player.stereo.StereoConversionWorker
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.MediaImage
@@ -165,7 +165,10 @@ fun VideoDetailDrawer(
             )
         }
 
-        ConversionStatus(status = conversion, onCancel = { StereoConversionWorker.cancel(context, info.id) })
+        ConversionStatus(
+            status = conversion,
+            onCancel = { StereoConversionWorker.cancel(context, info.id) },
+        )
 
         Spacer(Modifier.height(20.dp))
 
@@ -216,10 +219,12 @@ fun VideoDetailDrawer(
                 DetailAction(Icons.Rounded.Public, stringResource(R.string.player_projection)) {
                     showProjectionMenu = true
                 }
-                if (onConvertTo3D != null &&
-                    projection == ProjectionMode.FLAT &&
-                    !converting &&
-                    !info.videoPath.startsWith("content://")) {
+                if (
+                    onConvertTo3D != null &&
+                        projection == ProjectionMode.FLAT &&
+                        !converting &&
+                        !info.videoPath.startsWith("content://")
+                ) {
                     DetailAction(Icons.Rounded.ViewInAr, stringResource(R.string.convert_to_3d)) {
                         onDismissRequest()
                         onConvertTo3D()
@@ -241,7 +246,11 @@ fun VideoDetailDrawer(
                     }
                 }
             }
-            DetailAction(Icons.Rounded.Delete, stringResource(R.string.remove), destructive = true) {
+            DetailAction(
+                Icons.Rounded.Delete,
+                stringResource(R.string.remove),
+                destructive = true,
+            ) {
                 view.slightHapticFeedback()
                 onDismissRequest()
                 onDelete()
@@ -299,8 +308,9 @@ private fun DetailAction(
 @Composable
 private fun ConversionStatus(status: StereoConversionWorker.Status, onCancel: () -> Unit) {
     AnimatedVisibility(
-        visible = status is StereoConversionWorker.Status.Running ||
-            status is StereoConversionWorker.Status.Failed
+        visible =
+            status is StereoConversionWorker.Status.Running ||
+                status is StereoConversionWorker.Status.Failed
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
@@ -343,13 +353,18 @@ private fun ConversionStatus(status: StereoConversionWorker.Status, onCancel: ()
                             text =
                                 stringResource(
                                     when (status.reason) {
-                                        StereoConversionWorker.Failure.Missing -> R.string.stereo_error_missing
+                                        StereoConversionWorker.Failure.Missing ->
+                                            R.string.stereo_error_missing
                                         StereoConversionWorker.Failure.NotWritable ->
                                             R.string.stereo_error_not_writable
-                                        StereoConversionWorker.Failure.NoSpace -> R.string.stereo_error_space
-                                        StereoConversionWorker.Failure.Model -> R.string.stereo_model_failed
-                                        StereoConversionWorker.Failure.Encoder -> R.string.stereo_error_encoder
-                                        StereoConversionWorker.Failure.Failed -> R.string.stereo_error_failed
+                                        StereoConversionWorker.Failure.NoSpace ->
+                                            R.string.stereo_error_space
+                                        StereoConversionWorker.Failure.Model ->
+                                            R.string.stereo_model_failed
+                                        StereoConversionWorker.Failure.Encoder ->
+                                            R.string.stereo_error_encoder
+                                        StereoConversionWorker.Failure.Failed ->
+                                            R.string.stereo_error_failed
                                     }
                                 ),
                             style = MaterialTheme.typography.bodyMedium,

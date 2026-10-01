@@ -25,8 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.meta.spatial.uiset.dialog.SpatialBasicDialog
-import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -41,7 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.LocalFixedColorRoles
+import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
+import com.meta.spatial.uiset.dialog.SpatialBasicDialog
 
 private val DialogVerticalPadding = PaddingValues(vertical = 24.dp)
 private val IconPadding = PaddingValues(bottom = 16.dp)
@@ -161,7 +161,8 @@ fun VRClipDialog(
                         val textStyle = MaterialTheme.typography.labelLarge
                         ProvideTextStyle(value = textStyle) {
                             FlowRow(
-                                horizontalArrangement = Arrangement.spacedBy(ButtonsMainAxisSpacing),
+                                horizontalArrangement =
+                                    Arrangement.spacedBy(ButtonsMainAxisSpacing),
                                 verticalArrangement = Arrangement.spacedBy(ButtonsCrossAxisSpacing),
                             ) {
                                 dismissButton?.invoke()
@@ -261,7 +262,11 @@ fun VRClipDialogVariant(
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
 ) {
-    BasicAlertDialog(onDismissRequest = onDismissRequest, modifier = modifier, properties = properties) {
+    BasicAlertDialog(
+        onDismissRequest = onDismissRequest,
+        modifier = modifier,
+        properties = properties,
+    ) {
         Surface(
             modifier = modifier,
             shape = shape,

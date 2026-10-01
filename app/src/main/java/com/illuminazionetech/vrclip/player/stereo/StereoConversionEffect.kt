@@ -2,15 +2,15 @@
 
 package com.illuminazionetech.vrclip.player.stereo
 
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
 import android.content.Context
 import android.opengl.GLES20
 import android.util.Log
+import androidx.annotation.OptIn
 import androidx.media3.common.VideoFrameProcessingException
 import androidx.media3.common.util.GlProgram
 import androidx.media3.common.util.GlUtil
 import androidx.media3.common.util.Size
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.effect.BaseGlShaderProgram
 import androidx.media3.effect.GlEffect
 import androidx.media3.effect.GlShaderProgram
@@ -60,10 +60,10 @@ object LiveStereoStatus {
 /**
  * Media3 effect that turns a flat video into side-by-side 3D. Each frame is scaled down to the
  * depth model's input on the GPU, depth is estimated with [DepthEstimator], and a fragment shader
- * synthesizes the left and right views from the frame and its depth map. The same effect serves
- * the player (with [realtime] set: inference runs on its own thread and the newest depth map is
- * reused until the next one is ready, so playback never waits) and the permanent conversion
- * (every frame gets its own depth map, with temporal smoothing, at a higher quality search).
+ * synthesizes the left and right views from the frame and its depth map. The same effect serves the
+ * player (with [realtime] set: inference runs on its own thread and the newest depth map is reused
+ * until the next one is ready, so playback never waits) and the permanent conversion (every frame
+ * gets its own depth map, with temporal smoothing, at a higher quality search).
  */
 class StereoConversionEffect(
     private val model: DepthModelManager,
@@ -129,7 +129,8 @@ private class StereoShaderProgram(
     private var downscaleFbo = 0
     private var depthTexture = 0
 
-    private val readBuffer = ByteBuffer.allocateDirect(size * size * 4).order(ByteOrder.nativeOrder())
+    private val readBuffer =
+        ByteBuffer.allocateDirect(size * size * 4).order(ByteOrder.nativeOrder())
     private val depthUpload = ByteBuffer.allocateDirect(size * size).order(ByteOrder.nativeOrder())
     private val postProcessor =
         DepthPostProcessor(
@@ -176,7 +177,8 @@ private class StereoShaderProgram(
     override fun configure(inputWidth: Int, inputHeight: Int): Size {
         if (downscaleTexture == 0) {
             try {
-                downscaleTexture = GlUtil.createTexture(size, size, /* useHighPrecisionColorComponents= */ false)
+                downscaleTexture =
+                    GlUtil.createTexture(size, size, /* useHighPrecisionColorComponents= */ false)
                 downscaleFbo = GlUtil.createFboForTexture(downscaleTexture)
                 depthTexture = createDepthTexture()
             } catch (e: GlUtil.GlException) {
@@ -186,12 +188,12 @@ private class StereoShaderProgram(
         val (width, height) =
             targetSize
                 ?: StereoConversionEffect.outputSize(
-                inputWidth,
-                inputHeight,
-                realtime,
-                packing,
-                maxOutputWidth,
-            )
+                    inputWidth,
+                    inputHeight,
+                    realtime,
+                    packing,
+                    maxOutputWidth,
+                )
         return Size(width, height)
     }
 
@@ -203,7 +205,12 @@ private class StereoShaderProgram(
             if (realtime) updateDepthRealtime(inputTexId) else updateDepthOffline(inputTexId)
 
             GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, savedFramebuffer[0])
-            GLES20.glViewport(savedViewport[0], savedViewport[1], savedViewport[2], savedViewport[3])
+            GLES20.glViewport(
+                savedViewport[0],
+                savedViewport[1],
+                savedViewport[2],
+                savedViewport[3],
+            )
 
             if (realtime && hasDepth && ramp < 1f) ramp = (ramp + RAMP_STEP).coerceAtMost(1f)
             val strength =
@@ -265,7 +272,9 @@ private class StereoShaderProgram(
                         estimator
                             ?: DepthEstimator.create(context, modelFile).also {
                                 estimator = it
-                                LiveStereoStatus.update(LiveStereoStatus.Status.Running(it.accelerator))
+                                LiveStereoStatus.update(
+                                    LiveStereoStatus.Status.Running(it.accelerator)
+                                )
                             }
                     if (resetRequested.getAndSet(false)) postProcessor.reset()
                     val depth = ByteArray(size * size)
@@ -292,8 +301,16 @@ private class StereoShaderProgram(
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, ids[0])
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_2D,
+            GLES20.GL_TEXTURE_WRAP_S,
+            GLES20.GL_CLAMP_TO_EDGE,
+        )
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_2D,
+            GLES20.GL_TEXTURE_WRAP_T,
+            GLES20.GL_CLAMP_TO_EDGE,
+        )
         // Mid gray until the first depth map arrives: every pixel on the screen plane.
         depthUpload.clear()
         repeat(size * size) { depthUpload.put(128.toByte()) }
@@ -403,11 +420,11 @@ private class StereoShaderProgram(
 
         /**
          * Depth-image-based rendering by backward search. For an output pixel of one eye, every
-         * source position within the parallax range is a candidate; a source point at depth d
-         * lands at x + shift(d). Walking from the side of the nearest possible point, the first
-         * crossing is the visible surface (a nearer point occludes a farther one), refined
-         * linearly between the two samples that bracket it. Where nothing lands (a disocclusion)
-         * the walk settles on the background next to the edge, which fills the gap with it.
+         * source position within the parallax range is a candidate; a source point at depth d lands
+         * at x + shift(d). Walking from the side of the nearest possible point, the first crossing
+         * is the visible surface (a nearer point occludes a farther one), refined linearly between
+         * the two samples that bracket it. Where nothing lands (a disocclusion) the walk settles on
+         * the background next to the edge, which fills the gap with it.
          */
         private fun synthesisShader(steps: Int) =
             """

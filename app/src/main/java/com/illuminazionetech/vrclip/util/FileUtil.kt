@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaScannerConnection
 import android.net.Uri
-import androidx.core.net.toUri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.annotation.CheckResult
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.illuminazionetech.vrclip.App.Companion.context
 import com.illuminazionetech.vrclip.R
@@ -27,9 +27,7 @@ object FileUtil {
     fun openFileFromResult(downloadResult: Result<List<String>>) {
         val filePaths = downloadResult.getOrNull()
         if (filePaths.isNullOrEmpty()) return
-        openFile(filePaths.first()) {
-            makeToast(context.getString(R.string.file_unavailable))
-        }
+        openFile(filePaths.first()) { makeToast(context.getString(R.string.file_unavailable)) }
     }
 
     inline fun openFile(path: String, onFailureCallback: (Throwable) -> Unit) =
@@ -99,10 +97,9 @@ object FileUtil {
             }
         }
 
-    fun deleteFile(path: String) =
-        path.runCatching {
-            if (!File(path).delete()) DocumentFile.fromSingleUri(context, toUri())?.delete()
-        }
+    fun deleteFile(path: String) = path.runCatching {
+        if (!File(path).delete()) DocumentFile.fromSingleUri(context, toUri())?.delete()
+    }
 
     @CheckResult
     fun scanFileToMediaLibraryPostDownload(title: String, downloadDir: String): List<String> =
@@ -137,31 +134,30 @@ object FileUtil {
                     DocumentsContract.getTreeDocumentId(this),
                 )
             }
-        val res =
-            tempPath.runCatching {
-                walkTopDown().forEach {
-                    if (it.isDirectory) return@forEach
-                    val mimeType =
-                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+        val res = tempPath.runCatching {
+            walkTopDown().forEach {
+                if (it.isDirectory) return@forEach
+                val mimeType =
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
 
-                    val destUri =
-                        DocumentsContract.createDocument(
-                            context.contentResolver,
-                            destDir,
-                            mimeType,
-                            it.name,
-                        ) ?: return@forEach
+                val destUri =
+                    DocumentsContract.createDocument(
+                        context.contentResolver,
+                        destDir,
+                        mimeType,
+                        it.name,
+                    ) ?: return@forEach
 
-                    val inputStream = it.inputStream()
-                    val outputStream =
-                        context.contentResolver.openOutputStream(destUri) ?: return@forEach
-                    inputStream.copyTo(outputStream)
-                    inputStream.closeQuietly()
-                    outputStream.closeQuietly()
-                    uriList.add(destUri.toString())
-                }
-                uriList
+                val inputStream = it.inputStream()
+                val outputStream =
+                    context.contentResolver.openOutputStream(destUri) ?: return@forEach
+                inputStream.copyTo(outputStream)
+                inputStream.closeQuietly()
+                outputStream.closeQuietly()
+                uriList.add(destUri.toString())
             }
+            uriList
+        }
         tempPath.deleteRecursively()
         return res
     }
@@ -196,7 +192,10 @@ object FileUtil {
     fun Context.getInternalTempDir() = File(filesDir, "tmp")
 
     internal fun getExternalDownloadDirectory() =
-        File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "VRClip")
+        File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "VRClip",
+            )
             .also { it.mkdir() }
 
     internal fun getExternalPrivateDownloadDirectory() =

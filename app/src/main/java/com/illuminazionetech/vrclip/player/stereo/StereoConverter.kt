@@ -2,8 +2,6 @@
 
 package com.illuminazionetech.vrclip.player.stereo
 
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
 import android.content.Context
 import android.media.MediaCodecInfo
 import android.media.MediaCodecList
@@ -12,8 +10,10 @@ import android.media.MediaFormat
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.transformer.Composition
 import androidx.media3.transformer.DefaultEncoderFactory
 import androidx.media3.transformer.EditedMediaItem
@@ -68,11 +68,11 @@ class ConversionException(val reason: Reason, cause: Throwable? = null) :
 
 /**
  * Converts a flat video into a full-quality side-by-side 3D MP4 with Media3 Transformer and
- * [StereoConversionEffect] (depth estimated for every frame, with temporal smoothing). The
- * output keeps each eye at the source resolution when the device encoder allows it, falls back
- * to half side-by-side where that keeps more detail (4K sources), prefers HEVC for its better
- * quality per bit, and tone-maps HDR sources to SDR since the depth model and the view synthesis
- * work on SDR frames.
+ * [StereoConversionEffect] (depth estimated for every frame, with temporal smoothing). The output
+ * keeps each eye at the source resolution when the device encoder allows it, falls back to half
+ * side-by-side where that keeps more detail (4K sources), prefers HEVC for its better quality per
+ * bit, and tone-maps HDR sources to SDR since the depth model and the view synthesis work on SDR
+ * frames.
  */
 object StereoConverter {
 
@@ -117,9 +117,9 @@ object StereoConverter {
 
     /**
      * Picks packing, size and codec. Full side-by-side keeps every source pixel for each eye but
-     * doubles the width; when the encoder cannot take that, both options are scaled to fit and
-     * the one with more pixels per eye wins. Frames narrower than 1.25:1 always use half packing
-     * so players can tell the packing apart from the frame shape (see
+     * doubles the width; when the encoder cannot take that, both options are scaled to fit and the
+     * one with more pixels per eye wins. Frames narrower than 1.25:1 always use half packing so
+     * players can tell the packing apart from the frame shape (see
      * [com.illuminazionetech.vrclip.player.ProjectionMode.eyeAspectRatio]).
      */
     fun plan(source: SourceInfo): ConversionPlan {
@@ -212,8 +212,10 @@ object StereoConverter {
                 val poll =
                     object : Runnable {
                         override fun run() {
-                            if (transformer.getProgress(progressHolder) ==
-                                Transformer.PROGRESS_STATE_AVAILABLE) {
+                            if (
+                                transformer.getProgress(progressHolder) ==
+                                    Transformer.PROGRESS_STATE_AVAILABLE
+                            ) {
                                 onProgress(progressHolder.progress / 100f)
                             }
                             handler.postDelayed(this, 500)
@@ -282,7 +284,11 @@ object StereoConverter {
     }
 
     /** Largest size with the same aspect ratio as [width] x [height] that the encoder accepts. */
-    internal fun fit(caps: MediaCodecInfo.VideoCapabilities, width: Int, height: Int): Pair<Int, Int>? {
+    internal fun fit(
+        caps: MediaCodecInfo.VideoCapabilities,
+        width: Int,
+        height: Int,
+    ): Pair<Int, Int>? {
         val widthAlign = caps.widthAlignment.coerceAtLeast(2)
         val heightAlign = caps.heightAlignment.coerceAtLeast(2)
         var scale = 1f

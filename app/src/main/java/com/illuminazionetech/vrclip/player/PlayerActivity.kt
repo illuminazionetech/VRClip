@@ -47,9 +47,8 @@ import kotlinx.coroutines.launch
 
 /**
  * Full-screen video player for phones and tablets, in its own task so it can shrink into
- * picture-in-picture while the rest of VRClip stays usable. Opens library videos
- * ([EXTRA_VIDEO_ID]) and video files shared by other apps (ACTION_VIEW with a content:// or
- * file:// URI).
+ * picture-in-picture while the rest of VRClip stays usable. Opens library videos ([EXTRA_VIDEO_ID])
+ * and video files shared by other apps (ACTION_VIEW with a content:// or file:// URI).
  */
 class PlayerActivity : ComponentActivity() {
 
@@ -103,7 +102,14 @@ class PlayerActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state
-                    .map { PipInputs(it.isPlaying, it.renderProjection, it.frame?.aspect, it.error == null) }
+                    .map {
+                        PipInputs(
+                            it.isPlaying,
+                            it.renderProjection,
+                            it.frame?.aspect,
+                            it.error == null,
+                        )
+                    }
                     .distinctUntilChanged()
                     .collect { updatePipParams() }
             }
@@ -294,12 +300,10 @@ class PlayerActivity : ComponentActivity() {
     private fun displayName(uri: Uri): String? =
         if (uri.scheme == "content") {
             runCatching {
-                    contentResolver
-                        .query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
-                        ?.use { cursor ->
-                            if (cursor.moveToFirst()) cursor.getString(0) else null
-                        }
-                }
+                contentResolver
+                    .query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+                    ?.use { cursor -> if (cursor.moveToFirst()) cursor.getString(0) else null }
+            }
                 .getOrNull()
         } else uri.lastPathSegment
 

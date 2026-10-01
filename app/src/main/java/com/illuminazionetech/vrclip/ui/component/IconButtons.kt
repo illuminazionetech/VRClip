@@ -11,12 +11,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 
 @Composable
 fun PasteFromClipBoardButton(onPaste: (String) -> Unit = {}) {

@@ -15,13 +15,13 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.automirrored.rounded.AssignmentReturn
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.ContentPasteGo
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DeleteSweep
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
@@ -52,7 +52,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
@@ -70,6 +69,7 @@ import com.illuminazionetech.vrclip.database.backup.BackupUtil
 import com.illuminazionetech.vrclip.database.objects.CommandTemplate
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.intState
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.ConfirmButton
 import com.illuminazionetech.vrclip.ui.component.DismissButton
@@ -189,7 +189,9 @@ fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> 
                                     },
                                 )
                                 DropdownMenuItem(
-                                    leadingIcon = { Icon(Icons.AutoMirrored.Rounded.AssignmentReturn, null) },
+                                    leadingIcon = {
+                                        Icon(Icons.AutoMirrored.Rounded.AssignmentReturn, null)
+                                    },
                                     text = { Text(stringResource(R.string.import_from_clipboard)) },
                                     onClick = {
                                         scope.launch {

@@ -28,8 +28,8 @@ import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.database.backup.BackupUtil.BackupDestination
 import com.illuminazionetech.vrclip.database.backup.BackupUtil.BackupType
 import com.illuminazionetech.vrclip.ui.component.DialogSubtitle
-import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.component.SingleSelectChip
+import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 
 @Composable

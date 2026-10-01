@@ -60,8 +60,9 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
     val modelState by model.state.collectAsStateWithLifecycle()
 
     var questImmersive by remember { mutableStateOf(PLAYER_QUEST_IMMERSIVE.getBoolean(true)) }
-    var questPassthrough by
-        remember { mutableStateOf(PLAYER_QUEST_PASSTHROUGH_DEFAULT.getBoolean(false)) }
+    var questPassthrough by remember {
+        mutableStateOf(PLAYER_QUEST_PASSTHROUGH_DEFAULT.getBoolean(false))
+    }
     var cardboardDefault by remember { mutableStateOf(PLAYER_CARDBOARD_DEFAULT.getBoolean(false)) }
     var gyro by remember { mutableStateOf(PLAYER_GYRO.getBoolean(true)) }
     val initialStereo = remember { StereoSettings.load() }
@@ -128,7 +129,10 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
                     enabled = questImmersive,
                     onClick = {
                         questPassthrough = !questPassthrough
-                        PreferenceUtil.updateValue(PLAYER_QUEST_PASSTHROUGH_DEFAULT, questPassthrough)
+                        PreferenceUtil.updateValue(
+                            PLAYER_QUEST_PASSTHROUGH_DEFAULT,
+                            questPassthrough,
+                        )
                     },
                 )
             }
@@ -178,7 +182,8 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
                                 IconButton(onClick = { model.delete() }) {
                                     Icon(
                                         Icons.Rounded.DeleteOutline,
-                                        contentDescription = stringResource(R.string.stereo_model_delete),
+                                        contentDescription =
+                                            stringResource(R.string.stereo_model_delete),
                                     )
                                 }
                             }
@@ -190,7 +195,10 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
     }
 
     if (showModelDialog) {
-        DepthModelDialog(onDismiss = { showModelDialog = false }, onReady = { showModelDialog = false })
+        DepthModelDialog(
+            onDismiss = { showModelDialog = false },
+            onReady = { showModelDialog = false },
+        )
     }
 }
 

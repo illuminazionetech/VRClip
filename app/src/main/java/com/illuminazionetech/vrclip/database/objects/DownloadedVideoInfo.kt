@@ -17,8 +17,8 @@ data class DownloadedVideoInfo(
     val videoPath: String,
     @ColumnInfo(defaultValue = "Unknown") val extractor: String = "Unknown",
     /**
-     * User-forced [com.illuminazionetech.vrclip.player.ProjectionMode] name, overriding filename/aspect-ratio
-     * detection for this specific file. `null` means "auto-detect".
+     * User-forced [com.illuminazionetech.vrclip.player.ProjectionMode] name, overriding
+     * filename/aspect-ratio detection for this specific file. `null` means "auto-detect".
      */
     @ColumnInfo(defaultValue = "NULL") val projectionOverride: String? = null,
     /** Where playback stopped last time, so the player can pick up from there. */

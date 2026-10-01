@@ -1,14 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.settings
 
-import androidx.annotation.StringRes
-import androidx.core.net.toUri
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import com.illuminazionetech.vrclip.ui.component.SettingsGroupTitle
-import com.illuminazionetech.vrclip.ui.component.groupPosition
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -18,12 +9,15 @@ import android.os.PowerManager
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.BugReport
@@ -35,10 +29,9 @@ import androidx.compose.material.icons.rounded.SettingsApplications
 import androidx.compose.material.icons.rounded.SignalCellular4Bar
 import androidx.compose.material.icons.rounded.SignalWifi4Bar
 import androidx.compose.material.icons.rounded.Terminal
-import androidx.compose.material.icons.rounded.Vrpano
 import androidx.compose.material.icons.rounded.VideoFile
 import androidx.compose.material.icons.rounded.ViewComfy
-import androidx.compose.material.icons.rounded.VolunteerActivism
+import androidx.compose.material.icons.rounded.Vrpano
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -46,26 +39,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.Route
-import com.illuminazionetech.vrclip.ui.common.intState
-import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.PreferencesHintCard
 import com.illuminazionetech.vrclip.ui.component.SettingItem
+import com.illuminazionetech.vrclip.ui.component.SettingsGroupTitle
+import com.illuminazionetech.vrclip.ui.component.groupPosition
 import com.illuminazionetech.vrclip.util.EXTRACT_AUDIO
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
-import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -128,8 +121,7 @@ fun SettingsPage(onNavigateTo: (String) -> Unit) {
                         description = stringResource(R.string.battery_configuration_desc),
                     ) {
                         launcher.launch(intent)
-                        showBatteryHint =
-                            !pm.isIgnoringBatteryOptimizations(context.packageName)
+                        showBatteryHint = !pm.isIgnoringBatteryOptimizations(context.packageName)
                     }
                 }
             }
@@ -198,7 +190,12 @@ fun SettingsPage(onNavigateTo: (String) -> Unit) {
                         Icons.Rounded.BugReport,
                         Route.TROUBLESHOOTING,
                     ),
-                    SettingsEntry(R.string.about, R.string.about_page, Icons.Rounded.Info, Route.ABOUT),
+                    SettingsEntry(
+                        R.string.about,
+                        R.string.about_page,
+                        Icons.Rounded.Info,
+                        Route.ABOUT,
+                    ),
                 )
             settingsGroup(R.string.settings_group_downloads, downloads, onNavigateTo)
             settingsGroup(R.string.settings_group_experience, experience, onNavigateTo)

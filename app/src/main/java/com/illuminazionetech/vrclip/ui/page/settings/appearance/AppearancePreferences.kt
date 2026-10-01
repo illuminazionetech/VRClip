@@ -13,7 +13,6 @@ import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -43,7 +42,6 @@ import com.illuminazionetech.vrclip.util.DarkThemePreference.Companion.OFF
 import com.illuminazionetech.vrclip.util.DarkThemePreference.Companion.ON
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.toDisplayName
-import java.util.Locale
 import kotlinx.coroutines.Job
 
 private val DrawableList =
@@ -101,8 +99,7 @@ fun AppearancePreferences(onNavigateBack: () -> Unit, onNavigateTo: (String) -> 
                     onClick = { onNavigateTo(Route.DARK_THEME) },
                 )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val dynamicColor by
-                        PreferenceUtil.AppSettingsStateFlow.collectAsState()
+                    val dynamicColor by PreferenceUtil.AppSettingsStateFlow.collectAsState()
                     PreferenceSwitch(
                         title = stringResource(R.string.dynamic_color),
                         description = stringResource(R.string.dynamic_color_desc),

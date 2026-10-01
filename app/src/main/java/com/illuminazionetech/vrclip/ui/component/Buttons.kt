@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.Button
@@ -27,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,11 +37,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.meta.spatial.uiset.button.PrimaryButton
-import com.meta.spatial.uiset.button.SecondaryButton
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.page.settings.general.ytdlpReference
+import com.meta.spatial.uiset.button.PrimaryButton
+import com.meta.spatial.uiset.button.SecondaryButton
 
 @Composable
 fun OutlinedButtonWithIcon(
@@ -164,7 +164,7 @@ fun ConfirmButton(
         modifier = Modifier.defaultMinSize(minHeight = 48.dp),
         onClick = onClick,
         enabled = enabled,
-        shape = CircleShape
+        shape = CircleShape,
     ) {
         Text(text)
     }
@@ -175,7 +175,7 @@ fun DismissButton(text: String = stringResource(R.string.dismiss), onClick: () -
     TextButton(
         modifier = Modifier.defaultMinSize(minHeight = 48.dp),
         onClick = onClick,
-        shape = CircleShape
+        shape = CircleShape,
     ) {
         Text(text)
     }
@@ -186,7 +186,7 @@ fun OutlinedDismissButton(text: String = stringResource(R.string.dismiss), onCli
     OutlinedButton(
         modifier = Modifier.defaultMinSize(minHeight = 48.dp),
         onClick = onClick,
-        shape = CircleShape
+        shape = CircleShape,
     ) {
         Text(text)
     }
@@ -202,7 +202,7 @@ fun FilledConfirmButton(
         modifier = Modifier.height(60.dp).defaultMinSize(minWidth = 120.dp),
         onClick = onClick,
         enabled = enabled,
-        shape = CircleShape
+        shape = CircleShape,
     ) {
         Text(text, style = MaterialTheme.typography.titleMedium)
     }

@@ -1,7 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.videolist
 
-import com.illuminazionetech.vrclip.database.objects.watchedFraction
-import com.illuminazionetech.vrclip.player.stereo.ConvertTo3dDialog
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -94,6 +92,8 @@ import com.illuminazionetech.vrclip.database.backup.BackupUtil.BackupDestination
 import com.illuminazionetech.vrclip.database.backup.BackupUtil.toJsonString
 import com.illuminazionetech.vrclip.database.backup.BackupUtil.toURLListString
 import com.illuminazionetech.vrclip.database.objects.DownloadedVideoInfo
+import com.illuminazionetech.vrclip.database.objects.watchedFraction
+import com.illuminazionetech.vrclip.player.stereo.ConvertTo3dDialog
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.CheckBoxItem
@@ -149,8 +149,8 @@ private operator fun PaddingValues.plus(other: PaddingValues): PaddingValues {
 }
 
 /**
- * The library of downloaded media: searchable, filterable by type and site, shown as a poster
- * grid or a compact list. Long-press starts multi-selection, whose actions replace the top bar.
+ * The library of downloaded media: searchable, filterable by type and site, shown as a poster grid
+ * or a compact list. Long-press starts multi-selection, whose actions replace the top bar.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -201,9 +201,10 @@ fun VideoListPage(
         selectedItemIds.retainAll(visibleIds)
     }
 
-    val totalSize by remember(fullVideoList, fileSizeMap) {
-        derivedStateOf { fullVideoList.sumOf { fileSizeMap.getOrElse(it.id) { 0L } } }
-    }
+    val totalSize by
+        remember(fullVideoList, fileSizeMap) {
+            derivedStateOf { fullVideoList.sumOf { fileSizeMap.getOrElse(it.id) { 0L } } }
+        }
     val selectedFileSizeSum by remember {
         derivedStateOf { selectedItemIds.sumOf { fileSizeMap.getOrElse(it) { 0L } } }
     }
@@ -243,7 +244,8 @@ fun VideoListPage(
                 subtitle = {
                     val subtitle =
                         if (isSelectEnabled) selectedFileSizeSum.toFileSizeText()
-                        else if (fullVideoList.isEmpty()) stringResource(R.string.library_empty_subtitle)
+                        else if (fullVideoList.isEmpty())
+                            stringResource(R.string.library_empty_subtitle)
                         else
                             pluralStringResource(
                                 R.plurals.library_items,
@@ -253,7 +255,11 @@ fun VideoListPage(
                     Text(subtitle, maxLines = 1)
                 },
                 navigationIcon = {
-                    AnimatedVisibility(visible = isSelectEnabled, enter = fadeIn(), exit = fadeOut()) {
+                    AnimatedVisibility(
+                        visible = isSelectEnabled,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                    ) {
                         IconButton(onClick = { isSelectEnabled = false }) {
                             Icon(Icons.Rounded.Close, stringResource(R.string.close))
                         }
@@ -274,7 +280,8 @@ fun VideoListPage(
                             }
                         ) {
                             Icon(
-                                if (allSelected) Icons.Rounded.RemoveDone else Icons.Rounded.DoneAll,
+                                if (allSelected) Icons.Rounded.RemoveDone
+                                else Icons.Rounded.DoneAll,
                                 contentDescription = stringResource(R.string.select_all),
                             )
                         }
@@ -346,7 +353,8 @@ fun VideoListPage(
             state = gridState,
             columns = if (isGridView) GridCells.Adaptive(220.dp) else GridCells.Adaptive(480.dp),
             contentPadding =
-                innerPadding + PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 24.dp),
+                innerPadding +
+                    PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(if (isGridView) 12.dp else 8.dp),
         ) {
@@ -460,7 +468,9 @@ fun VideoListPage(
         )
     }
 
-    convertVideoId?.let { id -> ConvertTo3dDialog(videoId = id, onDismiss = { convertVideoId = null }) }
+    convertVideoId?.let { id ->
+        ConvertTo3dDialog(videoId = id, onDismiss = { convertVideoId = null })
+    }
 
     var deleteFile by remember { mutableStateOf(false) }
 
@@ -668,7 +678,8 @@ private fun LibraryEmptyState(noResults: Boolean, modifier: Modifier = Modifier)
                 color = MaterialTheme.colorScheme.tertiaryContainer,
             ) {}
             Icon(
-                imageVector = if (noResults) Icons.Rounded.SearchOff else Icons.Rounded.VideoLibrary,
+                imageVector =
+                    if (noResults) Icons.Rounded.SearchOff else Icons.Rounded.VideoLibrary,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.size(56.dp),
@@ -692,7 +703,8 @@ private fun LibraryEmptyState(noResults: Boolean, modifier: Modifier = Modifier)
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
+            modifier =
+                Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
         )
     }
 }

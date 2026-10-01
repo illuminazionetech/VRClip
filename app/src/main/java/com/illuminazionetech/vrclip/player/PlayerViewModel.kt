@@ -2,11 +2,10 @@
 
 package com.illuminazionetech.vrclip.player
 
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
 import android.app.Application
 import android.net.Uri
 import android.view.Surface
+import androidx.annotation.OptIn
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,8 +22,9 @@ import androidx.media3.common.TrackSelectionOverride
 import androidx.media3.common.Tracks
 import androidx.media3.common.VideoSize
 import androidx.media3.common.util.Size
-import androidx.media3.exoplayer.Renderer
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.Renderer
 import androidx.media3.session.MediaSession
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.database.objects.DownloadedVideoInfo
@@ -110,7 +110,9 @@ data class PlayerUiState(
     val sourceProjection: ProjectionMode
         get() = projectionOverride ?: detection.mode
 
-    /** What the renderer gets: live conversion turns a flat picture into a full side-by-side one. */
+    /**
+     * What the renderer gets: live conversion turns a flat picture into a full side-by-side one.
+     */
     val renderProjection: ProjectionMode
         get() = if (live3d == Live3dState.On) ProjectionMode.SBS_3D else sourceProjection
 
@@ -127,9 +129,9 @@ data class PlayerUiState(
 
 /**
  * Owns the [ExoPlayer] for the phone/tablet player: loading, resume position, speed, tracks
- * (including subtitle files yt-dlp saved next to the video), projection detection from the
- * decoded format, live 2D to 3D conversion, and a [MediaSession] so headset buttons, Bluetooth
- * controls and the system media controls work.
+ * (including subtitle files yt-dlp saved next to the video), projection detection from the decoded
+ * format, live 2D to 3D conversion, and a [MediaSession] so headset buttons, Bluetooth controls and
+ * the system media controls work.
  */
 class PlayerViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -180,8 +182,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
             }
 
             override fun onPlayerError(error: PlaybackException) {
-                if (mutableState.value.live3d == Live3dState.On ||
-                    mutableState.value.live3d == Live3dState.Starting) {
+                if (
+                    mutableState.value.live3d == Live3dState.On ||
+                        mutableState.value.live3d == Live3dState.Starting
+                ) {
                     // The effects pipeline is the most likely culprit; fall back to plain playback.
                     mutableState.update { it.copy(live3d = Live3dState.Failed) }
                     restartWithEffects(enabled = false)
@@ -205,8 +209,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             LiveStereoStatus.state.collect { status ->
                 val live = mutableState.value.live3d
-                if (status is LiveStereoStatus.Status.Failed &&
-                    (live == Live3dState.On || live == Live3dState.Starting)) {
+                if (
+                    status is LiveStereoStatus.Status.Failed &&
+                        (live == Live3dState.On || live == Live3dState.Starting)
+                ) {
                     mutableState.update { it.copy(live3d = Live3dState.Failed) }
                     restartWithEffects(enabled = false)
                     applyDefaultOutput()
@@ -287,17 +293,13 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         val item =
             MediaItem.Builder()
                 .setUri(uri)
-                .setMediaMetadata(
-                    MediaMetadata.Builder().setTitle(title).setArtist(artist).build()
-                )
+                .setMediaMetadata(MediaMetadata.Builder().setTitle(title).setArtist(artist).build())
                 .setSubtitleConfigurations(subtitles)
                 .build()
         // Resume unless the video was (nearly) finished or barely started.
-        val resume =
-            resumeMs.takeIf {
-                it >= MIN_RESUME_MS &&
-                    (knownDurationMs <= 0 || it < knownDurationMs - END_THRESHOLD_MS)
-            }
+        val resume = resumeMs.takeIf {
+            it >= MIN_RESUME_MS && (knownDurationMs <= 0 || it < knownDurationMs - END_THRESHOLD_MS)
+        }
         mutableState.value =
             PlayerUiState(
                 title = title,
@@ -390,10 +392,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     /**
-     * With video effects, frames are drawn into the output surface by GL instead of the decoder,
-     * so the player has to be told how big that surface is when it is a plain [Surface] (the
-     * immersive view's SurfaceTexture). The view sizes its buffer from
-     * [PlayerUiState.outputBufferSize].
+     * With video effects, frames are drawn into the output surface by GL instead of the decoder, so
+     * the player has to be told how big that surface is when it is a plain [Surface] (the immersive
+     * view's SurfaceTexture). The view sizes its buffer from [PlayerUiState.outputBufferSize].
      */
     private fun signalOutputResolution() {
         val size = mutableState.value.outputBufferSize ?: return
@@ -410,7 +411,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     fun setProjectionOverride(mode: ProjectionMode?) {
         val path = mutableState.value.videoPath
         mutableState.update { it.copy(projectionOverride = mode) }
-        if (mode != null && mode != ProjectionMode.FLAT && mutableState.value.live3d != Live3dState.Off) {
+        if (
+            mode != null &&
+                mode != ProjectionMode.FLAT &&
+                mutableState.value.live3d != Live3dState.Off
+        ) {
             setLive3d(false)
         }
         applyDefaultOutput()
@@ -473,7 +478,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
             it.copy(
                 outputBufferSize =
                     if (enabled && source != null)
-                        StereoConversionEffect.outputSize(source.width, source.height, realtime = true)
+                        StereoConversionEffect.outputSize(
+                            source.width,
+                            source.height,
+                            realtime = true,
+                        )
                     else null
             )
         }
@@ -576,8 +585,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         val size = player.videoSize
         // With live conversion the reported video size is the converted (double width) frame, so
         // the source size comes from the decoder's input format, turned upright.
-        val live = mutableState.value.live3d.let { it == Live3dState.On || it == Live3dState.Starting }
-        val rotated = format != null && (format.rotationDegrees == 90 || format.rotationDegrees == 270)
+        val live =
+            mutableState.value.live3d.let { it == Live3dState.On || it == Live3dState.Starting }
+        val rotated =
+            format != null && (format.rotationDegrees == 90 || format.rotationDegrees == 270)
         val width: Int
         val height: Int
         if (live && format != null && format.width > 0) {
@@ -631,20 +642,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun startTicker() {
         if (tickerJob?.isActive == true) return
-        tickerJob =
-            viewModelScope.launch {
-                var sinceSave = 0L
-                while (isActive && player.isPlaying) {
-                    syncFromPlayer()
-                    delay(TICK_MS)
-                    sinceSave += TICK_MS
-                    if (sinceSave >= SAVE_INTERVAL_MS) {
-                        sinceSave = 0L
-                        savePosition()
-                    }
-                }
+        tickerJob = viewModelScope.launch {
+            var sinceSave = 0L
+            while (isActive && player.isPlaying) {
                 syncFromPlayer()
+                delay(TICK_MS)
+                sinceSave += TICK_MS
+                if (sinceSave >= SAVE_INTERVAL_MS) {
+                    sinceSave = 0L
+                    savePosition()
+                }
             }
+            syncFromPlayer()
+        }
     }
 
     /** Stores where playback is, or clears it once the video has been watched to the end. */
@@ -710,10 +720,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                 .sortedBy { it.name }
                 .map { file ->
                     val language =
-                        file.name
-                            .removePrefix("$base.")
-                            .substringBeforeLast('.')
-                            .takeIf { it.isNotEmpty() && !it.contains('.') }
+                        file.name.removePrefix("$base.").substringBeforeLast('.').takeIf {
+                            it.isNotEmpty() && !it.contains('.')
+                        }
                     MediaItem.SubtitleConfiguration.Builder(Uri.fromFile(file))
                         .setMimeType(subtitleMimeTypes.getValue(file.extension.lowercase()))
                         .setLanguage(language)

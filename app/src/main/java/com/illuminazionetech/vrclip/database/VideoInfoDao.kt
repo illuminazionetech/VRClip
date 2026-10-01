@@ -36,7 +36,9 @@ interface VideoInfoDao {
     @Query("select * from DownloadedVideoInfo where videoPath = :path")
     suspend fun getInfoByPath(path: String): DownloadedVideoInfo?
 
-    @Query("UPDATE DownloadedVideoInfo SET projectionOverride = :projection WHERE videoPath = :path")
+    @Query(
+        "UPDATE DownloadedVideoInfo SET projectionOverride = :projection WHERE videoPath = :path"
+    )
     suspend fun updateProjectionOverride(path: String, projection: String?)
 
     @Query(

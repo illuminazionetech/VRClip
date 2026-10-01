@@ -1,9 +1,8 @@
 package com.illuminazionetech.vrclip.ui.common
 
+import android.os.Build
 import android.view.HapticFeedbackConstants
 import android.view.View
-
-import android.os.Build
 
 object HapticFeedback {
     fun View.slightHapticFeedback() = this.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)

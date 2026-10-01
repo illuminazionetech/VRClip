@@ -19,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.App.Companion.packageInfo
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider

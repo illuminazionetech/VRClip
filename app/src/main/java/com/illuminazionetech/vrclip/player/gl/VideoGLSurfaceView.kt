@@ -83,7 +83,10 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
     /** Pinch: [factor] > 1 zooms in. */
     fun zoom(factor: Float) {
         renderer.fieldOfView =
-            (renderer.fieldOfView / factor).coerceIn(VideoGLRenderer.MIN_FOV, VideoGLRenderer.MAX_FOV)
+            (renderer.fieldOfView / factor).coerceIn(
+                VideoGLRenderer.MIN_FOV,
+                VideoGLRenderer.MAX_FOV,
+            )
         requestRender()
     }
 

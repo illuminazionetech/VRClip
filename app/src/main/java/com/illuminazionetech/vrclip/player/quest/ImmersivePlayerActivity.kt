@@ -52,8 +52,8 @@ import com.meta.spatial.toolkit.PixelDisplayOptions
 import com.meta.spatial.toolkit.QuadShapeOptions
 import com.meta.spatial.toolkit.Transform
 import com.meta.spatial.toolkit.UIPanelSettings
-import com.meta.spatial.toolkit.Visible
 import com.meta.spatial.toolkit.VideoSurfacePanelRegistration
+import com.meta.spatial.toolkit.Visible
 import com.meta.spatial.vr.VRFeature
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,8 +74,10 @@ class ImmersivePlayerActivity : AppSystemActivity() {
 
     private val store = ViewModelStore()
     private val viewModel: PlayerViewModel by lazy {
-        ViewModelProvider(store, ViewModelProvider.AndroidViewModelFactory.getInstance(application))[
-            PlayerViewModel::class.java]
+        ViewModelProvider(
+            store,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application),
+        )[PlayerViewModel::class.java]
     }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -124,7 +126,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                 id >= 0 -> PlayerSource.Library(id)
                 path != null ->
                     PlayerSource.External(
-                        if (path.startsWith("content://") || path.startsWith("file://")) path.toUri()
+                        if (path.startsWith("content://") || path.startsWith("file://"))
+                            path.toUri()
                         else Uri.fromFile(java.io.File(path)),
                         intent.getStringExtra(EXTRA_TITLE),
                     )
@@ -219,7 +222,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     private fun placeEntities() {
         val config = panelConfig ?: return
         val head = scene.getViewerPose().removePitchAndRoll()
-        val forward = head.forward().let { Vector3(it.x, 0f, it.z) }.normalizedOr(Vector3(0f, 0f, 1f))
+        val forward =
+            head.forward().let { Vector3(it.x, 0f, it.z) }.normalizedOr(Vector3(0f, 0f, 1f))
         val facing = head.q
         val controls: Vector3
         if (config.mode.isSpherical) {
@@ -229,7 +233,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             val screenHeight = SCREEN_WIDTH / config.eyeAspect.coerceIn(0.4f, 4f)
             videoEntity?.setComponent(Transform(Pose(head.t + forward * SCREEN_DISTANCE, facing)))
             controls =
-                head.t + forward * (SCREEN_DISTANCE - 1.4f) +
+                head.t +
+                    forward * (SCREEN_DISTANCE - 1.4f) +
                     Vector3(0f, -(screenHeight / 2f).coerceAtMost(0.6f) - 0.2f, 0f)
         }
         // Turned toward the eyes, so the bar below eye level tilts up to face the viewer.
@@ -255,9 +260,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     private fun configFor(state: PlayerUiState): VideoPanelConfig? {
         val frame = state.frame ?: return null
         val mode = state.renderProjection
-        val (width, height) =
-            state.outputBufferSize
-                ?: (frame.width to frame.height)
+        val (width, height) = state.outputBufferSize ?: (frame.width to frame.height)
         return VideoPanelConfig(
             mode = mode,
             width = width,
@@ -272,7 +275,11 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         val frame = probeFrame(state.videoPath) ?: FrameInfo(1920, 1080)
         val mode =
             state.projectionOverride
-                ?: ProjectionDetector.detect(state.detectionName.ifEmpty { state.videoPath.orEmpty() }, frame).mode
+                ?: ProjectionDetector.detect(
+                        state.detectionName.ifEmpty { state.videoPath.orEmpty() },
+                        frame,
+                    )
+                    .mode
         return VideoPanelConfig(
             mode = mode,
             width = frame.width,
@@ -363,8 +370,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     }
 
     /**
-     * Leaves the immersive player and brings the VRClip library back as a panel in the Horizon
-     * home environment (the way Meta's hybrid sample hands over from immersive to 2D).
+     * Leaves the immersive player and brings the VRClip library back as a panel in the Horizon home
+     * environment (the way Meta's hybrid sample hands over from immersive to 2D).
      */
     private fun returnToLibrary() {
         viewModel.savePosition()

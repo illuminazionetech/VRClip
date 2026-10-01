@@ -67,7 +67,9 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
     val currentDestination = backStackEntry?.destination
 
     val onNavigateBack: () -> Unit = {
-        if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        if (
+            navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
+        ) {
             navController.popBackStack()
         }
     }
@@ -90,9 +92,7 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
         navigationSuiteType =
             navigationSuiteTypeFor(LocalWindowWidthState.current, LocalIsVRMode.current),
         onNavigate = { navController.navigateToTopLevel(it) },
-        onNewDownload = {
-            dialogViewModel.postAction(DownloadDialogViewModel.Action.ShowSheet())
-        },
+        onNewDownload = { dialogViewModel.postAction(DownloadDialogViewModel.Action.ShowSheet()) },
     ) {
         NavHost(
             navController = navController,

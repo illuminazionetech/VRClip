@@ -114,9 +114,7 @@ fun TemplateEditPage(onDismissRequest: () -> Unit, templateId: Int) {
                         },
                         enabled = templateName.isNotEmpty(),
                     ) {
-                        Text(
-                            text = stringResource(R.string.done)
-                        )
+                        Text(text = stringResource(R.string.done))
                     }
                 },
                 scrollBehavior = scrollBehavior,
@@ -203,13 +201,12 @@ fun TemplateEditPage(onDismissRequest: () -> Unit, templateId: Int) {
                             ShortcutChip(
                                 text = item.option,
                                 onClick = {
-                                    templateText =
-                                        templateText.run {
-                                            if (isEmpty()) item.option
-                                            else
-                                                this.removeSuffix(" ").removeSuffix("\n") +
-                                                    "\n${item.option}"
-                                        }
+                                    templateText = templateText.run {
+                                        if (isEmpty()) item.option
+                                        else
+                                            this.removeSuffix(" ").removeSuffix("\n") +
+                                                "\n${item.option}"
+                                    }
                                 },
                             )
                         }

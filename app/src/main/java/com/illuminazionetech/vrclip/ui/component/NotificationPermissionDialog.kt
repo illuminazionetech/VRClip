@@ -20,9 +20,7 @@ fun NotificationPermissionDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        icon = {
-            Icon(imageVector = Icons.Rounded.NotificationsActive, contentDescription = null)
-        },
+        icon = { Icon(imageVector = Icons.Rounded.NotificationsActive, contentDescription = null) },
         text = { Text(text = stringResource(id = R.string.enable_notifications_desc)) },
         title = { Text(text = stringResource(id = R.string.enable_notifications)) },
         confirmButton = {

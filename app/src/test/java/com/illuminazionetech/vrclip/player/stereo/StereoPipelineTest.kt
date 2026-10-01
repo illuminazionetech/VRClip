@@ -26,7 +26,12 @@ class StereoPipelineTest {
     fun halfPackingKeepsTheSourceSize() {
         assertEquals(
             3840 to 2160,
-            StereoConversionEffect.outputSize(3840, 2160, realtime = false, packing = StereoPacking.Half),
+            StereoConversionEffect.outputSize(
+                3840,
+                2160,
+                realtime = false,
+                packing = StereoPacking.Half,
+            ),
         )
     }
 
@@ -58,7 +63,8 @@ class StereoPipelineTest {
         processor.process(ramp, out)
         val before = out[size * 16 + 28].toInt() and 0xFF
         // Same scene, slightly different: blended, so it moves only part of the way.
-        val shifted = FloatArray(size * size) { i -> (i % size).toFloat() + if (i % size > 24) 2f else 0f }
+        val shifted =
+            FloatArray(size * size) { i -> (i % size).toFloat() + if (i % size > 24) 2f else 0f }
         processor.process(shifted, out)
         val after = out[size * 16 + 28].toInt() and 0xFF
         assertTrue(after >= before)

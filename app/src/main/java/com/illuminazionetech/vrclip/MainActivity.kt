@@ -6,11 +6,10 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import com.illuminazionetech.vrclip.App.Companion.context
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import com.illuminazionetech.vrclip.ui.common.LocalDarkTheme
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.SettingsProvider
@@ -31,7 +30,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (isQuestDevice() && !PreferenceUtil.containsKey(com.illuminazionetech.vrclip.util.VR_MODE)) {
+        if (
+            isQuestDevice() &&
+                !PreferenceUtil.containsKey(com.illuminazionetech.vrclip.util.VR_MODE)
+        ) {
             PreferenceUtil.updateValue(com.illuminazionetech.vrclip.util.VR_MODE, true)
         }
 
@@ -47,7 +49,8 @@ class MainActivity : AppCompatActivity() {
                 CompositionLocalProvider(LocalIsVRMode provides isVR) {
                     VRClipTheme(
                         darkTheme = LocalDarkTheme.current.isDarkTheme() || isVR,
-                        isHighContrastModeEnabled = LocalDarkTheme.current.isHighContrastModeEnabled,
+                        isHighContrastModeEnabled =
+                            LocalDarkTheme.current.isHighContrastModeEnabled,
                     ) {
                         AppEntry(dialogViewModel = dialogViewModel)
                     }

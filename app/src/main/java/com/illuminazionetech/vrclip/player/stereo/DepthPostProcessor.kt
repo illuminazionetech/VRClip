@@ -3,11 +3,11 @@ package com.illuminazionetech.vrclip.player.stereo
 import kotlin.math.abs
 
 /**
- * Turns the model's raw relative inverse depth into an 8-bit map ready for view synthesis:
- * robust normalization (2nd to 98th percentile, so a few outliers cannot flatten the scene), a
- * light Gaussian blur (soft depth edges hide warping seams), and temporal smoothing of both the
- * range and the map itself so the 3D effect does not flicker between frames. A scene cut resets
- * the smoothing instead of blending two unrelated shots.
+ * Turns the model's raw relative inverse depth into an 8-bit map ready for view synthesis: robust
+ * normalization (2nd to 98th percentile, so a few outliers cannot flatten the scene), a light
+ * Gaussian blur (soft depth edges hide warping seams), and temporal smoothing of both the range and
+ * the map itself so the 3D effect does not flicker between frames. A scene cut resets the smoothing
+ * instead of blending two unrelated shots.
  */
 class DepthPostProcessor(
     private val size: Int,

@@ -1,6 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.downloadv2.configure
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -35,12 +34,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.rounded.DownloadDone
-import androidx.compose.material.icons.rounded.SettingsSuggest
-import androidx.compose.material.icons.rounded.VideoFile
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.DoneAll
+import androidx.compose.material.icons.rounded.DownloadDone
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -59,7 +56,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -75,10 +71,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -93,15 +86,16 @@ import com.illuminazionetech.vrclip.App
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.HapticFeedback.longPressHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.motion.materialSharedAxisX
+import com.illuminazionetech.vrclip.ui.common.rememberTextClipboard
 import com.illuminazionetech.vrclip.ui.component.ButtonChip
 import com.illuminazionetech.vrclip.ui.component.DrawerSheetSubtitle
-import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
-import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
 import com.illuminazionetech.vrclip.ui.component.FullScreenSheet
-import com.illuminazionetech.vrclip.ui.component.rememberExpandedSheetState
+import com.illuminazionetech.vrclip.ui.component.OutlinedButtonWithIcon
 import com.illuminazionetech.vrclip.ui.component.SingleChoiceChip
 import com.illuminazionetech.vrclip.ui.component.SingleChoiceSegmentedButton
+import com.illuminazionetech.vrclip.ui.component.VRClipModalBottomSheet
 import com.illuminazionetech.vrclip.ui.component.VideoFilterChip
+import com.illuminazionetech.vrclip.ui.component.rememberExpandedSheetState
 import com.illuminazionetech.vrclip.ui.page.command.TemplatePickerDialog
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.ActionButton.Download
 import com.illuminazionetech.vrclip.ui.page.downloadv2.configure.ActionButton.FetchInfo
@@ -140,10 +134,10 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 import com.illuminazionetech.vrclip.util.SUBTITLE
 import com.illuminazionetech.vrclip.util.TEMPLATE_ID
 import com.illuminazionetech.vrclip.util.THUMBNAIL
-import com.illuminazionetech.vrclip.util.makeToast
 import com.illuminazionetech.vrclip.util.USE_CUSTOM_AUDIO_PRESET
 import com.illuminazionetech.vrclip.util.VIDEO_FORMAT
 import com.illuminazionetech.vrclip.util.VIDEO_QUALITY
+import com.illuminazionetech.vrclip.util.makeToast
 import kotlinx.coroutines.launch
 
 @Composable

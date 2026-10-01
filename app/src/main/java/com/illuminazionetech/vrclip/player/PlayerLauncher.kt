@@ -23,7 +23,8 @@ object PlayerLauncher {
         projectionOverride: String? = null,
     ) {
         if (isQuestDevice() && PLAYER_QUEST_IMMERSIVE.getBoolean(true)) {
-            // Horizon OS starts an immersive activity in its own task, as Meta's hybrid sample does.
+            // Horizon OS starts an immersive activity in its own task, as Meta's hybrid sample
+            // does.
             context.startActivity(
                 Intent(context, ImmersivePlayerActivity::class.java)
                     .setAction(Intent.ACTION_MAIN)

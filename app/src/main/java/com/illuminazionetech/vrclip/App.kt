@@ -27,6 +27,7 @@ import com.illuminazionetech.vrclip.ui.page.settings.directory.Directory
 import com.illuminazionetech.vrclip.ui.page.settings.network.CookiesViewModel
 import com.illuminazionetech.vrclip.ui.page.videolist.VideoListViewModel
 import com.illuminazionetech.vrclip.util.AUDIO_DIRECTORY
+import com.illuminazionetech.vrclip.util.AppUpdateManager
 import com.illuminazionetech.vrclip.util.COMMAND_DIRECTORY
 import com.illuminazionetech.vrclip.util.DownloadUtil
 import com.illuminazionetech.vrclip.util.FileUtil
@@ -39,11 +40,10 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.getString
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateString
 import com.illuminazionetech.vrclip.util.SDCARD_URI
-import com.illuminazionetech.vrclip.util.AppUpdateManager
 import com.illuminazionetech.vrclip.util.UpdateCheckWorker
 import com.illuminazionetech.vrclip.util.VIDEO_DIRECTORY
-import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.illuminazionetech.vrclip.util.YT_DLP_VERSION
+import com.illuminazionetech.vrclip.util.YtDlpEngine
 import com.tencent.mmkv.MMKV
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
@@ -56,8 +56,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.logger.Level
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

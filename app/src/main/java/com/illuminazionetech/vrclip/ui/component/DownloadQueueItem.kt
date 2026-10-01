@@ -16,9 +16,8 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.CheckCircle
-import androidx.compose.material.icons.rounded.Error
-import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.UnfoldMore
@@ -35,7 +34,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +41,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -56,13 +53,16 @@ import com.illuminazionetech.vrclip.ui.common.AsyncImageImpl
 import com.illuminazionetech.vrclip.ui.common.LocalWindowWidthState
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.ui.theme.harmonizeWith
-import com.illuminazionetech.vrclip.ui.theme.harmonizeWithPrimary
 
 @Composable
 // @Preview
 fun PlaylistPreview() {
     var selected by remember { mutableStateOf(false) }
-    Column() { VRClipTheme(darkTheme = false) { PlaylistItem(selected = selected) { selected = !selected } } }
+    Column() {
+        VRClipTheme(darkTheme = false) {
+            PlaylistItem(selected = selected) { selected = !selected }
+        }
+    }
 }
 
 @Composable
@@ -177,14 +177,10 @@ fun CustomCommandTaskItem(
 
     val containerColor =
         MaterialTheme.colorScheme
-            .run {
-                surfaceContainerLow.harmonizeWith(other = accentColor)
-            }
+            .run { surfaceContainerLow.harmonizeWith(other = accentColor) }
             .copy(alpha = 0.92f)
     val contentColor =
-        MaterialTheme.colorScheme.run {
-            onSurfaceVariant.harmonizeWith(other = accentColor)
-        }
+        MaterialTheme.colorScheme.run { onSurfaceVariant.harmonizeWith(other = accentColor) }
 
     Surface(color = containerColor, shape = CardDefaults.shape) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -278,7 +274,8 @@ fun CustomCommandTaskItem(
                 text = progressText,
                 style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
                 color =
-                    if (status == TaskStatus.ERROR) MaterialTheme.colorScheme.error else contentColor,
+                    if (status == TaskStatus.ERROR) MaterialTheme.colorScheme.error
+                    else contentColor,
                 maxLines = 3,
                 minLines = 3,
                 overflow = TextOverflow.Ellipsis,

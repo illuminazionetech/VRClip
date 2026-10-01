@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -147,9 +146,7 @@ enum class Filter {
             All -> true
             Downloading -> entry.second.downloadState.isActive()
             Canceled ->
-                entry.second.downloadState.let {
-                    it is Error || it is Task.DownloadState.Canceled
-                }
+                entry.second.downloadState.let { it is Error || it is Task.DownloadState.Canceled }
             Finished -> entry.second.downloadState is Completed
         }
 }
@@ -283,9 +280,9 @@ private operator fun PaddingValues.plus(other: PaddingValues): PaddingValues {
 }
 
 /**
- * The download queue: every task with its live state, filterable, as a grid of cards or a
- * compact list. The "new download" FAB is shown here on phones; on rails the navigation rail
- * carries that action instead.
+ * The download queue: every task with its live state, filterable, as a grid of cards or a compact
+ * list. The "new download" FAB is shown here on phones; on rails the navigation rail carries that
+ * action instead.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -371,7 +368,8 @@ fun DownloadPageImplV2(
             state = gridState,
             columns = if (isGridView) GridCells.Adaptive(280.dp) else GridCells.Adaptive(520.dp),
             contentPadding =
-                innerPadding + PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 104.dp),
+                innerPadding +
+                    PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 104.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(if (isGridView) 16.dp else 8.dp),
         ) {
@@ -415,7 +413,9 @@ fun DownloadPageImplV2(
                                 onActionPost(task, it)
                             }
                         },
-                        stateIndicator = { CardStateIndicator(downloadState = state.downloadState) },
+                        stateIndicator = {
+                            CardStateIndicator(downloadState = state.downloadState)
+                        },
                         onClick = { showActionSheet(task) },
                     )
                 } else {
@@ -465,7 +465,8 @@ private fun QueueTopBar(
 ) {
     val parts = buildList {
         if (active > 0) add(pluralStringResource(R.plurals.queue_active, active, active))
-        if (completed > 0) add(pluralStringResource(R.plurals.queue_completed, completed, completed))
+        if (completed > 0)
+            add(pluralStringResource(R.plurals.queue_completed, completed, completed))
         if (stopped > 0) add(pluralStringResource(R.plurals.queue_stopped, stopped, stopped))
     }
     val subtitle = parts.joinToString(" · ").ifEmpty { stringResource(R.string.queue_idle) }
@@ -490,7 +491,8 @@ private fun QueueTopBar(
                 ) { grid ->
                     Icon(
                         imageVector =
-                            if (grid) Icons.AutoMirrored.Rounded.ViewList else Icons.Rounded.GridView,
+                            if (grid) Icons.AutoMirrored.Rounded.ViewList
+                            else Icons.Rounded.GridView,
                         contentDescription =
                             stringResource(
                                 if (grid) R.string.switch_to_list_view
@@ -535,8 +537,9 @@ private fun FilterRow(activeFilter: Filter, counts: Map<Filter, Int>, onSelect: 
                     ),
             ) {
                 Text(
-                    text = if (count > 0 && filter != Filter.All) "${filter.label()} $count"
-                    else filter.label(),
+                    text =
+                        if (count > 0 && filter != Filter.All) "${filter.label()} $count"
+                        else filter.label(),
                     maxLines = 1,
                 )
             }
@@ -593,7 +596,7 @@ private fun StorageAccessBanner(modifier: Modifier = Modifier) {
                     } else {
                         legacyStoragePermission?.launchPermissionRequest()
                     }
-                }
+                },
             ) {
                 Text(stringResource(R.string.grant_access))
             }
@@ -726,8 +729,11 @@ private fun QueueEmptyState(
         )
         Text(
             text =
-                stringResource(if (filtered) R.string.queue_filter_empty_desc else R.string.download_hint),
-            modifier = Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
+                stringResource(
+                    if (filtered) R.string.queue_filter_empty_desc else R.string.download_hint
+                ),
+            modifier =
+                Modifier.padding(top = 8.dp).padding(horizontal = 32.dp).widthIn(max = 420.dp),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,

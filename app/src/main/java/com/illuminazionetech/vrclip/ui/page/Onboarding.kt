@@ -369,13 +369,15 @@ private fun androidx.compose.material3.ColorScheme.contentColorForContainer(
 private fun FeatureBadge(icon: ImageVector, modifier: Modifier = Modifier) {
     Box(
         modifier =
-            modifier
-                .size(56.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary),
+            modifier.size(56.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(icon, null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(28.dp))
+        Icon(
+            icon,
+            null,
+            tint = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.size(28.dp),
+        )
     }
 }
 

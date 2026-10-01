@@ -51,9 +51,9 @@ import com.illuminazionetech.vrclip.ui.component.ClearButton
 import com.illuminazionetech.vrclip.ui.component.ConfirmButton
 import com.illuminazionetech.vrclip.ui.component.LinkButton
 import com.illuminazionetech.vrclip.ui.component.PasteFromClipBoardButton
+import com.illuminazionetech.vrclip.ui.component.ShortcutChip
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.component.VRClipTextField
-import com.illuminazionetech.vrclip.ui.component.ShortcutChip
 import com.illuminazionetech.vrclip.util.DatabaseUtil
 import kotlinx.coroutines.launch
 

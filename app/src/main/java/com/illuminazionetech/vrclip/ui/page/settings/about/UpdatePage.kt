@@ -34,6 +34,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.ui.common.intState
 import com.illuminazionetech.vrclip.ui.component.BackButton
@@ -42,19 +43,16 @@ import com.illuminazionetech.vrclip.ui.component.PreferenceSingleChoiceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithContainer
 import com.illuminazionetech.vrclip.util.AUTO_UPDATE
+import com.illuminazionetech.vrclip.util.AppUpdateManager
 import com.illuminazionetech.vrclip.util.PRE_RELEASE
 import com.illuminazionetech.vrclip.util.PreferenceUtil
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateBoolean
 import com.illuminazionetech.vrclip.util.PreferenceUtil.updateInt
 import com.illuminazionetech.vrclip.util.STABLE
-import com.illuminazionetech.vrclip.util.makeToast
 import com.illuminazionetech.vrclip.util.UPDATE_CHANNEL
-import com.illuminazionetech.vrclip.util.AppUpdateManager
 import com.illuminazionetech.vrclip.util.UpdateCheckWorker
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.Dispatchers
+import com.illuminazionetech.vrclip.util.makeToast
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,8 +137,9 @@ fun UpdatePage(onNavigateBack: () -> Unit) {
                             if (updateState !is AppUpdateManager.State.Checking) {
                                 scope.launch {
                                     // Any result other than "up to date" opens the update dialog.
-                                    if (AppUpdateManager.check(manual = true) ==
-                                        AppUpdateManager.State.UpToDate
+                                    if (
+                                        AppUpdateManager.check(manual = true) ==
+                                            AppUpdateManager.State.UpToDate
                                     ) {
                                         makeToast(R.string.app_up_to_date)
                                     }

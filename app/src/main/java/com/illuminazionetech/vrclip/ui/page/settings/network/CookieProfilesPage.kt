@@ -1,6 +1,5 @@
 package com.illuminazionetech.vrclip.ui.page.settings.network
 
-import androidx.compose.ui.res.pluralStringResource
 import android.content.res.Configuration
 import android.webkit.CookieManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -25,13 +24,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Cookie
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.FileCopy
 import androidx.compose.material.icons.rounded.GeneratingTokens
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
@@ -64,6 +63,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.input.ImeAction
@@ -84,8 +84,8 @@ import com.illuminazionetech.vrclip.ui.component.HelpDialog
 import com.illuminazionetech.vrclip.ui.component.PasteFromClipBoardButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceItemVariant
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithContainer
-import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.component.TextButtonWithIcon
+import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.ui.theme.generateLabelColor
 import com.illuminazionetech.vrclip.util.COOKIES
@@ -276,7 +276,13 @@ fun CookieProfilePage(
                 val cookiesCount = cookieList.size
                 val siteCount = cookieList.distinctBy { it.domain }.size
                 Text(
-                    text = pluralStringResource(R.plurals.cookies_in_database, cookiesCount, cookiesCount, siteCount),
+                    text =
+                        pluralStringResource(
+                            R.plurals.cookies_in_database,
+                            cookiesCount,
+                            cookiesCount,
+                            siteCount,
+                        ),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -424,9 +430,7 @@ fun CookiesQuickSettingsDialog(
     VRClipDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            ConfirmButton(
-                text = stringResource(id = R.string.done)
-            ) {
+            ConfirmButton(text = stringResource(id = R.string.done)) {
                 onDismissRequest()
                 onConfirm()
             }

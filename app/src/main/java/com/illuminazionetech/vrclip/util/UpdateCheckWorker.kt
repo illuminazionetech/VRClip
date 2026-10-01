@@ -11,8 +11,8 @@ import androidx.work.WorkerParameters
 import java.util.concurrent.TimeUnit
 
 /**
- * Checks for a new app version about once a day while the app is closed and posts a
- * notification when one is available. The download itself still waits for the user.
+ * Checks for a new app version about once a day while the app is closed and posts a notification
+ * when one is available. The download itself still waits for the user.
  */
 class UpdateCheckWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {

@@ -71,8 +71,6 @@ jobs:
           cache: gradle
 
       - name: Check Kotlin formatting
-        # Non-blocking: part of the codebase predates this check. It still reports drift.
-        continue-on-error: true
         run: ./gradlew ktfmtCheck
 
       - name: Android Lint

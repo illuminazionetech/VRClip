@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.horizontalScroll
@@ -25,13 +24,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material.icons.rounded.SdCardAlert
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.FolderDelete
 import androidx.compose.material.icons.rounded.FolderOpen
 import androidx.compose.material.icons.rounded.FolderSpecial
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.SdCard
+import androidx.compose.material.icons.rounded.SdCardAlert
 import androidx.compose.material.icons.rounded.SnippetFolder
 import androidx.compose.material.icons.rounded.Spellcheck
 import androidx.compose.material.icons.rounded.TabUnselected
@@ -90,7 +89,6 @@ import com.illuminazionetech.vrclip.ui.component.PreferenceSwitch
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitchWithDivider
 import com.illuminazionetech.vrclip.ui.component.PreferencesHintCard
 import com.illuminazionetech.vrclip.ui.component.VRClipDialog
-import com.illuminazionetech.vrclip.util.StorageUtil
 import com.illuminazionetech.vrclip.util.COMMAND_DIRECTORY
 import com.illuminazionetech.vrclip.util.CUSTOM_COMMAND
 import com.illuminazionetech.vrclip.util.CUSTOM_OUTPUT_TEMPLATE
@@ -110,6 +108,7 @@ import com.illuminazionetech.vrclip.util.SDCARD_DOWNLOAD
 import com.illuminazionetech.vrclip.util.SDCARD_URI
 import com.illuminazionetech.vrclip.util.SUBDIRECTORY_EXTRACTOR
 import com.illuminazionetech.vrclip.util.SUBDIRECTORY_PLAYLIST_TITLE
+import com.illuminazionetech.vrclip.util.StorageUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -398,12 +397,11 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                     showClearTempDialog = false
                     scope.launch(Dispatchers.IO) {
                         FileUtil.clearTempFiles(context.getConfigDirectory())
-                        val count =
-                            FileUtil.run {
-                                clearTempFiles(getExternalTempDir()) +
-                                    clearTempFiles(context.getSdcardTempDir(null)) +
-                                    clearTempFiles(context.getInternalTempDir())
-                            }
+                        val count = FileUtil.run {
+                            clearTempFiles(getExternalTempDir()) +
+                                clearTempFiles(context.getSdcardTempDir(null)) +
+                                clearTempFiles(context.getInternalTempDir())
+                        }
 
                         withContext(Dispatchers.Main) {
                             snackbarHostState.showSnackbar(

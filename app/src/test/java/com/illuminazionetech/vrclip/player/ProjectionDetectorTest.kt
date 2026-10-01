@@ -71,10 +71,17 @@ class ProjectionDetectorTest {
 
     @Test
     fun containerMetadataWins() {
-        val topBottom = FrameInfo(1920, 2160, stereoMode = ProjectionDetector.STEREO_MODE_TOP_BOTTOM)
+        val topBottom =
+            FrameInfo(1920, 2160, stereoMode = ProjectionDetector.STEREO_MODE_TOP_BOTTOM)
         assertEquals(ProjectionMode.OU_3D, detect("plain.mp4", topBottom))
 
-        val halfDome = FrameInfo(4096, 2048, stereoMode = ProjectionDetector.STEREO_MODE_LEFT_RIGHT, projectionData = equiBox(left = 0x40000000, right = 0x40000000))
+        val halfDome =
+            FrameInfo(
+                4096,
+                2048,
+                stereoMode = ProjectionDetector.STEREO_MODE_LEFT_RIGHT,
+                projectionData = equiBox(left = 0x40000000, right = 0x40000000),
+            )
         assertEquals(ProjectionMode.STEREO_180_LR, detect("anything 360.mp4", halfDome))
 
         val full = FrameInfo(3840, 1920, projectionData = equiBox(left = 0, right = 0))
@@ -85,7 +92,8 @@ class ProjectionDetectorTest {
                 3840,
                 1920,
                 projectionData =
-                    "<GSpherical:ProjectionType>equirectangular</GSpherical:ProjectionType>".toByteArray(),
+                    "<GSpherical:ProjectionType>equirectangular</GSpherical:ProjectionType>"
+                        .toByteArray(),
             )
         assertEquals(ProjectionMode.MONO_360, detect("plain.mp4", v1))
     }
@@ -93,18 +101,38 @@ class ProjectionDetectorTest {
     @Test
     fun eyeAspectFollowsPacking() {
         // Full side-by-side 3840x1080: each eye is 16:9.
-        assertEquals(16f / 9f, ProjectionMode.eyeAspectRatio(ProjectionMode.SBS_3D, 3840f / 1080f), 0.01f)
+        assertEquals(
+            16f / 9f,
+            ProjectionMode.eyeAspectRatio(ProjectionMode.SBS_3D, 3840f / 1080f),
+            0.01f,
+        )
         // Half side-by-side 1920x1080: each eye is squeezed, shown at 16:9.
-        assertEquals(16f / 9f, ProjectionMode.eyeAspectRatio(ProjectionMode.SBS_3D, 1920f / 1080f), 0.01f)
+        assertEquals(
+            16f / 9f,
+            ProjectionMode.eyeAspectRatio(ProjectionMode.SBS_3D, 1920f / 1080f),
+            0.01f,
+        )
         // Full over-under 1920x2160.
-        assertEquals(16f / 9f, ProjectionMode.eyeAspectRatio(ProjectionMode.OU_3D, 1920f / 2160f), 0.01f)
+        assertEquals(
+            16f / 9f,
+            ProjectionMode.eyeAspectRatio(ProjectionMode.OU_3D, 1920f / 2160f),
+            0.01f,
+        )
         assertEquals(1.5f, ProjectionMode.eyeAspectRatio(ProjectionMode.FLAT, 1.5f), 0.001f)
     }
 
     /** A minimal sv3d/proj/equi payload with the given left/right bounds. */
     private fun equiBox(left: Int, right: Int): ByteArray {
         val out = java.io.ByteArrayOutputStream()
-        fun int(v: Int) = out.write(byteArrayOf((v ushr 24).toByte(), (v ushr 16).toByte(), (v ushr 8).toByte(), v.toByte()))
+        fun int(v: Int) =
+            out.write(
+                byteArrayOf(
+                    (v ushr 24).toByte(),
+                    (v ushr 16).toByte(),
+                    (v ushr 8).toByte(),
+                    v.toByte(),
+                )
+            )
         int(28)
         out.write("equi".toByteArray())
         int(0) // version and flags

@@ -92,13 +92,12 @@ fun LanguagePage(onNavigateBack: () -> Unit = {}) {
             val localeSet = mutableSetOf<Locale>()
 
             preferredLocales.forEach { desired ->
-                val matchedLocale =
-                    supportedLocales.firstOrNull { supported ->
-                        LocaleListCompat.matchesLanguageAndScript(
-                            /* supported = */ desired,
-                            /* desired = */ supported,
-                        )
-                    }
+                val matchedLocale = supportedLocales.firstOrNull { supported ->
+                    LocaleListCompat.matchesLanguageAndScript(
+                        /* supported = */ desired,
+                        /* desired = */ supported,
+                    )
+                }
                 if (matchedLocale != null) {
                     localeSet.add(matchedLocale)
                 }

@@ -6,9 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -254,8 +254,7 @@ internal fun PlayerSheets(
 
         PlayerSheet.Convert -> {
             val id = state.libraryId
-            if (id == null) onDismiss()
-            else ConvertTo3dDialog(videoId = id, onDismiss = onDismiss)
+            if (id == null) onDismiss() else ConvertTo3dDialog(videoId = id, onDismiss = onDismiss)
         }
 
         null -> Unit
@@ -359,7 +358,9 @@ internal fun Live3dMessages(state: PlayerUiState, viewModel: PlayerViewModel) {
             visible = showFailure,
             enter = fadeIn(),
             exit = fadeOut(),
-            modifier = Modifier.align(Alignment.TopCenter).padding(top = 72.dp, start = 24.dp, end = 24.dp),
+            modifier =
+                Modifier.align(Alignment.TopCenter)
+                    .padding(top = 72.dp, start = 24.dp, end = 24.dp),
         ) {
             Surface(
                 shape = MaterialTheme.shapes.extraLarge,

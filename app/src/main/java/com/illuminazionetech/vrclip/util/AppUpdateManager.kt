@@ -35,24 +35,25 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 /**
- * The in-app updater: finds the newest GitHub release for this build's channel, downloads the
- * APK matching the device ABI, verifies it, and hands it to [PackageInstaller].
+ * The in-app updater: finds the newest GitHub release for this build's channel, downloads the APK
+ * matching the device ABI, verifies it, and hands it to [PackageInstaller].
  *
  * Every downloaded APK is checked before the installer ever sees it:
  * - its size and SHA-256 must match what GitHub reports for the release asset;
  * - it must be this app's package, with a higher version code than the installed one;
  * - it must be signed with the same certificate as the installed app. Android would refuse the
- *   update anyway, but checking first lets the app explain what happened (the 1.1.0 releases
- *   were signed with throwaway CI keys, so moving past them needs one reinstall) instead of
- *   showing a generic "App not installed".
+ *   update anyway, but checking first lets the app explain what happened (the 1.1.0 releases were
+ *   signed with throwaway CI keys, so moving past them needs one reinstall) instead of showing a
+ *   generic "App not installed".
  *
- * State is exposed as a [StateFlow] so the startup prompt, the settings page and the
- * notification all drive the same process.
+ * State is exposed as a [StateFlow] so the startup prompt, the settings page and the notification
+ * all drive the same process.
  */
 object AppUpdateManager {
 
     private const val TAG = "AppUpdateManager"
-    private const val RELEASES_URL = "https://api.github.com/repos/illuminazionetech/VRClip/releases?per_page=30"
+    private const val RELEASES_URL =
+        "https://api.github.com/repos/illuminazionetech/VRClip/releases?per_page=30"
     const val RELEASES_PAGE_URL = "https://github.com/illuminazionetech/VRClip/releases/latest"
     private const val SKIPPED_VERSION = "update_skipped_version"
 
@@ -114,8 +115,8 @@ object AppUpdateManager {
         get() = File(App.context.cacheDir, "updates").apply { mkdirs() }
 
     /**
-     * Looks for an update. An automatic check ([manual] false) stays quiet about failures and
-     * about a version the user chose to skip; a manual check reports everything.
+     * Looks for an update. An automatic check ([manual] false) stays quiet about failures and about
+     * a version the user chose to skip; a manual check reports everything.
      */
     suspend fun check(manual: Boolean): State {
         _state.value = State.Checking
@@ -217,7 +218,9 @@ object AppUpdateManager {
             val target = File(updateDir, asset.name ?: "update.apk")
             val expectedSize = asset.size ?: -1L
             // A previous download of the very same asset can be reused as is.
-            if (target.exists() && target.length() == expectedSize && digestMatches(target, asset)) {
+            if (
+                target.exists() && target.length() == expectedSize && digestMatches(target, asset)
+            ) {
                 return@withContext target
             }
             val partial = File(updateDir, "${target.name}.part")
@@ -244,8 +247,7 @@ object AppUpdateManager {
                             // Report roughly every 256 KiB to keep recompositions cheap.
                             if (downloaded - lastReported >= 256 * 1024 || downloaded == total) {
                                 lastReported = downloaded
-                                _state.value =
-                                    State.Downloading(release, asset, downloaded, total)
+                                _state.value = State.Downloading(release, asset, downloaded, total)
                             }
                         }
                     }
@@ -275,8 +277,10 @@ object AppUpdateManager {
         if (!digestMatches(apk, asset)) return Verification.Invalid
         val pm = context.packageManager
         val archive =
-            pm.getPackageArchiveInfoCompat(apk.absolutePath, PackageManager.GET_SIGNING_CERTIFICATES)
-                ?: return Verification.Invalid
+            pm.getPackageArchiveInfoCompat(
+                apk.absolutePath,
+                PackageManager.GET_SIGNING_CERTIFICATES,
+            ) ?: return Verification.Invalid
         if (archive.packageName != context.packageName) return Verification.Invalid
         val installed =
             pm.getPackageInfoCompat(context.packageName, PackageManager.GET_SIGNING_CERTIFICATES)
@@ -285,8 +289,10 @@ object AppUpdateManager {
         val archiveCerts = archive.certificateDigests()
         // Some platform versions do not report certificates for an archive; the installer still
         // enforces the signature in that case, so only a definite mismatch is reported here.
-        if (installedCerts.isNotEmpty() && archiveCerts.isNotEmpty() &&
-            installedCerts.intersect(archiveCerts).isEmpty()
+        if (
+            installedCerts.isNotEmpty() &&
+                archiveCerts.isNotEmpty() &&
+                installedCerts.intersect(archiveCerts).isEmpty()
         ) {
             return Verification.SignatureMismatch
         }
@@ -335,15 +341,17 @@ object AppUpdateManager {
         _state.update {
             when (status) {
                 PackageInstaller.STATUS_SUCCESS -> State.Idle
-                PackageInstaller.STATUS_FAILURE_ABORTED -> release?.let { r ->
-                    UpdateUtil.selectAsset(r, BuildConfig.FLAVOR, Build.SUPPORTED_ABIS.toList())
-                        ?.let { State.Available(r, it) }
-                } ?: State.Idle
+                PackageInstaller.STATUS_FAILURE_ABORTED ->
+                    release?.let { r ->
+                        UpdateUtil.selectAsset(r, BuildConfig.FLAVOR, Build.SUPPORTED_ABIS.toList())
+                            ?.let { State.Available(r, it) }
+                    } ?: State.Idle
                 PackageInstaller.STATUS_FAILURE_CONFLICT,
                 PackageInstaller.STATUS_FAILURE_INCOMPATIBLE ->
                     release?.let { State.SignatureChanged(it) }
                         ?: State.Failed(Reason.InstallFailed)
-                PackageInstaller.STATUS_FAILURE_BLOCKED -> State.Failed(Reason.InstallBlocked, release)
+                PackageInstaller.STATUS_FAILURE_BLOCKED ->
+                    State.Failed(Reason.InstallBlocked, release)
                 else -> State.Failed(Reason.InstallFailed, release)
             }
         }
@@ -384,12 +392,18 @@ object AppUpdateManager {
     private fun PackageInfo.certificateDigests(): Set<String> {
         val info = signingInfo ?: return emptySet()
         val certificates =
-            if (info.hasMultipleSigners()) info.apkContentsSigners else info.signingCertificateHistory
-        return certificates.orEmpty().map { signature ->
-            MessageDigest.getInstance("SHA-256").digest(signature.toByteArray()).joinToString("") {
-                "%02x".format(it)
+            if (info.hasMultipleSigners()) info.apkContentsSigners
+            else info.signingCertificateHistory
+        return certificates
+            .orEmpty()
+            .map { signature ->
+                MessageDigest.getInstance("SHA-256").digest(signature.toByteArray()).joinToString(
+                    ""
+                ) {
+                    "%02x".format(it)
+                }
             }
-        }.toSet()
+            .toSet()
     }
 
     private fun PackageManager.getPackageArchiveInfoCompat(path: String, flags: Int): PackageInfo? =

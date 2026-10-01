@@ -47,10 +47,12 @@ fun FullScreenSheet(
     ) {
         AnimatedVisibility(
             visibleState = visibleState,
-            enter = slideInVertically(MaterialTheme.motionScheme.defaultSpatialSpec()) { it / 4 } +
-                fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
-            exit = slideOutVertically(MaterialTheme.motionScheme.fastSpatialSpec()) { it / 4 } +
-                fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()),
+            enter =
+                slideInVertically(MaterialTheme.motionScheme.defaultSpatialSpec()) { it / 4 } +
+                    fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+            exit =
+                slideOutVertically(MaterialTheme.motionScheme.fastSpatialSpec()) { it / 4 } +
+                    fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()),
         ) {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface) {
                 content(dismiss)

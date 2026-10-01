@@ -23,9 +23,9 @@ import okhttp3.Request
 
 /**
  * The depth estimation model used for 2D to 3D conversion: Depth Anything V2 Small (Apache-2.0
- * weights), as exported to TFLite by Qualcomm AI Hub (518x518 RGB in 0..1, relative inverse
- * depth out). It is about 95 MB, so it is not bundled in the APK: it is downloaded on first use
- * from a versioned URL and only accepted if its SHA-256 matches the value pinned here.
+ * weights), as exported to TFLite by Qualcomm AI Hub (518x518 RGB in 0..1, relative inverse depth
+ * out). It is about 95 MB, so it is not bundled in the APK: it is downloaded on first use from a
+ * versioned URL and only accepted if its SHA-256 matches the value pinned here.
  */
 class DepthModelManager private constructor(context: Context) {
 
@@ -62,31 +62,30 @@ class DepthModelManager private constructor(context: Context) {
     fun isReady(): Boolean = modelFile.isFile && modelFile.length() == MODEL_BYTES
 
     /** Downloads, unpacks and verifies the model. Safe to call again; returns true when ready. */
-    suspend fun download(): Boolean =
-        mutex.withLock {
-            if (isReady()) {
+    suspend fun download(): Boolean = mutex.withLock {
+        if (isReady()) {
+            mutableState.value = State.Installed
+            return@withLock true
+        }
+        withContext(Dispatchers.IO) {
+            try {
+                fetch()
                 mutableState.value = State.Installed
-                return@withLock true
-            }
-            withContext(Dispatchers.IO) {
-                try {
-                    fetch()
-                    mutableState.value = State.Installed
-                    true
-                } catch (e: CancellationException) {
-                    mutableState.value = State.NotInstalled
-                    throw e
-                } catch (e: CorruptedModelException) {
-                    Log.w(TAG, "Depth model failed verification", e)
-                    mutableState.value = State.Failed(corrupted = true)
-                    false
-                } catch (e: Exception) {
-                    Log.w(TAG, "Depth model download failed", e)
-                    mutableState.value = State.Failed(corrupted = false)
-                    false
-                }
+                true
+            } catch (e: CancellationException) {
+                mutableState.value = State.NotInstalled
+                throw e
+            } catch (e: CorruptedModelException) {
+                Log.w(TAG, "Depth model failed verification", e)
+                mutableState.value = State.Failed(corrupted = true)
+                false
+            } catch (e: Exception) {
+                Log.w(TAG, "Depth model download failed", e)
+                mutableState.value = State.Failed(corrupted = false)
+                false
             }
         }
+    }
 
     fun delete() {
         modelFile.delete()

@@ -84,6 +84,10 @@ class StereoConversionWorker(context: Context, params: WorkerParameters) :
                 settings = StereoSettings.load(),
                 onProgress = ::reportProgress,
             )
+            // Mark the file as side-by-side 3D in its own metadata, so players that read it (VRClip
+            // on a Meta Quest the file was sent to, too) open it as 3D without this library.
+            val tagged = runCatching { Mp4StereoTag.write(temp) }.getOrDefault(false)
+            if (!tagged) Log.w(TAG, "Could not mark ${temp.name} as side-by-side 3D")
 
             val result = StereoConverter.probe(temp)
             val complete =

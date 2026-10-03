@@ -128,15 +128,16 @@ data class PlayerUiState(
      */
     val liveOnScreen: Boolean = true,
 ) {
-    private val liveActive: Boolean
-        get() = live3d == Live3dState.On
-
     /**
-     * Live conversion on a screen: each frame comes with its depth map below it. Already true while
-     * the effect starts, so the renderer is in place before its first frame arrives.
+     * Live conversion is on or starting. The output is set up for it from the start, so the screen
+     * (or the headset's video layer) is in place before the effect's first frame arrives.
      */
+    private val liveRequested: Boolean
+        get() = live3d == Live3dState.On || live3d == Live3dState.Starting
+
+    /** Live conversion on a screen: each frame comes with its depth map below it. */
     val depthPacked: Boolean
-        get() = liveOnScreen && (live3d == Live3dState.On || live3d == Live3dState.Starting)
+        get() = liveOnScreen && liveRequested
 
     /** Stereo, spherical or depth-packed frames need the GL renderer instead of a plain view. */
     val usesGlRenderer: Boolean
@@ -151,12 +152,12 @@ data class PlayerUiState(
      * full side-by-side one; on a screen the picture stays flat and carries its depth.
      */
     val renderProjection: ProjectionMode
-        get() = if (liveActive && !liveOnScreen) ProjectionMode.SBS_3D else sourceProjection
+        get() = if (liveRequested && !liveOnScreen) ProjectionMode.SBS_3D else sourceProjection
 
     val renderFrameAspect: Float
         get() {
             val aspect = frame?.aspect?.takeIf { it > 0f } ?: (16f / 9f)
-            return if (liveActive && !liveOnScreen) aspect * 2f else aspect
+            return if (liveRequested && !liveOnScreen) aspect * 2f else aspect
         }
 
     /** Live conversion only makes sense for flat, non-stereo video. */
@@ -197,6 +198,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     val state: StateFlow<PlayerUiState> = mutableState.asStateFlow()
 
     private var source: PlayerSource? = null
+
+    /**
+     * Where live 2D to 3D goes, for every video this player opens: the immersive Quest player sets
+     * it once, before loading, and each new video's state starts from it.
+     */
+    private var liveOnScreen = true
     private var effectsPipelineCreated = false
     private var surface: Surface? = null
     private var info: DownloadedVideoInfo? = null
@@ -234,7 +241,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                         mutableState.value.live3d == Live3dState.Starting
                 ) {
                     // The effects pipeline is the most likely culprit; fall back to plain playback.
-                    mutableState.update { it.copy(live3d = Live3dState.Failed) }
+                    mutableState.update {
+                        it.copy(live3d = Live3dState.Failed, outputBufferSize = null)
+                    }
                     restartWithEffects(enabled = false)
                 } else {
                     mutableState.update { it.copy(error = error) }
@@ -273,7 +282,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                     status is LiveStereoStatus.Status.Failed &&
                         (live == Live3dState.On || live == Live3dState.Starting)
                 ) {
-                    mutableState.update { it.copy(live3d = Live3dState.Failed) }
+                    mutableState.update {
+                        it.copy(live3d = Live3dState.Failed, outputBufferSize = null)
+                    }
                     restartWithEffects(enabled = false)
                     applyDefaultOutput()
                 }
@@ -371,6 +382,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                 detection = ProjectionDetector.detect(detectionName, null),
                 projectionOverride = override,
                 resumedFromMs = resume,
+                liveOnScreen = liveOnScreen,
             )
         applyDefaultOutput()
         // The effects pipeline stays once created; make sure a previous video's effect is gone.
@@ -391,6 +403,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun pause() = player.pause()
+
+    fun play() = player.play()
 
     fun seekTo(positionMs: Long) {
         player.seekTo(positionMs.coerceIn(0L, player.duration.coerceAtLeast(0L)))
@@ -493,8 +507,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
      * the effect draws side-by-side views for its stereo layer instead of a picture with depth.
      */
     fun setLiveTarget(headset: Boolean) {
+        liveOnScreen = !headset
         mutableState.update { it.copy(liveOnScreen = !headset) }
     }
+
+    private fun liveOutput(): StereoConversionEffect.Output =
+        if (liveOnScreen) StereoConversionEffect.Output.LiveColorAndDepth
+        else StereoConversionEffect.Output.LiveSideBySide
+
+    /** Size of the frames the live effect draws for [frame], or null without live conversion. */
+    private fun liveBufferSize(enabled: Boolean, frame: FrameInfo?): Pair<Int, Int>? =
+        if (enabled && frame != null)
+            StereoConversionEffect.outputSize(frame.width, frame.height, liveOutput())
+        else null
 
     private fun applyDefaultOutput() {
         val current = mutableState.value
@@ -525,9 +550,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                 mutableState.update { it.copy(live3d = Live3dState.NeedsModel) }
                 return
             }
-            mutableState.update { it.copy(live3d = Live3dState.Starting) }
-        } else {
-            mutableState.update { it.copy(live3d = Live3dState.Off) }
+        }
+        // The state and the output size change together, so the immersive player rebuilds its
+        // video layer once, straight for the new frames.
+        mutableState.update {
+            it.copy(
+                live3d = if (enabled) Live3dState.Starting else Live3dState.Off,
+                outputBufferSize = liveBufferSize(enabled, it.frame),
+            )
         }
         applyDefaultOutput()
         restartWithEffects(enabled)
@@ -544,18 +574,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     private fun restartWithEffects(enabled: Boolean) {
         val position = player.currentPosition
         val playWhenReady = player.playWhenReady
-        val source = mutableState.value.frame
-        val output =
-            if (mutableState.value.liveOnScreen) StereoConversionEffect.Output.LiveColorAndDepth
-            else StereoConversionEffect.Output.LiveSideBySide
-        mutableState.update {
-            it.copy(
-                outputBufferSize =
-                    if (enabled && source != null)
-                        StereoConversionEffect.outputSize(source.width, source.height, output)
-                    else null
-            )
-        }
+        val output = liveOutput()
         player.stop()
         effectsPipelineCreated = true
         player.setVideoEffects(
@@ -686,7 +705,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         val path = current.detectionName
         val wasImmersive = current.usesGlRenderer
         mutableState.update {
-            it.copy(frame = frame, detection = ProjectionDetector.detect(path, frame))
+            it.copy(
+                frame = frame,
+                detection = ProjectionDetector.detect(path, frame),
+                // Live conversion switched on before the frame was known gets its size now.
+                outputBufferSize = if (live) liveBufferSize(true, frame) else it.outputBufferSize,
+            )
+        }
+        if (live && mutableState.value.outputBufferSize != current.outputBufferSize) {
+            signalOutputResolution()
         }
         if (wasImmersive != mutableState.value.usesGlRenderer) {
             applyDefaultOutput()

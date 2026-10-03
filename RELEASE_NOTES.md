@@ -1,5 +1,28 @@
 # Release notes
 
+## 1.4.1 - Live 3D in real stereo on Quest, and videos from other apps
+
+### Meta Quest
+- Live 2D to 3D shows real stereo: one view for each eye. It showed the video with its
+  gray depth map stacked underneath, because the setting that sends live 3D to the headset was
+  lost when the video opened.
+- Videos opened from another app (a file manager, LocalSend) play in the immersive player. The
+  player appeared but stayed empty: the permission to read the file did not reach it.
+- Subtitles show up. The control bar offered subtitle tracks, but nothing drew them; they now
+  sit on the screen, or float in front of you inside a 360 or 180 video.
+- Opening the system menu pauses the video, and closing it resumes playback if it was playing.
+- The screen starts black instead of showing leftover image data while the video loads, and it
+  is rebuilt cleanly for each new video and each time live 3D is turned on or off, without
+  moving from where you put it.
+- The screen can be grabbed and turned to face you. Portrait and square videos keep the height
+  of a 16:9 screen instead of towering over you.
+- Playback errors are shown on the control bar, with a button to try again.
+
+### 2D to 3D
+- Converted videos carry the standard side-by-side 3D tag (Spherical Video V2), so VRClip
+  recognizes them as 3D without guessing from the file name, and so can other players that read
+  that tag. Side-by-side files shaped like two 16:9 pictures are also recognized by their shape.
+
 ## 1.4.0 - Smooth, accurate 2D to 3D, 3D without glasses and a working Quest player
 
 ### Meta Quest

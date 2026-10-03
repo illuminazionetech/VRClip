@@ -440,9 +440,12 @@ private fun VideoLayer(
     }
 }
 
-/** Subtitles drawn over the immersive view, which has no subtitle rendering of its own. */
+/**
+ * Subtitles drawn over a video surface that has no subtitle rendering of its own: the immersive
+ * view on phones, the video screen on Meta Quest.
+ */
 @Composable
-private fun SubtitleOverlay(player: Player) {
+internal fun SubtitleOverlay(player: Player, modifier: Modifier = Modifier) {
     var subtitleView by remember { mutableStateOf<SubtitleView?>(null) }
     DisposableEffect(player, subtitleView) {
         val target = subtitleView ?: return@DisposableEffect onDispose {}
@@ -457,7 +460,7 @@ private fun SubtitleOverlay(player: Player) {
         onDispose { player.removeListener(listener) }
     }
     AndroidView(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         factory = { context ->
             SubtitleView(context).apply {
                 setUserDefaultStyle()

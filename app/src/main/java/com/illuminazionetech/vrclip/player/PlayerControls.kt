@@ -1,5 +1,6 @@
 package com.illuminazionetech.vrclip.player
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -1158,6 +1159,21 @@ private fun ResumeHint(
     }
 }
 
+/** What a playback error means for the viewer, shared by the phone and Meta Quest players. */
+@StringRes
+internal fun PlaybackException.messageRes(): Int =
+    when (errorCode) {
+        PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND,
+        PlaybackException.ERROR_CODE_IO_NO_PERMISSION,
+        PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE ->
+            R.string.player_error_not_found
+        PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED,
+        PlaybackException.ERROR_CODE_DECODING_FORMAT_EXCEEDS_CAPABILITIES,
+        PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED,
+        PlaybackException.ERROR_CODE_DECODER_INIT_FAILED -> R.string.player_error_unsupported
+        else -> R.string.player_error_generic
+    }
+
 @Composable
 private fun ErrorCard(
     modifier: Modifier,
@@ -1184,21 +1200,7 @@ private fun ErrorCard(
             )
             Spacer(Modifier.height(12.dp))
             Text(
-                text =
-                    stringResource(
-                        when (error.errorCode) {
-                            PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND,
-                            PlaybackException.ERROR_CODE_IO_NO_PERMISSION,
-                            PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE ->
-                                R.string.player_error_not_found
-                            PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED,
-                            PlaybackException.ERROR_CODE_DECODING_FORMAT_EXCEEDS_CAPABILITIES,
-                            PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED,
-                            PlaybackException.ERROR_CODE_DECODER_INIT_FAILED ->
-                                R.string.player_error_unsupported
-                            else -> R.string.player_error_generic
-                        }
-                    ),
+                text = stringResource(error.messageRes()),
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(Modifier.height(4.dp))

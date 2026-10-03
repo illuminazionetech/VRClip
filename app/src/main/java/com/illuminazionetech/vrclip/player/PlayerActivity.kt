@@ -312,13 +312,15 @@ class PlayerActivity : ComponentActivity() {
         if (intent?.action != Intent.ACTION_VIEW || !isQuestDevice()) return false
         if (!PLAYER_QUEST_IMMERSIVE.getBoolean(true)) return false
         val uri = intent.data ?: return false
+        // The read permission another app (a file manager, LocalSend) granted for this URI lasts
+        // only as long as this activity, which closes now; it carries over to the immersive player
+        // only when the URI travels as the intent's data with the grant flag, not as an extra.
         startActivity(
             Intent(this, ImmersivePlayerActivity::class.java)
                 .setAction(Intent.ACTION_MAIN)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(ImmersivePlayerActivity.EXTRA_VIDEO_PATH, uri.toString())
+                .setDataAndType(uri, intent.type ?: contentResolver.getType(uri))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(ImmersivePlayerActivity.EXTRA_TITLE, displayName(uri))
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         )
         finish()
         return true

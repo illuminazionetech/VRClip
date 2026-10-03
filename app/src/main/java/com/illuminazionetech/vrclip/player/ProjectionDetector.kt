@@ -244,14 +244,22 @@ object ProjectionDetector {
     /**
      * Last resort for files with neither metadata nor a telling name: an exactly 2:1 frame of at
      * least 1920 pixels is almost always an equirectangular 360 video (that is how YouTube serves
-     * them). Anything else stays flat; a square frame could be stacked stereo 360 but is far more
-     * often plain square video.
+     * them), and a 32:9 frame of at least 3200 pixels two 16:9 views side by side (what 2D to 3D
+     * conversions without the stereo box, from VRClip 1.4.0, look like). Anything else stays flat;
+     * a square frame could be stacked stereo 360 but is far more often plain square video.
      */
     private fun fromAspectRatio(frame: FrameInfo?): ProjectionMode? {
         frame ?: return null
         if (frame.width < 1920 || frame.height <= 0) return null
-        return if (abs(frame.aspect - 2f) < 0.01f) ProjectionMode.MONO_360 else null
+        return when {
+            abs(frame.aspect - 2f) < 0.01f -> ProjectionMode.MONO_360
+            frame.width >= 3200 && abs(frame.aspect - SBS_16_9) / SBS_16_9 < 0.015f ->
+                ProjectionMode.SBS_3D
+            else -> null
+        }
     }
+
+    private const val SBS_16_9 = 32f / 9f
 
     private fun strongTag(number: String) =
         Regex(

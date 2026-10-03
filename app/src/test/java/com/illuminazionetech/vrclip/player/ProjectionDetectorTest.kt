@@ -70,6 +70,15 @@ class ProjectionDetectorTest {
     }
 
     @Test
+    fun sideBySideConversionsByShape() {
+        assertEquals(ProjectionMode.SBS_3D, detect("trailer.mp4", FrameInfo(3840, 1080)))
+        assertEquals(ProjectionMode.SBS_3D, detect("trailer.mp4", FrameInfo(4096, 1152)))
+        // Too small to be a conversion of a real video, or not exactly 32:9.
+        assertEquals(ProjectionMode.FLAT, detect("trailer.mp4", FrameInfo(2560, 720)))
+        assertEquals(ProjectionMode.FLAT, detect("trailer.mp4", FrameInfo(3840, 1600)))
+    }
+
+    @Test
     fun containerMetadataWins() {
         val topBottom =
             FrameInfo(1920, 2160, stereoMode = ProjectionDetector.STEREO_MODE_TOP_BOTTOM)

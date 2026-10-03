@@ -31,6 +31,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CenterFocusStrong
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.ClosedCaption
+import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Forward10
 import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.material.icons.rounded.Replay10
@@ -83,6 +84,7 @@ import com.illuminazionetech.vrclip.player.PlayerViewModel
 import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.displayName
 import com.illuminazionetech.vrclip.player.formatTime
+import com.illuminazionetech.vrclip.player.messageRes
 import com.illuminazionetech.vrclip.player.rememberPlayerHaptics
 import com.illuminazionetech.vrclip.player.speedLabel
 import com.illuminazionetech.vrclip.player.stereo.DepthModel
@@ -124,6 +126,7 @@ internal fun ImmersiveControls(
     var passthroughOn by remember { mutableStateOf(passthrough) }
     val haptics = rememberPlayerHaptics()
 
+    LaunchedEffect(state.error) { if (state.error != null) haptics.reject() }
     LaunchedEffect(state.live3d) {
         when (state.live3d) {
             Live3dState.NeedsModel -> page = ControlsPage.Model
@@ -382,6 +385,37 @@ private fun MainPage(
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.labelLarge,
         )
+    }
+
+    // A video that cannot be opened says why, instead of leaving an empty screen.
+    AnimatedVisibility(visible = state.error != null) {
+        val error = state.error ?: return@AnimatedVisibility
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Icon(
+                Icons.Rounded.ErrorOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+            )
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(error.messageRes()),
+                    style = MaterialTheme.typography.titleSmall,
+                )
+                Text(
+                    text = error.errorCodeName,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            BarButton(
+                icon = Icons.Rounded.Replay,
+                label = stringResource(R.string.retry),
+                onClick = viewModel::retry,
+            )
+        }
     }
 }
 

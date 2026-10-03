@@ -8,6 +8,7 @@ import android.media.MediaFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Surface
 import android.window.OnBackInvokedDispatcher
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,6 +27,7 @@ import com.illuminazionetech.vrclip.player.PlayerViewModel
 import com.illuminazionetech.vrclip.player.ProjectionDetector
 import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.StereoLayout
+import com.illuminazionetech.vrclip.player.SubtitleOverlay
 import com.illuminazionetech.vrclip.ui.common.Haptic
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.SettingsProvider
@@ -44,21 +46,30 @@ import com.meta.spatial.core.SpatialSDKExperimentalAPI
 import com.meta.spatial.core.Vector3
 import com.meta.spatial.runtime.ButtonBits
 import com.meta.spatial.runtime.LayerFilters
+import com.meta.spatial.runtime.PanelShapeLayerBlendType
 import com.meta.spatial.runtime.ReferenceSpace
 import com.meta.spatial.runtime.Scene
+import com.meta.spatial.runtime.SessionState
 import com.meta.spatial.runtime.StereoMode
 import com.meta.spatial.toolkit.AppSystemActivity
 import com.meta.spatial.toolkit.DpPerMeterDisplayOptions
 import com.meta.spatial.toolkit.Equirect180ShapeOptions
 import com.meta.spatial.toolkit.Equirect360ShapeOptions
 import com.meta.spatial.toolkit.Grabbable
+import com.meta.spatial.toolkit.GrabbableType
 import com.meta.spatial.toolkit.MediaPanelRenderOptions
 import com.meta.spatial.toolkit.MediaPanelSettings
+import com.meta.spatial.toolkit.MeshCollision
 import com.meta.spatial.toolkit.Panel
+import com.meta.spatial.toolkit.PanelCreationSystem
 import com.meta.spatial.toolkit.PanelRegistration
+import com.meta.spatial.toolkit.PanelRenderMode
+import com.meta.spatial.toolkit.PanelStyleOptions
 import com.meta.spatial.toolkit.PixelDisplayOptions
 import com.meta.spatial.toolkit.QuadShapeOptions
 import com.meta.spatial.toolkit.Transform
+import com.meta.spatial.toolkit.TransformParent
+import com.meta.spatial.toolkit.UIPanelRenderOptions
 import com.meta.spatial.toolkit.UIPanelSettings
 import com.meta.spatial.toolkit.VideoSurfacePanelRegistration
 import com.meta.spatial.toolkit.Visible
@@ -93,7 +104,14 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     private val controllerHaptics = ControllerHaptics()
 
     private var videoEntity: Entity? = null
+    private var videoPanelId = 0
+    private var nextVideoPanelId = VIDEO_PANEL_ID_BASE
+    private var videoSurface: Surface? = null
+    private var subtitleEntity: Entity? = null
+    private var subtitlePanelId = 0
     private var controlsEntity: Entity? = null
+    private var focused = false
+    private var resumeAfterMenu = false
     private var panelConfig: VideoPanelConfig? = null
     private var placed = false
     private var ticksWaiting = 0
@@ -128,6 +146,12 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                 .collect { config -> if (config != null && placed) rebuildVideoPanel(config) }
         }
         scope.launch {
+            viewModel.state
+                .map { subtitlesShown(it) }
+                .distinctUntilChanged()
+                .collect { shown -> subtitleEntity?.setComponent(Visible(shown)) }
+        }
+        scope.launch {
             viewModel.state.collect { state ->
                 videoFrameRate = state.frame?.frameRate ?: 0f
                 liveConversion =
@@ -145,9 +169,12 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     private fun load(intent: Intent) {
         val id = intent.getIntExtra(EXTRA_VIDEO_ID, -1)
         val path = intent.getStringExtra(EXTRA_VIDEO_PATH)
+        // A video opened from another app arrives as the intent's data, with its read permission.
+        val data = intent.data
         val source =
             when {
                 id >= 0 -> PlayerSource.Library(id)
+                data != null -> PlayerSource.External(data, intent.getStringExtra(EXTRA_TITLE))
                 path != null ->
                     PlayerSource.External(
                         if (path.startsWith("content://") || path.startsWith("file://"))
@@ -170,13 +197,9 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         viewModel.load(source)
     }
 
+    // The video panel is registered per video layout instead (see createVideoPanel).
     override fun registerPanels(): List<PanelRegistration> =
         listOf(
-            VideoSurfacePanelRegistration(
-                R.id.panel_video,
-                surfaceConsumer = { _, surface -> viewModel.attachSurface(surface) },
-                settingsCreator = { panelSettings(panelConfig ?: fallbackConfig()) },
-            ),
             ComposeViewPanelRegistration(
                 R.id.panel_controls,
                 composeViewCreator = { _, context ->
@@ -208,7 +231,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                         display = DpPerMeterDisplayOptions(dpPerMeter = CONTROLS_DP_PER_METER),
                     )
                 },
-            ),
+            )
         )
 
     @OptIn(SpatialSDKExperimentalAPI::class)
@@ -294,9 +317,39 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         }
     }
 
+    /**
+     * The Meta Quest system menu takes the focus away without pausing the activity: playback pauses
+     * while it is open and goes on when it closes, as in Meta's media samples. The session also
+     * passes through VISIBLE on its way to FOCUSED at launch, while the video is still loading;
+     * only a focus that was there and went away counts, or the video would never start.
+     */
+    override fun onSessionStateChanged(state: SessionState) {
+        super.onSessionStateChanged(state)
+        runOnUiThread {
+            when (state) {
+                SessionState.VISIBLE ->
+                    if (focused) {
+                        focused = false
+                        // Wanting to play counts too: buffering is not playing yet.
+                        resumeAfterMenu = viewModel.player.playWhenReady
+                        viewModel.pause()
+                    }
+                SessionState.FOCUSED -> {
+                    focused = true
+                    if (resumeAfterMenu) {
+                        resumeAfterMenu = false
+                        viewModel.play()
+                    }
+                }
+                else -> focused = false
+            }
+        }
+    }
+
     private fun createEntities() {
         val config = panelConfig ?: return
-        videoEntity = Entity.create(listOf(Panel(R.id.panel_video), Transform(Pose())))
+        videoEntity = createVideoPanel(config)
+        subtitleEntity = createSubtitlePanel(config)
         controlsEntity =
             Entity.create(
                 listOf(
@@ -316,19 +369,17 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         val head = scene.getViewerPose().removePitchAndRoll()
         val forward =
             head.forward().let { Vector3(it.x, 0f, it.z) }.normalizedOr(Vector3(0f, 0f, 1f))
-        val facing = head.q
-        val controls: Vector3
-        if (config.mode.isSpherical) {
-            videoEntity?.setComponent(Transform(Pose(head.t, facing)))
-            controls = head.t + forward * 0.9f + Vector3(0f, -0.45f, 0f)
-        } else {
-            val screenHeight = SCREEN_WIDTH / config.eyeAspect.coerceIn(0.4f, 4f)
-            videoEntity?.setComponent(Transform(Pose(head.t + forward * SCREEN_DISTANCE, facing)))
-            controls =
+        placeVideo(config, head, forward)
+        placeSubtitles(config, head, forward)
+        val controls =
+            if (config.mode.isSpherical) {
+                head.t + forward * 0.9f + Vector3(0f, -0.45f, 0f)
+            } else {
+                val (_, screenHeight) = screenSize(config.eyeAspect)
                 head.t +
                     forward * (SCREEN_DISTANCE - 1.4f) +
                     Vector3(0f, -(screenHeight / 2f).coerceAtMost(0.6f) - 0.2f, 0f)
-        }
+            }
         // Turned toward the eyes, so the bar below eye level tilts up to face the viewer.
         val towardPanel = (controls - head.t).normalizedOr(forward)
         controlsEntity?.setComponent(
@@ -336,17 +387,170 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         )
     }
 
+    private fun placeVideo(
+        config: VideoPanelConfig,
+        head: Pose = scene.getViewerPose().removePitchAndRoll(),
+        forward: Vector3 =
+            head.forward().let { Vector3(it.x, 0f, it.z) }.normalizedOr(Vector3(0f, 0f, 1f)),
+    ) {
+        val pose =
+            if (config.mode.isSpherical) Pose(head.t, head.q)
+            else Pose(head.t + forward * SCREEN_DISTANCE, head.q)
+        videoEntity?.setComponent(Transform(pose))
+    }
+
+    /** On a flat screen subtitles ride on the screen; inside a sphere they float in front. */
+    private fun placeSubtitles(
+        config: VideoPanelConfig,
+        head: Pose = scene.getViewerPose().removePitchAndRoll(),
+        forward: Vector3 =
+            head.forward().let { Vector3(it.x, 0f, it.z) }.normalizedOr(Vector3(0f, 0f, 1f)),
+    ) {
+        if (!config.mode.isSpherical) return
+        val at = head.t + forward * SPHERE_SUBTITLE_DISTANCE + Vector3(0f, -0.25f, 0f)
+        subtitleEntity?.setComponent(Transform(Pose(at, head.q)))
+    }
+
+    /**
+     * A new layout (another video, live 3D on or off, another projection) needs a new video panel.
+     * The screen stays where the viewer put it, unless it turns into a sphere or back.
+     */
     private fun rebuildVideoPanel(config: VideoPanelConfig) {
         if (config == panelConfig && videoEntity != null) return
-        val old = videoEntity
-        old?.let { entity ->
-            // The old surface goes away with its panel; the new panel hands over a new one.
-            entity.destroy()
-        }
+        val previous = panelConfig
+        val pose = videoEntity?.tryGetComponent<Transform>()?.transform
+        destroyVideoPanel()
         panelConfig = config
-        videoEntity = Entity.create(listOf(Panel(R.id.panel_video), Transform(Pose())))
-        placeEntities()
+        videoEntity = createVideoPanel(config)
+        if (
+            pose != null && previous != null && previous.mode.isSpherical == config.mode.isSpherical
+        ) {
+            videoEntity?.setComponent(Transform(pose))
+        } else {
+            placeVideo(config)
+        }
+        subtitleEntity = createSubtitlePanel(config)
+        placeSubtitles(config)
         applyPassthrough(config)
+    }
+
+    /**
+     * Registers a video panel for [config] under a new id and creates its entity, as Meta's media
+     * samples do for each video: the panel's settings are fixed when it is created.
+     */
+    private fun createVideoPanel(config: VideoPanelConfig): Entity {
+        val id = nextVideoPanelId++
+        registerPanel(
+            VideoSurfacePanelRegistration(
+                id,
+                surfaceConsumer = { _, surface ->
+                    // Until the first frame arrives the layer shows black, not stale memory.
+                    SurfacePainter.paintBlack(surface)
+                    videoSurface = surface
+                    viewModel.attachSurface(surface)
+                },
+                settingsCreator = { panelSettings(config) },
+            )
+        )
+        videoPanelId = id
+        return Entity.create(
+            listOfNotNull(
+                Panel(id),
+                Transform(Pose()),
+                // A flat screen can be grabbed and turned to face the viewer; a sphere surrounds
+                // the viewer and stays centred.
+                if (config.mode.isSpherical) null else Grabbable(true, GrabbableType.PIVOT_Y),
+            )
+        )
+    }
+
+    /**
+     * Lets go of the video surface before the panel that owns it goes away (rendering into a
+     * destroyed surface fails the decoder or the 2D to 3D effect), then forgets the registration.
+     */
+    private fun destroyVideoPanel() {
+        subtitleEntity?.destroy()
+        subtitleEntity = null
+        unregisterPanel(subtitlePanelId)
+        subtitlePanelId = 0
+        videoSurface?.let(viewModel::detachSurface)
+        videoSurface = null
+        videoEntity?.destroy()
+        videoEntity = null
+        unregisterPanel(videoPanelId)
+        videoPanelId = 0
+    }
+
+    /** Forgets a panel registered at run time, as Meta's media samples do. */
+    private fun unregisterPanel(id: Int) {
+        if (id == 0) return
+        panelRegistrations.remove(id)
+        systemManager.tryFindSystem<PanelCreationSystem>()?.panelCreator?.remove(id)
+    }
+
+    private fun subtitlesShown(state: PlayerUiState) =
+        !state.subtitlesOff && state.textTracks.isNotEmpty()
+
+    /**
+     * A transparent panel the size of the screen, just in front of it and attached to it, where the
+     * subtitles of the selected track are drawn (the video layer itself has none). Inside a 360 or
+     * 180 sphere it is a smaller panel in front of the viewer instead. It never takes the pointer.
+     */
+    private fun createSubtitlePanel(config: VideoPanelConfig): Entity {
+        val id = nextVideoPanelId++
+        val (width, height) =
+            if (config.mode.isSpherical) SPHERE_SUBTITLE_WIDTH to SPHERE_SUBTITLE_WIDTH * 9f / 16f
+            else screenSize(config.eyeAspect)
+        registerPanel(
+            ComposeViewPanelRegistration(
+                id,
+                composeViewCreator = { _, context ->
+                    ComposeView(context).apply {
+                        setContent { SubtitleOverlay(player = viewModel.player) }
+                    }
+                },
+                settingsCreator = {
+                    UIPanelSettings(
+                        shape = QuadShapeOptions(width = width, height = height),
+                        display = DpPerMeterDisplayOptions(dpPerMeter = SUBTITLE_DP_PER_METER),
+                        // Blended, not masked (the default): smooth text edges and the caption
+                        // background's own transparency, over a transparent window.
+                        rendering =
+                            UIPanelRenderOptions(
+                                PanelRenderMode.Layer(
+                                    layerBlendType = PanelShapeLayerBlendType.ALPHA_BLEND
+                                )
+                            ),
+                        style = PanelStyleOptions(R.style.Theme_VRClip_PanelTransparent),
+                    )
+                },
+            )
+        )
+        subtitlePanelId = id
+        val components =
+            mutableListOf(
+                Panel(id, MeshCollision.NoCollision),
+                Visible(subtitlesShown(viewModel.state.value)),
+            )
+        val screen = videoEntity
+        if (!config.mode.isSpherical && screen != null) {
+            // A centimetre toward the viewer (local -Z), so it never fights the screen for depth.
+            components += Transform(Pose(Vector3(0f, 0f, -0.01f)))
+            components += TransformParent(screen)
+        } else {
+            components += Transform(Pose())
+        }
+        return Entity.create(components)
+    }
+
+    /**
+     * Size of the flat screen in meters: 3.2 m wide for 16:9 at most, and never taller than a 16:9
+     * screen, so portrait and square videos stay on the same wall instead of towering over it.
+     */
+    private fun screenSize(eyeAspect: Float): Pair<Float, Float> {
+        val aspect = eyeAspect.coerceIn(0.3f, 4f)
+        val width = minOf(SCREEN_WIDTH, SCREEN_MAX_HEIGHT * aspect)
+        return width to width / aspect
     }
 
     private fun configFor(state: PlayerUiState): VideoPanelConfig? {
@@ -411,10 +615,9 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                 config.mode.is360 -> Equirect360ShapeOptions(radius = SPHERE_RADIUS)
                 config.mode.is180 -> Equirect180ShapeOptions(radius = SPHERE_RADIUS)
                 else ->
-                    QuadShapeOptions(
-                        width = SCREEN_WIDTH,
-                        height = SCREEN_WIDTH / config.eyeAspect.coerceIn(0.4f, 4f),
-                    )
+                    screenSize(config.eyeAspect).let { (width, height) ->
+                        QuadShapeOptions(width = width, height = height)
+                    }
             }
         val stereo =
             when (config.mode.stereoLayout) {
@@ -498,6 +701,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     }
 
     override fun onPause() {
+        // Leaving the app pauses for good, even if the system menu was open before.
+        resumeAfterMenu = false
         viewModel.pause()
         viewModel.savePosition()
         super.onPause()
@@ -505,6 +710,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
 
     override fun onDestroy() {
         scope.cancel()
+        videoSurface?.let(viewModel::detachSurface)
+        videoSurface = null
         store.clear()
         super.onDestroy()
     }
@@ -522,7 +729,15 @@ class ImmersivePlayerActivity : AppSystemActivity() {
 
         /** A 3.2 m wide screen 3 m away covers about 56°, like a large cinema seat. */
         private const val SCREEN_WIDTH = 3.2f
+        private const val SCREEN_MAX_HEIGHT = 1.8f
         private const val SCREEN_DISTANCE = 3f
+
+        private const val SPHERE_SUBTITLE_WIDTH = 1.6f
+        private const val SPHERE_SUBTITLE_DISTANCE = 1.6f
+        private const val SUBTITLE_DP_PER_METER = 500f
+
+        /** Ids for the video panels, far from the R.id range. */
+        private const val VIDEO_PANEL_ID_BASE = 0x5649_0001
         private const val SPHERE_RADIUS = 50f
         private const val CONTROLS_WIDTH = 1.2f
         private const val CONTROLS_HEIGHT = 0.3f

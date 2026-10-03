@@ -168,7 +168,11 @@ private class StereoShaderProgram(
                 StereoConversionEffect.Output.LiveSideBySide ->
                     StereoShaders.sideBySide(LIVE_STEPS, LIVE_REFINE)
                 StereoConversionEffect.Output.Conversion ->
-                    StereoShaders.sideBySide(CONVERSION_STEPS, CONVERSION_REFINE)
+                    StereoShaders.sideBySide(
+                        CONVERSION_STEPS,
+                        CONVERSION_REFINE,
+                        texelsPerStep = 1f,
+                    )
             }
         )
 
@@ -205,8 +209,13 @@ private class StereoShaderProgram(
         else null
     private val busy = AtomicBoolean(false)
     private val failed = AtomicBoolean(false)
+    private val released = AtomicBoolean(false)
     private val resetRequested = AtomicBoolean(false)
     private val pendingDepth = AtomicReference<ByteArray?>(null)
+
+    /** Bumped by every seek: depth of a frame from before it is dropped instead of shown. */
+    private val generation = AtomicLong(0L)
+    private var readGeneration = 0L
     private val nextInferenceAt = AtomicLong(0L)
     private val inferenceCount = AtomicLong(0L)
     private val inferenceMillisTotal = AtomicLong(0L)
@@ -344,11 +353,14 @@ private class StereoShaderProgram(
                 !reader.pending &&
                 SystemClock.elapsedRealtime() >= nextInferenceAt.get()
         ) {
+            readGeneration = generation.get()
             reader.start()
         }
         reader.poll()?.let { rgba ->
+            val frameGeneration = readGeneration
+            if (frameGeneration != generation.get()) return@let
             busy.set(true)
-            worker.execute { infer(rgba) }
+            worker.execute { infer(rgba, frameGeneration) }
         }
         pendingDepth.getAndSet(null)?.let {
             uploadDepth(it)
@@ -356,30 +368,35 @@ private class StereoShaderProgram(
         }
     }
 
-    private fun infer(rgba: ByteArray) {
+    private fun infer(rgba: ByteArray, frameGeneration: Long) {
         try {
             val model =
                 estimator
                     ?: DepthEstimator.create(context, depthModel, manager.fileOf(depthModel)).also {
                         estimator = it
-                        LiveStereoStatus.update(
-                            LiveStereoStatus.Status.Running(it.accelerator, depthModel)
-                        )
+                        // Turned off while the model was loading: the player already shows Idle.
+                        if (!released.get()) {
+                            LiveStereoStatus.update(
+                                LiveStereoStatus.Status.Running(it.accelerator, depthModel)
+                            )
+                        }
                     }
             if (resetRequested.getAndSet(false)) refiner.reset()
             val start = SystemClock.elapsedRealtime()
             val raw = model.estimate(rgba, bottomUp = true)
             val took = SystemClock.elapsedRealtime() - start
-            val depth = ByteArray(size * size)
-            refiner.process(raw, depth)
-            pendingDepth.set(depth)
+            if (frameGeneration == generation.get()) {
+                val depth = ByteArray(size * size)
+                refiner.process(raw, depth)
+                pendingDepth.set(depth)
+            }
             inferenceCount.incrementAndGet()
             inferenceMillisTotal.addAndGet(took)
             nextInferenceAt.set(SystemClock.elapsedRealtime() + (took * GPU_REST).toLong())
         } catch (t: Throwable) {
             Log.e(TAG, "Live depth estimation failed", t)
             failed.set(true)
-            LiveStereoStatus.update(LiveStereoStatus.Status.Failed)
+            if (!released.get()) LiveStereoStatus.update(LiveStereoStatus.Status.Failed)
         } finally {
             busy.set(false)
         }
@@ -445,6 +462,7 @@ private class StereoShaderProgram(
     override fun flush() {
         // A seek: the next frame has nothing to do with the last one, so the depth fades in again.
         if (live) {
+            generation.incrementAndGet()
             resetRequested.set(true)
             pendingDepth.set(null)
             hasDepth = false
@@ -456,6 +474,7 @@ private class StereoShaderProgram(
     }
 
     override fun release() {
+        released.set(true)
         super.release()
         try {
             reader.release()
@@ -496,7 +515,7 @@ private class StereoShaderProgram(
         private const val TAG = "StereoConversion"
         private const val LIVE_STEPS = 20
         private const val LIVE_REFINE = 3
-        private const val CONVERSION_STEPS = 40
+        private const val CONVERSION_STEPS = 48
         private const val CONVERSION_REFINE = 5
         private const val RAMP_STEP = 1f / 24f
 

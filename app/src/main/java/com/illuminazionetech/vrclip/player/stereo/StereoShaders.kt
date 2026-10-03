@@ -96,13 +96,15 @@ internal object StereoShaders {
      * `depthAt(vec2)` and the uniforms `uHalfRange` (half the parallax range, as a fraction of the
      * width), `uConvergence`, `uAspect` (width / height) and `uTexel` (1 / depth size).
      *
-     * The search walks from the nearest possible source point to the farthest in [steps] samples:
-     * the first one past the crossing is the visible surface (nearer points hide farther ones), and
-     * [refine] halvings place it precisely. Where the hit sits on a depth step the pixel was hidden
-     * in the original view (a disocclusion), so the color comes from the far side of the step: the
-     * background stretches into the gap instead of the object's edge.
+     * The search walks from the nearest possible source point to the farthest, one sample every
+     * [texelsPerStep] depth texels of shift (between 4 and [steps] samples, so a small camera move
+     * costs a few lookups): the first sample past the crossing is the visible surface (nearer
+     * points hide farther ones), and [refine] halvings place it precisely. Where the hit sits on a
+     * depth step the pixel was hidden in the original view (a disocclusion), so the color comes
+     * from the far side of the step: the background stretches into the gap instead of the object's
+     * edge.
      */
-    fun synthesis(steps: Int, refine: Int) =
+    fun synthesis(steps: Int, refine: Int, texelsPerStep: Float = 1.5f) =
         """
         uniform float uHalfRange;
         uniform float uConvergence;
@@ -119,11 +121,14 @@ internal object StereoShaders {
             if (dot(k, k) < 1e-12) return vec4(colorAt(uv), 1.0);
             float tNear = 1.0 - uConvergence;
             float tFar = -uConvergence;
+            // The whole search spans a shift of |k| (t covers one unit), here in depth texels.
+            float count = clamp(ceil(length(k / uTexel) / $texelsPerStep), 4.0, float($steps));
             float lo = tFar;
             float hi = tNear;
             float previous = tNear;
             for (int i = 1; i <= $steps; i++) {
-                float t = mix(tNear, tFar, float(i) / float($steps));
+                if (float(i) > count) break;
+                float t = mix(tNear, tFar, float(i) / count);
                 if (hitFunction(uv, k, t) <= 0.0) {
                     lo = t;
                     hi = previous;
@@ -148,7 +153,7 @@ internal object StereoShaders {
         """
 
     /** Side-by-side output: left eye in the left half, right eye in the right half. */
-    fun sideBySide(steps: Int, refine: Int) =
+    fun sideBySide(steps: Int, refine: Int, texelsPerStep: Float = 1.5f) =
         """
         precision highp float;
         uniform sampler2D uTexSampler;
@@ -163,7 +168,7 @@ internal object StereoShaders {
             return texture2D(uDepth, clamp(uv, 0.0, 1.0)).r;
         }
         """ +
-            synthesis(steps, refine) +
+            synthesis(steps, refine, texelsPerStep) +
             """
         void main() {
             vec2 uv = vTexSamplingCoord;

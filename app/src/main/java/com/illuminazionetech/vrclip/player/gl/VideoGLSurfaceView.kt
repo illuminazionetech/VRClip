@@ -2,6 +2,7 @@ package com.illuminazionetech.vrclip.player.gl
 
 import android.content.Context
 import android.graphics.SurfaceTexture
+import android.hardware.display.DisplayManager
 import android.opengl.GLSurfaceView
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,22 @@ import com.illuminazionetech.vrclip.player.ProjectionMode
 class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
     private val mainHandler = Handler(Looper.getMainLooper())
+    private val displayManager = context.getSystemService(DisplayManager::class.java)
+
+    /**
+     * Turning the device from one landscape side to the other does not resize the view, so only the
+     * display itself reports the new rotation the sensor math needs.
+     */
+    private val displayListener =
+        object : DisplayManager.DisplayListener {
+            override fun onDisplayChanged(displayId: Int) {
+                if (displayId == display?.displayId) updateDisplayRotation()
+            }
+
+            override fun onDisplayAdded(displayId: Int) = Unit
+
+            override fun onDisplayRemoved(displayId: Int) = Unit
+        }
     private val orientation = OrientationTracker(context) { requestRender() }
     private val parallax = ParallaxTracker(context) { requestRender() }
     private val renderer: VideoGLRenderer
@@ -121,6 +138,7 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        displayManager?.registerDisplayListener(displayListener, mainHandler)
         updateDisplayRotation()
     }
 
@@ -138,6 +156,7 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
     }
 
     override fun onDetachedFromWindow() {
+        displayManager?.unregisterDisplayListener(displayListener)
         orientation.stop()
         parallax.stop()
         queueEvent { renderer.releaseGl() }

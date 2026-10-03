@@ -8,13 +8,16 @@ import android.hardware.SensorManager
 import android.view.Surface
 import kotlin.math.abs
 import kotlin.math.exp
+import kotlin.math.max
+import kotlin.math.sign
 
 /**
  * Turns small tilts of the phone into a viewpoint offset for motion parallax: tilt the right edge
  * away and the picture is seen from a little to the left, so near objects slide against the
  * background as through a window. The gyroscope's rotation is integrated and slowly let go, so the
  * view settles back to the center while the phone is held still and holding it at an angle never
- * leaves the scene skewed.
+ * leaves the scene skewed. A short low-pass removes the tremor of a hand-held phone, so the picture
+ * does not shimmer, and a small dead zone around the center keeps a resting phone perfectly still.
  */
 internal class ParallaxTracker(context: Context, private val onChange: () -> Unit) :
     SensorEventListener {
@@ -30,6 +33,8 @@ internal class ParallaxTracker(context: Context, private val onChange: () -> Uni
     private val lock = Any()
     private var tiltX = 0f
     private var tiltY = 0f
+    private var smoothX = 0f
+    private var smoothY = 0f
     private var offsetX = 0f
     private var offsetY = 0f
     private var lastTimestamp = 0L
@@ -47,6 +52,8 @@ internal class ParallaxTracker(context: Context, private val onChange: () -> Uni
         synchronized(lock) {
             tiltX = 0f
             tiltY = 0f
+            smoothX = 0f
+            smoothY = 0f
             offsetX = 0f
             offsetY = 0f
             lastTimestamp = 0L
@@ -82,10 +89,13 @@ internal class ParallaxTracker(context: Context, private val onChange: () -> Uni
                     val keep = exp(-dt / SETTLE_SECONDS)
                     tiltX = ((tiltX + screenX * dt) * keep).coerceIn(-LIMIT, LIMIT)
                     tiltY = ((tiltY + screenY * dt) * keep).coerceIn(-LIMIT, LIMIT)
+                    val follow = 1f - exp(-dt / SMOOTH_SECONDS)
+                    smoothX += (tiltX - smoothX) * follow
+                    smoothY += (tiltY - smoothY) * follow
                 }
                 lastTimestamp = event.timestamp
-                val x = deadZone((-tiltY / FULL_TILT).coerceIn(-MAX_OFFSET, MAX_OFFSET))
-                val y = deadZone((tiltX / FULL_TILT).coerceIn(-MAX_OFFSET, MAX_OFFSET))
+                val x = deadZone((-smoothY / FULL_TILT).coerceIn(-MAX_OFFSET, MAX_OFFSET))
+                val y = deadZone((smoothX / FULL_TILT).coerceIn(-MAX_OFFSET, MAX_OFFSET))
                 // Sensor noise while the phone rests should not redraw the screen 50 times a
                 // second.
                 val moved = abs(x - offsetX) > REDRAW_STEP || abs(y - offsetY) > REDRAW_STEP
@@ -98,8 +108,11 @@ internal class ParallaxTracker(context: Context, private val onChange: () -> Uni
         if (changed) onChange()
     }
 
-    /** Below a small offset the view snaps to the center, where it is drawn without synthesis. */
-    private fun deadZone(value: Float) = if (abs(value) < DEAD_ZONE) 0f else value
+    /**
+     * Below a small offset the view stays at the center, where it is drawn without synthesis;
+     * beyond it the offset grows from zero, without a jump.
+     */
+    private fun deadZone(value: Float) = sign(value) * max(0f, abs(value) - DEAD_ZONE)
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
 
@@ -109,6 +122,9 @@ internal class ParallaxTracker(context: Context, private val onChange: () -> Uni
         const val LIMIT = FULL_TILT * 1.5f
         const val MAX_OFFSET = 1.25f
         const val SETTLE_SECONDS = 1.4f
+
+        /** Hand tremor (8 to 12 Hz) is filtered out; deliberate tilts pass in a few frames. */
+        const val SMOOTH_SECONDS = 0.05f
         const val DEAD_ZONE = 0.03f
         const val REDRAW_STEP = 0.004f
     }

@@ -121,21 +121,42 @@ data class PlayerUiState(
     val error: PlaybackException? = null,
     /** Size the immersive view's surface buffer must have while video effects draw into it. */
     val outputBufferSize: Pair<Int, Int>? = null,
+    /**
+     * Live 2D to 3D draws on a flat screen (phone, tablet, a panel on Quest): the effect hands over
+     * the picture with its depth and the screen's renderer draws the views. False for the immersive
+     * Quest player, which shows both views of a side-by-side frame on its stereo layer.
+     */
+    val liveOnScreen: Boolean = true,
 ) {
+    private val liveActive: Boolean
+        get() = live3d == Live3dState.On
+
+    /**
+     * Live conversion on a screen: each frame comes with its depth map below it. Already true while
+     * the effect starts, so the renderer is in place before its first frame arrives.
+     */
+    val depthPacked: Boolean
+        get() = liveOnScreen && (live3d == Live3dState.On || live3d == Live3dState.Starting)
+
+    /** Stereo, spherical or depth-packed frames need the GL renderer instead of a plain view. */
+    val usesGlRenderer: Boolean
+        get() = renderProjection.requiresImmersiveRendering || depthPacked
+
     /** The projection of the file itself, before any live 2D to 3D conversion. */
     val sourceProjection: ProjectionMode
         get() = projectionOverride ?: detection.mode
 
     /**
-     * What the renderer gets: live conversion turns a flat picture into a full side-by-side one.
+     * What the renderer gets: for the immersive player live conversion turns a flat picture into a
+     * full side-by-side one; on a screen the picture stays flat and carries its depth.
      */
     val renderProjection: ProjectionMode
-        get() = if (live3d == Live3dState.On) ProjectionMode.SBS_3D else sourceProjection
+        get() = if (liveActive && !liveOnScreen) ProjectionMode.SBS_3D else sourceProjection
 
     val renderFrameAspect: Float
         get() {
             val aspect = frame?.aspect?.takeIf { it > 0f } ?: (16f / 9f)
-            return if (live3d == Live3dState.On) aspect * 2f else aspect
+            return if (liveActive && !liveOnScreen) aspect * 2f else aspect
         }
 
     /** Live conversion only makes sense for flat, non-stereo video. */
@@ -467,15 +488,26 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         mutableState.update { it.copy(stereoOutput = output) }
     }
 
+    /**
+     * Where live 2D to 3D goes: the immersive Quest player calls this with true before loading, so
+     * the effect draws side-by-side views for its stereo layer instead of a picture with depth.
+     */
+    fun setLiveTarget(headset: Boolean) {
+        mutableState.update { it.copy(liveOnScreen = !headset) }
+    }
+
     private fun applyDefaultOutput() {
         val current = mutableState.value
-        val stereo = current.renderProjection.isStereo
+        val live = current.live3d == Live3dState.On || current.live3d == Live3dState.Starting
         val output =
             when {
-                !stereo && !current.renderProjection.isSpherical -> StereoOutputMode.SingleEye
+                // Without a viewer or glasses, motion parallax is the 3D a flat screen can show.
+                live && current.liveOnScreen ->
+                    if (PLAYER_CARDBOARD_DEFAULT.getBoolean()) StereoOutputMode.SplitScreen
+                    else StereoOutputMode.Parallax
+                !current.renderProjection.isStereo && !current.renderProjection.isSpherical ->
+                    StereoOutputMode.SingleEye
                 PLAYER_CARDBOARD_DEFAULT.getBoolean() -> StereoOutputMode.SplitScreen
-                current.live3d == Live3dState.On || current.live3d == Live3dState.Starting ->
-                    StereoOutputMode.Anaglyph
                 else -> StereoOutputMode.SingleEye
             }
         mutableState.update { it.copy(stereoOutput = output) }
@@ -513,15 +545,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         val position = player.currentPosition
         val playWhenReady = player.playWhenReady
         val source = mutableState.value.frame
+        val output =
+            if (mutableState.value.liveOnScreen) StereoConversionEffect.Output.LiveColorAndDepth
+            else StereoConversionEffect.Output.LiveSideBySide
         mutableState.update {
             it.copy(
                 outputBufferSize =
                     if (enabled && source != null)
-                        StereoConversionEffect.outputSize(
-                            source.width,
-                            source.height,
-                            realtime = true,
-                        )
+                        StereoConversionEffect.outputSize(source.width, source.height, output)
                     else null
             )
         }
@@ -533,7 +564,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                     StereoConversionEffect(
                         model = DepthModelManager.get(getApplication()),
                         settings = StereoSettings.load(),
-                        realtime = true,
+                        output = output,
                     )
                 )
             else emptyList()
@@ -648,15 +679,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                         ?: 1f,
                 stereoMode = format?.stereoMode ?: Format.NO_VALUE,
                 projectionData = format?.projectionData,
+                frameRate = format?.frameRate?.takeIf { it > 0f } ?: 0f,
             )
         val current = mutableState.value
         if (current.frame == frame) return
         val path = current.detectionName
-        val wasImmersive = current.renderProjection.requiresImmersiveRendering
+        val wasImmersive = current.usesGlRenderer
         mutableState.update {
             it.copy(frame = frame, detection = ProjectionDetector.detect(path, frame))
         }
-        if (wasImmersive != mutableState.value.renderProjection.requiresImmersiveRendering) {
+        if (wasImmersive != mutableState.value.usesGlRenderer) {
             applyDefaultOutput()
         }
     }

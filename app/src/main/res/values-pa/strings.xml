@@ -85,7 +85,6 @@
     </plurals>
     <string name="additional_settings">ਵਾਧੂ ਸੈਟਿੰਗਾਂ</string>
     <string name="download_directory_desc">ਚੁਣੋ ਕਿ ਵੀਡੀਓ ਅਤੇ ਆਡੀਓ ਫਾਈਲਾਂ ਕਿੱਥੇ ਸਟੋਰ ਕਰਨੀਆਂ ਹਨ</string>
-    <string name="translate_desc">ਹੋਸਟਡ ਵੈਬਲੇਟ \'ਤੇ ਇਸ ਐਪ ਦਾ ਅਨੁਵਾਦ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰੋ</string>
     <string name="embed_subtitles">ਉਪਸਿਰਲੇਖ ਸ਼ਾਮਲ ਕਰੋ</string>
     <string name="new_template">ਨਵਾਂ ਟੈਮਪਲੇਟ</string>
     <string name="template_label">ਲੇਬਲ</string>

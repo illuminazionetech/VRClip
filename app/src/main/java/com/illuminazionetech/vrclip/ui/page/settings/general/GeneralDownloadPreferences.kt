@@ -2,18 +2,14 @@ package com.illuminazionetech.vrclip.ui.page.settings.general
 
 import android.Manifest
 import android.os.Build
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.PlaylistAddCheck
 import androidx.compose.material.icons.rounded.Archive
@@ -41,12 +37,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,7 +49,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -437,43 +429,6 @@ fun GeneralDownloadPreferences(onNavigateBack: () -> Unit, navigateToTemplate: (
                 showNotificationDialog = false
             },
         )
-    }
-}
-
-@Composable
-private fun DialogSingleChoiceItem(
-    modifier: Modifier = Modifier,
-    text: String,
-    selected: Boolean,
-    label: String,
-    labelContainerColor: Color = MaterialTheme.colorScheme.primary,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .selectable(selected = selected, enabled = true, onClick = onClick)
-                .padding(horizontal = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-    ) {
-        RadioButton(
-            modifier = Modifier.clearAndSetSemantics {},
-            selected = selected,
-            onClick = onClick,
-        )
-
-        Text(text = text, style = MaterialTheme.typography.bodyLarge)
-        Spacer(modifier = Modifier.weight(1f))
-        Surface(modifier.padding(end = 12.dp), shape = CircleShape, color = labelContainerColor) {
-            Text(
-                modifier = Modifier.padding(4.dp),
-                text = label,
-                color = MaterialTheme.colorScheme.contentColorFor(labelContainerColor),
-                style = MaterialTheme.typography.labelSmall,
-            )
-        }
     }
 }
 

@@ -114,7 +114,6 @@
     <string name="battery_configuration_desc">ពុំអើពើបង្កើនប្រសិទ្ធភាពថ្ម សម្រាប់កម្មវិធីនេះដើម្បីដោនឡូដនៅផ្ទៃខាងក្រោយ</string>
     <string name="service_title">VRClip គឺកំពុងតែដោនឡូដ…</string>
     <string name="translate">បកប្រែ</string>
-    <string name="translate_desc">ជួយបកប្រែកម្មវិធីនេះលើ Hosted Weblate</string>
     <string name="embed_subtitles">បង្កប់ចំណងជើងរង</string>
     <string name="status_downloading">កំពុងដោនឡូដ</string>
     <string name="status_canceled">បានបោះបង់</string>

@@ -1,1 +1,1 @@
-Video/audio downloader with an immersive 3D/360 player, for Android and Quest
+Video downloader with a 3D and 360 player and 2D to 3D, for Android and Quest

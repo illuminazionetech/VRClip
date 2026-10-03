@@ -40,6 +40,9 @@ player is an immersive activity. Present in `app/src/main/AndroidManifest.xml`:
       `uses-feature` entries
 - [x] `com.oculus.permission.HAND_TRACKING`, `com.oculus.permission.RENDER_MODEL`,
       `com.oculus.permission.USE_SCENE`, `android.permission.MODIFY_AUDIO_SETTINGS`
+- [x] `android.permission.VIBRATE`, for touch feedback on phones. Headsets have no vibration
+      motor: in the immersive player the Touch controllers vibrate through the Spatial SDK, which
+      needs no permission.
 
 Still to confirm before submission (needs a headset and the Meta developer dashboard, it cannot
 be verified from source):
@@ -65,17 +68,16 @@ Not yet produced, placeholders to fill before submission:
 
 Published at [illuminazionetech.github.io/VRClip/privacy.html](https://illuminazionetech.github.io/VRClip/privacy.html)
 in English and Italian (source: `docs/privacy.html`). It lists everything the app connects to:
-the sites of the links the user provides, GitHub for app and yt-dlp updates, and Qualcomm AI
-Hub's public storage once, to download the depth model for 2D to 3D (or, if that fails, the
-identical copy in VRClip's GitHub releases). No analytics, advertising
+the sites of the links the user provides, GitHub for app and yt-dlp updates, and GitHub once
+more to download the depth models for 2D to 3D from VRClip's releases. No analytics, advertising
 or tracking libraries are included, and there are no accounts.
 
 ## Data safety declaration (draft)
 
 - Data collected: **None**.
 - Data shared with third parties: **None**. The app talks directly to the site of a
-  user-provided URL, to GitHub for updates and to Qualcomm AI Hub's storage for the depth
-  model; VRClip has no servers of its own, so none of this traffic passes through one.
+  user-provided URL and to GitHub for updates and the depth models; VRClip has no servers of its
+  own, so none of this traffic passes through one.
 - Data deletion: uninstalling the app removes all local data; there is no
   server-side account to delete.
 

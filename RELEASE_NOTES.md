@@ -1,5 +1,55 @@
 # Release notes
 
+## 1.4.0 - Smooth, accurate 2D to 3D, 3D without glasses and a working Quest player
+
+### Meta Quest
+- The immersive player no longer closes as soon as it opens. In release builds the code
+  shrinker merged two of the Spatial SDK's internal systems into one class, which the SDK then
+  refused to register twice.
+- The headset refresh rate follows the video: 72 Hz for 24 fps films, 90 Hz for 30 fps and
+  120 Hz for 60 fps, so every frame stays on screen for the same time. Colors are shown as Rec. 709, the space video
+  is made in, instead of oversaturated.
+- The thumbsticks and hand gestures no longer move you away from the screen or off the center
+  of a 360 video. They control playback instead: A or X plays and pauses, a thumbstick pushed
+  left or right jumps 10 seconds, B or Y brings the screen back in front of you.
+- The controllers vibrate when you press a button on the control bar, with a light tick when
+  the pointer enters a control. While live 2D to 3D runs the headset keeps the GPU at its
+  sustained high level.
+
+### 2D to 3D
+- New depth models built from the official Depth Anything V2 Small weights to run entirely on
+  the phone's GPU: a 364 px model for live 3D and a 518 px one for conversions. On fast devices
+  live 3D switches to the larger model by itself. The models are downloaded once from VRClip's
+  GitHub releases (about 100 MB together) and checked against fixed SHA-256 values.
+- Before trusting the GPU, VRClip compares a test inference with a reference result and falls
+  back to a safer precision, or to the CPU, on drivers that compute the model wrongly.
+- Live 3D asks much less of the device: frames are read back without making the video wait,
+  the depth model leaves the GPU time for the video, the views are drawn once at the screen's
+  resolution, and the view search takes only the steps the current depth range needs.
+- Steadier depth: small flickers are smoothed while real motion passes at once, a cut to a new
+  shot starts fresh, and edges follow the outlines of the current frame instead of trailing
+  behind. Gaps behind near objects are filled from the background instead of smearing the
+  object's edge, and the side-by-side views have a floating window at their borders.
+- New default on phones: 3D without glasses. Tilt the phone and near objects move against the
+  background, as through a window. Viewer, anaglyph and single-eye modes are still in the
+  output menu.
+
+### Haptics
+- Firmer touch feedback, with the same feel on every screen, built from the phone's vibration
+  primitives instead of the faint system defaults. Turning touch vibration off in the system
+  settings still turns it off.
+- Feedback added where it was missing: settings choices and sliders, dialog confirmations, the
+  resume and error actions in the player, the 3D model download and conversion.
+
+### Fixes and cleanup
+- "Translate" opens the translation guide on GitHub instead of a page that did not exist.
+- The store listing no longer calls the app "Seal" in six languages; the credits list Seal,
+  Depth Anything V2, LiteRT, Media3 and the Meta Spatial SDK.
+- Turning the phone from one landscape side to the other no longer reverses the parallax and
+  360° motion.
+- In the player settings the depth values sit next to their sliders, and deleting the 3D model
+  asks for confirmation first.
+
 ## 1.3.0 - Reliable 3D model download, expressive player and a new website
 
 ### 2D to 3D

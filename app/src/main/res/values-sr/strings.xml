@@ -15,7 +15,6 @@
     <string name="fetching_playlist_info">Преузимање информација о плејлисти…</string>
     <string name="subdirectory_desc">Сачувајте фајлове у фолдере који се називају као одговарајућа поља</string>
     <string name="permission_issue_desc">Фолдери изван Download/ и Documents/ нису подржани</string>
-    <string name="translate_desc">Помозите да преведете ову апликацију на Hosted Weblate</string>
     <string name="template_label">Ознака</string>
     <string name="aria2_desc">Користите aria2c као спољни програм за преузимање</string>
     <string name="clear_temp_files_info">Привремени фајлови се могу користити за наставак отказаних преузимања. Желите ли заиста да избришете све ове фајлове\?

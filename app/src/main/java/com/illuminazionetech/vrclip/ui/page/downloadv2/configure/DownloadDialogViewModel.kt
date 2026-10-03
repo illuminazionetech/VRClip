@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val TAG = "DownloadDialogViewModel"
-
 class DownloadDialogViewModel(private val downloader: DownloaderV2) : ViewModel() {
 
     sealed interface SelectionState {

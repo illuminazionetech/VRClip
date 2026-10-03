@@ -139,7 +139,6 @@
     <string name="battery_configuration_desc">Ignora l\'optimització de la bateria perquè aquesta aplicació pugui baixar vídeos en segon pla</string>
     <string name="service_title">VRClip està descarregant…</string>
     <string name="translate">Tradueix</string>
-    <string name="translate_desc">Ajudeu a traduir aquesta aplicació a Hosted Weblate</string>
     <string name="embed_subtitles">Incrusta els subtítols</string>
     <string name="embed_subtitles_desc">Incrusta els subtítols als vídeos si és possible</string>
     <string name="new_template">Nova plantilla</string>

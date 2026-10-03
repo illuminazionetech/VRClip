@@ -392,6 +392,7 @@ fun VideoListPage(
                 val onClick: () -> Unit = {
                     if (info.videoPath.contains(AudioRegex)) {
                         FileUtil.openFile(path = info.videoPath) {
+                            haptic.performHapticFeedback(HapticFeedbackType.Reject)
                             makeToast(App.context.getString(R.string.file_unavailable))
                         }
                     } else {

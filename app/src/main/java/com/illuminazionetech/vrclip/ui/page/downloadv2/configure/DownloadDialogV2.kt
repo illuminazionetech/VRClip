@@ -110,7 +110,6 @@ import com.illuminazionetech.vrclip.ui.page.settings.command.CommandTemplateDial
 import com.illuminazionetech.vrclip.ui.page.settings.format.AudioQuickSettingsDialog
 import com.illuminazionetech.vrclip.ui.page.settings.format.VideoQuickSettingsDialog
 import com.illuminazionetech.vrclip.ui.page.settings.network.CookiesQuickSettingsDialog
-import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.util.AUDIO_CONVERSION_FORMAT
 import com.illuminazionetech.vrclip.util.AUDIO_CONVERT
 import com.illuminazionetech.vrclip.util.AUDIO_FORMAT
@@ -446,32 +445,6 @@ fun FormatPage(
 ) {
     FullScreenSheet(onDismissRequest = onDismissRequest) { dismiss ->
         FormatPage(modifier = modifier, videoInfo = state.info, onNavigateBack = dismiss)
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-/*@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO)*/
-@Composable
-private fun ConfigurePagePreview() {
-    VRClipTheme() {
-        VRClipModalBottomSheet(
-            sheetState = rememberExpandedSheetState(),
-            onDismissRequest = {},
-            contentPadding = PaddingValues(),
-        ) {
-            ConfigurePage(
-                config =
-                    Config(
-                        downloadType = Audio,
-                        useFormatSelection = true,
-                        typeEntries = entries - Command,
-                    ),
-                preferences = PreferencesMock,
-                onConfigSave = {},
-                settingChips = {},
-            ) {}
-        }
     }
 }
 

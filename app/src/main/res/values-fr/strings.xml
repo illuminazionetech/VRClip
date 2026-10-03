@@ -105,7 +105,6 @@
     <string name="video_quality_desc">Limiter la qualité lorsque plusieurs vidéos sont présentes</string>
     <string name="open_settings">Ouvrir les paramètres</string>
     <string name="translate">Traduire</string>
-    <string name="translate_desc">Aidez à traduire cette application sur Hosted Weblate</string>
     <string name="embed_subtitles">Sous-titres intégrés</string>
     <string name="embed_subtitles_desc">Intégrer les sous-titres dans les vidéos, si disponibles</string>
     <string name="template_selection">Sélection du modèle</string>

@@ -238,7 +238,6 @@
     <string name="clear_temp_files">נקה קבצים זמניים</string>
     <string name="clear_temp_files_desc">מחק את כל הקבצים הזמניים מהתיקייה הזמנית</string>
     <string name="fetching_playlist_info">משיג מידע פלייליסט…</string>
-    <string name="translate_desc">עזור לתרגם אפליקציה זו ב- Hosted Weblate</string>
     <string name="template_label">תווית</string>
     <string name="invalid_input">קלט לא חוקי</string>
     <string name="private_directory_desc">אחסן את ההורדות בתיקייה נסתרת</string>

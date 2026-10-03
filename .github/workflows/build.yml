@@ -163,6 +163,10 @@ jobs:
       - name: Build release APKs
         run: ./gradlew :app:assembleRelease -Pvrclip.versionName=$VERSION --stacktrace
 
+      - name: Check that R8 kept the Meta Spatial SDK classes apart
+        # The SDK registers systems by class; merged systems crash the Quest player at launch.
+        run: python3 .github/scripts/check-spatial-merging.py app/build/outputs/mapping/*Release/mapping.txt
+
       - name: Build release App Bundle
         # The bundle task cannot resolve a single output while per-ABI APK splits are enabled,
         # so the bundle is built separately with splits off; a bundle carries every ABI anyway.
@@ -206,13 +210,12 @@ jobs:
           path: app/build/outputs/apk/*/debug/*.apk
           if-no-files-found: ignore
 
-  mirror-model:
-    name: Mirror the depth model
-    # Keeps a verified copy of the 2D to 3D model in the depth-model release, the app's second
-    # download source. Cheap when the copy is already there: one API call.
-    if: >-
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      github.event_name == 'workflow_dispatch'
+  depth-models:
+    name: Depth models
+    # Builds the 2D to 3D models from the official weights with tools/depth-model and checks them
+    # against the SHA-256 pinned in models.json (and in the app). Branches and pull requests that
+    # change the export only verify it; main publishes the files to the depth-model release when
+    # they are not there yet, which costs one API call once they are.
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -221,9 +224,43 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-      - name: Publish the model if it is missing
-        run: .github/scripts/mirror-depth-model.sh
+      - name: Check whether the export changed
+        id: changes
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="${{ github.event.pull_request.base.sha }}"
+          else
+            base=$(git merge-base origin/main HEAD)
+          fi
+          if git diff --name-only "$base" HEAD | grep -q -E '^(tools/depth-model/|\.github/scripts/build-depth-models\.sh$)'; then
+            echo "export=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "export=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        if: >-
+          steps.changes.outputs.export == 'true' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          github.event_name == 'workflow_dispatch'
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Build and verify the models
+        if: >-
+          steps.changes.outputs.export == 'true' &&
+          !(github.event_name == 'push' && github.ref == 'refs/heads/main')
+        run: .github/scripts/build-depth-models.sh verify
+
+      - name: Publish the models if they are missing
+        if: >-
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          github.event_name == 'workflow_dispatch'
+        run: .github/scripts/build-depth-models.sh publish
 
   release:
     name: Publish release
@@ -233,7 +270,8 @@ jobs:
     if: >-
       github.event_name == 'push' && github.ref == 'refs/heads/main' &&
       needs.version.outputs.release == 'true'
-    needs: [version, lint, test, build]
+    # depth-models: an app release must never point at depth models that are not published yet.
+    needs: [version, lint, test, build, depth-models]
     runs-on: ubuntu-latest
     concurrency:
       group: release

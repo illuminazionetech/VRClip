@@ -8,72 +8,120 @@ import org.junit.Test
 
 class StereoPipelineTest {
 
+    private val sbs = StereoConversionEffect.Output.LiveSideBySide
+    private val screen = StereoConversionEffect.Output.LiveColorAndDepth
+    private val conversion = StereoConversionEffect.Output.Conversion
+
     @Test
-    fun realtimeOutputKeepsEyeResolutionUpTo1080p() {
-        assertEquals(3840 to 1080, StereoConversionEffect.outputSize(1920, 1080, realtime = true))
-        assertEquals(2560 to 720, StereoConversionEffect.outputSize(1280, 720, realtime = true))
+    fun liveSideBySideKeepsEyeResolutionUpToTheHeadsetWidth() {
+        assertEquals(3840 to 1080, StereoConversionEffect.outputSize(1920, 1080, sbs))
+        assertEquals(2560 to 720, StereoConversionEffect.outputSize(1280, 720, sbs))
+        assertEquals(4096 to 1152, StereoConversionEffect.outputSize(3840, 2160, sbs))
     }
 
     @Test
-    fun realtimeOutputScalesLargeSources() {
-        assertEquals(3840 to 1080, StereoConversionEffect.outputSize(3840, 2160, realtime = true))
-        val (w, h) = StereoConversionEffect.outputSize(1080, 1920, realtime = true)
-        assertTrue(w % 2 == 0 && h % 2 == 0)
-        assertEquals(2160 to 1920, w to h)
+    fun liveScreenOutputStacksThePictureOverItsDepth() {
+        assertEquals(1920 to 2160, StereoConversionEffect.outputSize(1920, 1080, screen))
+        assertEquals(1920 to 2160, StereoConversionEffect.outputSize(3840, 2160, screen))
+        // Portrait video stays within the texture limit.
+        val (w, h) = StereoConversionEffect.outputSize(1080, 1920, screen)
+        assertTrue(w % 2 == 0 && h % 4 == 0 && h <= 4096)
+        assertEquals(1080 to 3840, w to h)
     }
 
     @Test
-    fun halfPackingKeepsTheSourceSize() {
+    fun conversionPackingKeepsTheSourceResolution() {
+        assertEquals(7680 to 2160, StereoConversionEffect.outputSize(3840, 2160, conversion))
         assertEquals(
             3840 to 2160,
-            StereoConversionEffect.outputSize(
-                3840,
-                2160,
-                realtime = false,
-                packing = StereoPacking.Half,
-            ),
+            StereoConversionEffect.outputSize(3840, 2160, conversion, StereoPacking.Half),
         )
     }
+
+    private fun value(out: ByteArray, index: Int) = out[index].toInt() and 0xFF
 
     @Test
     fun depthNormalizationIgnoresOutliersAndFlatInput() {
         val size = 64
-        val processor = DepthPostProcessor(size, mapBlend = 1f, rangeBlend = 1f)
+        val refiner = DepthRefiner(size, stillBlend = 1f, rangeBlend = 1f, dilation = 1)
         val out = ByteArray(size * size)
 
-        processor.process(FloatArray(size * size) { 5f }, out)
+        refiner.process(FloatArray(size * size) { 5f }, out)
         assertTrue(out.all { (it.toInt() and 0xFF) == 128 })
 
-        processor.reset()
+        refiner.reset()
         // A left-to-right ramp with one huge outlier: the ramp must still use the full range.
         val raw = FloatArray(size * size) { i -> (i % size).toFloat() }
-        raw[0] = 10_000f
-        processor.process(raw, out)
-        val left = out[size * 32 + 4].toInt() and 0xFF
-        val right = out[size * 32 + size - 5].toInt() and 0xFF
+        raw[size * 60] = 10_000f
+        refiner.process(raw, out)
+        val left = value(out, size * 32 + 4)
+        val right = value(out, size * 32 + size - 5)
         assertTrue("left $left right $right", left < 30 && right > 225)
     }
 
     @Test
-    fun temporalSmoothingBlendsButSceneCutsReset() {
+    fun smallChangesAreSmoothedButMotionPassesAtOnce() {
         val size = 32
-        val processor = DepthPostProcessor(size, mapBlend = 0.5f, rangeBlend = 1f)
+        val refiner = DepthRefiner(size, stillBlend = 0.25f, rangeBlend = 1f, dilation = 1)
         val out = ByteArray(size * size)
         val ramp = FloatArray(size * size) { i -> (i % size).toFloat() }
-        processor.process(ramp, out)
-        val before = out[size * 16 + 28].toInt() and 0xFF
-        // Same scene, slightly different: blended, so it moves only part of the way.
-        val shifted =
-            FloatArray(size * size) { i -> (i % size).toFloat() + if (i % size > 24) 2f else 0f }
-        processor.process(shifted, out)
-        val after = out[size * 16 + 28].toInt() and 0xFF
-        assertTrue(after >= before)
+        refiner.process(ramp, out)
+        val probe = size * 16 + 10
+        val before = value(out, probe)
 
+        // Jitter of about 1% of the range: only a quarter of it gets through.
+        refiner.process(FloatArray(size * size) { i -> ramp[i] + 0.3f }, out)
+        val jittered = value(out, probe)
+        assertTrue("before $before jittered $jittered", jittered - before in 0..2)
+
+        // A jump of 30% of the range in one area is motion: it is taken as is.
+        val moved = FloatArray(size * size) { i -> ramp[i] + if (i % size in 8..12) 9f else 0f }
+        refiner.process(moved, out)
+        val after = value(out, probe)
+        assertTrue("before $before after $after", after - before > 60)
+    }
+
+    @Test
+    fun nearObjectsGrowByTheDilationRadius() {
+        val size = 40
+        val refiner = DepthRefiner(size, stillBlend = 1f, rangeBlend = 1f, dilation = 2)
+        val out = ByteArray(size * size)
+        // A near square (columns and rows 15..24) in front of a far background.
+        val raw =
+            FloatArray(size * size) { i ->
+                val x = i % size
+                val y = i / size
+                if (x in 15..24 && y in 15..24) 1f else 0f
+            }
+        refiner.process(raw, out)
+        assertTrue(value(out, 20 * size + 13) > 120)
+        assertTrue(value(out, 20 * size + 10) < 10)
+    }
+
+    @Test
+    fun aSceneCutRestartsTheSmoothing() {
+        val size = 32
+        val refiner = DepthRefiner(size, stillBlend = 0.1f, rangeBlend = 0.1f, dilation = 1)
+        val out = ByteArray(size * size)
+        refiner.process(FloatArray(size * size) { i -> (i % size).toFloat() }, out)
         // A reversed ramp is a different shot: no blending with the previous map.
-        val reversed = FloatArray(size * size) { i -> (size - 1 - i % size).toFloat() }
-        processor.process(reversed, out)
-        val nearLeft = out[size * 16 + 3].toInt() and 0xFF
+        refiner.process(FloatArray(size * size) { i -> (size - 1 - i % size).toFloat() }, out)
+        val nearLeft = value(out, size * 16 + 3)
         assertTrue("near $nearLeft", nearLeft > 200)
+    }
+
+    @Test
+    fun selfTestGridAndCorrelation() {
+        val size = 28
+        val depth = FloatArray(size * size) { i -> (i % size).toFloat() }
+        val grid = DepthEstimator.patchGrid(depth, size)
+        assertEquals(4, grid.size)
+        assertEquals(6.5f, grid[0], 1e-4f)
+        assertEquals(20.5f, grid[1], 1e-4f)
+        assertEquals(1f, DepthEstimator.correlation(grid, grid), 1e-6f)
+        val inverted = FloatArray(grid.size) { -grid[it] }
+        assertEquals(-1f, DepthEstimator.correlation(grid, inverted), 1e-6f)
+        assertEquals(0f, DepthEstimator.correlation(grid, FloatArray(grid.size) { 1f }), 0f)
     }
 
     @Test

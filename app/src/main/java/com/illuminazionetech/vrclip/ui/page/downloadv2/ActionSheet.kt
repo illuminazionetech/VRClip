@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material.icons.automirrored.rounded.TextSnippet
 import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.ContentCopy
@@ -148,18 +147,6 @@ private fun CancelButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-private fun DownloadLogButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    ActionSheetPrimaryButton(
-        modifier = modifier,
-        containerColor = LocalFixedColorRoles.current.secondaryFixed,
-        contentColor = LocalFixedColorRoles.current.onSecondaryFixedVariant,
-        imageVector = Icons.AutoMirrored.Rounded.TextSnippet,
-        text = stringResource(R.string.show_logs),
-        onClick = onClick,
-    )
-}
-
-@Composable
 private fun CopyURLButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ActionSheetPrimaryButton(
         modifier = modifier,
@@ -199,21 +186,12 @@ private fun OpenThumbnailURLButton(modifier: Modifier = Modifier, onClick: () ->
 }
 
 @Composable
-fun Title(imageModel: Any?, title: String, author: String, downloadState: DownloadState) {
+fun Title(title: String, author: String, downloadState: DownloadState) {
 
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        /*        AsyncImageImpl(
-            model = imageModel,
-            modifier =
-                Modifier.height(64.dp).aspectRatio(16f / 9f, matchHeightConstraintsFirst = true),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-        )*/
-        //        Spacer(Modifier.width(12.dp))
-
         Column(modifier = Modifier.height(IntrinsicSize.Min)) {
             Column(Modifier) {
                 Text(text = title, style = MaterialTheme.typography.titleSmall)
@@ -244,7 +222,6 @@ fun SheetContent(
     LazyColumn {
         item {
             Title(
-                imageModel = viewState.thumbnailUrl,
                 title = viewState.title,
                 author = viewState.uploader,
                 downloadState = downloadState,

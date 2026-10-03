@@ -106,7 +106,6 @@
     <string name="battery_configuration_desc">پشتگوێخستنی باشکردنی پاتری بۆ ئەم ئەپە بۆ ئەوەی لە پاشبنەمادا دایبەزێنیت</string>
     <string name="service_title">VRClip خەریکی دابەزاندنە…</string>
     <string name="translate">وەرگێڕان</string>
-    <string name="translate_desc">یارمەتی وەرگێڕانی ئەم ئەپە بدە لە Hosted Weblate</string>
     <string name="embed_subtitles_desc">ژێرنووس بخەرە ناو ڤیدیۆکانەوە، ئەگەر بەردەست بوو</string>
     <string name="new_template">قاڵبی نوێ</string>
     <string name="template_label">نیشانە</string>

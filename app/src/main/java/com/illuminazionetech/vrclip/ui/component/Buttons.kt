@@ -34,6 +34,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -160,9 +162,13 @@ fun ConfirmButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
+    val haptics = LocalHapticFeedback.current
     TextButton(
         modifier = Modifier.defaultMinSize(minHeight = 48.dp),
-        onClick = onClick,
+        onClick = {
+            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+            onClick()
+        },
         enabled = enabled,
         shape = CircleShape,
     ) {

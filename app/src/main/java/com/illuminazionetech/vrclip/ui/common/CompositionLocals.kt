@@ -7,8 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.ui.theme.DEFAULT_SEED_COLOR
@@ -48,8 +51,11 @@ fun spatialDensity(): SpatialDensity =
 
 @Composable
 fun SettingsProvider(windowWidthSizeClass: WindowWidthSizeClass, content: @Composable () -> Unit) {
+    val view = LocalView.current
+    val haptics = remember(view) { AppHapticFeedback(view) }
     PreferenceUtil.AppSettingsStateFlow.collectAsState().value.run {
         CompositionLocalProvider(
+            LocalHapticFeedback provides haptics,
             LocalDarkTheme provides darkTheme,
             LocalSeedColor provides DEFAULT_SEED_COLOR,
             LocalPaletteStyleIndex provides 0,

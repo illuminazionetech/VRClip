@@ -41,6 +41,7 @@
     "mq.7": "Passthrough",
     "mq.8": "Picture-in-picture",
     "mq.9": "Sottotitoli e capitoli",
+    "mq.10": "3D senza occhiali",
     "features.title": "Un'app sola, dal link al visore",
     "f1.t": "Download da centinaia di siti",
     "f1.d":
@@ -51,10 +52,10 @@
     "f3.t": "Da 2D a 3D",
     "tag.new": "Novità",
     "f3.d":
-      "Un modello di profondità che gira sul dispositivo costruisce il secondo occhio: in tempo reale mentre guardi, oppure come file 3D alla massima qualità che sostituisce quello piatto.",
+      "Un modello di profondità che gira sul dispositivo costruisce il secondo occhio: in tempo reale mentre guardi, anche senza occhiali inclinando il telefono, oppure come file 3D alla massima qualità che sostituisce quello piatto.",
     "f4.t": "Nativo su Meta Quest",
     "f4.d":
-      "La libreria è un normale pannello; la riproduzione apre una scena immersiva costruita con Meta Spatial SDK, con uno schermo stereo vero, il passthrough e una barra di controllo che puoi spostare.",
+      "La libreria è un normale pannello; la riproduzione apre una scena immersiva costruita con Meta Spatial SDK, con uno schermo stereo vero alla frequenza del video, il passthrough, una barra di controllo che puoi spostare e la riproduzione sui tasti dei controller.",
     "f5.t": "Si aggiorna da solo, in sicurezza",
     "f5.d":
       "Le nuove versioni si installano dall'app, solo dopo aver verificato che checksum e firma corrispondono alla release ufficiale.",
@@ -85,7 +86,7 @@
     "depth.p1":
       "VRClip stima quanto è lontano ogni punto dell'immagine con Depth Anything V2 Small, un modello di profondità che gira sulla GPU del telefono o del visore. Dall'immagine e dalla sua profondità disegna quello che vedrebbe ciascun occhio, riempiendo le zone nascoste dietro gli oggetti vicini con lo sfondo accanto.",
     "depth.p2":
-      "Nel player la conversione avviene in tempo reale. Dalla libreria elabora ogni fotogramma alla massima qualità e, quando il nuovo file risulta completo, sostituisce il video piatto con uno 3D affiancato. Il modello si scarica una volta (circa 90 MB) e viene verificato prima dell'uso.",
+      "Nel player la conversione avviene in tempo reale; sul telefono senza visore basta inclinarlo e gli oggetti vicini si muovono rispetto allo sfondo. Dalla libreria elabora ogni fotogramma alla massima qualità e, quando il nuovo file risulta completo, sostituisce il video piatto con uno 3D affiancato. I modelli si scaricano una volta (circa 100 MB) e vengono verificati prima dell'uso.",
     "depth.c1": "1. Il fotogramma piatto",
     "depth.c2": "2. La profondità stimata (chiaro è vicino)",
     "depth.c3": "3. Occhio sinistro e destro, affiancati",
@@ -127,7 +128,7 @@
       "Nel visore apri la libreria delle app e scegli il filtro Origini sconosciute (in alcune versioni \"App da origini sconosciute\"). VRClip si apre come pannello, come qualsiasi app di Horizon OS.",
     "q5.t": "Scarica e guarda",
     "q5.d":
-      "Incolla un link, o condividilo con VRClip da un'altra app. Finito il download, aprilo dalla Libreria: il player mostra uno schermo grande davanti a te, oppure avvolge intorno a te i video 360° e 180°. La barra sotto il video ha riproduzione, avanzamento, 3D, proiezione, passthrough e ricentra.",
+      "Incolla un link, o condividilo con VRClip da un'altra app. Finito il download, aprilo dalla Libreria: il player mostra uno schermo grande davanti a te, oppure avvolge intorno a te i video 360° e 180°. La barra sotto il video ha riproduzione, avanzamento, 3D, proiezione, passthrough e ricentra. Funzionano anche i controller: A o X avvia e mette in pausa, una levetta spinta a sinistra o a destra salta di 10 secondi, B o Y riporta lo schermo davanti a te.",
     "q6.t": "Trasforma un video piatto in 3D",
     "q6.d":
       "Premi 3D sulla barra per convertire mentre guardi, oppure apri i dettagli del video nella Libreria e scegli Converti in 3D per creare un file 3D permanente. La prima volta VRClip scarica il modello di profondità.",
@@ -147,7 +148,10 @@
       "Dipende dalla GPU del dispositivo, dalla durata e dalla risoluzione del video: elabora ogni fotogramma, quindi sulla maggior parte dei telefoni impiega più della durata del video. Continua anche a schermo spento e mostra l'avanzamento in una notifica; l'originale resta intatto finché il file 3D non è completo.",
     "faq5.q": "VRClip invia dati da qualche parte?",
     "faq5.a":
-      "No. Si collega solo ai siti da cui scarichi, a GitHub per gli aggiornamenti e, se usi il 2D→3D, una volta al server pubblico di Qualcomm AI Hub (o, se non risponde, alle release di VRClip su GitHub) per scaricare il modello di profondità. Leggi l'<a href=\"privacy.html\">informativa sulla privacy</a>.",
+      "No. Si collega solo ai siti da cui scarichi, a GitHub per gli aggiornamenti e, se usi il 2D→3D, una volta a GitHub per scaricare i modelli di profondità. Leggi l'<a href=\"privacy.html\">informativa sulla privacy</a>.",
+    "faq7.q": "Su Meta Quest il player si chiude appena si apre",
+    "faq7.a":
+      "È un errore di VRClip 1.3.0, corretto nella 1.4.0. La libreria funziona: apri Impostazioni, Informazioni e cerca gli aggiornamenti, oppure installa il nuovo APK come la prima volta.",
     "faq6.q": "Si può scaricare da qualsiasi sito?",
     "faq6.a": "VRClip è uno strumento: rispetta i termini dei siti che usi e il diritto d'autore di ciò che scarichi.",
     "cta.title": "Portalo nel visore",

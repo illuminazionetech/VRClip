@@ -99,7 +99,6 @@
     <string name="battery_configuration_desc">Abaikan pengoptimuman bateri bagi aplikasi ini untuk membolehkannya berjalan di latar belakang</string>
     <string name="service_title">VRClip sedang memuat turun…</string>
     <string name="translate">Terjemah</string>
-    <string name="translate_desc">Bantu terjemah aplikasi ini on Hosted Weblate</string>
     <string name="embed_subtitles">Benamkan seri kata</string>
     <string name="template_label">Label</string>
     <string name="remove_template">Buang\?</string>

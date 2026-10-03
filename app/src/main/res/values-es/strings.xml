@@ -103,7 +103,6 @@
     <string name="battery_configuration_desc">Ignorar la optimización de la batería para esta aplicación en segundo plano</string>
     <string name="service_title">VRClip está descargando…</string>
     <string name="translate">Traducir</string>
-    <string name="translate_desc">Ayuda a traducir esta aplicación en Hosted Weblate</string>
     <string name="execute_command_notification">Ejecutando comandos personalizados…</string>
     <string name="subdirectory_desc">Guardar los archivos en carpetas denominadas como campos respectivos</string>
     <string name="embed_subtitles">Agregar subtítulos</string>

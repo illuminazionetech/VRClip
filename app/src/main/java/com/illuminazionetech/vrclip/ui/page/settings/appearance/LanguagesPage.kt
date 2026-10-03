@@ -48,7 +48,7 @@ import com.illuminazionetech.vrclip.ui.component.BackButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceSingleChoiceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
 import com.illuminazionetech.vrclip.ui.component.PreferencesHintCard
-import com.illuminazionetech.vrclip.ui.page.settings.about.weblate
+import com.illuminazionetech.vrclip.ui.page.settings.about.TranslationsUrl
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.illuminazionetech.vrclip.util.LocaleLanguageCodeMap
 import com.illuminazionetech.vrclip.util.PreferenceUtil
@@ -170,7 +170,7 @@ private fun LanguagePageImpl(
                         description = stringResource(R.string.translate_desc),
                         icon = Icons.Rounded.Translate,
                     ) {
-                        uriHandler.openUri(weblate)
+                        uriHandler.openUri(TranslationsUrl)
                     }
                 }
 

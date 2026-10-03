@@ -1,10 +1,23 @@
-<b>Features</b>
-Download video e file audio da piattaforme video supportate da yt-dlp
-Incorpora metadati e miniature video nei file audio estratti
-Scarica tutti i video nella playlist con un clic
-Usa aria2c incorporato come downloader esterno per tutti i tuoi download
-Incorpora i sottotitoli nei video scaricati
-Esegui comandi yt-dlp personalizzati con templates
-Gestisci i download in-app e templates di comando personalizzati
-Facile da usare e user-friendly
-UI in stile Material Design 3, con tema colori dinamico
+<b>Download</b>
+Video e audio dai siti supportati da yt-dlp, playlist intere comprese
+Un preset ad alta risoluzione per 360 e 3D che sceglie il video più grande che il dispositivo sa decodificare
+Metadati, sottotitoli e miniature incorporati nei file, aria2c come downloader opzionale
+Comandi yt-dlp personalizzati con modelli
+
+<b>Guarda</b>
+Player integrato che riconosce da solo video piatti, 360, 180 e 3D
+Video 360 e 180 da esplorare col dito o muovendo il telefono
+File 3D affiancati per un visore, in anaglifo o un occhio alla volta
+Ripresa, velocità, tracce audio e sottotitoli, gesti, picture in picture
+
+<b>Da 2D a 3D</b>
+Trasforma qualsiasi video piatto in 3D con il modello di profondità Depth Anything V2, sul dispositivo
+Dal vivo mentre guardi: sul telefono basta inclinarlo per guardarsi intorno nella scena, senza occhiali
+Oppure convertito una volta in un file 3D affiancato
+
+<b>Meta Quest</b>
+Player immersivo basato su Meta Spatial SDK: uno schermo grande per i video piatti, una sfera per i 360,
+stereo nativo per i file 3D e il 2D convertito dal vivo, passthrough, una barra di controllo da afferrare
+
+<b>Privacy</b>
+Niente pubblicità, tracciamento o account. Open source con licenza GPL-3.0.

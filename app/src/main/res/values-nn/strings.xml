@@ -67,7 +67,6 @@
     <string name="battery_configuration_desc">Hopp over batteriforlenging for denne appen, slik at han kan hente ting i bakgrunnen</string>
     <string name="service_title">VRClip hentar…</string>
     <string name="translate">Omsett</string>
-    <string name="translate_desc">Hjelp til med å omsetja denne appen hos Hosted Weblate</string>
     <string name="embed_subtitles">Bygg inn teksting</string>
     <string name="embed_subtitles_desc">Om tilgjengelege, bygg gjevne undertekster inn i videoar</string>
     <string name="template_label">Malnamn</string>

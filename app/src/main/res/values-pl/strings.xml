@@ -78,7 +78,6 @@
     <string name="download_notification_desc">Powiadamiaj o pobranych plikach i postępie</string>
     <string name="execute_command_notification">Uruchamianie niestandardowego polecenia…</string>
     <string name="translate">Przetłumacz</string>
-    <string name="translate_desc">Pomóż tłumaczyć tę aplikację na Hosted Weblate</string>
     <string name="invalid_index_range">Nieprawidłowy zakres</string>
     <string name="error_copied">Raport o błędach został skopiowany do schowka</string>
     <string name="concurrent_download">Wielowątkowe pobieranie</string>

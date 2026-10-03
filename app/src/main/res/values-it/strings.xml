@@ -100,7 +100,7 @@
     <string name="service_title">VRClip sta scaricando…</string>
     <string name="subdirectory_desc">Salva i file in cartelle chiamate come i rispettivi siti web</string>
     <string name="permission_issue">Problema relativo all\'autorizzazione di archiviazione</string>
-    <string name="translate_desc">Contribuisci a tradurre questa applicazione su Hosted Weblate</string>
+    <string name="translate_desc">Contribuisci a tradurre questa applicazione su GitHub</string>
     <string name="battery_configuration_desc">Ignora l\'ottimizzazione della batteria per lo scaricamento dell\'app in sfondo</string>
     <string name="translate">Traduci</string>
     <string name="permission_issue_desc">Le directory al di fuori di Download/ e Documenti/ non sono supportate</string>
@@ -546,6 +546,7 @@
     <string name="player_aspect_fill">Riempi lo schermo (ritaglia)</string>
     <string name="player_aspect_stretch">Allarga</string>
     <string name="player_stereo_output_anaglyph">Occhiali rosso/ciano (anaglifo)</string>
+    <string name="player_stereo_output_parallax">3D senza occhiali (inclina il telefono)</string>
     <string name="player_projection_detected">Automatico: %1$s</string>
     <string name="player_detected_metadata">Dai metadati del file</string>
     <string name="player_detected_filename">Dal nome del file</string>
@@ -598,6 +599,7 @@
     <string name="stereo_model_installed">Modello 3D installato (%1$s)</string>
     <string name="stereo_model_not_installed">Modello 3D non installato</string>
     <string name="stereo_model_delete">Elimina il modello</string>
+    <string name="stereo_model_delete_desc">Libera %1$s. VRClip lo scaricherà di nuovo la prossima volta che userai la conversione da 2D a 3D.</string>
     <string name="stereo_status_running">Conversione in 3D… %1$d%%</string>
     <string name="stereo_status_queued">In attesa di conversione in 3D</string>
     <string name="player_passthrough">Passthrough</string>

@@ -144,6 +144,4 @@ object DatabaseUtil {
     suspend fun deleteTemplateById(id: Int) = dao.deleteTemplateById(id)
 
     suspend fun deleteTemplates(templates: List<CommandTemplate>) = dao.deleteTemplates(templates)
-
-    private const val TAG = "DatabaseUtil"
 }

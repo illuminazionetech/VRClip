@@ -48,7 +48,6 @@
     <string name="permission_issue">Depolama izni sorunu</string>
     <string name="battery_configuration">Pil yapılandırması</string>
     <string name="service_title">VRClip indiriyor…</string>
-    <string name="translate_desc">Hosted Weblate\'de bu uygulamanın çevrilmesine yardımcı olun</string>
     <string name="video_directory">Video klasörü</string>
     <string name="permission_issue_desc">İndirilenler/ ve Belgeler/ dışındaki dizinler desteklenmez</string>
     <string name="subdirectory">Alt dizine kaydet</string>

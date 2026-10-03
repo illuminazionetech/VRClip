@@ -119,6 +119,7 @@
       <li data-i18n="mq.3">Side by side 3D</li>
       <li data-i18n="mq.4">Top and bottom 3D</li>
       <li data-i18n="mq.5">Red and cyan anaglyph</li>
+      <li data-i18n="mq.10">3D without glasses</li>
       <li data-i18n="mq.6">Cardboard viewers</li>
       <li data-i18n="mq.7">Passthrough</li>
       <li data-i18n="mq.8">Picture-in-picture</li>
@@ -131,6 +132,7 @@
       <li data-i18n="mq.3">Side by side 3D</li>
       <li data-i18n="mq.4">Top and bottom 3D</li>
       <li data-i18n="mq.5">Red and cyan anaglyph</li>
+      <li data-i18n="mq.10">3D without glasses</li>
       <li data-i18n="mq.6">Cardboard viewers</li>
       <li data-i18n="mq.7">Passthrough</li>
       <li data-i18n="mq.8">Picture-in-picture</li>
@@ -154,7 +156,7 @@
           </div>
           <div class="tile-copy">
             <h3><span data-i18n="f3.t">From 2D to 3D</span> <span class="tag" data-i18n="tag.new">New</span></h3>
-            <p data-i18n="f3.d">A depth model running on the device builds the second eye: live while you watch, or as a full-quality 3D file that replaces the flat one.</p>
+            <p data-i18n="f3.d">A depth model running on the device builds the second eye: live while you watch, even without glasses by tilting the phone, or as a full-quality 3D file that replaces the flat one.</p>
           </div>
         </article>
         <article class="tile reveal" style="--d: 1">
@@ -173,7 +175,7 @@
           </div>
           <div class="tile-copy">
             <h3 data-i18n="f4.t">Native on Meta Quest</h3>
-            <p data-i18n="f4.d">The library is a regular panel; playback opens an immersive scene built with the Meta Spatial SDK, with a real stereo screen, passthrough and a control bar you can move.</p>
+            <p data-i18n="f4.d">The library is a regular panel; playback opens an immersive scene built with the Meta Spatial SDK, with a real stereo screen at the video's refresh rate, passthrough, a control bar you can move and playback on the controller buttons.</p>
           </div>
         </article>
         <article class="tile reveal" style="--d: 1">
@@ -226,7 +228,7 @@
         <p class="kicker">2D → 3D</p>
         <h2 id="depth-title" data-i18n="depth.title">How 2D becomes 3D</h2>
         <p data-i18n="depth.p1">VRClip estimates how far every point of the picture is with Depth Anything V2 Small, a depth model that runs on the phone's or headset's GPU. From the picture and its depth it draws what each eye would see, filling the gaps behind near objects with the background next to them.</p>
-        <p data-i18n="depth.p2">In the player the conversion runs live. From the library it processes every frame at full quality and, once the new file checks out, replaces the flat video with a side-by-side 3D one. The model is downloaded once (about 90 MB) and verified before use.</p>
+        <p data-i18n="depth.p2">In the player the conversion runs live; on a phone without a viewer, tilt it and near objects move against the background. From the library it processes every frame at full quality and, once the new file checks out, replaces the flat video with a side-by-side 3D one. The models are downloaded once (about 100 MB) and verified before use.</p>
       </div>
       <div class="depth-demo reveal" style="--d: 1">
         <div class="depth-stage" id="depth-stage" data-mode="live">
@@ -295,7 +297,7 @@
           <li><h3 data-i18n="q2.t">Get the APK</h3><p data-i18n="q2.d">On a computer or phone, download the universal or arm64-v8a APK from this page (the button offers the right one).</p></li>
           <li><h3 data-i18n="q3.t">Install it on the headset</h3><p data-i18n-html="q3.d">Connect the headset to a computer with a USB-C cable, accept "Allow USB debugging" inside the headset, then install with SideQuest (drag the APK onto it) or from a terminal with <code>adb install -r VRClip.apk</code>. Recent Horizon OS versions can also install an APK opened from the Files app in the headset; if yours offers it, the cable is not needed.</p></li>
           <li><h3 data-i18n="q4.t">Open VRClip</h3><p data-i18n="q4.d">In the headset open the app library and pick the Unknown sources filter (on some versions "Apps from unknown sources"). VRClip opens as a panel like any Horizon OS app.</p></li>
-          <li><h3 data-i18n="q5.t">Download and watch</h3><p data-i18n="q5.d">Paste a link, or share one to VRClip from another app. When the download is done, open it from the Library: the player puts a large screen in front of you, or wraps 360° and 180° video around you. The control bar below the video has play, seek, 3D, projection, passthrough and recenter.</p></li>
+          <li><h3 data-i18n="q5.t">Download and watch</h3><p data-i18n="q5.d">Paste a link, or share one to VRClip from another app. When the download is done, open it from the Library: the player puts a large screen in front of you, or wraps 360° and 180° video around you. The control bar below the video has play, seek, 3D, projection, passthrough and recenter. The controllers work too: A or X plays and pauses, a thumbstick pushed left or right jumps 10 seconds, B or Y brings the screen back in front of you.</p></li>
           <li><h3 data-i18n="q6.t">Turn flat video into 3D</h3><p data-i18n="q6.d">Press 3D on the control bar to convert while you watch, or open the video's details in the Library and choose Convert to 3D to create a permanent 3D file. The first time VRClip downloads the depth model.</p></li>
         </ol>
         <p class="note" data-i18n="q.note">Back leaves the player and brings the Library back. The control bar can be grabbed and moved; Recenter puts the screen and the bar in front of you again.</p>
@@ -315,7 +317,8 @@
         <details><summary data-i18n="faq2.q">Which devices does it run on?</summary><p data-i18n="faq2.a">Android 9 or newer on phones and tablets (ARM and x86), and Meta Quest 2, 3, 3S and Pro.</p></details>
         <details><summary data-i18n="faq3.q">Where are my files?</summary><p data-i18n="faq3.a">In Download/VRClip on the device, or in the folder you choose in the settings.</p></details>
         <details><summary data-i18n="faq4.q">How long does a 3D conversion take?</summary><p data-i18n="faq4.a">It depends on the device's GPU and the video's length and resolution: it processes every frame, so expect it to take longer than the video itself on most phones. It keeps running with the screen off and shows its progress in a notification; the original stays untouched until the 3D file is complete.</p></details>
-        <details><summary data-i18n="faq5.q">Does VRClip send data anywhere?</summary><p data-i18n-html="faq5.a">No. It connects only to the sites you download from, to GitHub for updates and, if you use 2D to 3D, once to download the depth model from Qualcomm AI Hub's public server (or, if that fails, from VRClip's GitHub releases). See the <a href="privacy.html">privacy policy</a>.</p></details>
+        <details><summary data-i18n="faq5.q">Does VRClip send data anywhere?</summary><p data-i18n-html="faq5.a">No. It connects only to the sites you download from, to GitHub for updates and, if you use 2D to 3D, once to GitHub to download the depth models. See the <a href="privacy.html">privacy policy</a>.</p></details>
+        <details><summary data-i18n="faq7.q">On Meta Quest the player closes as soon as it opens</summary><p data-i18n="faq7.a">That is a bug of VRClip 1.3.0, fixed in 1.4.0. The library still works: open Settings, About and check for updates, or install the new APK as the first time.</p></details>
         <details><summary data-i18n="faq6.q">Is downloading from any site allowed?</summary><p data-i18n="faq6.a">VRClip is a tool: respect the terms of the sites you use and the copyright of what you download.</p></details>
       </div>
     </div>

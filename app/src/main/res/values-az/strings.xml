@@ -102,7 +102,6 @@
     <string name="permission_issue">Saxlama icazəsi problemi</string>
     <string name="service_title">VRClip yükləyir…</string>
     <string name="translate">Tərcümə et</string>
-    <string name="translate_desc">Hosted Weblate-də bu tətbiqi tərcümə etməyə kömək et</string>
     <string name="permission_issue_desc">Download/ və Documents/ xaricindəki kataloqlar dəstəklənmir</string>
     <string name="embed_subtitles">Titrləri yerləşdir</string>
     <string name="new_template">Yeni şablon</string>

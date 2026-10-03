@@ -23,16 +23,18 @@ data class Credit(val title: String = "", val license: String? = null, val url: 
 
 private const val GPL_V3 = "GNU General Public License v3.0"
 private const val GPL_V2 = "GNU General Public License v2.0"
-private const val LGPL_V2_1 = "GNU Lesser General Public License, version 2.1"
 private const val APACHE_V2 = "Apache License, Version 2.0"
 private const val UNLICENSE = "The Unlicense"
 private const val BSD = "BSD 3-Clause License"
+private const val META_SDK = "Meta Platforms Technologies SDK License"
 
-private const val youtubedlAndroidUrl = "https://github.com/yausername/youtubedl-android"
+private const val seal = "https://github.com/JunkFood02/Seal"
+private const val youtubedlAndroidUrl = "https://github.com/JunkFood02/youtubedl-android"
 private const val ytdlpUrl = "https://github.com/yt-dlp/yt-dlp"
-private const val readYou = "https://github.com/Ashinch/ReadYou"
-private const val dvd = "https://github.com/yausername/dvd"
-private const val icons8 = "https://icons8.com/"
+private const val depthAnything = "https://github.com/DepthAnything/Depth-Anything-V2"
+private const val liteRt = "https://github.com/google-ai-edge/LiteRT"
+private const val media3 = "https://github.com/androidx/media3"
+private const val metaSpatial = "https://developers.meta.com/horizon/develop/spatial-sdk"
 private const val materialIcon = "https://fonts.google.com/icons"
 private const val materialColor = "https://github.com/material-foundation/material-color-utilities"
 private const val monet = "https://github.com/Kyant0/Monet"
@@ -44,7 +46,6 @@ private const val okhttp = "https://github.com/square/okhttp"
 private const val accompanist = "https://github.com/google/accompanist"
 private const val aria2 = "https://github.com/aria2/aria2"
 private const val material3 = "https://m3.material.io/"
-private const val unDraw = "https://undraw.co/"
 private const val materialMotionCompose = "https://github.com/fornewid/material-motion-compose"
 private const val termux = "https://github.com/termux/termux-app"
 private const val FFmpeg = "https://ffmpeg.org/"
@@ -60,8 +61,13 @@ fun CreditsPage(onNavigateBack: () -> Unit) {
 
     val creditsList =
         listOf(
+            Credit("Seal", GPL_V3, seal),
             Credit("yt-dlp", UNLICENSE, ytdlpUrl),
             Credit("youtubedl-android", GPL_V3, youtubedlAndroidUrl),
+            Credit("Depth Anything V2", APACHE_V2, depthAnything),
+            Credit("LiteRT", APACHE_V2, liteRt),
+            Credit("AndroidX Media3", APACHE_V2, media3),
+            Credit("Meta Spatial SDK", META_SDK, metaSpatial),
             Credit("Termux", GPL_V3, termux),
             Credit("FFmpeg", GPL_V2, FFmpeg),
             Credit("Android Jetpack", APACHE_V2, jetpack),
@@ -76,7 +82,6 @@ fun CreditsPage(onNavigateBack: () -> Unit) {
             Credit("aria2", GPL_V2, aria2),
             Credit("OkHttp", APACHE_V2, okhttp),
             Credit("material-motion-compose", APACHE_V2, materialMotionCompose),
-            Credit("unDraw", null, unDraw),
         )
     val uriHandler = LocalUriHandler.current
     fun openUrl(url: String) {

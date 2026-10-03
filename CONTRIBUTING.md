@@ -54,6 +54,20 @@ requests. If you know a change will produce a release, add that section in the s
 without it the release lists the pull requests only. The in-app update dialog and the website
 show this text.
 
+## Translations
+
+English (`app/src/main/res/values/strings.xml`) is the source text and Italian
+(`values-it/`) is kept complete. Other languages live in `values-<code>/strings.xml`: many of
+them come from Seal and miss VRClip's newer strings, which then show in English.
+
+To translate, edit or create the `strings.xml` for your language and open a pull request:
+
+- translate only the text between the tags and keep every `name` as it is;
+- keep placeholders such as `%1$s` or `%d`, and escape apostrophes as `\'`;
+- leave out strings you don't translate: Android falls back to English for them.
+
+The store listing texts are in `fastlane/metadata/android/<locale>/`.
+
 ## Project layout
 
 - `app/`: the application module.

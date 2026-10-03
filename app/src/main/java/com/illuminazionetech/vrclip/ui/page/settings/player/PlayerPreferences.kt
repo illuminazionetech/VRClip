@@ -6,8 +6,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DeleteOutline
@@ -32,14 +34,19 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.player.stereo.DepthModel
 import com.illuminazionetech.vrclip.player.stereo.DepthModelDialog
 import com.illuminazionetech.vrclip.player.stereo.DepthModelManager
 import com.illuminazionetech.vrclip.player.stereo.DepthModelStatus
@@ -47,9 +54,12 @@ import com.illuminazionetech.vrclip.player.stereo.StereoSettings
 import com.illuminazionetech.vrclip.player.stereo.isBusy
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.component.BackButton
+import com.illuminazionetech.vrclip.ui.component.ConfirmButton
+import com.illuminazionetech.vrclip.ui.component.DismissButton
 import com.illuminazionetech.vrclip.ui.component.PreferenceItem
 import com.illuminazionetech.vrclip.ui.component.PreferenceSubtitle
 import com.illuminazionetech.vrclip.ui.component.PreferenceSwitch
+import com.illuminazionetech.vrclip.ui.component.VRClipDialog
 import com.illuminazionetech.vrclip.util.PLAYER_CARDBOARD_DEFAULT
 import com.illuminazionetech.vrclip.util.PLAYER_GYRO
 import com.illuminazionetech.vrclip.util.PLAYER_QUEST_IMMERSIVE
@@ -78,6 +88,7 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
     var strength by remember { mutableFloatStateOf(initialStereo.strength) }
     var popOut by remember { mutableFloatStateOf(initialStereo.popOut) }
     var showModelDialog by remember { mutableStateOf(false) }
+    var confirmModelDelete by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -184,7 +195,7 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
                         if (installed)
                             stringResource(
                                 R.string.stereo_model_installed,
-                                DepthModelManager.MODEL_BYTES.toFileSizeText(),
+                                DepthModel.totalBytes.toFileSizeText(),
                             )
                         else stringResource(R.string.stereo_model_not_installed),
                     description = "Depth Anything V2 Small · Apache-2.0",
@@ -192,7 +203,7 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
                     trailingIcon =
                         if (installed) {
                             {
-                                IconButton(onClick = { model.delete() }) {
+                                IconButton(onClick = { confirmModelDelete = true }) {
                                     Icon(
                                         Icons.Rounded.DeleteOutline,
                                         contentDescription =
@@ -219,6 +230,31 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
         }
     }
 
+    if (confirmModelDelete) {
+        VRClipDialog(
+            onDismissRequest = { confirmModelDelete = false },
+            icon = { Icon(Icons.Rounded.DeleteOutline, contentDescription = null) },
+            title = { Text(stringResource(R.string.stereo_model_delete)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.stereo_model_delete_desc,
+                        DepthModel.totalBytes.toFileSizeText(),
+                    )
+                )
+            },
+            confirmButton = {
+                ConfirmButton(text = stringResource(R.string.delete)) {
+                    confirmModelDelete = false
+                    model.delete()
+                }
+            },
+            dismissButton = {
+                DismissButton(text = stringResource(R.string.cancel)) { confirmModelDelete = false }
+            },
+        )
+    }
+
     if (showModelDialog) {
         DepthModelDialog(
             onDismiss = { showModelDialog = false },
@@ -240,25 +276,31 @@ private fun SliderPreference(
     onValueChangeFinished: () -> Unit,
 ) {
     Column {
-        PreferenceItem(
-            title = title,
-            description = description,
-            icon = icon,
-            trailingIcon = {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            },
-        )
-        Slider(
-            value = value,
-            onValueChange = onValueChange,
-            onValueChangeFinished = onValueChangeFinished,
-            valueRange = range,
-            steps = steps,
+        PreferenceItem(title = title, description = description, icon = icon)
+        val haptics = LocalHapticFeedback.current
+        Row(
             modifier = Modifier.padding(start = 56.dp, end = 24.dp, bottom = 8.dp),
-        )
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Slider(
+                value = value,
+                onValueChange = {
+                    // The slider snaps to its steps: every change is one step further.
+                    if (it != value) haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                    onValueChange(it)
+                },
+                onValueChangeFinished = onValueChangeFinished,
+                valueRange = range,
+                steps = steps,
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelLarge.copy(fontFeatureSettings = "tnum"),
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.End,
+                modifier = Modifier.padding(start = 16.dp).widthIn(min = 48.dp),
+            )
+        }
     }
 }

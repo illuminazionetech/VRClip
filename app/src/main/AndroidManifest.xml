@@ -26,6 +26,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- Touch feedback with firmer, fixed strengths than the system's (HapticEngine). -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.oculus.permission.USE_SCENE" />
 
     <queries>

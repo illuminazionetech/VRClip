@@ -252,7 +252,6 @@
     <string name="video">Vídeo</string>
     <string name="open_file">Abrir ficheiro</string>
     <string name="video_creator_sample_text">Texto de exemplo do criador de vídeo</string>
-    <string name="translate_desc">Ajuda para traduzir esta aplicação no Hosted Weblate</string>
     <string name="expand">Expandir</string>
     <string name="fetch_info_error_msg">Não foi possível obter informações sobre o vídeo</string>
     <string name="invalid_index_range">Intervalo de índices inválido</string>

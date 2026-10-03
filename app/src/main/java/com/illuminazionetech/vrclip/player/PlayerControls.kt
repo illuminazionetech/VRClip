@@ -976,7 +976,7 @@ private fun ActionToolbar(
                 onToggleRepeat()
             },
         )
-        if (projection.isStereo || projection.isSpherical) {
+        if (projection.isStereo || projection.isSpherical || state.depthPacked) {
             PlayerIconButton(
                 icon = Icons.Rounded.ViewInAr,
                 label = stringResource(R.string.player_stereo_output),
@@ -1112,6 +1112,7 @@ private fun ResumeHint(
     onStartOver: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val haptics = rememberPlayerHaptics()
     LaunchedEffect(resumedFromMs) {
         if (resumedFromMs != null) {
             delay(7_000)
@@ -1140,7 +1141,10 @@ private fun ResumeHint(
                 )
                 Spacer(Modifier.width(8.dp))
                 TextButton(
-                    onClick = onStartOver,
+                    onClick = {
+                        haptics.tap()
+                        onStartOver()
+                    },
                     shapes = ButtonDefaults.shapes(),
                     colors =
                         ButtonDefaults.textButtonColors(
@@ -1161,6 +1165,7 @@ private fun ErrorCard(
     onRetry: () -> Unit,
     onOpenExternally: () -> Unit,
 ) {
+    val haptics = rememberPlayerHaptics()
     Surface(
         modifier = modifier.widthIn(max = 420.dp),
         shape = MaterialTheme.shapes.extraLarge,
@@ -1204,10 +1209,22 @@ private fun ErrorCard(
             )
             Spacer(Modifier.height(20.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedButton(onClick = onOpenExternally, shapes = ButtonDefaults.shapes()) {
+                OutlinedButton(
+                    onClick = {
+                        haptics.tap()
+                        onOpenExternally()
+                    },
+                    shapes = ButtonDefaults.shapes(),
+                ) {
                     Text(stringResource(R.string.player_open_externally))
                 }
-                Button(onClick = onRetry, shapes = ButtonDefaults.shapes()) {
+                Button(
+                    onClick = {
+                        haptics.tap()
+                        onRetry()
+                    },
+                    shapes = ButtonDefaults.shapes(),
+                ) {
                     Text(stringResource(R.string.retry))
                 }
             }
@@ -1416,5 +1433,6 @@ internal fun StereoOutputMode.label(): String =
             StereoOutputMode.SingleEye -> R.string.player_stereo_output_single
             StereoOutputMode.SplitScreen -> R.string.player_stereo_output_split
             StereoOutputMode.Anaglyph -> R.string.player_stereo_output_anaglyph
+            StereoOutputMode.Parallax -> R.string.player_stereo_output_parallax
         }
     )

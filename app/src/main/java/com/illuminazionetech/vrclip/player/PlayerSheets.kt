@@ -199,8 +199,22 @@ internal fun PlayerSheets(
             PlayerBottomSheet(onDismiss) {
                 DrawerSheetSubtitle(text = stringResource(R.string.player_stereo_output))
                 val options =
-                    if (state.renderProjection.isStereo) StereoOutputMode.entries
-                    else listOf(StereoOutputMode.SingleEye, StereoOutputMode.SplitScreen)
+                    when {
+                        state.depthPacked ->
+                            listOf(
+                                StereoOutputMode.Parallax,
+                                StereoOutputMode.SplitScreen,
+                                StereoOutputMode.Anaglyph,
+                                StereoOutputMode.SingleEye,
+                            )
+                        state.renderProjection.isStereo ->
+                            listOf(
+                                StereoOutputMode.SingleEye,
+                                StereoOutputMode.SplitScreen,
+                                StereoOutputMode.Anaglyph,
+                            )
+                        else -> listOf(StereoOutputMode.SingleEye, StereoOutputMode.SplitScreen)
+                    }
                 SegmentedGroup {
                     options.forEachIndexed { index, mode ->
                         ChoiceRow(

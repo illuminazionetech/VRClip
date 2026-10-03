@@ -131,7 +131,7 @@
     <string name="battery_configuration_desc">Ignore battery optimization for this app to download in the background</string>
     <string name="service_title">VRClip is downloading…</string>
     <string name="translate">Translate</string>
-    <string name="translate_desc">Help translate this app on Hosted Weblate</string>
+    <string name="translate_desc">Help translate this app on GitHub</string>
     <string name="embed_subtitles">Embed subtitles</string>
     <string name="embed_subtitles_desc">Embed soft-subs into videos if available</string>
     <string name="new_template">New template</string>
@@ -542,6 +542,7 @@
     <string name="player_aspect_fill">Fill screen (crop)</string>
     <string name="player_aspect_stretch">Stretch</string>
     <string name="player_stereo_output_anaglyph">Red/cyan glasses (anaglyph)</string>
+    <string name="player_stereo_output_parallax">3D without glasses (tilt the phone)</string>
     <string name="player_projection_detected">Automatic: %1$s</string>
     <string name="player_detected_metadata">From the file\'s metadata</string>
     <string name="player_detected_filename">From the file name</string>
@@ -594,6 +595,7 @@
     <string name="stereo_model_installed">3D model installed (%1$s)</string>
     <string name="stereo_model_not_installed">3D model not installed</string>
     <string name="stereo_model_delete">Delete the model</string>
+    <string name="stereo_model_delete_desc">It frees %1$s. VRClip downloads it again the next time you use 2D to 3D.</string>
     <string name="stereo_status_running">Converting to 3D… %1$d%%</string>
     <string name="stereo_status_queued">Waiting to convert to 3D</string>
     <string name="player_passthrough">Passthrough</string>

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "repository": "https://github.com/DepthAnything/Depth-Anything-V2.git",
+    "commit": "a561b849ebae10a6f5ef49e26c83cbbcd36c71bf",
+    "weights": "https://huggingface.co/depth-anything/Depth-Anything-V2-Small/resolve/03876f8651c73a60fe4c2c48294e09fcb6838fcf/depth_anything_v2_vits.pth",
+    "weights_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+    "license": "Apache-2.0"
+  },
+  "release": "depth-model",
+  "models": [
+    {
+      "name": "live",
+      "file": "depth_anything_v2_small_live_364.tflite",
+      "input_size": 364,
+      "bytes": 49659680,
+      "sha256": "875590dad368b1f3c97d1051ca4f3c48d75f51dc48c0c95f9224500028b6e273"
+    },
+    {
+      "name": "full",
+      "file": "depth_anything_v2_small_full_518.tflite",
+      "input_size": 518,
+      "bytes": 50723824,
+      "sha256": "ba32f1012b4e80d6ac79c91dd56dc90b029c404cf8680b6b29d2ffa1b692d23a"
+    }
+  ]
+}

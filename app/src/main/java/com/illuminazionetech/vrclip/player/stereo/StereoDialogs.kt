@@ -59,6 +59,7 @@ fun DepthModelDialog(onDismiss: () -> Unit, onReady: () -> Unit) {
     val manager = remember { DepthModelManager.get(context) }
     val state by manager.state.collectAsStateWithLifecycle()
     val busy = state.isBusy()
+    val haptics = LocalHapticFeedback.current
 
     LaunchedEffect(state) { if (state is DepthModelManager.State.Installed) onReady() }
 
@@ -71,7 +72,7 @@ fun DepthModelDialog(onDismiss: () -> Unit, onReady: () -> Unit) {
                 Text(
                     stringResource(
                         R.string.stereo_model_desc,
-                        DepthModelManager.DOWNLOAD_BYTES.toFileSizeText(),
+                        DepthModel.totalBytes.toFileSizeText(),
                     )
                 )
                 DepthModelStatus(state = state, modifier = Modifier.padding(top = 20.dp))
@@ -83,6 +84,7 @@ fun DepthModelDialog(onDismiss: () -> Unit, onReady: () -> Unit) {
             } else {
                 Button(
                     onClick = {
+                        haptics.performHapticFeedback(HapticFeedbackType.VirtualKey)
                         manager.resetError()
                         manager.start()
                     },
@@ -205,9 +207,7 @@ fun DepthModelStatus(state: DepthModelManager.State, modifier: Modifier = Modifi
                             DepthModelManager.Reason.NoSpace ->
                                 stringResource(
                                     R.string.stereo_model_no_space,
-                                    (DepthModelManager.DOWNLOAD_BYTES +
-                                            DepthModelManager.MODEL_BYTES)
-                                        .toFileSizeText(),
+                                    DepthModel.totalBytes.toFileSizeText(),
                                 )
                         },
                     style = MaterialTheme.typography.bodyMedium,
@@ -228,6 +228,7 @@ fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val manager = remember { DepthModelManager.get(context) }
     var starting by remember { mutableStateOf(false) }
+    val haptics = LocalHapticFeedback.current
 
     val details by
         produceState<Result<Pair<SourceInfo, ConversionPlan>>?>(initialValue = null, videoId) {
@@ -294,7 +295,7 @@ fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
                     Text(
                         stringResource(
                             R.string.stereo_convert_needs_model,
-                            DepthModelManager.DOWNLOAD_BYTES.toFileSizeText(),
+                            DepthModel.totalBytes.toFileSizeText(),
                         )
                     )
                 }
@@ -305,6 +306,7 @@ fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
                 enabled = details?.isSuccess == true && !starting,
                 onClick = {
                     starting = true
+                    haptics.performHapticFeedback(HapticFeedbackType.Confirm)
                     StereoConversionWorker.start(context, videoId)
                     Toast.makeText(context, R.string.stereo_convert_started, Toast.LENGTH_LONG)
                         .show()

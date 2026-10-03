@@ -58,7 +58,6 @@ const val SUBDIRECTORY_PLAYLIST_TITLE = "subdirectory_playlist_title"
 const val PLAYLIST = "playlist"
 private const val LANGUAGE = "language"
 const val NOTIFICATION = "notification"
-private const val THEME_COLOR = "theme_color"
 const val PALETTE_STYLE = "palette_style"
 const val SUBTITLE = "subtitle"
 const val EMBED_SUBTITLE = "embed_subtitle"
@@ -111,6 +110,7 @@ const val PLAYER_SPEED = "player_speed"
 const val PLAYER_GYRO = "player_gyro"
 const val STEREO_STRENGTH = "stereo_strength"
 const val STEREO_POP_OUT = "stereo_pop_out"
+const val STEREO_LIVE_MODEL = "stereo_live_model"
 
 const val DOWNLOAD_TYPE_INITIALIZATION = "download_type_init"
 private const val DOWNLOAD_TYPE = "download_type"
@@ -428,8 +428,6 @@ object PreferenceUtil {
     fun getSavedLinks(): Set<String> = kv.decodeStringSet(SAVED_LINKS) ?: emptySet()
 
     fun updateSavedLinks(links: Set<String>) = kv.encode(SAVED_LINKS, links)
-
-    private const val TAG = "PreferenceUtil"
 }
 
 data class DarkThemePreference(

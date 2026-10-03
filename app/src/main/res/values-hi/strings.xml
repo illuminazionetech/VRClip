@@ -175,7 +175,6 @@
     </plurals>
     <string name="download_directory_desc">चुनें कि वीडियो और ऑडियो फ़ाइलें कहाँ संग्रहित करनी हैं</string>
     <string name="battery_configuration_desc">इस ऐप को पृष्ठभूमि में डाउनलोड करने के लिए बैटरी ऑप्टिमाइज़ेशन को इग्नोर करें</string>
-    <string name="translate_desc">होस्ट किए गए वेबलेट पर इस ऐप का अनुवाद करने में सहायता करें</string>
     <string name="aria2_desc">बाहरी डाउनलोडर के रूप में aria2c का प्रयोग करें</string>
     <string name="private_mode_desc">डाउनलोड इतिहास अक्षम करें</string>
     <string name="dynamic_color_desc">वॉलपेपर से ऐप थीम पर रंग लागू करें</string>

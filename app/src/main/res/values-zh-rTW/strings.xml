@@ -89,7 +89,6 @@
     <string name="battery_configuration">電池配置</string>
     <string name="service_title">VRClip 正在下載…</string>
     <string name="translate">翻譯</string>
-    <string name="translate_desc">在 Hosted Weblate 上協助翻譯此應用程式</string>
     <string name="new_template">新增範本</string>
     <string name="embed_subtitles_desc">如有提供可用的軟字幕，則將其內嵌至影片中</string>
     <string name="permission_issue">儲存權限有已知問題</string>

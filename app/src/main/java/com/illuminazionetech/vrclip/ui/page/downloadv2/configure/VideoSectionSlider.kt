@@ -56,8 +56,6 @@ import com.illuminazionetech.vrclip.util.toDurationText
 import com.illuminazionetech.vrclip.util.toIntRange
 import kotlin.math.roundToInt
 
-private const val TAG = "VideoSectionSlider"
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomRangeSlider(

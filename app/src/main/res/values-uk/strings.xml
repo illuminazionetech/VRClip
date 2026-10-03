@@ -105,7 +105,6 @@
     <string name="battery_configuration_desc">Ігнорувати оптимізації батареї для фонових завантажень</string>
     <string name="service_title">VRClip завантажує…</string>
     <string name="translate">Перекласти</string>
-    <string name="translate_desc">Допоможіть перекласти VRClip на Weblate</string>
     <string name="embed_subtitles">Вбудовані субтитри</string>
     <string name="embed_subtitles_desc">Вставляти м\'які субтитри у відео, якщо вони доступні</string>
     <string name="new_template">Новий шаблон</string>

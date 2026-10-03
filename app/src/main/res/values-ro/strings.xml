@@ -87,7 +87,6 @@
     <plurals name="selected_item_count">
         <item quantity="other">%1$d selectat</item>
     </plurals>
-    <string name="translate_desc">Ajută la traducerea acestei aplicații pe Hosted Weblate</string>
     <string name="import_from_clipboard">Import din clipboard</string>
     <string name="network">Rețea</string>
     <string name="rate_limit_desc">Limitați rata maximă pentru viteza de descărcare</string>

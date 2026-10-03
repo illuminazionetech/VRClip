@@ -92,7 +92,6 @@
     <string name="download_notification_desc">اطلاع از فایل های دانلود شده و پیشرفت</string>
     <string name="start_download">بارگیری</string>
     <string name="share_fail_msg">مطابقت پیوند از محتوای مشترک ممکن نیست</string>
-    <string name="translate_desc">به ترجمه این برنامه در Weblate میزبانی شده کمک کنید</string>
     <string name="channel_description">اطلاع از فایل های دانلود شده و پیشرفت دانلود</string>
     <string name="video_url">پیوند ویدئو</string>
     <string name="download_finish_notification">دانلود تمام شد. برای باز کردن ضربه بزنید.</string>

@@ -12,18 +12,21 @@ import android.window.OnBackInvokedDispatcher
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import com.illuminazionetech.vrclip.MainActivity
 import com.illuminazionetech.vrclip.R
 import com.illuminazionetech.vrclip.player.FrameInfo
+import com.illuminazionetech.vrclip.player.Live3dState
 import com.illuminazionetech.vrclip.player.PlayerSource
 import com.illuminazionetech.vrclip.player.PlayerUiState
 import com.illuminazionetech.vrclip.player.PlayerViewModel
 import com.illuminazionetech.vrclip.player.ProjectionDetector
 import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.StereoLayout
+import com.illuminazionetech.vrclip.ui.common.Haptic
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.common.SettingsProvider
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
@@ -33,12 +36,16 @@ import com.illuminazionetech.vrclip.util.PreferenceUtil.getBoolean
 import com.meta.spatial.compose.ComposeFeature
 import com.meta.spatial.compose.ComposeViewPanelRegistration
 import com.meta.spatial.core.Entity
+import com.meta.spatial.core.PerformanceLevel
 import com.meta.spatial.core.Pose
 import com.meta.spatial.core.Quaternion
 import com.meta.spatial.core.SpatialFeature
+import com.meta.spatial.core.SpatialSDKExperimentalAPI
 import com.meta.spatial.core.Vector3
+import com.meta.spatial.runtime.ButtonBits
 import com.meta.spatial.runtime.LayerFilters
 import com.meta.spatial.runtime.ReferenceSpace
+import com.meta.spatial.runtime.Scene
 import com.meta.spatial.runtime.StereoMode
 import com.meta.spatial.toolkit.AppSystemActivity
 import com.meta.spatial.toolkit.DpPerMeterDisplayOptions
@@ -55,6 +62,8 @@ import com.meta.spatial.toolkit.Transform
 import com.meta.spatial.toolkit.UIPanelSettings
 import com.meta.spatial.toolkit.VideoSurfacePanelRegistration
 import com.meta.spatial.toolkit.Visible
+import com.meta.spatial.vr.HandMicrogestureLocomotionSystem
+import com.meta.spatial.vr.LocomotionSystem
 import com.meta.spatial.vr.VRFeature
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,6 +90,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         )[PlayerViewModel::class.java]
     }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val controllerHaptics = ControllerHaptics()
 
     private var videoEntity: Entity? = null
     private var controlsEntity: Entity? = null
@@ -88,6 +98,12 @@ class ImmersivePlayerActivity : AppSystemActivity() {
     private var placed = false
     private var ticksWaiting = 0
     private var passthrough = false
+
+    // Wanted by the UI state, applied on the scene's thread in onSceneTick.
+    @Volatile private var videoFrameRate = 0f
+    @Volatile private var liveConversion = false
+    private var appliedFrameRate = -1f
+    private var appliedLiveConversion: Boolean? = null
 
     /** Everything the video panel is built from; a change means rebuilding the panel. */
     private data class VideoPanelConfig(
@@ -110,6 +126,13 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                 .map { configFor(it) }
                 .distinctUntilChanged()
                 .collect { config -> if (config != null && placed) rebuildVideoPanel(config) }
+        }
+        scope.launch {
+            viewModel.state.collect { state ->
+                videoFrameRate = state.frame?.frameRate ?: 0f
+                liveConversion =
+                    state.live3d == Live3dState.On || state.live3d == Live3dState.Starting
+            }
         }
     }
 
@@ -138,6 +161,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             finish()
             return
         }
+        // Live 2D to 3D here feeds the stereo layer: both views side by side.
+        viewModel.setLiveTarget(headset = true)
         // A projection chosen elsewhere (library menu) applies before the file is even opened.
         ProjectionMode.fromStorageKey(intent.getStringExtra(EXTRA_PROJECTION))?.let {
             viewModel.setProjectionOverride(it)
@@ -158,7 +183,11 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                     ComposeView(context).apply {
                         setContent {
                             SettingsProvider(WindowWidthSizeClass.Expanded) {
-                                CompositionLocalProvider(LocalIsVRMode provides true) {
+                                CompositionLocalProvider(
+                                    LocalIsVRMode provides true,
+                                    LocalHapticFeedback provides controllerHaptics,
+                                    LocalControllerHaptics provides controllerHaptics,
+                                ) {
                                     VRClipTheme(darkTheme = true) {
                                         ImmersiveControls(
                                             viewModel = viewModel,
@@ -182,14 +211,25 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             ),
         )
 
+    @OptIn(SpatialSDKExperimentalAPI::class)
     override fun onSceneReady() {
         super.onSceneReady()
         scene.setReferenceSpace(ReferenceSpace.LOCAL)
+        // Video and the panels are Rec. 709 (sRGB) content; left alone, the headset would treat
+        // them as Rec. 2020 and oversaturate them.
+        runCatching { scene.setColorSpace(Scene.ColorSpace.REC709) }
+        // A cinema seat stays put: the thumbsticks and hand gestures that would walk or turn the
+        // viewer away from the screen, or off the center of a 360 sphere, control playback instead.
+        systemManager.tryFindSystem<LocomotionSystem>()?.enableLocomotion(false)
+        systemManager.tryFindSystem<HandMicrogestureLocomotionSystem>()?.enableHandLocomotion(false)
         applyPassthrough()
     }
 
     override fun onSceneTick() {
         super.onSceneTick()
+        val pressed = controllerHaptics.tick(spatial)
+        if (pressed != 0) runOnUiThread { onControllerButtons(pressed) }
+        applyDisplaySettings()
         // Wait until the headset reports a real pose, so the screen lands where the user looks.
         if (!placed) {
             ticksWaiting++
@@ -199,6 +239,57 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                 placed = true
                 panelConfig = configFor(viewModel.state.value) ?: fallbackConfig()
                 createEntities()
+            }
+        }
+    }
+
+    /**
+     * Playback without pointing at the control bar: A or X plays and pauses, either thumbstick
+     * pushed left or right jumps 10 s, B or Y brings the screen back in front of the viewer.
+     */
+    private fun onControllerButtons(pressed: Int) {
+        fun any(vararg bits: Int) = bits.any { pressed and it != 0 }
+        when {
+            any(ButtonBits.ButtonA, ButtonBits.ButtonX) -> {
+                controllerHaptics.play(Haptic.Tap)
+                viewModel.togglePlayPause()
+            }
+            any(ButtonBits.ButtonThumbRR, ButtonBits.ButtonThumbLR) -> {
+                controllerHaptics.play(Haptic.Step)
+                viewModel.seekBy(PlayerViewModel.SEEK_STEP_MS)
+            }
+            any(ButtonBits.ButtonThumbRL, ButtonBits.ButtonThumbLL) -> {
+                controllerHaptics.play(Haptic.Step)
+                viewModel.seekBy(-PlayerViewModel.SEEK_STEP_MS)
+            }
+            any(ButtonBits.ButtonB, ButtonBits.ButtonY) -> {
+                controllerHaptics.play(Haptic.Step)
+                placeEntities()
+            }
+        }
+    }
+
+    /**
+     * Refresh rate matched to the video's frame rate, and the GPU and CPU held at their sustained
+     * high level while live 2D to 3D runs its depth model, at the low one for plain playback (the
+     * compositor draws the video layer, the app only its control bar).
+     */
+    @OptIn(SpatialSDKExperimentalAPI::class)
+    private fun applyDisplaySettings() {
+        val frameRate = videoFrameRate
+        if (frameRate != appliedFrameRate) {
+            appliedFrameRate = frameRate
+            videoDisplayRates(frameRate).firstOrNull {
+                runCatching { scene.requestExactDisplayRate(it) }.getOrDefault(false)
+            }
+        }
+        val live = liveConversion
+        if (live != appliedLiveConversion) {
+            appliedLiveConversion = live
+            runCatching {
+                spatial.setPerformanceLevel(
+                    if (live) PerformanceLevel.SUSTAINED_HIGH else PerformanceLevel.SUSTAINED_LOW
+                )
             }
         }
     }

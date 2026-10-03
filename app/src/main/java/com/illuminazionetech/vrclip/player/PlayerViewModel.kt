@@ -679,6 +679,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                         ?: 1f,
                 stereoMode = format?.stereoMode ?: Format.NO_VALUE,
                 projectionData = format?.projectionData,
+                frameRate = format?.frameRate?.takeIf { it > 0f } ?: 0f,
             )
         val current = mutableState.value
         if (current.frame == frame) return

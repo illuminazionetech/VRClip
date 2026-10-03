@@ -68,9 +68,12 @@ internal class ControllerHaptics : HapticFeedback {
         }
     }
 
-    /** Called on every scene tick, on the thread that drives the scene. */
-    fun tick(spatial: SpatialInterface) {
-        trackHand()
+    /**
+     * Called on every scene tick, on the thread that drives the scene. Returns the controller
+     * buttons pressed since the last tick ([com.meta.spatial.runtime.ButtonBits]).
+     */
+    fun tick(spatial: SpatialInterface): Int {
+        val pressed = readControllers()
         val now = SystemClock.uptimeMillis()
         // Pulses due in the same frame would cut each other off: the strongest one plays.
         var strongest: Pulse? = null
@@ -83,11 +86,17 @@ internal class ControllerHaptics : HapticFeedback {
                 iterator.remove()
             }
         }
-        val pulse = strongest ?: return
-        spatial.applyHapticFeedback(hand, pulse.amplitude, pulse.durationMs * NS_PER_MS, FREQUENCY)
+        strongest?.let {
+            spatial.applyHapticFeedback(hand, it.amplitude, it.durationMs * NS_PER_MS, FREQUENCY)
+        }
+        return pressed
     }
 
-    private fun trackHand() {
+    /**
+     * New presses on both controllers; the last controller pressed becomes the one that vibrates.
+     */
+    private fun readControllers(): Int {
+        var pressed = 0
         Query.where { has(Controller.id, AvatarAttachment.id) }
             .eval()
             .forEach { entity ->
@@ -95,12 +104,15 @@ internal class ControllerHaptics : HapticFeedback {
                 if (!controller.isActive || controller.type != ControllerType.CONTROLLER) {
                     return@forEach
                 }
-                if (controller.buttonState and controller.changedButtons == 0) return@forEach
+                val down = controller.buttonState and controller.changedButtons
+                if (down == 0) return@forEach
+                pressed = pressed or down
                 when (entity.getComponent<AvatarAttachment>().type) {
                     "left_controller" -> hand = Hand.LEFT
                     "right_controller" -> hand = Hand.RIGHT
                 }
             }
+        return pressed
     }
 
     private companion object {

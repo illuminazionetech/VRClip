@@ -14,6 +14,8 @@ data class FrameInfo(
     /** Media3 `C.STEREO_MODE_*` value, or -1 when the container says nothing. */
     val stereoMode: Int = -1,
     val projectionData: ByteArray? = null,
+    /** Frames per second from the container, or 0 when unknown. */
+    val frameRate: Float = 0f,
 ) {
     val aspect: Float
         get() = if (height > 0) width * pixelWidthHeightRatio / height else 0f
@@ -24,6 +26,7 @@ data class FrameInfo(
             height == other.height &&
             pixelWidthHeightRatio == other.pixelWidthHeightRatio &&
             stereoMode == other.stereoMode &&
+            frameRate == other.frameRate &&
             projectionData.contentEquals(other.projectionData)
 
     override fun hashCode(): Int =

@@ -90,7 +90,6 @@
     <string name="permission_issue">Problema de permissão de armazenamento</string>
     <string name="translate">Traduzir</string>
     <string name="battery_configuration_desc">Ignorar \"Otimização da Bateria\" para este aplicativo fazer download em segundo plano</string>
-    <string name="translate_desc">Ajude a traduzir este aplicativo em seu idioma usando Weblate</string>
     <string name="back">Voltar</string>
     <string name="custom_command_desc">Executar o comando yt-dlp com um modelo personalizado</string>
     <string name="custom_command_template">Modelo de comando</string>

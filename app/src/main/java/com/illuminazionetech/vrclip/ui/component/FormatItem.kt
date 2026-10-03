@@ -427,7 +427,6 @@ fun PreviewFormat() {
         var selected by remember { mutableIntStateOf(-1) }
         Surface {
             Column() {
-                //                FormatSubtitle(text = stringResource(R.string.video_only))
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(150.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),

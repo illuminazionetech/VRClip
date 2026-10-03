@@ -34,7 +34,6 @@
     <string name="share_fail_msg">බෙදාගත් අන්තර්ගතයෙන් URL ගැලපීමට නොහැක</string>
     <string name="service_title">VRClip බාගත කරගනිමින් පවතී…</string>
     <string name="translate">පරිවර්තනය</string>
-    <string name="translate_desc">යෙදුම Hosted Weblate මත පරිවර්තනය කිරීමට සහාය වන්න</string>
     <string name="remove_template">ඉවත් කරන්න\?</string>
     <string name="info_copied">තොරතුරු ක්ලිප්බෝඩයට පිටපත් විය</string>
     <string name="status_downloading">බාගනිමින්</string>

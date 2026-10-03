@@ -1,11 +1,23 @@
-<b>Features</b>
-Download videos and audio from the platforms supported by yt-dlp
-Watch downloads in the built-in player with automatic flat/360/180/3D detection
-Fully immersive playback on Meta Quest through the Meta Spatial SDK
-OpenGL sphere rendering with touch and gyroscope panning on phones and tablets
-Embed metadata, subtitles, and thumbnails into downloaded files
-Download whole playlists with one click
-Use the embedded aria2c as external downloader
-Execute custom yt-dlp commands with templates
-Material 3 Expressive UI with dynamic color theming
-No ads, no tracking, no accounts
+<b>Download</b>
+Videos and audio from the sites supported by yt-dlp, whole playlists included
+A high resolution preset for 360 and 3D that picks the largest video your device can decode
+Metadata, subtitles and thumbnails embedded in the files, aria2c as optional downloader
+Custom yt-dlp commands with templates
+
+<b>Watch</b>
+Built-in player that recognises flat, 360, 180 and 3D video by itself
+360 and 180 video panned with touch or by moving the phone
+3D files shown side by side for a viewer, as anaglyph or one eye at a time
+Resume, speed, audio and subtitle tracks, gestures, picture in picture
+
+<b>2D to 3D</b>
+Turns any flat video into 3D with the Depth Anything V2 depth model, on the device
+Live while you watch: on a phone, tilt it to look around the scene, no glasses needed
+Or converted once into a side by side 3D file
+
+<b>Meta Quest</b>
+Immersive player built on the Meta Spatial SDK: a large screen for flat video, a sphere for 360,
+native stereo for 3D files and live 2D to 3D, passthrough, a control bar you can grab
+
+<b>Privacy</b>
+No ads, no tracking, no accounts. Open source under GPL-3.0.

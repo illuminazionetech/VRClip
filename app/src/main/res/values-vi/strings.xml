@@ -119,7 +119,6 @@
     <string name="battery_configuration_desc">Bỏ qua Tối ưu hóa pin để ứng dụng này tải xuống trong nền</string>
     <string name="service_title">VRClip đang tải xuống…</string>
     <string name="translate">Dịch</string>
-    <string name="translate_desc">Giúp dịch ứng dụng này trên Hosted Weblate</string>
     <string name="embed_subtitles">Nhúng phụ đề</string>
     <string name="embed_subtitles_desc">Nhúng phụ đề rời vào video nếu có</string>
     <string name="new_template">Bản mẫu mới</string>

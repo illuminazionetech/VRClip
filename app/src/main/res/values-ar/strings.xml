@@ -65,7 +65,6 @@
     <string name="battery_configuration">إدارة البطارية</string>
     <string name="battery_configuration_desc">تجاهل تحسين البطارية لجعل هذا التطبيق يحمل في الخلفية</string>
     <string name="translate">ترجم</string>
-    <string name="translate_desc">ساعد في ترجمة هذا التطبيق على Weblate</string>
     <string name="video_directory">مجلد الفيديو</string>
     <string name="settings">الإعدادات</string>
     <string name="download">تنزيل</string>

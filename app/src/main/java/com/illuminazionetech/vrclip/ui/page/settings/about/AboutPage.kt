@@ -40,10 +40,10 @@ import com.illuminazionetech.vrclip.util.makeToast
 
 private const val releaseURL = "https://github.com/illuminazionetech/VRClip/releases/latest"
 private const val repoUrl = "https://github.com/illuminazionetech/VRClip"
-const val weblate = "https://hosted.weblate.org/engage/xrclip/"
+/** Translations are pull requests on GitHub; the guide explains which files to edit. */
+const val TranslationsUrl =
+    "https://github.com/illuminazionetech/VRClip/blob/main/CONTRIBUTING.md#translations"
 const val YtdlpRepository = "https://github.com/yt-dlp/yt-dlp"
-private const val githubIssueUrl = "https://github.com/illuminazionetech/VRClip/issues"
-private const val TAG = "AboutPage"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

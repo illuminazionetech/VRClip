@@ -95,7 +95,6 @@
     <string name="download_directory">Downloadordner</string>
     <string name="execute_command_notification">Benutzerdefinierte Befehlen ausführen …</string>
     <string name="translate">Übersetzen</string>
-    <string name="translate_desc">Hilf bei der Übersetzung dieser App auf Weblate</string>
     <string name="edit_template_desc">Ausgabepfad und URL werden von der App hinzugefügt.</string>
     <plurals name="concurrent_download_num">
         <item quantity="other">%d Thread(s) würden für das gleichzeitige Herunterladen von nativen DASH/HLS-Videos verwendet werden.</item>

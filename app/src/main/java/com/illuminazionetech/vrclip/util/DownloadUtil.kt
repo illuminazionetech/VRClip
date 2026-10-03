@@ -91,7 +91,6 @@ object DownloadUtil {
         makeToast(context.getString(R.string.fetching_playlist_info))
         val request = YoutubeDLRequest(playlistURL)
         with(request) {
-            //            addOption("--compat-options", "no-youtube-unavailable-videos")
             addOption("--flat-playlist")
             addOption("--dump-single-json")
             addOption("-o", BASENAME)
@@ -160,9 +159,6 @@ object DownloadUtil {
                     if (forceIpv4) {
                         addOption("-4")
                     }
-                    /*            if (debug) {
-                        addOption("-v")
-                    }*/
                     if (autoSubtitle) {
                         addOption("--write-auto-subs")
                         if (!autoTranslatedSubtitles) {
@@ -687,7 +683,6 @@ object DownloadUtil {
             request
                 .apply {
                     addOption("--no-mtime")
-                    //                addOption("-v")
                     if (cookies) {
                         enableCookies(userAgentString)
                     }

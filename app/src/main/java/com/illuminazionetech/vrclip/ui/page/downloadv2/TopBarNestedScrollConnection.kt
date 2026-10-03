@@ -9,8 +9,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.unit.Velocity
 import kotlin.math.abs
 
-private const val TAG = "TopBarNestedScrollConne"
-
 /*
  offset < 0 = scroll down, finger & content going upward
  offset > 0 = scroll up, finger & content going downward

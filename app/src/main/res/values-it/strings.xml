@@ -100,7 +100,7 @@
     <string name="service_title">VRClip sta scaricando…</string>
     <string name="subdirectory_desc">Salva i file in cartelle chiamate come i rispettivi siti web</string>
     <string name="permission_issue">Problema relativo all\'autorizzazione di archiviazione</string>
-    <string name="translate_desc">Contribuisci a tradurre questa applicazione su Hosted Weblate</string>
+    <string name="translate_desc">Contribuisci a tradurre questa applicazione su GitHub</string>
     <string name="battery_configuration_desc">Ignora l\'ottimizzazione della batteria per lo scaricamento dell\'app in sfondo</string>
     <string name="translate">Traduci</string>
     <string name="permission_issue_desc">Le directory al di fuori di Download/ e Documenti/ non sono supportate</string>

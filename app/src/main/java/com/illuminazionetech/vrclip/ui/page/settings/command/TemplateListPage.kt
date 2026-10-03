@@ -88,8 +88,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val TAG = "TemplateListPage"
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TemplateListPage(onNavigateBack: () -> Unit, onNavigateToEditPage: (Int) -> Unit) {

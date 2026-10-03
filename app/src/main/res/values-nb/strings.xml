@@ -82,7 +82,6 @@
     <string name="execute_command_notification">Kjører egendefinerte kommandoer …</string>
     <string name="video_quality_desc">Begrens formatkvaliteten til dette nivået</string>
     <string name="translate">Oversett</string>
-    <string name="translate_desc">Bistå oversettelsen på Hosted Weblate</string>
     <string name="video_directory">Videomappe</string>
     <string name="extract_audio">Lagre som lyd</string>
     <string name="extract_audio_summary">Last ned og lagre lyd istedenfor video</string>

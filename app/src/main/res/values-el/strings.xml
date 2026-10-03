@@ -256,7 +256,6 @@
     <string name="permission_issue_desc">Δεν υποστηρίζονται κατάλογοι εκτός των Download/ και Documents/</string>
     <string name="service_title">Η VRClip κατεβάζει…</string>
     <string name="translate">Μεταφράστε</string>
-    <string name="translate_desc">Βοήθεια για τη μετάφραση αυτής της εφαρμογής στο Hosted Weblate</string>
     <string name="embed_subtitles">Ενσωματώστε υπότιτλους</string>
     <string name="remove_template">Αφαιρέστε;</string>
     <string name="template_selection">Επιλογή προτύπου</string>

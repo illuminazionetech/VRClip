@@ -105,7 +105,6 @@
     <string name="battery_configuration">Nastavení baterie</string>
     <string name="service_title">VRClip stahuje…</string>
     <string name="translate">Překlad</string>
-    <string name="translate_desc">Pomozte přeložit tuto aplikaci na Hosted Weblate</string>
     <string name="status_enqueued">Ve frontě</string>
     <string name="status_completed">Dokončeno</string>
     <string name="status_downloading">Stahuje se</string>

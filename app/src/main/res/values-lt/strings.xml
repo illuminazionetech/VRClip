@@ -56,7 +56,6 @@
     <string name="display_settings">Tamsi tema, dinaminės spalvos, kalbos</string>
     <string name="edit">Redaguoti</string>
     <string name="additional_settings">Papildomi nustatymai</string>
-    <string name="translate_desc">Padėkite išversti šią programėlę svetainėje „Hosted Weblate“</string>
     <plurals name="item_count">
         <item quantity="one">%d elementas</item>
         <item quantity="few">%d elementai</item>

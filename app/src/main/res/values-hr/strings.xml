@@ -75,7 +75,6 @@
     <string name="battery_configuration">Konfiguracija baterije</string>
     <string name="battery_configuration_desc">Ignorirajte optimizaciju baterije kako bi aplikacija mogla preuzimati u pozadini</string>
     <string name="service_title">VRClip preuzima…</string>
-    <string name="translate_desc">Pomognite prevesti ovu aplikaciju pomoću Hosted Weblate</string>
     <string name="embed_subtitles_desc">Ugradi titlove u videa, ako su dostupni</string>
     <string name="new_template">Novi predložak</string>
     <string name="template_label">Oznaka</string>

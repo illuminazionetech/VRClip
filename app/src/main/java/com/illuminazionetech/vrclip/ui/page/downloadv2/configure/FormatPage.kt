@@ -110,8 +110,6 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
-private const val TAG = "FormatPage"
-
 private data class FormatConfig(
     val formatList: List<Format>,
     val videoClips: List<VideoClip>,

@@ -105,7 +105,6 @@
     <string name="download_directory_desc">Selecteer waar u video\'s en geluidsbestanden wilt opslaan</string>
     <string name="battery_configuration_desc">Negeer batterijoptimalisatie voor deze app om op de achtergrond te kunnen downloaden</string>
     <string name="translate">Vertalen</string>
-    <string name="translate_desc">Help deze app te vertalen op Hosted Weblate</string>
     <string name="app_up_to_date">De huidige versie is up-to-date</string>
     <string name="template_selection">Sjabloon selectie</string>
     <string name="sponsorblock_desc">Verwijder of markeer segmenten van videos met SponserBlock API</string>

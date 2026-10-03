@@ -112,7 +112,6 @@
     <string name="battery_configuration_desc">Ігнаруйце аптымізацыю акумулятара, каб спампоўваць у фоне</string>
     <string name="service_title">VRClip спампоўвае…</string>
     <string name="translate">Пераклад</string>
-    <string name="translate_desc">Дапамажыце з перакладам на Hosted Weblate</string>
     <string name="embed_subtitles">Убудаваць субтытры</string>
     <string name="template_label">Загаловак</string>
     <string name="remove_template">Выдаліць\?</string>

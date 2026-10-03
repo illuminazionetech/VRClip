@@ -189,7 +189,6 @@
     <string name="sponsorblock_categories">หมวดหมู่ของ SponsorBlock</string>
     <string name="new_template">เทมเพลตใหม่</string>
     <string name="embed_subtitles_desc">ฝังซับไตเติ้ลในไฟล์วิดีโอหากมีมาให้</string>
-    <string name="translate_desc">ช่วยแปลภาษาของแอพฯ นี้บน Hosted Weblate</string>
     <string name="download_directory_desc">เลือกตำแหน่งที่จะเก็บไฟล์วิดีโอและเสียง</string>
     <string name="invalid_index_range">ช่วงดัชนีไม่ถูกต้อง</string>
     <string name="download_range_selection">การเลือกเพลย์ลิสต์</string>

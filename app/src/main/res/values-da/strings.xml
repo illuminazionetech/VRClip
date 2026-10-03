@@ -101,7 +101,6 @@
     <string name="download_notification_desc">Tilby meddelelse om filer og fremdrift</string>
     <string name="download_range_desc">Angiv hvilke videoer, der skal downloades fra afspilningslisten \"%3$s\" (fra %1$d til %2$d).</string>
     <string name="permission_issue_desc">Mapper udenfor Download/ og Documents/ understøttes ikke</string>
-    <string name="translate_desc">Bistå oversættelsen af programmet på Hosted Weblate</string>
     <string name="battery_configuration_desc">Ignorer batterioptimering så dette program kan laste ned i baggrunden</string>
     <string name="fetching_playlist_info">Henter spillelisteinfo …</string>
     <string name="download_notification">Meddelelse om nedlastning</string>

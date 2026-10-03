@@ -59,7 +59,6 @@
     <string name="audio_directory">Hangfájlok mappa</string>
     <string name="permission_issue_desc">A letöltések/ és a dokumentumok/ könyvtáron kívüli könyvtárak nem támogatottak</string>
     <string name="translate">Fordítás</string>
-    <string name="translate_desc">Segits fordítani ezt az appot a Hosted Weblate-n</string>
     <string name="download">Letöltés</string>
     <string name="permission_denied">Hozzáférés megtagadva</string>
     <string name="yt_dlp_up_to_date">A legújabb yt-dlp használva</string>

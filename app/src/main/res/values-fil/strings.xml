@@ -38,7 +38,6 @@
     <string name="download_directory_desc">Pilliin kung saan ilagay ang mga video at audio file</string>
     <string name="permission_issue_desc">Hindi sinusuportahan ang mga directory sa labas ng Download/ at Documents/</string>
     <string name="translate">Isalin</string>
-    <string name="translate_desc">Tumulong sa pag translate ng app na ito sa Hosted Weblate</string>
     <string name="language">Wika ng pag-display</string>
     <string name="delete_info_msg">Alisin ang \"%1$s\" na mula sa iyong kasaysayan ng download nang tuluyan?</string>
     <string name="confirm">Kumpirmahin</string>

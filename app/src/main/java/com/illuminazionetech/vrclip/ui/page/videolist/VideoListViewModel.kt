@@ -22,8 +22,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val TAG = "VideoListViewModel"
-
 class VideoListViewModel : ViewModel() {
 
     private val mutableStateFlow = MutableStateFlow(VideoListViewState())

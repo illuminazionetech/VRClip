@@ -132,7 +132,6 @@ object UpdateUtil {
     sealed class Version(val major: Int, val minor: Int, val patch: Int, val build: Int = 0) :
         Comparable<Version> {
         companion object {
-            // private const val ABI = 1L
             private const val BUILD = 10L
             private const val VARIANT = 100L
             private const val PATCH = 10_000L

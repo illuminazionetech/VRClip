@@ -100,7 +100,6 @@
     <string name="permission_issue">保存領域への権限の問題</string>
     <string name="permission_issue_desc">Download/とDocuments/配下のディレクトリ以外には対応しません</string>
     <string name="battery_configuration">バッテリー設定</string>
-    <string name="translate_desc">Hosted Weblateから本アプリの翻訳にご協力ください</string>
     <string name="embed_subtitles">字幕を埋め込む</string>
     <string name="embed_subtitles_desc">字幕ファイルが利用できれば動画に埋め込む</string>
     <string name="new_template">新しいテンプレート</string>

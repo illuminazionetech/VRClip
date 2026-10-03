@@ -131,7 +131,7 @@
     <string name="battery_configuration_desc">Ignore battery optimization for this app to download in the background</string>
     <string name="service_title">VRClip is downloading…</string>
     <string name="translate">Translate</string>
-    <string name="translate_desc">Help translate this app on Hosted Weblate</string>
+    <string name="translate_desc">Help translate this app on GitHub</string>
     <string name="embed_subtitles">Embed subtitles</string>
     <string name="embed_subtitles_desc">Embed soft-subs into videos if available</string>
     <string name="new_template">New template</string>

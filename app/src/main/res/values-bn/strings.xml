@@ -179,7 +179,6 @@
     <string name="invalid_index_range">ইনডেক্স ভ্যালিড নয়</string>
     <string name="share_fail_msg">শেয়ার করা কনটেন্ট থেকে URL ম্যাচ করা যায়নি</string>
     <string name="video_url">ভিডিও লিঙ্ক</string>
-    <string name="translate_desc">হোস্টেড ওয়েবলেটে এই অ্যাপটি ট্রান্সলেট করতে সাহায্য করুন</string>
     <string name="import_from_clipboard">ক্লিপবোর্ড থেকে ইমপোর্ট করুন</string>
     <plurals name="delete_multiple_items_msg">
         <item quantity="other">আপনার ডাউনলোড হিস্ট্রি থেকে %1$d আইটেম(গুলি) সরাবেন?</item>

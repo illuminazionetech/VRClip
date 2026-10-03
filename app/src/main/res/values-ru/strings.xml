@@ -47,7 +47,6 @@
     <string name="battery_configuration">Настройки энергопотребления</string>
     <string name="service_title">VRClip скачивает…</string>
     <string name="translate">Перевод</string>
-    <string name="translate_desc">Помогите с переводом на Hosted Weblate</string>
     <string name="download">Загрузить</string>
     <string name="permission_denied">Доступ запрещён</string>
     <string name="general_settings">Основные</string>

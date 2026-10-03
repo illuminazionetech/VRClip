@@ -827,7 +827,6 @@ fun VideoQualityDialog(
     )
 }
 
-private const val subtitleOptions = "https://github.com/yt-dlp/yt-dlp#subtitle-options"
 private const val sortingFormats = "https://github.com/yt-dlp/yt-dlp#sorting-formats"
 
 @Composable

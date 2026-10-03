@@ -128,7 +128,6 @@
     <string name="template_label">Rótulos</string>
     <string name="template_selection">Seleção do modelo</string>
     <string name="export_to_clipboard">Exportar para a área de transferência</string>
-    <string name="translate_desc">Ajuda para traduzir esta aplicação no Hosted Weblate</string>
     <string name="remove_template">Remover\?</string>
     <string name="import_from_clipboard">Importar da área de transferência</string>
     <plurals name="template_imported">

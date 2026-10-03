@@ -10,6 +10,7 @@ import android.os.VibratorManager
 import android.provider.Settings
 import android.view.HapticFeedbackConstants
 import android.view.View
+import androidx.annotation.RequiresApi
 
 /**
  * VRClip's haptic vocabulary. Each kind of action always feels the same, on every screen: a crisp
@@ -131,6 +132,7 @@ internal class HapticEngine private constructor(context: Context) {
         return pulse(haptic, vibrator.hasAmplitudeControl())
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     private fun composed(haptic: Haptic): VibrationEffect {
         val click = VibrationEffect.Composition.PRIMITIVE_CLICK
         val tick = VibrationEffect.Composition.PRIMITIVE_TICK
@@ -153,6 +155,7 @@ internal class HapticEngine private constructor(context: Context) {
         return composition.compose()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun predefined(haptic: Haptic): VibrationEffect =
         VibrationEffect.createPredefined(
             when (haptic) {

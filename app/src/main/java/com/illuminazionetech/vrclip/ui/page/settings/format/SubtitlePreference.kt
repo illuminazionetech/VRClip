@@ -59,7 +59,6 @@ fun SubtitlePreference(onNavigateBack: () -> Unit) {
         )
     var downloadSubtitle by SUBTITLE.booleanState
     val sponsorBlock by SPONSORBLOCK.booleanState
-    //    var keepSubtitleFile by KEEP_SUBTITLE_FILES.booleanState
     var embedSubtitle by EMBED_SUBTITLE.booleanState
     var autoSubtitle by AUTO_SUBTITLE.booleanState
     var autoTranslatedSubtitle by AUTO_TRANSLATED_SUBTITLES.booleanState

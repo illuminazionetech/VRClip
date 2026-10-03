@@ -11,7 +11,6 @@ data class VideoInfo(
     val id: String = "",
     val title: String = "",
     val formats: List<Format>? = emptyList(),
-    //    val thumbnails: List<Thumbnail> = emptyList(),
     val thumbnail: String? = null,
     val description: String? = null,
     val uploader: String? = null,

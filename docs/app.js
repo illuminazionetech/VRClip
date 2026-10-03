@@ -128,7 +128,7 @@
       "Nel visore apri la libreria delle app e scegli il filtro Origini sconosciute (in alcune versioni \"App da origini sconosciute\"). VRClip si apre come pannello, come qualsiasi app di Horizon OS.",
     "q5.t": "Scarica e guarda",
     "q5.d":
-      "Incolla un link, o condividilo con VRClip da un'altra app. Finito il download, aprilo dalla Libreria: il player mostra uno schermo grande davanti a te, oppure avvolge intorno a te i video 360° e 180°. La barra sotto il video ha riproduzione, avanzamento, 3D, proiezione, passthrough e ricentra. Funzionano anche i controller: A o X avvia e mette in pausa, una levetta spinta a sinistra o a destra salta di 10 secondi, B o Y riporta lo schermo davanti a te.",
+      "Incolla un link, o condividilo con VRClip da un'altra app. Finito il download, aprilo dalla Libreria: il player mostra uno schermo grande davanti a te, oppure avvolge intorno a te i video 360° e 180°. La barra sotto il video ha riproduzione, avanzamento, 3D, proiezione, audio e sottotitoli, passthrough e ricentra. Funzionano anche i controller: A o X avvia e mette in pausa, una levetta spinta a sinistra o a destra salta di 10 secondi, B o Y riporta lo schermo davanti a te. Un video aperto da un'altra app, come File o LocalSend, si riproduce nello stesso player se scegli VRClip.",
     "q6.t": "Trasforma un video piatto in 3D",
     "q6.d":
       "Premi 3D sulla barra per convertire mentre guardi, oppure apri i dettagli del video nella Libreria e scegli Converti in 3D per creare un file 3D permanente. La prima volta VRClip scarica il modello di profondità.",
@@ -152,6 +152,9 @@
     "faq7.q": "Su Meta Quest il player si chiude appena si apre",
     "faq7.a":
       "È un errore di VRClip 1.3.0, corretto nella 1.4.0. La libreria funziona: apri Impostazioni, Informazioni e cerca gli aggiornamenti, oppure installa il nuovo APK come la prima volta.",
+    "faq8.q": "Su Meta Quest il 3D dal vivo mostra la mappa di profondità sotto il video, oppure un video inviato da un'altra app resta nero",
+    "faq8.a":
+      "Sono due errori di VRClip 1.4.0, corretti nella 1.4.1: il 3D dal vivo ora mostra una vista per occhio, e i video aperti da File, LocalSend o un'altra app si riproducono. Apri Impostazioni, Informazioni e cerca gli aggiornamenti.",
     "faq6.q": "Si può scaricare da qualsiasi sito?",
     "faq6.a": "VRClip è uno strumento: rispetta i termini dei siti che usi e il diritto d'autore di ciò che scarichi.",
     "cta.title": "Portalo nel visore",

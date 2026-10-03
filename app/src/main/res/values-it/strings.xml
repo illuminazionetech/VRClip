@@ -599,6 +599,7 @@
     <string name="stereo_model_installed">Modello 3D installato (%1$s)</string>
     <string name="stereo_model_not_installed">Modello 3D non installato</string>
     <string name="stereo_model_delete">Elimina il modello</string>
+    <string name="stereo_model_delete_desc">Libera %1$s. VRClip lo scaricherà di nuovo la prossima volta che userai la conversione da 2D a 3D.</string>
     <string name="stereo_status_running">Conversione in 3D… %1$d%%</string>
     <string name="stereo_status_queued">In attesa di conversione in 3D</string>
     <string name="player_passthrough">Passthrough</string>

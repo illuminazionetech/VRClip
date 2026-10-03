@@ -25,6 +25,15 @@
 -dontobfuscate
 
 -keep class com.yausername.** { *; }
+
+# Meta Spatial SDK: systems and features are registered, looked up and checked for duplicates by
+# their class (SystemManager.findSystem<T>()). R8's class merging folded several distinct systems
+# into com.meta.spatial.toolkit.ScaleSystem, and the immersive player crashed at launch with
+# "ScaleSystem already registered ... Duplicate Systems are not allowed". Keeping the SDK's classes
+# out of merging keeps one class per system; unused classes and members are still removed.
+-keep,allowshrinking class com.meta.spatial.**
+-keep,allowshrinking class * extends com.meta.spatial.core.SystemBase
+-keep,allowshrinking class * implements com.meta.spatial.core.SpatialFeature
 -keep class org.apache.commons.compress.archivers.zip.** { *; }
 
 # Keep `Companion` object fields of serializable classes.

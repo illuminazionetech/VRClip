@@ -163,6 +163,10 @@ jobs:
       - name: Build release APKs
         run: ./gradlew :app:assembleRelease -Pvrclip.versionName=$VERSION --stacktrace
 
+      - name: Check that R8 kept the Meta Spatial SDK classes apart
+        # The SDK registers systems by class; merged systems crash the Quest player at launch.
+        run: python3 .github/scripts/check-spatial-merging.py app/build/outputs/mapping/*Release/mapping.txt
+
       - name: Build release App Bundle
         # The bundle task cannot resolve a single output while per-ABI APK splits are enabled,
         # so the bundle is built separately with splits off; a bundle carries every ABI anyway.

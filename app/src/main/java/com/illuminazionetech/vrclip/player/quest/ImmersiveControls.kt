@@ -58,6 +58,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -82,6 +83,7 @@ import com.illuminazionetech.vrclip.player.PlayerViewModel
 import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.displayName
 import com.illuminazionetech.vrclip.player.formatTime
+import com.illuminazionetech.vrclip.player.rememberPlayerHaptics
 import com.illuminazionetech.vrclip.player.speedLabel
 import com.illuminazionetech.vrclip.player.stereo.DepthModel
 import com.illuminazionetech.vrclip.player.stereo.DepthModelManager
@@ -101,6 +103,9 @@ private enum class ControlsPage {
 
 private val questSpeeds = listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f)
 
+/** Ticks felt while dragging the position across the whole video. */
+private const val SCRUB_TICKS = 20
+
 /**
  * Control bar of the immersive player, drawn on a panel in the scene. Everything stays inside the
  * panel (no dialogs or popup menus, which would open outside the scene): secondary choices slide in
@@ -117,9 +122,14 @@ internal fun ImmersiveControls(
     val state by viewModel.state.collectAsStateWithLifecycle()
     var page by remember { mutableStateOf(ControlsPage.Main) }
     var passthroughOn by remember { mutableStateOf(passthrough) }
+    val haptics = rememberPlayerHaptics()
 
     LaunchedEffect(state.live3d) {
-        if (state.live3d == Live3dState.NeedsModel) page = ControlsPage.Model
+        when (state.live3d) {
+            Live3dState.NeedsModel -> page = ControlsPage.Model
+            Live3dState.Failed -> haptics.reject()
+            else -> Unit
+        }
     }
 
     Surface(
@@ -198,7 +208,10 @@ private fun MainPage(
 ) {
     var dragging by remember { mutableStateOf(false) }
     var dragValue by remember { mutableFloatStateOf(0f) }
+    var lastTick by remember { mutableIntStateOf(0) }
     val duration = state.durationMs.coerceAtLeast(1L)
+    val haptics = rememberPlayerHaptics()
+    val hover = LocalControllerHaptics.current
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
@@ -216,7 +229,14 @@ private fun MainPage(
                 color = MaterialTheme.colorScheme.primary,
             )
         }
-        IconButton(onClick = onClose, shapes = IconButtonDefaults.shapes()) {
+        IconButton(
+            onClick = {
+                haptics.tap()
+                onClose()
+            },
+            shapes = IconButtonDefaults.shapes(),
+            modifier = Modifier.hoverHaptic(hover),
+        ) {
             Icon(Icons.Rounded.Close, contentDescription = stringResource(R.string.close))
         }
     }
@@ -228,14 +248,21 @@ private fun MainPage(
             style = tabular,
         )
         Slider(
-            modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
+            modifier = Modifier.weight(1f).padding(horizontal = 16.dp).hoverHaptic(hover),
             value =
                 if (dragging) dragValue
                 else (state.positionMs.toFloat() / duration).coerceIn(0f, 1f),
             onValueChange = {
                 if (!dragging) {
                     dragging = true
+                    lastTick = (it * SCRUB_TICKS).toInt()
+                    haptics.gestureStart()
                     viewModel.setScrubbing(true)
+                }
+                val tick = (it * SCRUB_TICKS).toInt()
+                if (tick != lastTick) {
+                    lastTick = tick
+                    haptics.tick()
                 }
                 dragValue = it
                 viewModel.seekTo((it * duration).toLong())
@@ -243,6 +270,7 @@ private fun MainPage(
             onValueChangeFinished = {
                 viewModel.seekTo((dragValue * duration).toLong())
                 viewModel.setScrubbing(false)
+                haptics.gestureEnd()
                 dragging = false
             },
             enabled = state.durationMs > 0,
@@ -263,7 +291,13 @@ private fun MainPage(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         QuestSeekButton(forward = false) { viewModel.seekBy(-PlayerViewModel.SEEK_STEP_MS) }
-        QuestPlayButton(state = state, onClick = viewModel::togglePlayPause)
+        QuestPlayButton(
+            state = state,
+            onClick = {
+                haptics.tap()
+                viewModel.togglePlayPause()
+            },
+        )
         QuestSeekButton(forward = true) { viewModel.seekBy(PlayerViewModel.SEEK_STEP_MS) }
         Spacer(Modifier.weight(1f))
         Row(
@@ -273,7 +307,13 @@ private fun MainPage(
         ) {
             if (state.canConvertLive || state.live3d != Live3dState.Off) {
                 val on = state.live3d == Live3dState.On || state.live3d == Live3dState.Starting
-                BarToggle(checked = on, onCheckedChange = { viewModel.setLive3d(!on) }) {
+                BarToggle(
+                    checked = on,
+                    onCheckedChange = {
+                        haptics.toggle(!on)
+                        viewModel.setLive3d(!on)
+                    },
+                ) {
                     if (state.live3d == Live3dState.Starting) {
                         LoadingIndicator(
                             Modifier.size(20.dp),
@@ -304,7 +344,13 @@ private fun MainPage(
                 onClick = { onOpen(ControlsPage.Projection) },
             )
             if (!state.renderProjection.isSpherical) {
-                BarToggle(checked = passthrough, onCheckedChange = { onTogglePassthrough() }) {
+                BarToggle(
+                    checked = passthrough,
+                    onCheckedChange = {
+                        haptics.toggle(!passthrough)
+                        onTogglePassthrough()
+                    },
+                ) {
                     Icon(
                         if (passthrough) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
                         contentDescription = null,
@@ -314,7 +360,14 @@ private fun MainPage(
                     Text(stringResource(R.string.player_passthrough))
                 }
             }
-            FilledTonalIconButton(onClick = onRecenter, shapes = IconButtonDefaults.shapes()) {
+            FilledTonalIconButton(
+                onClick = {
+                    haptics.step()
+                    onRecenter()
+                },
+                shapes = IconButtonDefaults.shapes(),
+                modifier = Modifier.hoverHaptic(hover),
+            ) {
                 Icon(
                     Icons.Rounded.CenterFocusStrong,
                     contentDescription = stringResource(R.string.player_recenter),
@@ -338,8 +391,10 @@ private fun QuestSeekButton(forward: Boolean, onClick: () -> Unit) {
     val scope = rememberCoroutineScope()
     val rotation = remember { Animatable(0f) }
     val spatial = MaterialTheme.motionScheme.fastSpatialSpec<Float>()
+    val haptics = rememberPlayerHaptics()
     FilledTonalIconButton(
         onClick = {
+            haptics.step()
             onClick()
             scope.launch {
                 rotation.animateTo(if (forward) 40f else -40f, spatial)
@@ -347,7 +402,9 @@ private fun QuestSeekButton(forward: Boolean, onClick: () -> Unit) {
             }
         },
         shapes = IconButtonDefaults.shapes(),
-        modifier = Modifier.size(IconButtonDefaults.mediumContainerSize()),
+        modifier =
+            Modifier.size(IconButtonDefaults.mediumContainerSize())
+                .hoverHaptic(LocalControllerHaptics.current),
     ) {
         Icon(
             if (forward) Icons.Rounded.Forward10 else Icons.Rounded.Replay10,
@@ -372,7 +429,10 @@ private fun QuestPlayButton(state: PlayerUiState, onClick: () -> Unit) {
     FilledIconButton(
         onClick = onClick,
         shape = RoundedCornerShape(percent = corner.roundToInt()),
-        modifier = Modifier.size(DpSize(80.dp, 64.dp)).semantics { contentDescription = label },
+        modifier =
+            Modifier.size(DpSize(80.dp, 64.dp))
+                .hoverHaptic(LocalControllerHaptics.current)
+                .semantics { contentDescription = label },
     ) {
         AnimatedContent(
             targetState =
@@ -416,15 +476,19 @@ private fun BarToggle(
                 contentColor = MaterialTheme.colorScheme.onSurface,
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        modifier = Modifier.height(48.dp),
+        modifier = Modifier.height(48.dp).hoverHaptic(LocalControllerHaptics.current),
         content = content,
     )
 }
 
 @Composable
 private fun BarButton(icon: ImageVector, label: String, onClick: () -> Unit) {
+    val haptics = rememberPlayerHaptics()
     Button(
-        onClick = onClick,
+        onClick = {
+            haptics.tap()
+            onClick()
+        },
         shapes = ButtonDefaults.shapes(),
         colors =
             ButtonDefaults.buttonColors(
@@ -432,7 +496,7 @@ private fun BarButton(icon: ImageVector, label: String, onClick: () -> Unit) {
                 contentColor = MaterialTheme.colorScheme.onSurface,
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        modifier = Modifier.height(48.dp),
+        modifier = Modifier.height(48.dp).hoverHaptic(LocalControllerHaptics.current),
     ) {
         Icon(icon, contentDescription = null, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(8.dp))
@@ -442,8 +506,16 @@ private fun BarButton(icon: ImageVector, label: String, onClick: () -> Unit) {
 
 @Composable
 private fun PageHeader(title: String, onBack: () -> Unit) {
+    val haptics = rememberPlayerHaptics()
     Row(verticalAlignment = Alignment.CenterVertically) {
-        FilledTonalIconButton(onClick = onBack, shapes = IconButtonDefaults.shapes()) {
+        FilledTonalIconButton(
+            onClick = {
+                haptics.tap()
+                onBack()
+            },
+            shapes = IconButtonDefaults.shapes(),
+            modifier = Modifier.hoverHaptic(LocalControllerHaptics.current),
+        ) {
             Icon(
                 Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
@@ -462,12 +534,20 @@ private fun <T> ChoiceRow(
     label: @Composable (T) -> String,
     onSelect: (T) -> Unit,
 ) {
+    val haptics = rememberPlayerHaptics()
     Row(
         modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         choices.forEach { choice ->
-            BarToggle(checked = selected(choice), onCheckedChange = { onSelect(choice) }) {
+            val isSelected = selected(choice)
+            BarToggle(
+                checked = isSelected,
+                onCheckedChange = {
+                    if (!isSelected) haptics.step()
+                    onSelect(choice)
+                },
+            ) {
                 Text(label(choice), maxLines = 1)
             }
         }
@@ -532,6 +612,8 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val manager = remember { DepthModelManager.get(context) }
     val modelState by manager.state.collectAsStateWithLifecycle()
+    val haptics = rememberPlayerHaptics()
+    val hover = LocalControllerHaptics.current
     LaunchedEffect(modelState) { if (modelState is DepthModelManager.State.Installed) onReady() }
 
     PageHeader(stringResource(R.string.stereo_model_title), onBack)
@@ -551,8 +633,12 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
             DepthModelStatus(state = modelState)
             if (modelState.isBusy()) {
                 Button(
-                    onClick = manager::cancel,
+                    onClick = {
+                        haptics.tap()
+                        manager.cancel()
+                    },
                     shapes = ButtonDefaults.shapes(),
+                    modifier = Modifier.hoverHaptic(hover),
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
@@ -564,10 +650,12 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
             } else {
                 Button(
                     onClick = {
+                        haptics.tap()
                         manager.resetError()
                         manager.start()
                     },
                     shapes = ButtonDefaults.shapes(),
+                    modifier = Modifier.hoverHaptic(hover),
                 ) {
                     Text(
                         stringResource(

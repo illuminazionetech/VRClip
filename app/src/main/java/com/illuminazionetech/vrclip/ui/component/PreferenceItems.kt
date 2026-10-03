@@ -237,7 +237,8 @@ fun PreferenceSingleChoiceItem(
     contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
     onClick: () -> Unit,
 ) {
-    Surface(modifier = Modifier.selectable(selected = selected, onClick = onClick)) {
+    val select = rememberSelectHaptic(selected, onClick)
+    Surface(modifier = Modifier.selectable(selected = selected, onClick = select)) {
         Row(
             modifier = modifier.fillMaxWidth().padding(contentPadding),
             verticalAlignment = Alignment.CenterVertically,
@@ -252,13 +253,9 @@ fun PreferenceSingleChoiceItem(
                 )
             }
             if (LocalIsVRMode.current) {
-                SpatialRadioButton(selected = selected, onClick = onClick)
+                SpatialRadioButton(selected = selected, onClick = select)
             } else {
-                RadioButton(
-                    selected = selected,
-                    onClick = onClick,
-                    modifier = Modifier.padding(),
-                )
+                RadioButton(selected = selected, onClick = select)
             }
         }
     }
@@ -896,6 +893,20 @@ fun PreferenceInfo(
 @Preview(showBackground = true)
 fun PreferenceInfoPreview() {
     PreferenceInfo(text = stringResource(id = R.string.custom_command_enabled_hint))
+}
+
+/** Wraps a choice's callback with a step haptic when it changes the selection. */
+@Composable
+private fun rememberSelectHaptic(selected: Boolean, action: () -> Unit): () -> Unit {
+    val haptics = LocalHapticFeedback.current
+    val currentAction by rememberUpdatedState(action)
+    val isSelected by rememberUpdatedState(selected)
+    return remember(haptics) {
+        {
+            if (!isSelected) haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+            currentAction()
+        }
+    }
 }
 
 /** Wraps a switch callback with the toggle haptic for the state it is about to enter. */

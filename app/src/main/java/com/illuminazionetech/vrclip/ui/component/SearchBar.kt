@@ -1,6 +1,5 @@
 package com.illuminazionetech.vrclip.ui.component
 
-import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -26,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.ui.common.HapticFeedback.slightHapticFeedback
 import com.illuminazionetech.vrclip.ui.common.LocalIsVRMode
 import com.illuminazionetech.vrclip.ui.theme.VRClipTheme
 import com.meta.spatial.uiset.input.SpatialSearchBar
@@ -71,7 +71,7 @@ fun VRClipSearchBar(
                             IconButton(
                                 onClick = {
                                     onValueChange("")
-                                    view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                                    view.slightHapticFeedback()
                                 }
                             ) {
                                 Icon(

@@ -12,6 +12,7 @@ import android.window.OnBackInvokedDispatcher
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
@@ -81,6 +82,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
         )[PlayerViewModel::class.java]
     }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val controllerHaptics = ControllerHaptics()
 
     private var videoEntity: Entity? = null
     private var controlsEntity: Entity? = null
@@ -160,7 +162,11 @@ class ImmersivePlayerActivity : AppSystemActivity() {
                     ComposeView(context).apply {
                         setContent {
                             SettingsProvider(WindowWidthSizeClass.Expanded) {
-                                CompositionLocalProvider(LocalIsVRMode provides true) {
+                                CompositionLocalProvider(
+                                    LocalIsVRMode provides true,
+                                    LocalHapticFeedback provides controllerHaptics,
+                                    LocalControllerHaptics provides controllerHaptics,
+                                ) {
                                     VRClipTheme(darkTheme = true) {
                                         ImmersiveControls(
                                             viewModel = viewModel,
@@ -192,6 +198,7 @@ class ImmersivePlayerActivity : AppSystemActivity() {
 
     override fun onSceneTick() {
         super.onSceneTick()
+        controllerHaptics.tick(spatial)
         // Wait until the headset reports a real pose, so the screen lands where the user looks.
         if (!placed) {
             ticksWaiting++

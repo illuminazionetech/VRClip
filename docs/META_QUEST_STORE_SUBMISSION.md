@@ -40,6 +40,9 @@ player is an immersive activity. Present in `app/src/main/AndroidManifest.xml`:
       `uses-feature` entries
 - [x] `com.oculus.permission.HAND_TRACKING`, `com.oculus.permission.RENDER_MODEL`,
       `com.oculus.permission.USE_SCENE`, `android.permission.MODIFY_AUDIO_SETTINGS`
+- [x] `android.permission.VIBRATE`, for touch feedback on phones. Headsets have no vibration
+      motor: in the immersive player the Touch controllers vibrate through the Spatial SDK, which
+      needs no permission.
 
 Still to confirm before submission (needs a headset and the Meta developer dashboard, it cannot
 be verified from source):

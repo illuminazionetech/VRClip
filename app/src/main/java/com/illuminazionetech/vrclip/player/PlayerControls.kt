@@ -1112,6 +1112,7 @@ private fun ResumeHint(
     onStartOver: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val haptics = rememberPlayerHaptics()
     LaunchedEffect(resumedFromMs) {
         if (resumedFromMs != null) {
             delay(7_000)
@@ -1140,7 +1141,10 @@ private fun ResumeHint(
                 )
                 Spacer(Modifier.width(8.dp))
                 TextButton(
-                    onClick = onStartOver,
+                    onClick = {
+                        haptics.tap()
+                        onStartOver()
+                    },
                     shapes = ButtonDefaults.shapes(),
                     colors =
                         ButtonDefaults.textButtonColors(
@@ -1161,6 +1165,7 @@ private fun ErrorCard(
     onRetry: () -> Unit,
     onOpenExternally: () -> Unit,
 ) {
+    val haptics = rememberPlayerHaptics()
     Surface(
         modifier = modifier.widthIn(max = 420.dp),
         shape = MaterialTheme.shapes.extraLarge,
@@ -1204,10 +1209,22 @@ private fun ErrorCard(
             )
             Spacer(Modifier.height(20.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedButton(onClick = onOpenExternally, shapes = ButtonDefaults.shapes()) {
+                OutlinedButton(
+                    onClick = {
+                        haptics.tap()
+                        onOpenExternally()
+                    },
+                    shapes = ButtonDefaults.shapes(),
+                ) {
                     Text(stringResource(R.string.player_open_externally))
                 }
-                Button(onClick = onRetry, shapes = ButtonDefaults.shapes()) {
+                Button(
+                    onClick = {
+                        haptics.tap()
+                        onRetry()
+                    },
+                    shapes = ButtonDefaults.shapes(),
+                ) {
                     Text(stringResource(R.string.retry))
                 }
             }

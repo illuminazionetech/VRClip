@@ -266,7 +266,8 @@ jobs:
     if: >-
       github.event_name == 'push' && github.ref == 'refs/heads/main' &&
       needs.version.outputs.release == 'true'
-    needs: [version, lint, test, build]
+    # depth-models: an app release must never point at depth models that are not published yet.
+    needs: [version, lint, test, build, depth-models]
     runs-on: ubuntu-latest
     concurrency:
       group: release

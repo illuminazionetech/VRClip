@@ -28,10 +28,10 @@ Third-party components bundled or depended on by VRClip:
   - LiteRT (https://github.com/google-ai-edge/LiteRT): Apache-2.0, runs the
     depth model
   - Depth Anything V2 Small (https://github.com/DepthAnything/Depth-Anything-V2):
-    Apache-2.0. The model is not bundled: on first use VRClip downloads the
-    TFLite export published by Qualcomm AI Hub (https://aihub.qualcomm.com/),
-    or the identical copy kept in the depth-model release of this repository,
-    and checks it against a fixed SHA-256.
+    Apache-2.0, code and weights. The models are not bundled: tools/depth-model/export.py
+    converts the official weights into LiteRT graphs for mobile GPUs, CI publishes them in the
+    depth-model release of this repository, and the app downloads them on first use and checks
+    them against fixed SHA-256 values.
   - Space Grotesk (https://github.com/floriankarsten/space-grotesk): SIL Open
     Font License 1.1, used only by the website in docs/ (license in
     docs/assets/fonts/OFL.txt)

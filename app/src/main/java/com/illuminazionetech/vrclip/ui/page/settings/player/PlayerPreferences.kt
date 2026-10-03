@@ -40,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.illuminazionetech.vrclip.R
+import com.illuminazionetech.vrclip.player.stereo.DepthModel
 import com.illuminazionetech.vrclip.player.stereo.DepthModelDialog
 import com.illuminazionetech.vrclip.player.stereo.DepthModelManager
 import com.illuminazionetech.vrclip.player.stereo.DepthModelStatus
@@ -184,7 +185,7 @@ fun PlayerPreferences(onNavigateBack: () -> Unit) {
                         if (installed)
                             stringResource(
                                 R.string.stereo_model_installed,
-                                DepthModelManager.MODEL_BYTES.toFileSizeText(),
+                                DepthModel.totalBytes.toFileSizeText(),
                             )
                         else stringResource(R.string.stereo_model_not_installed),
                     description = "Depth Anything V2 Small · Apache-2.0",

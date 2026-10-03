@@ -85,7 +85,7 @@
     "depth.p1":
       "VRClip stima quanto è lontano ogni punto dell'immagine con Depth Anything V2 Small, un modello di profondità che gira sulla GPU del telefono o del visore. Dall'immagine e dalla sua profondità disegna quello che vedrebbe ciascun occhio, riempiendo le zone nascoste dietro gli oggetti vicini con lo sfondo accanto.",
     "depth.p2":
-      "Nel player la conversione avviene in tempo reale. Dalla libreria elabora ogni fotogramma alla massima qualità e, quando il nuovo file risulta completo, sostituisce il video piatto con uno 3D affiancato. Il modello si scarica una volta (circa 90 MB) e viene verificato prima dell'uso.",
+      "Nel player la conversione avviene in tempo reale. Dalla libreria elabora ogni fotogramma alla massima qualità e, quando il nuovo file risulta completo, sostituisce il video piatto con uno 3D affiancato. I modelli si scaricano una volta (circa 100 MB) e vengono verificati prima dell'uso.",
     "depth.c1": "1. Il fotogramma piatto",
     "depth.c2": "2. La profondità stimata (chiaro è vicino)",
     "depth.c3": "3. Occhio sinistro e destro, affiancati",
@@ -147,7 +147,7 @@
       "Dipende dalla GPU del dispositivo, dalla durata e dalla risoluzione del video: elabora ogni fotogramma, quindi sulla maggior parte dei telefoni impiega più della durata del video. Continua anche a schermo spento e mostra l'avanzamento in una notifica; l'originale resta intatto finché il file 3D non è completo.",
     "faq5.q": "VRClip invia dati da qualche parte?",
     "faq5.a":
-      "No. Si collega solo ai siti da cui scarichi, a GitHub per gli aggiornamenti e, se usi il 2D→3D, una volta al server pubblico di Qualcomm AI Hub (o, se non risponde, alle release di VRClip su GitHub) per scaricare il modello di profondità. Leggi l'<a href=\"privacy.html\">informativa sulla privacy</a>.",
+      "No. Si collega solo ai siti da cui scarichi, a GitHub per gli aggiornamenti e, se usi il 2D→3D, una volta a GitHub per scaricare i modelli di profondità. Leggi l'<a href=\"privacy.html\">informativa sulla privacy</a>.",
     "faq6.q": "Si può scaricare da qualsiasi sito?",
     "faq6.a": "VRClip è uno strumento: rispetta i termini dei siti che usi e il diritto d'autore di ciò che scarichi.",
     "cta.title": "Portalo nel visore",

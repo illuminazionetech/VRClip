@@ -71,7 +71,7 @@ fun DepthModelDialog(onDismiss: () -> Unit, onReady: () -> Unit) {
                 Text(
                     stringResource(
                         R.string.stereo_model_desc,
-                        DepthModelManager.DOWNLOAD_BYTES.toFileSizeText(),
+                        DepthModel.totalBytes.toFileSizeText(),
                     )
                 )
                 DepthModelStatus(state = state, modifier = Modifier.padding(top = 20.dp))
@@ -205,9 +205,7 @@ fun DepthModelStatus(state: DepthModelManager.State, modifier: Modifier = Modifi
                             DepthModelManager.Reason.NoSpace ->
                                 stringResource(
                                     R.string.stereo_model_no_space,
-                                    (DepthModelManager.DOWNLOAD_BYTES +
-                                            DepthModelManager.MODEL_BYTES)
-                                        .toFileSizeText(),
+                                    DepthModel.totalBytes.toFileSizeText(),
                                 )
                         },
                     style = MaterialTheme.typography.bodyMedium,
@@ -294,7 +292,7 @@ fun ConvertTo3dDialog(videoId: Int, onDismiss: () -> Unit) {
                     Text(
                         stringResource(
                             R.string.stereo_convert_needs_model,
-                            DepthModelManager.DOWNLOAD_BYTES.toFileSizeText(),
+                            DepthModel.totalBytes.toFileSizeText(),
                         )
                     )
                 }

@@ -542,6 +542,7 @@
     <string name="player_aspect_fill">Fill screen (crop)</string>
     <string name="player_aspect_stretch">Stretch</string>
     <string name="player_stereo_output_anaglyph">Red/cyan glasses (anaglyph)</string>
+    <string name="player_stereo_output_parallax">3D without glasses (tilt the phone)</string>
     <string name="player_projection_detected">Automatic: %1$s</string>
     <string name="player_detected_metadata">From the file\'s metadata</string>
     <string name="player_detected_filename">From the file name</string>

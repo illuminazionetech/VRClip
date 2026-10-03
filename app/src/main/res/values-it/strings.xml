@@ -546,6 +546,7 @@
     <string name="player_aspect_fill">Riempi lo schermo (ritaglia)</string>
     <string name="player_aspect_stretch">Allarga</string>
     <string name="player_stereo_output_anaglyph">Occhiali rosso/ciano (anaglifo)</string>
+    <string name="player_stereo_output_parallax">3D senza occhiali (inclina il telefono)</string>
     <string name="player_projection_detected">Automatico: %1$s</string>
     <string name="player_detected_metadata">Dai metadati del file</string>
     <string name="player_detected_filename">Dal nome del file</string>

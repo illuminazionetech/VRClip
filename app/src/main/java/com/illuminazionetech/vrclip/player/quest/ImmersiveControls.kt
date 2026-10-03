@@ -83,6 +83,7 @@ import com.illuminazionetech.vrclip.player.ProjectionMode
 import com.illuminazionetech.vrclip.player.displayName
 import com.illuminazionetech.vrclip.player.formatTime
 import com.illuminazionetech.vrclip.player.speedLabel
+import com.illuminazionetech.vrclip.player.stereo.DepthModel
 import com.illuminazionetech.vrclip.player.stereo.DepthModelManager
 import com.illuminazionetech.vrclip.player.stereo.DepthModelStatus
 import com.illuminazionetech.vrclip.player.stereo.isBusy
@@ -539,7 +540,7 @@ private fun ModelPage(onReady: () -> Unit, onBack: () -> Unit) {
             text =
                 stringResource(
                     R.string.stereo_model_desc,
-                    DepthModelManager.DOWNLOAD_BYTES.toFileSizeText(),
+                    DepthModel.totalBytes.toFileSizeText(),
                 ),
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 4,

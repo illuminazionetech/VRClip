@@ -68,11 +68,11 @@ class ConversionException(val reason: Reason, cause: Throwable? = null) :
 
 /**
  * Converts a flat video into a full-quality side-by-side 3D MP4 with Media3 Transformer and
- * [StereoConversionEffect] (depth estimated for every frame, with temporal smoothing). The output
- * keeps each eye at the source resolution when the device encoder allows it, falls back to half
- * side-by-side where that keeps more detail (4K sources), prefers HEVC for its better quality per
- * bit, and tone-maps HDR sources to SDR since the depth model and the view synthesis work on SDR
- * frames.
+ * [StereoConversionEffect] (depth estimated for every frame by the full model, steadied over time).
+ * The output keeps each eye at the source resolution when the device encoder allows it, falls back
+ * to half side-by-side where that keeps more detail (4K sources), prefers HEVC for its better
+ * quality per bit, and tone-maps HDR sources to SDR since the depth model and the view synthesis
+ * work on SDR frames.
  */
 object StereoConverter {
 
@@ -179,7 +179,7 @@ object StereoConverter {
                 StereoConversionEffect(
                     model = model,
                     settings = settings,
-                    realtime = false,
+                    output = StereoConversionEffect.Output.Conversion,
                     packing = plan.packing,
                     targetSize = plan.width to plan.height,
                 )

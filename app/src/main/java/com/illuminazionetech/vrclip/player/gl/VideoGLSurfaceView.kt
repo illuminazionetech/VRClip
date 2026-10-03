@@ -9,16 +9,18 @@ import android.view.Surface
 import com.illuminazionetech.vrclip.player.ProjectionMode
 
 /**
- * [GLSurfaceView] hosting [VideoGLRenderer] for 360/180 and stereo 3D playback on phones and
- * tablets. It renders only when something changed (a new video frame, device motion, a gesture),
- * follows the device orientation for spherical video when [gyroEnabled] is on, and hands the
- * decoder's [Surface] out through [onSurfaceAvailable] / [onSurfaceDestroyed] on the main thread.
- * Gestures are handled by the Compose layer above, which calls [pan], [zoom] and [recenter].
+ * [GLSurfaceView] hosting [VideoGLRenderer] for 360/180, stereo 3D and live 2D to 3D playback on
+ * phones and tablets. It renders only when something changed (a new video frame, device motion, a
+ * gesture), follows the device orientation for spherical video when [gyroEnabled] is on and its
+ * tilt for the parallax view, and hands the decoder's [Surface] out through [onSurfaceAvailable] /
+ * [onSurfaceDestroyed] on the main thread. Gestures are handled by the Compose layer above, which
+ * calls [pan], [zoom] and [recenter].
  */
 class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
     private val mainHandler = Handler(Looper.getMainLooper())
     private val orientation = OrientationTracker(context) { requestRender() }
+    private val parallax = ParallaxTracker(context) { requestRender() }
     private val renderer: VideoGLRenderer
     private var surface: Surface? = null
     private var surfaceTexture: SurfaceTexture? = null
@@ -29,6 +31,8 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
     val hasMotionSensor: Boolean
         get() = orientation.isAvailable
+
+    private var config = RenderConfig()
 
     var gyroEnabled: Boolean = true
         set(value) {
@@ -46,7 +50,10 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
         set(value) {
             if (field == value) return
             field = value
-            value?.let { (width, height) -> surfaceTexture?.setDefaultBufferSize(width, height) }
+            value?.let { (width, height) ->
+                surfaceTexture?.setDefaultBufferSize(width, height)
+                renderer.frameSize = width to height
+            }
         }
 
     init {
@@ -55,6 +62,7 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
         renderer =
             VideoGLRenderer(
                 orientation = orientation,
+                parallax = parallax,
                 onSurfaceCreated = { texture, newSurface ->
                     mainHandler.post { swapSurface(texture, newSurface) }
                 },
@@ -67,6 +75,7 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
     internal fun setConfig(config: RenderConfig) {
         if (renderer.config == config) return
         renderer.config = config
+        this.config = config
         projectionMode = config.mode
         updateSensor()
         requestRender()
@@ -112,17 +121,25 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        display?.let { orientation.displayRotation = it.rotation }
+        updateDisplayRotation()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         // Rotating the device resizes the view; the sensor math depends on the display rotation.
-        display?.let { orientation.displayRotation = it.rotation }
+        updateDisplayRotation()
+    }
+
+    private fun updateDisplayRotation() {
+        display?.let {
+            orientation.displayRotation = it.rotation
+            parallax.displayRotation = it.rotation
+        }
     }
 
     override fun onDetachedFromWindow() {
         orientation.stop()
+        parallax.stop()
         queueEvent { renderer.releaseGl() }
         super.onDetachedFromWindow()
         surface?.let { onSurfaceDestroyed?.invoke(it) }
@@ -135,6 +152,11 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
     private fun updateSensor() {
         if (resumed && gyroEnabled && projectionMode.isSpherical) orientation.start()
         else orientation.stop()
+        if (resumed && config.depthPacked && config.output == StereoOutputMode.Parallax) {
+            parallax.start()
+        } else {
+            parallax.stop()
+        }
     }
 
     private fun swapSurface(texture: SurfaceTexture, newSurface: Surface) {
@@ -142,7 +164,10 @@ class VideoGLSurfaceView(context: Context) : GLSurfaceView(context) {
         val oldTexture = surfaceTexture
         surface = newSurface
         surfaceTexture = texture
-        bufferSize?.let { (width, height) -> texture.setDefaultBufferSize(width, height) }
+        bufferSize?.let { (width, height) ->
+            texture.setDefaultBufferSize(width, height)
+            renderer.frameSize = width to height
+        }
         onSurfaceAvailable?.invoke(newSurface)
         if (old != null) {
             onSurfaceDestroyed?.invoke(old)

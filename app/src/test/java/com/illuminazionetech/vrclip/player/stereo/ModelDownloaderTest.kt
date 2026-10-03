@@ -1,10 +1,7 @@
 package com.illuminazionetech.vrclip.player.stereo
 
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.security.MessageDigest
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
 import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
 import mockwebserver3.MockResponse
@@ -64,33 +61,34 @@ class ModelDownloaderTest {
 
     private fun status(code: Int) = MockResponse.Builder().code(code).build()
 
-    private fun file(path: String = "/model") =
-        ModelDownloader.FileSource(server.url(path).toString(), model.size.toLong())
+    private fun url(path: String = "/model") = server.url(path).toString()
 
-    private fun fetch(vararg sources: ModelDownloader.Source) = runBlocking {
-        downloader().fetch(sources.toList(), target, model.size.toLong(), modelSha, { _, _ -> })
+    private fun part(index: Int = 0) = downloader().partFile(target, index)
+
+    private fun fetch(vararg urls: String) = runBlocking {
+        downloader().fetch(urls.toList(), target, model.size.toLong(), modelSha, { _, _ -> })
     }
 
     @Test
     fun downloadsAndVerifiesTheFile() {
         server.enqueue(ok(model))
-        fetch(file())
+        fetch(url())
         assertArrayEquals(model, target.readBytes())
         assertNull(server.takeRequest().headers["Range"])
-        assertFalse(File(workDir, "source0.part").exists())
+        assertFalse(part().exists())
     }
 
     @Test
     fun resumesAPartialDownloadWithARangeRequest() {
         workDir.mkdirs()
-        File(workDir, "source0.part").writeBytes(model.copyOfRange(0, 100_000))
+        part().writeBytes(model.copyOfRange(0, 100_000))
         server.enqueue(
             MockResponse.Builder()
                 .code(206)
                 .body(Buffer().write(model.copyOfRange(100_000, model.size)))
                 .build()
         )
-        fetch(file())
+        fetch(url())
         assertEquals("bytes=100000-", server.takeRequest().headers["Range"])
         assertArrayEquals(model, target.readBytes())
     }
@@ -98,21 +96,10 @@ class ModelDownloaderTest {
     @Test
     fun startsOverWhenTheServerIgnoresTheRange() {
         workDir.mkdirs()
-        File(workDir, "source0.part").writeBytes(ByteArray(100_000) { 1 })
+        part().writeBytes(ByteArray(100_000) { 1 })
         server.enqueue(ok(model))
-        fetch(file())
+        fetch(url())
         assertArrayEquals(model, target.readBytes())
-    }
-
-    @Test
-    fun unpacksTheModelFromAZipArchive() {
-        val zip = zipOf("depth/metadata.json" to "{}".toByteArray(), "depth/model.tflite" to model)
-        server.enqueue(ok(zip))
-        fetch(
-            ModelDownloader.ZipSource(server.url("/a.zip").toString(), zip.size.toLong(), ".tflite")
-        )
-        assertArrayEquals(model, target.readBytes())
-        assertEquals(listOf<String>(), workDir.list()!!.toList())
     }
 
     @Test
@@ -120,16 +107,16 @@ class ModelDownloaderTest {
         val wrong = model.copyOf().also { it[10] = (it[10] + 1).toByte() }
         server.enqueue(ok(wrong))
         server.enqueue(ok(model))
-        fetch(file("/first"), file("/second"))
+        fetch(url("/first"), url("/second"))
         assertArrayEquals(model, target.readBytes())
-        assertFalse("corrupted data is discarded", File(workDir, "source0.part").exists())
+        assertFalse("corrupted data is discarded", part().exists())
     }
 
     @Test
     fun missingFileFallsBackWithoutRetrying() {
         server.enqueue(status(404))
         server.enqueue(ok(model))
-        fetch(file("/first"), file("/second"))
+        fetch(url("/first"), url("/second"))
         assertArrayEquals(model, target.readBytes())
         assertEquals(2, server.requestCount)
     }
@@ -137,7 +124,7 @@ class ModelDownloaderTest {
     @Test
     fun serverErrorsAreRetriedThenReportedAsNetwork() {
         repeat(3) { server.enqueue(status(503)) }
-        val failure = expectFailure { fetch(file()) }
+        val failure = expectFailure { fetch(url()) }
         assertEquals(ModelDownloader.Kind.Network, failure.kind)
         assertEquals(3, server.requestCount)
         assertFalse(target.exists())
@@ -146,20 +133,25 @@ class ModelDownloaderTest {
     @Test
     fun notEnoughSpaceIsReportedBeforeDownloading() {
         free = 1_000
-        val failure = expectFailure { fetch(file()) }
+        val failure = expectFailure { fetch(url()) }
         assertEquals(ModelDownloader.Kind.NoSpace, failure.kind)
         assertEquals(0, server.requestCount)
     }
 
     @Test
-    fun aDamagedArchiveIsReportedAsCorrupted() {
-        val junk = Random(3).nextBytes(5_000)
-        server.enqueue(ok(junk))
-        val failure = expectFailure {
-            fetch(ModelDownloader.ZipSource(server.url("/a.zip").toString(), 5_000, ".tflite"))
-        }
+    fun aLargerFileIsReportedAsCorruptedAndDiscarded() {
+        server.enqueue(ok(model + ByteArray(10)))
+        val failure = expectFailure { fetch(url()) }
         assertEquals(ModelDownloader.Kind.Corrupted, failure.kind)
-        assertTrue(workDir.list().orEmpty().isEmpty())
+        assertFalse(part().exists())
+        assertFalse(target.exists())
+    }
+
+    @Test
+    fun eachTargetKeepsItsOwnPartialFile() {
+        val other = File(folder.root, "other.tflite")
+        assertTrue(downloader().partFile(target, 0) != downloader().partFile(other, 0))
+        assertTrue(downloader().partFile(target, 0) != downloader().partFile(target, 1))
     }
 
     private fun expectFailure(block: () -> Unit): ModelDownloader.Failure {
@@ -170,18 +162,6 @@ class ModelDownloaderTest {
         }
         fail("expected a failure")
         throw AssertionError()
-    }
-
-    private fun zipOf(vararg entries: Pair<String, ByteArray>): ByteArray {
-        val out = ByteArrayOutputStream()
-        ZipOutputStream(out).use { zip ->
-            for ((name, bytes) in entries) {
-                zip.putNextEntry(ZipEntry(name))
-                zip.write(bytes)
-                zip.closeEntry()
-            }
-        }
-        return out.toByteArray()
     }
 
     private fun sha256(bytes: ByteArray) =

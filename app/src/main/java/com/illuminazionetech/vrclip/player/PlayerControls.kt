@@ -976,7 +976,7 @@ private fun ActionToolbar(
                 onToggleRepeat()
             },
         )
-        if (projection.isStereo || projection.isSpherical) {
+        if (projection.isStereo || projection.isSpherical || state.depthPacked) {
             PlayerIconButton(
                 icon = Icons.Rounded.ViewInAr,
                 label = stringResource(R.string.player_stereo_output),
@@ -1416,5 +1416,6 @@ internal fun StereoOutputMode.label(): String =
             StereoOutputMode.SingleEye -> R.string.player_stereo_output_single
             StereoOutputMode.SplitScreen -> R.string.player_stereo_output_split
             StereoOutputMode.Anaglyph -> R.string.player_stereo_output_anaglyph
+            StereoOutputMode.Parallax -> R.string.player_stereo_output_parallax
         }
     )

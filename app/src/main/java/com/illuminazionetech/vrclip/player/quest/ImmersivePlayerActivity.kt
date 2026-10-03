@@ -138,6 +138,8 @@ class ImmersivePlayerActivity : AppSystemActivity() {
             finish()
             return
         }
+        // Live 2D to 3D here feeds the stereo layer: both views side by side.
+        viewModel.setLiveTarget(headset = true)
         // A projection chosen elsewhere (library menu) applies before the file is even opened.
         ProjectionMode.fromStorageKey(intent.getStringExtra(EXTRA_PROJECTION))?.let {
             viewModel.setProjectionOverride(it)

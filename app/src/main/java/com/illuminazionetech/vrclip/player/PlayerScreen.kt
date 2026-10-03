@@ -54,6 +54,7 @@ import androidx.media3.ui.SubtitleView
 import com.illuminazionetech.vrclip.player.gl.RenderConfig
 import com.illuminazionetech.vrclip.player.gl.StereoOutputMode
 import com.illuminazionetech.vrclip.player.gl.VideoGLSurfaceView
+import com.illuminazionetech.vrclip.player.stereo.StereoSettings
 import com.illuminazionetech.vrclip.util.FileUtil
 import com.illuminazionetech.vrclip.util.PLAYER_GYRO
 import com.illuminazionetech.vrclip.util.PreferenceUtil
@@ -368,7 +369,8 @@ private fun VideoLayer(
     onGlView: (VideoGLSurfaceView?) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    if (state.renderProjection.requiresImmersiveRendering) {
+    val stereo = remember(state.depthPacked) { StereoSettings.load() }
+    if (state.usesGlRenderer) {
         var view by remember { mutableStateOf<VideoGLSurfaceView?>(null) }
         DisposableEffect(lifecycleOwner, view) {
             val target = view ?: return@DisposableEffect onDispose {}
@@ -404,6 +406,10 @@ private fun VideoLayer(
                         mode = state.renderProjection,
                         output = state.stereoOutput,
                         frameAspect = state.renderFrameAspect,
+                        depthPacked = state.depthPacked,
+                        halfRange = stereo.strength / 2f,
+                        convergence = stereo.convergence,
+                        fill = state.depthPacked && aspectMode == AspectMode.Fill,
                     )
                 )
                 glView.gyroEnabled = gyroEnabled

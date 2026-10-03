@@ -27,11 +27,14 @@ Website and downloads: [illuminazionetech.github.io/VRClip](https://illuminazion
   - 360 and 180 video with touch and motion sensor panning, split screen for Cardboard-style
     viewers, and red and cyan anaglyph output for 3D video.
 - 2D to 3D: Depth Anything V2 Small estimates depth on the device GPU (CPU fallback) and VRClip
-  draws a view for each eye. It runs live in the player, or converts a file at full quality in
-  the background and replaces the flat original once the 3D file is complete. The model (about
-  90 MB) is downloaded on first use, in the background with a notification; the download
-  resumes after interruptions, falls back to a copy in this repository's `depth-model` release
-  and is verified against a fixed SHA-256.
+  draws a view for each eye, with the depth steadied over time and aligned to the picture's own
+  edges. It runs live in the player (on phones as a parallax view that follows the phone's tilt,
+  or for a viewer or red and cyan glasses; on Meta Quest in native stereo), or converts a file
+  at full quality in the background and replaces the flat original once the 3D file is complete.
+  The models (about 100 MB) are built from the official weights by
+  [`tools/depth-model`](tools/depth-model) as graphs that run entirely on mobile GPUs, published
+  in this repository's `depth-model` release, downloaded on first use in the background and
+  verified against fixed SHA-256 values.
 - Meta Quest 2, 3, 3S and Pro: a large screen in front of you for flat video, a sphere or half
   dome for 360 and 180, native stereo for 3D files and live 2D to 3D, passthrough, and a control
   bar you can grab and move, with speed and track pages.
@@ -112,5 +115,5 @@ VRClip is licensed under the GPLv3 (see [`LICENSE`](LICENSE)). It is a fork of
 [aria2](https://aria2.github.io/) through
 [youtubedl-android](https://github.com/JunkFood02/youtubedl-android), the
 [Meta Spatial SDK](https://developers.meta.com/horizon/develop/spatial-sdk), and
-[Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2) through
-[Qualcomm AI Hub](https://aihub.qualcomm.com/). Full attribution is in [`NOTICE`](NOTICE).
+[Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2). Full attribution is in
+[`NOTICE`](NOTICE).

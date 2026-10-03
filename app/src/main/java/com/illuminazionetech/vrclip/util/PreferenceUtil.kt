@@ -111,6 +111,7 @@ const val PLAYER_SPEED = "player_speed"
 const val PLAYER_GYRO = "player_gyro"
 const val STEREO_STRENGTH = "stereo_strength"
 const val STEREO_POP_OUT = "stereo_pop_out"
+const val STEREO_LIVE_MODEL = "stereo_live_model"
 
 const val DOWNLOAD_TYPE_INITIALIZATION = "download_type_init"
 private const val DOWNLOAD_TYPE = "download_type"

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security problem
+    url: https://github.com/illuminazionetech/VRClip/security/advisories/new
+    about: Report vulnerabilities privately, never in a public issue.
+  - name: A site stopped working in yt-dlp itself
+    url: https://github.com/yt-dlp/yt-dlp/issues
+    about: Extraction bugs for a specific site belong to yt-dlp.

@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest something VRClip could do better.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you are trying to do
+      description: The situation and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you imagine it working. Screenshots or examples are welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Where you would use it
+      multiple: true
+      options:
+        - Phone or tablet
+        - Meta Quest

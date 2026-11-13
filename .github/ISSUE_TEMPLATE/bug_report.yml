@@ -1,0 +1,49 @@
+name: Bug report
+description: Something in VRClip does not work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. If a single site stopped downloading, try again after VRClip updates yt-dlp: sites change often and most extraction problems are fixed upstream in [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+        Do not paste private links, cookies or account names.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected and what you got instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - Downloading
+        - Player on phone or tablet
+        - 360, 180 or stereo 3D playback
+        - 2D to 3D conversion
+        - Meta Quest panel or immersive player
+        - Settings or something else
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: VRClip version
+      placeholder: "1.4.1"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and Android version
+      placeholder: Pixel 8, Android 16 / Meta Quest 3, Horizon OS v78
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Error message or log (optional)
+      description: Remove anything personal before pasting.
+      render: text
